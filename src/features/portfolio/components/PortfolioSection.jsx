@@ -23,6 +23,7 @@ const PortfolioSection = () => {
     featuredItems,
     handleShowAll,
     handleBackToFeatured,
+    setShowAll,
   } = usePortfolioFilter(PORTFOLIO_ITEMS, FEATURED_COUNT);
 
   return (
@@ -62,6 +63,24 @@ const PortfolioSection = () => {
 
             {/* Infinite Scrolling Brands Carousel */}
             <BrandsCarousel isInView={isInView} />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+          <div className="flex items-end justify-between gap-6 mb-5">
+            <div>
+              <span className="section-kicker mb-4">Explore by discipline</span>
+              <h3 className="font-display text-3xl md:text-5xl tracking-[-0.05em]">Different formats. One point of view.</h3>
+            </div>
+            <span className="hidden md:block text-xs uppercase tracking-[0.14em] text-eerie/45">{PORTFOLIO_ITEMS.length} projects</span>
+          </div>
+          <div className="flex flex-wrap gap-2 border-y border-eerie/15 py-4">
+            <button type="button" onClick={() => { setFilter('all'); setShowAll(true); }} className="topic-link">All work <span>{PORTFOLIO_ITEMS.length}</span></button>
+            {['branding', 'packaging', 'posters', 'brochures', 'uiux'].map((topic) => (
+              <button key={topic} type="button" onClick={() => { setFilter(topic); setShowAll(true); }} className="topic-link">
+                {topic === 'uiux' ? 'UI/UX' : topic} <span>{PORTFOLIO_ITEMS.filter((item) => item.category === topic).length}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
 

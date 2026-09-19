@@ -5,6 +5,7 @@ import { PortfolioSection } from '@/features/portfolio'
 import { ContactSection } from '@/features/contact'
 import CustomCursor from '@/components/CustomCursor'
 import StudioApproach from '@/features/studio/StudioApproach'
+import ResumeSection from '@/features/resume/ResumeSection'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <PortfolioSection />
       <StudioApproach />
       <AboutSection />
+      <ResumeSection />
       <ContactSection />
       <Footer />
     </div>

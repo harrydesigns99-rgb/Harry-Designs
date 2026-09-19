@@ -6,10 +6,11 @@ export const NAV_LINKS = [
   { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Portfolio', href: '#portfolio' },
+  { name: 'Resume', href: '#resume' },
   { name: 'Contact', href: '#contact' },
 ];
 
-export const FOOTER_LINKS = ['Home', 'About', 'Portfolio', 'Contact'];
+export const FOOTER_LINKS = ['Home', 'About', 'Portfolio', 'Resume', 'Contact'];
 
 export const SITE_INFO = {
   name: 'Harry Designs',

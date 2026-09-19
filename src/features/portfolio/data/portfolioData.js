@@ -30,7 +30,7 @@ export const BRANDS = [
 export const PORTFOLIO_ITEMS = [
   {
     id: 1,
-    category: 'logo',
+    category: 'branding',
     title: 'Tech Startup Logo',
     client: 'TechFlow',
     icon: FaApple,
@@ -52,7 +52,7 @@ export const PORTFOLIO_ITEMS = [
   },
   {
     id: 3,
-    category: 'logo',
+    category: 'branding',
     title: 'Restaurant Brand Identity',
     client: 'Bistro Deluxe',
     icon: FaCoffee,
@@ -74,7 +74,7 @@ export const PORTFOLIO_ITEMS = [
   },
   {
     id: 5,
-    category: 'logo',
+    category: 'branding',
     title: 'Religious Organization',
     client: 'Ministries',
     icon: SiNike,
@@ -96,7 +96,7 @@ export const PORTFOLIO_ITEMS = [
   },
   {
     id: 7,
-    category: 'logo',
+    category: 'branding',
     title: 'Fashion Label Identity',
     client: 'Essence Apparel',
     icon: FaTshirt,
@@ -116,7 +116,7 @@ export const PORTFOLIO_ITEMS = [
   },
   {
     id: 9,
-    category: 'logo',
+    category: 'branding',
     title: 'Coffee House Brand',
     client: 'Urban Brew',
     icon: SiStarbucks,
@@ -124,12 +124,45 @@ export const PORTFOLIO_ITEMS = [
     description: 'Contemporary cafe identity',
     size: 'tall',
   },
+  {
+    id: 10,
+    category: 'posters',
+    title: 'Campaign Poster Series',
+    client: 'Studio Signals',
+    icon: FaPalette,
+    color: 'from-indigo-700 via-blue-600 to-cyan-500',
+    description: 'A bold visual system for a cultural campaign',
+    size: 'tall',
+  },
+  {
+    id: 11,
+    category: 'brochures',
+    title: 'Editorial Brochure System',
+    client: 'Field Notes',
+    icon: FaLeaf,
+    color: 'from-lime-700 via-emerald-600 to-teal-500',
+    description: 'A tactile print system built for easy scanning',
+    size: 'tall',
+  },
+  {
+    id: 12,
+    category: 'uiux',
+    title: 'Digital Product Direction',
+    client: 'Northstar',
+    icon: FaGem,
+    color: 'from-slate-800 via-indigo-700 to-violet-600',
+    description: 'Interface direction for a focused digital product',
+    size: 'tall',
+  },
 ];
 
 export const FILTER_BUTTONS = [
   { label: 'All Work', value: 'all' },
-  { label: 'Logos', value: 'logo' },
+  { label: 'Branding', value: 'branding' },
   { label: 'Packaging', value: 'packaging' },
+  { label: 'Posters', value: 'posters' },
+  { label: 'Brochures', value: 'brochures' },
+  { label: 'UI/UX', value: 'uiux' },
 ];
 
 // Number of featured items for scroll stack (3-4 works best)
