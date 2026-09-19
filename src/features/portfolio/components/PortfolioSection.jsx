@@ -49,15 +49,13 @@ const PortfolioSection = () => {
                 transition={TRANSITIONS.medium}
                 className="inline-block mb-4"
               >
-                <span className="text-crimson text-sm tracking-[0.3em] uppercase font-medium">
-                  Clients
-                </span>
+                <span className="section-kicker mb-4">Selected clients</span>
               </motion.div>
-              <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-eerie">
-                Brands I've <span className="text-gradient">Worked With</span>
+              <h2 className="text-4xl md:text-6xl font-display font-bold mb-5 text-eerie">
+                Built with <span className="text-gradient">good people.</span>
               </h2>
               <p className="text-lg md:text-xl text-eerie/60 max-w-3xl mx-auto">
-                Trusted by leading global brands to deliver exceptional design solutions
+                A selection of brands and teams I&apos;ve helped shape through identity, packaging, and design.
               </p>
             </motion.div>
 

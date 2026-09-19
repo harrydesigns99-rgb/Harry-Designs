@@ -39,7 +39,7 @@ const FeaturedCard = ({ item, index, isInView, onSelect }) => {
       onMouseLeave={() => !isMobile && setHoveredItem(null)}
     >
       {/* Card container with larger aspect ratio for featured */}
-      <div className="relative overflow-hidden aspect-[4/5] md:aspect-[4/5] max-w-xs md:max-w-sm mx-auto shadow-lg">
+      <div className="relative overflow-hidden aspect-[4/5] w-full shadow-lg">
         
         {/* Full Image Background */}
         <div className="absolute inset-0 z-0">
@@ -121,7 +121,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
             </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10 max-w-7xl mx-auto">
           {items.map((item, index) => (
             <FeaturedCard key={item.id} item={item} index={index} isInView={isInView} onSelect={setSelectedItem} />
           ))}
