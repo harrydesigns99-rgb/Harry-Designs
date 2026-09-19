@@ -1,4 +1,3 @@
-import { useRef, useEffect } from 'react';
 import { useMotionValue, useAnimationFrame } from 'framer-motion';
 import { PARALLAX_SPEED, CAROUSEL_SETTINGS } from '@/constants';
 
