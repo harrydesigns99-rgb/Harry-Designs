@@ -5,18 +5,21 @@ import { PortfolioSection } from '@/features/portfolio'
 import { ContactSection } from '@/features/contact'
 import CustomCursor from '@/components/CustomCursor'
 import StudioApproach from '@/features/studio/StudioApproach'
-import ResumeSection from '@/features/resume/ResumeSection'
+import ResumePage from '@/features/resume/ResumePage'
 
 function App() {
+  if (window.location.pathname === '/resume') {
+    return <ResumePage />
+  }
+
   return (
-    <div className="min-h-screen bg-eerie">
+    <div className="min-h-screen bg-cloud-dancer">
       <CustomCursor />
       <Navbar />
       <HeroSection />
       <PortfolioSection />
       <StudioApproach />
       <AboutSection />
-      <ResumeSection />
       <ContactSection />
       <Footer />
     </div>

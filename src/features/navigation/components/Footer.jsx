@@ -28,7 +28,7 @@ const Footer = () => {
             {FOOTER_LINKS.map((link, index) => (
               <motion.a
                 key={link}
-                href={`#${link.toLowerCase()}`}
+                href={link === 'Resume' ? '/resume' : `#${link.toLowerCase()}`}
                 whileHover={{ y: -2, color: '#D72638' }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

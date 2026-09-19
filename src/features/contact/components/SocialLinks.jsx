@@ -5,7 +5,7 @@ import { fadeInUp, TRANSITIONS, DELAYS } from '@/animations';
 const SocialLinks = ({ isInView }) => {
   return (
     <div className="mt-12">
-      <h4 className="text-lg font-semibold mb-6 text-white">Follow Me</h4>
+      <h4 className="text-lg font-semibold mb-6 text-eerie">Follow Me</h4>
       <div className="flex space-x-4">
         {SOCIAL_LINKS.map((social, index) => {
           const Icon = social.icon;
@@ -19,7 +19,7 @@ const SocialLinks = ({ isInView }) => {
               animate={isInView ? 'visible' : 'hidden'}
               variants={fadeInUp}
               transition={{ delay: DELAYS.xxl + index * DELAYS.tiny, ...TRANSITIONS.medium }}
-              className="relative w-14 h-14 glass-effect rounded-full flex items-center justify-center text-purple-400 hover:text-white transition-colors text-xl group overflow-hidden"
+              className="relative w-14 h-14 border border-eerie/20 flex items-center justify-center text-crimson hover:text-white transition-colors text-xl group overflow-hidden"
               aria-label={social.name}
             >
               <span className="relative z-10">

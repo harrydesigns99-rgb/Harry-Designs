@@ -16,7 +16,7 @@ const ToolsCarousel = ({ isInView }) => {
       transition={{ delay: DELAYS.large, ...TRANSITIONS.slow }}
       className="mb-16"
     >
-      <h3 className="text-3xl md:text-4xl font-bold text-center mb-10 text-white">
+      <h3 className="text-3xl md:text-4xl font-bold text-center mb-10 text-eerie">
         The Tools I <span className="text-gradient">Trust</span>
       </h3>
       <div className="relative overflow-hidden rounded-3xl glass-effect p-8 md:p-10">
@@ -71,7 +71,7 @@ const ToolsCarousel = ({ isInView }) => {
                   </motion.div>
                 </motion.div>
 
-                <span className="text-xs md:text-sm text-slate-400 text-center mt-3 group-hover:text-white transition-colors truncate max-w-full block font-medium capitalize">
+                <span className="text-xs md:text-sm text-eerie/55 text-center mt-3 group-hover:text-eerie transition-colors truncate max-w-full block font-medium capitalize">
                   {tool.name}
                 </span>
               </motion.div>

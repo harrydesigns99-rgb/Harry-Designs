@@ -87,7 +87,7 @@ const StatsGrid = ({ isInView }) => {
           >
             <AnimatedCounter value={stat.rawNumber} suffix={stat.suffix} />
           </motion.div>
-          <div className="text-slate-400 text-xs sm:text-sm md:text-sm lg:text-base leading-tight md:leading-normal relative z-10 group-hover:text-slate-300 transition-colors font-medium">
+          <div className="text-eerie/55 text-xs sm:text-sm md:text-sm lg:text-base leading-tight md:leading-normal relative z-10 group-hover:text-eerie/80 transition-colors font-medium">
             {stat.label}
           </div>
         </motion.div>

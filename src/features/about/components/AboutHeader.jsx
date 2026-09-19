@@ -19,11 +19,11 @@ const AboutHeader = ({ isInView }) => {
       >
         <span className="section-kicker">About the designer</span>
       </motion.div>
-      <h2 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.06em] leading-[0.95] mb-6">
+      <h2 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.06em] leading-[0.95] mb-6 text-eerie">
         Meet <span className="text-gradient">Hariharan,</span><br />
         your creative partner.
       </h2>
-      <p className="text-base md:text-lg text-stone-400 max-w-xl leading-relaxed">
+      <p className="text-base md:text-lg text-eerie/60 max-w-xl leading-relaxed">
         A visual designer creating identities and packaging with clarity, character, and a little
         bit of unexpectedness.
       </p>

@@ -27,15 +27,15 @@ const ContactInfo = ({ isInView }) => {
             <div>
               <p className="text-sm text-slate-500 uppercase tracking-wide">{info.label}</p>
               {info.label === 'Email' ? (
-                <a href={`mailto:${info.value}`} className="text-white font-medium hover:text-crimson transition-colors block">
+                <a href={`mailto:${info.value}`} className="text-eerie font-medium hover:text-crimson transition-colors block">
                   {info.value}
                 </a>
               ) : info.label === 'Phone' ? (
-                <a href={`tel:${info.value.replace(/[^+\d]/g, '')}`} className="text-white font-medium hover:text-crimson transition-colors block">
+                  <a href={`tel:${info.value.replace(/[^+\d]/g, '')}`} className="text-eerie font-medium hover:text-crimson transition-colors block">
                   {info.value}
                 </a>
               ) : (
-                <p className="text-white font-medium">{info.value}</p>
+                <p className="text-eerie font-medium">{info.value}</p>
               )}
             </div>
           </motion.div>

@@ -13,10 +13,10 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-eerie-light overflow-hidden"
+      className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-cloud-dancer text-eerie overflow-hidden"
       ref={ref}
     >
-      <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
+      <div className="absolute inset-x-0 top-0 h-px bg-eerie/15" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-24 items-center mb-24 md:mb-36">

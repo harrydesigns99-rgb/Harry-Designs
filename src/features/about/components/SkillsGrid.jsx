@@ -16,7 +16,7 @@ const SkillsGrid = ({ isInView }) => {
       transition={{ delay: DELAYS.medium, ...TRANSITIONS.slow }}
       className="mb-16"
     >
-      <h3 className="text-3xl md:text-4xl font-bold text-center mb-10 text-white">
+      <h3 className="text-3xl md:text-4xl font-bold text-center mb-10 text-eerie">
         Core <span className="text-gradient">Expertise</span>
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -63,10 +63,10 @@ const SkillsGrid = ({ isInView }) => {
               >
                 <Icon className="text-4xl" />
               </motion.div>
-              <h3 className="text-lg md:text-xl font-semibold mb-2 text-white relative z-10 group-hover:text-gradient transition-all duration-300">
+              <h3 className="text-lg md:text-xl font-semibold mb-2 text-eerie relative z-10 group-hover:text-gradient transition-all duration-300">
                 {skill.title}
               </h3>
-              <p className="text-slate-400 text-sm md:text-base relative z-10 group-hover:text-slate-300 transition-colors">
+              <p className="text-eerie/60 text-sm md:text-base relative z-10 group-hover:text-eerie/80 transition-colors">
                 {skill.description}
               </p>
 

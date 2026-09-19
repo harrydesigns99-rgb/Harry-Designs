@@ -21,7 +21,7 @@ const ContactForm = () => {
         )}
 
         <div>
-          <label htmlFor="name" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
+          <label htmlFor="name" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-3">
             Your Name
           </label>
           <motion.input
@@ -32,13 +32,13 @@ const ContactForm = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none text-white placeholder-stone-600"
+            className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none text-eerie placeholder-eerie/40"
             placeholder="John Doe"
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
+          <label htmlFor="email" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-3">
             Your Email
           </label>
           <motion.input
@@ -49,13 +49,13 @@ const ContactForm = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none text-white placeholder-stone-600"
+            className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none text-eerie placeholder-eerie/40"
             placeholder="john@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="phone" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
+          <label htmlFor="phone" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-3">
             Your Phone Number
           </label>
           <motion.input
@@ -65,13 +65,13 @@ const ContactForm = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none text-white placeholder-stone-600"
+            className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none text-eerie placeholder-eerie/40"
             placeholder="+1 (555) 000-0000"
           />
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
+          <label htmlFor="message" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-3">
             Your Message
           </label>
           <motion.textarea
@@ -82,7 +82,7 @@ const ContactForm = () => {
             onChange={handleChange}
             required
             rows="6"
-            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none resize-none text-white placeholder-stone-600"
+            className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none resize-none text-eerie placeholder-eerie/40"
             placeholder="Tell me about your project..."
           />
         </div>

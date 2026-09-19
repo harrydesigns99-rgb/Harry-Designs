@@ -11,10 +11,10 @@ const ContactSection = () => {
 
   return (
     <section
-      className="relative pt-24 md:pt-36 pb-24 md:pb-36 bg-eerie overflow-hidden"
+      className="relative pt-24 md:pt-36 pb-24 md:pb-36 bg-cloud-dancer text-eerie overflow-hidden"
       ref={ref}
     >
-      <div className="absolute top-0 right-[12%] h-full w-px bg-white/10" />
+      <div className="absolute top-0 right-[12%] h-full w-px bg-eerie/15" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -36,7 +36,7 @@ const ContactSection = () => {
           <h2 className="font-display text-4xl md:text-7xl font-medium tracking-[-0.06em] leading-[0.95] mb-6">
             Have a brand <span className="text-gradient">worth remembering?</span>
           </h2>
-          <p className="text-base md:text-lg text-stone-400 max-w-xl mx-auto px-4">
+          <p className="text-base md:text-lg text-eerie/60 max-w-xl mx-auto px-4">
             Tell me what you&apos;re building, where it&apos;s going, and what it needs to become.
           </p>
         </motion.div>
@@ -60,7 +60,7 @@ const ContactSection = () => {
             variants={fadeInLeft}
             transition={{ delay: DELAYS.large, ...TRANSITIONS.medium }}
           >
-            <h3 className="text-2xl md:text-3xl font-semibold mb-8 text-white">Get In Touch</h3>
+            <h3 className="text-2xl md:text-3xl font-semibold mb-8 text-eerie">Get In Touch</h3>
 
             <ContactInfo isInView={isInView} />
 
