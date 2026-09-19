@@ -31,12 +31,13 @@ const FeaturedCard = ({ item, index, isInView }) => {
             }
           : {}
       }
-      className="group relative overflow-hidden rounded-2xl cursor-pointer"
+      data-cursor="View"
+      className="group relative overflow-hidden cursor-pointer"
       onMouseEnter={() => !isMobile && setHoveredItem(item.id)}
       onMouseLeave={() => !isMobile && setHoveredItem(null)}
     >
       {/* Card container with larger aspect ratio for featured */}
-      <div className="relative overflow-hidden rounded-2xl aspect-[4/5] md:aspect-[4/5] max-w-xs md:max-w-sm mx-auto shadow-lg">
+      <div className="relative overflow-hidden aspect-[4/5] md:aspect-[4/5] max-w-xs md:max-w-sm mx-auto shadow-lg">
         
         {/* Full Image Background */}
         <div className="absolute inset-0 z-0">
@@ -60,7 +61,7 @@ const FeaturedCard = ({ item, index, isInView }) => {
           )}
           
           {/* Enhanced Text Readability Gradient */}
-          <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/85 to-transparent pointer-events-none" />
         </div>
 
         {/* Noise texture overlay */}
@@ -72,15 +73,18 @@ const FeaturedCard = ({ item, index, isInView }) => {
         />
 
         {/* Content - Empty as requested */}
-        <div className="absolute inset-0 pointer-events-none"></div>
+        <div className="absolute inset-x-0 bottom-0 z-10 p-5 text-left pointer-events-none">
+          <p className="text-[0.65rem] uppercase tracking-[0.18em] text-white/60 mb-2">{item.category} / 2024</p>
+          <h4 className="font-display text-2xl font-medium text-white">{item.client}</h4>
+          <p className="text-sm text-white/70 mt-1">{item.description}</p>
+        </div>
 
         {/* Animated border */}
         {!isMobile && (
           <motion.div
-            className="absolute inset-0 rounded-2xl border-2 border-white/0 transition-all duration-300 pointers-events-none"
+            className="absolute inset-0 border border-white/0 transition-all duration-300 pointers-events-none"
             animate={{
-              borderColor:
-                hoveredItem === item.id ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0)',
+              borderColor: hoveredItem === item.id ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0)',
             }}
           />
         )}
@@ -102,16 +106,19 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
         className="mb-20 container mx-auto px-4"
       >
         {/* Header Section */}
-        <div className="text-center mb-16">
-            <h3 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-              Featured <span className="text-gradient">Projects</span>
-            </h3>
-            <p className="text-slate-300 text-base md:text-lg font-medium mx-auto max-w-2xl">
-              Scroll to explore my best design creations
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12">
+            <div>
+              <span className="section-kicker mb-5">Selected work</span>
+              <h3 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.05em] text-white">
+                A few things I&apos;ve <span className="text-gradient">made.</span>
+              </h3>
+            </div>
+            <p className="text-stone-400 text-base max-w-xs md:text-right">
+              Identity systems and packaging for ambitious people and useful ideas.
             </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 max-w-7xl mx-auto">
           {items.map((item, index) => (
             <FeaturedCard key={item.id} item={item} index={index} isInView={isInView} />
           ))}
@@ -135,7 +142,8 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
                 : {}
             }
             whileTap={{ scale: 0.95 }}
-            className="group relative inline-flex items-center gap-2 md:gap-3 px-8 md:px-10 py-4 md:py-5 bg-gradient-dark text-white rounded-full font-semibold text-base md:text-lg overflow-hidden"
+            data-cursor="More"
+            className="group relative inline-flex items-center gap-3 px-7 py-4 border border-white/20 text-white font-semibold text-sm overflow-hidden"
           >
             <span className="relative z-10">View All Projects</span>
             <motion.span

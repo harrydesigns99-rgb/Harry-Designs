@@ -1,37 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Crimson Tide Color System */
-  --color-crimson: #D72638;
-  --color-crimson-dark: #B51E2E;
-  --color-crimson-light: #E84A59;
+  /* Editorial studio color system */
+  --color-crimson: #ff5545;
+  --color-crimson-dark: #d63b32;
+  --color-crimson-light: #ff897c;
 
-  /* Eerie Black System */
-  --color-eerie: #1B1B1B;
-  --color-eerie-light: #232323;
-  --color-eerie-lighter: #2E2E2E;
+  --color-eerie: #121212;
+  --color-eerie-light: #191918;
+  --color-eerie-lighter: #292927;
 
   /* Cloud Colors */
-  --color-cloud-white: #F5F5F5;
-  --color-cloud-dancer: #F0EEE9;
+  --color-cloud-white: #f7f5f0;
+  --color-cloud-dancer: #ede9e0;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
 }
 
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(135deg, #D72638 0%, #B51E2E 100%);
+    background: linear-gradient(135deg, #ff897c 0%, #ff5545 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .bg-gradient-dark {
-    background: linear-gradient(135deg, #D72638 0%, #B51E2E 100%);
+    background: linear-gradient(135deg, #ff5545 0%, #d63b32 100%);
   }
 
   .glass-effect {
-    background: rgba(240, 238, 233, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(245, 245, 245, 0.08);
+    background: rgba(247, 245, 240, 0.04);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(247, 245, 240, 0.12);
+  }
+
+  .section-kicker {
+    align-items: center;
+    color: var(--color-crimson);
+    display: inline-flex;
+    font-size: 0.7rem;
+    font-weight: 700;
+    gap: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .section-kicker::before {
+    background: currentColor;
+    content: '';
+    height: 1px;
+    width: 2.25rem;
+  }
+
+  .editorial-link {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.7rem;
+    position: relative;
+  }
+
+  .editorial-link::after {
+    background: currentColor;
+    bottom: -0.35rem;
+    content: '';
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transform: scaleX(0.35);
+    transform-origin: left;
+    transition: transform 300ms ease;
+    width: 100%;
+  }
+
+  .editorial-link:hover::after,
+  .editorial-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    left: 0;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+  }
+
+  .custom-cursor-dot {
+    background: var(--color-crimson);
+    border-radius: 999px;
+    height: 0.45rem;
+    margin-left: -0.225rem;
+    margin-top: -0.225rem;
+    opacity: 0;
+    transition: opacity 200ms ease, transform 100ms linear;
+    width: 0.45rem;
+  }
+
+  .custom-cursor-ring {
+    align-items: center;
+    border: 1px solid rgba(247, 245, 240, 0.65);
+    border-radius: 999px;
+    color: var(--color-cloud-white);
+    display: flex;
+    font-size: 0.6rem;
+    height: 2.6rem;
+    justify-content: center;
+    letter-spacing: 0.1em;
+    margin-left: -1.3rem;
+    margin-top: -1.3rem;
+    opacity: 0;
+    text-transform: uppercase;
+    transition: opacity 200ms ease, height 250ms ease, width 250ms ease, background 250ms ease;
+    width: 2.6rem;
+  }
+
+  .custom-cursor-ring.is-active {
+    background: var(--color-crimson);
+    border-color: var(--color-crimson);
+    height: 4.5rem;
+    margin-left: -2.25rem;
+    margin-top: -2.25rem;
+    width: 4.5rem;
+  }
+
+  .custom-cursor-dot.is-visible,
+  .custom-cursor-ring.is-visible {
+    opacity: 1;
   }
 }
 
@@ -46,7 +143,40 @@
   }
 
   body {
-    background-color: #1B1B1B;
+    background-color: #121212;
     color: white;
+    font-family: 'DM Sans', sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button {
+    cursor: none;
+  }
+
+  ::selection {
+    background: var(--color-crimson);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-crimson-light);
+    outline-offset: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

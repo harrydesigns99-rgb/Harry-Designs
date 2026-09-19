@@ -11,12 +11,10 @@ const ContactSection = () => {
 
   return (
     <section
-      className="relative pt-10 md:pt-16 pb-20 md:pb-32 bg-eerie-light overflow-hidden"
+      className="relative pt-24 md:pt-36 pb-24 md:pb-36 bg-eerie overflow-hidden"
       ref={ref}
     >
-      {/* Background decorative elements */}
-      <div className="absolute top-20 right-0 w-96 h-96 bg-crimson/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 left-0 w-96 h-96 bg-crimson-dark/10 rounded-full blur-3xl" />
+      <div className="absolute top-0 right-[12%] h-full w-px bg-white/10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -33,15 +31,13 @@ const ContactSection = () => {
             transition={TRANSITIONS.medium}
             className="inline-block mb-4"
           >
-            <span className="text-crimson text-sm tracking-[0.3em] uppercase font-medium">
-              Contact
-            </span>
+              <span className="section-kicker mb-5">Contact</span>
           </motion.div>
-          <h2 className="text-3xl md:text-6xl font-display font-bold mb-6">
-            Let&apos;s Work <span className="text-gradient">Together</span>
+          <h2 className="font-display text-4xl md:text-7xl font-medium tracking-[-0.06em] leading-[0.95] mb-6">
+            Have a brand <span className="text-gradient">worth remembering?</span>
           </h2>
-          <p className="text-base md:text-lg lg:text-xl text-slate-400 max-w-3xl mx-auto px-4">
-            Have a project in mind? Let&apos;s discuss how we can bring your vision to life
+          <p className="text-base md:text-lg text-stone-400 max-w-xl mx-auto px-4">
+            Tell me what you&apos;re building, where it&apos;s going, and what it needs to become.
           </p>
         </motion.div>
 

@@ -27,38 +27,7 @@ const PortfolioSection = () => {
 
   return (
     <section id="portfolio" className="relative py-20 md:py-32 bg-eerie" ref={ref}>
-      {/* Background Wrapper - Handles overflow for blobus/backgrounds */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Enhanced animated background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f12_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f12_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-
-        {/* Animated gradient orbs */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute top-1/4 right-1/4 w-96 h-96 bg-crimson/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 2,
-          }}
-          className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-crimson-dark/20 rounded-full blur-3xl"
-        />
-      </div>
+      <div className="absolute inset-x-0 top-0 h-px bg-white/10 pointer-events-none" />
 
       <div className="relative z-10">
         

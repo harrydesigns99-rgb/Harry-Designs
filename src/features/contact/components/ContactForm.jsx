@@ -6,7 +6,7 @@ const ContactForm = () => {
   const { formData, showSuccess, handleSubmit, handleChange } = useContactForm();
 
   return (
-    <div className="glass-effect p-8 rounded-2xl">
+    <div className="border-t border-white/20 pt-8">
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Success Message */}
         {showSuccess && (
@@ -21,7 +21,7 @@ const ContactForm = () => {
         )}
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
+          <label htmlFor="name" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
             Your Name
           </label>
           <motion.input
@@ -32,13 +32,13 @@ const ContactForm = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-crimson focus:border-transparent transition-all outline-none text-white placeholder-slate-500"
+            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none text-white placeholder-stone-600"
             placeholder="John Doe"
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+          <label htmlFor="email" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
             Your Email
           </label>
           <motion.input
@@ -49,13 +49,13 @@ const ContactForm = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-crimson focus:border-transparent transition-all outline-none text-white placeholder-slate-500"
+            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none text-white placeholder-stone-600"
             placeholder="john@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-slate-300 mb-2">
+          <label htmlFor="phone" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
             Your Phone Number
           </label>
           <motion.input
@@ -65,13 +65,13 @@ const ContactForm = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-crimson focus:border-transparent transition-all outline-none text-white placeholder-slate-500"
+            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none text-white placeholder-stone-600"
             placeholder="+1 (555) 000-0000"
           />
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
+          <label htmlFor="message" className="block text-xs uppercase tracking-[0.14em] font-semibold text-stone-400 mb-3">
             Your Message
           </label>
           <motion.textarea
@@ -82,7 +82,7 @@ const ContactForm = () => {
             onChange={handleChange}
             required
             rows="6"
-            className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-crimson focus:border-transparent transition-all outline-none resize-none text-white placeholder-slate-500"
+            className="w-full px-0 py-3 bg-transparent border-b border-white/20 focus:border-crimson transition-all outline-none resize-none text-white placeholder-stone-600"
             placeholder="Tell me about your project..."
           />
         </div>
@@ -94,11 +94,12 @@ const ContactForm = () => {
             boxShadow: '0 20px 60px rgba(120, 119, 198, 0.4)',
           }}
           whileTap={{ scale: 0.98 }}
-          className="group relative w-full px-8 py-4 bg-gradient-dark text-white rounded-lg font-semibold overflow-hidden"
+          data-cursor="Send"
+          className="group relative w-full px-8 py-4 bg-crimson text-white font-semibold overflow-hidden hover:bg-crimson-dark transition-colors"
         >
           <span className="relative z-10">Send Message</span>
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600"
+            className="absolute inset-0 bg-white/10"
             initial={{ x: '-100%' }}
             whileHover={{ x: 0 }}
             transition={TRANSITIONS.fast}

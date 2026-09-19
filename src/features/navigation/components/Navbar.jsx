@@ -20,7 +20,7 @@ const Navbar = () => {
       transition={{ ...TRANSITIONS.medium, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         'fixed w-full z-50 transition-all duration-300',
-        isOpen ? 'bg-eerie' : (scrolled ? 'glass-effect shadow-xl shadow-purple-500/5' : 'bg-transparent')
+        isOpen ? 'bg-eerie' : (scrolled ? 'glass-effect shadow-xl shadow-black/20' : 'bg-transparent')
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,7 +30,8 @@ const Navbar = () => {
             href="#home"
             whileHover={hoverScale}
             aria-label={`${SITE_INFO.fullName} - Home`}
-            className="text-2xl font-display font-medium text-white tracking-tight"
+            data-cursor="Home"
+            className="text-xl font-display font-semibold text-white tracking-[-0.04em]"
           >
             {SITE_INFO.name}
           </motion.a>
@@ -50,7 +51,8 @@ const Navbar = () => {
               boxShadow: '0 10px 30px rgba(120, 119, 198, 0.3)',
             }}
             whileTap={{ scale: 0.95 }}
-            className="hidden md:block px-6 py-2 bg-gradient-dark text-white rounded-full font-semibold text-sm"
+            data-cursor="Contact"
+            className="hidden md:block px-5 py-3 bg-crimson text-white font-semibold text-sm hover:bg-crimson-dark transition-colors"
           >
             Let&apos;s Talk
           </motion.a>
