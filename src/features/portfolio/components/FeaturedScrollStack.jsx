@@ -166,8 +166,14 @@ const ScrollDrivenCard = ({ item, index, totalCards, dimensions, scrollProgress,
         </div>
         
         {/* Content Overlay */}
-        <div className="relative z-10 h-full flex flex-col justify-end items-end p-6 md:p-8">
-            {/* Icon removed */}
+        <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
+          <span className="text-[0.65rem] uppercase tracking-[0.18em] text-white/65 mb-2">
+            {item.category} / selected work
+          </span>
+          <h3 className="font-display text-3xl md:text-5xl font-medium tracking-[-0.05em]">
+            {item.client}
+          </h3>
+          <p className="mt-2 text-sm md:text-base text-white/75">{item.description}</p>
         </div>
         
         {/* Border Glow */}
@@ -232,10 +238,10 @@ const FeaturedScrollStack = ({ items, onViewAll }) => {
             transition={{ duration: 0.6 }}
             className="absolute top-16 md:top-20 left-0 w-full z-20 text-center px-4 pointer-events-none"
           >
-            <h3 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 text-white drop-shadow-lg pt-4 md:pt-0">
+            <h3 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 text-eerie drop-shadow-lg pt-4 md:pt-0">
               Featured <span className="text-gradient">Projects</span>
             </h3>
-            <p className="text-slate-300 text-xs md:text-base font-medium tracking-wide drop-shadow-md">
+            <p className="text-eerie/60 text-xs md:text-base font-medium tracking-wide drop-shadow-md">
               Scroll to explore my best design creations
             </p>
           </motion.div>
@@ -259,12 +265,12 @@ const FeaturedScrollStack = ({ items, onViewAll }) => {
       
       {/* View All Button - positioned after scroll stack with proper spacing */}
       {onViewAll && (
-        <div className="relative z-20 pt-12 pb-24 flex justify-center bg-eerie">
+        <div className="relative z-20 pt-12 pb-24 flex justify-center bg-cloud-dancer">
           <motion.button
             onClick={onViewAll}
             whileHover={!isMobile ? { scale: 1.05 } : {}}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 glass-effect text-white rounded-full font-semibold text-base md:text-lg hover:bg-white/10 transition-colors backdrop-blur-md shadow-lg border border-white/10"
+            className="px-8 py-4 border border-eerie/20 text-eerie font-semibold text-base md:text-lg hover:bg-eerie hover:text-white transition-colors"
           >
             View All Projects →
           </motion.button>

@@ -37,30 +37,28 @@ const Navbar = () => {
             {SITE_INFO.name}
           </motion.a>
 
-          <span className="hidden xl:inline-flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.16em] text-stone-400 absolute left-1/2 -translate-x-1/2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Available for select projects
-          </span>
-
           {/* Desktop Navigation */}
           <NavLinks />
 
           {/* CTA Button */}
-          <motion.a
-            href="#contact"
-            initial="hidden"
-            animate="visible"
-            variants={scaleIn}
-            transition={{ delay: DELAYS.xl, ...TRANSITIONS.normal }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: '0 10px 30px rgba(120, 119, 198, 0.3)',
-            }}
-            whileTap={{ scale: 0.95 }}
-            data-cursor="Contact"
-            className="hidden md:block px-5 py-3 bg-crimson text-white font-semibold text-sm hover:bg-crimson-dark transition-colors"
-          >
-            Let&apos;s Talk
-          </motion.a>
+          <div className="hidden md:flex items-center gap-4">
+            <span className="hidden xl:inline-flex items-center gap-2 text-[0.62rem] uppercase tracking-[0.12em] text-eerie/55 whitespace-nowrap">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Available for select projects
+            </span>
+            <motion.a
+              href="#contact"
+              initial="hidden"
+              animate="visible"
+              variants={scaleIn}
+              transition={{ delay: DELAYS.xl, ...TRANSITIONS.normal }}
+              whileHover={{ scale: 1.05, boxShadow: '0 10px 30px rgba(82, 99, 216, 0.25)' }}
+              whileTap={{ scale: 0.95 }}
+              data-cursor="Contact"
+              className="px-5 py-3 bg-crimson text-white font-semibold text-sm hover:bg-crimson-dark transition-colors"
+            >
+              Let&apos;s Talk
+            </motion.a>
+          </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">

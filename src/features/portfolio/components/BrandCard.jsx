@@ -10,7 +10,7 @@ const BrandCard = ({ brand, index, hoveredItem, setHoveredItem, duplicate = fals
     <motion.div
       key={`brand-${duplicate ? 2 : 1}-${index}`}
       whileHover={!isMobile ? { scale: 1.1, y: -10 } : {}}
-      className="group relative flex-shrink-0 w-40 h-40 bg-eerie-light/50 rounded-3xl flex flex-col items-center justify-center overflow-hidden p-4 border border-white/10"
+      className="group relative flex-shrink-0 w-44 h-36 bg-white/45 flex flex-col items-center justify-center overflow-hidden p-4 border border-eerie/10 transition-colors hover:bg-white/75"
       onMouseEnter={() => !isMobile && setHoveredItem(brand.name)}
       onMouseLeave={() => !isMobile && setHoveredItem(null)}
     >
@@ -23,7 +23,7 @@ const BrandCard = ({ brand, index, hoveredItem, setHoveredItem, duplicate = fals
       >
         <img src={brand.logo} alt={brand.name} className="max-w-full max-h-full object-contain" />
       </motion.div>
-      <p className="text-xs text-slate-400 mt-2 text-center relative z-10 group-hover:text-white transition-colors">
+      <p className="text-[0.68rem] uppercase tracking-[0.08em] text-eerie/55 mt-2 text-center relative z-10 group-hover:text-eerie transition-colors whitespace-nowrap">
         {brand.name}
       </p>
     </motion.div>

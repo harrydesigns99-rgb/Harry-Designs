@@ -112,11 +112,11 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12">
             <div>
               <span className="section-kicker mb-5">Selected work</span>
-              <h3 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.05em] text-white">
+              <h3 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.05em] text-eerie">
                 A few things I&apos;ve <span className="text-gradient">made.</span>
               </h3>
             </div>
-            <p className="text-stone-400 text-base max-w-xs md:text-right">
+            <p className="text-eerie/60 text-base max-w-xs md:text-right">
               Identity systems and packaging for ambitious people and useful ideas.
             </p>
         </div>
@@ -146,7 +146,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
             }
             whileTap={{ scale: 0.95 }}
             data-cursor="More"
-            className="group relative inline-flex items-center gap-3 px-7 py-4 border border-white/20 text-white font-semibold text-sm overflow-hidden"
+            className="group relative inline-flex items-center gap-3 px-7 py-4 border border-eerie/20 text-eerie font-semibold text-sm overflow-hidden"
           >
             <span className="relative z-10">View All Projects</span>
             <motion.span
@@ -158,7 +158,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
             </motion.span>
             {!isMobile && (
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600"
+                className="absolute inset-0 bg-crimson"
                 initial={{ x: '-100%' }}
                 whileHover={{ x: 0 }}
                 transition={{ duration: 0.5 }}

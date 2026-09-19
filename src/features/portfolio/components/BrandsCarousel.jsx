@@ -17,8 +17,15 @@ const BrandsCarousel = ({ isInView }) => {
       animate={isInView ? 'visible' : 'hidden'}
       variants={fadeInUp}
       transition={{ delay: DELAYS.small, ...TRANSITIONS.medium }}
-      className="mb-20 overflow-hidden"
+      className="relative mb-20 overflow-hidden border-y border-eerie/10 py-5"
     >
+      <motion.div
+        aria-hidden="true"
+        className="absolute -right-20 top-1/2 h-48 w-48 -translate-y-1/2 rounded-full bg-crimson/10 blur-3xl"
+        animate={{ scale: [1, 1.18, 1], opacity: [0.35, 0.6, 0.35] }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <div aria-hidden="true" className="absolute inset-0 opacity-40 [background-image:linear-gradient(90deg,transparent_0%,rgba(18,18,18,0.06)_50%,transparent_100%)] [background-size:24rem_100%]" />
       <div className="relative">
         {/* Gradient overlays for smooth edges */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-cloud-dancer to-transparent z-10 pointer-events-none" />

@@ -19,7 +19,7 @@ export const BRANDS = [
   { name: 'De Mu Trong', logo: '/image/Logos/Artboard 6.webp' },
   { name: 'Thomas Bakers', logo: '/image/Logos/Colored.webp' },
   { name: 'CSIR', logo: '/image/Logos/CSIR-Logo-With-Tagline-Seleceted-Bilingual.webp' },
-  { name: 'Divya Pure', logo: '/image/Logos/Logo.webp' },
+  { name: 'Diyaa Pure', logo: '/image/Logos/Logo.webp' },
   { name: 'The Dravidian', logo: '/image/Logos/logo hm.webp' },
   { name: 'Main Logo', logo: '/image/Logos/Main logo png@1000x.webp' },
   { name: 'Mo Elixir', logo: '/image/Logos/Mo Elixir.webp' },
