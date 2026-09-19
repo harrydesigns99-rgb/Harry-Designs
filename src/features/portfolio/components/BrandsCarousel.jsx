@@ -17,7 +17,7 @@ const BrandsCarousel = ({ isInView }) => {
       animate={isInView ? 'visible' : 'hidden'}
       variants={fadeInUp}
       transition={{ delay: DELAYS.small, ...TRANSITIONS.medium }}
-      className="relative mb-20 overflow-hidden border-y border-eerie/10 py-5"
+      className="relative mb-20 overflow-hidden border-y border-eerie/10 py-2"
     >
       <motion.div
         aria-hidden="true"

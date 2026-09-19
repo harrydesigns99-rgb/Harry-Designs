@@ -14,18 +14,17 @@ import { SiNike, SiCocacola, SiStarbucks } from 'react-icons/si';
  */
 
 export const BRANDS = [
-  { name: 'Anjarai Petti', logo: '/image/Logos/2@4x.webp' },
-  { name: 'Ministries', logo: '/image/Logos/Artboard 5.webp' },
-  { name: 'De Mu Trong', logo: '/image/Logos/Artboard 6.webp' },
-  { name: 'Thomas Bakers', logo: '/image/Logos/Colored.webp' },
-  { name: 'CSIR', logo: '/image/Logos/CSIR-Logo-With-Tagline-Seleceted-Bilingual.webp' },
-  { name: 'Diyaa Pure', logo: '/image/Logos/Logo.webp' },
-  { name: 'The Dravidian', logo: '/image/Logos/logo hm.webp' },
-  { name: 'Main Logo', logo: '/image/Logos/Main logo png@1000x.webp' },
-  { name: 'Mo Elixir', logo: '/image/Logos/Mo Elixir.webp' },
-  { name: 'Edwin BS', logo: '/image/Logos/edwin bs logo.webp' },
-  { name: 'Neeri', logo: '/image/Logos/neeri_logo.webp' },
-  { name: 'Quill', logo: '/image/Logos/quill main logo.webp' },
+  { name: 'Anjarai Petti', logo: '/image/Logos/2@4x.png' },
+  { name: 'Miniacres', logo: '/image/Logos/Artboard 5.png' },
+  { name: 'Do Well Living', logo: '/image/Logos/Artboard 6.png' },
+  { name: 'Thomas Bakers', logo: '/image/Logos/Colored.png' },
+  { name: 'CSIR', logo: '/image/Logos/CSIR-Logo-With-Tagline-Seleceted-Bilingual.png' },
+  { name: 'The Siragugal Groups', logo: '/image/Logos/Logo.png' },
+  { name: 'Lani', logo: '/image/Logos/logo hm.png' },
+  { name: 'Mo Elixir', logo: '/image/Logos/Mo Elixir.png' },
+  { name: 'EBS', logo: '/image/Logos/edwin bs logo.png' },
+  { name: 'Neeri', logo: '/image/Logos/neeri_logo.png' },
+  { name: 'Quill', logo: '/image/Logos/quill main logo.png' },
 ];
 
 export const PORTFOLIO_ITEMS = [
