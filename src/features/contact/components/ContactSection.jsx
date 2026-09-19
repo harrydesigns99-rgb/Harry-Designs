@@ -12,6 +12,7 @@ const ContactSection = () => {
 
   return (
     <section
+      id="contact"
       className="relative pt-24 md:pt-36 pb-24 md:pb-36 bg-cloud-dancer text-eerie overflow-hidden"
       ref={ref}
     >
@@ -56,7 +57,6 @@ const ContactSection = () => {
 
           {/* Contact Info */}
           <motion.div
-            id="contact"
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
             variants={fadeInLeft}

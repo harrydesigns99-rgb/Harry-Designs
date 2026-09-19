@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useIsMobile, useIsTablet } from '@/hooks';
+import ProjectDetailModal from './ProjectDetailModal';
 import {
   createScrollTransforms,
   getResponsiveDimensions,
@@ -8,97 +9,9 @@ import {
 } from '@/animations/scrollStack';
 
 /**
- * Individual stacked card component
- */
-const StackedCard = ({ item, index, totalCards, dimensions }) => {
-  const Icon = item.icon;
-  
-  // Create scroll transforms for this card
-  const transforms = createScrollTransforms(
-    index,
-    totalCards,
-    dimensions.stackOffset,
-    dimensions.scaleDecrement
-  );
-  
-  // Parent scroll container ref (passed via context/hook)
-  const containerRef = useRef(null);
-  
-  return (
-    <motion.div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: dimensions.cardWidth,
-        maxWidth: dimensions.cardMaxWidth,
-        height: dimensions.cardHeight,
-        x: '-50%',
-        y: '-50%',
-      }}
-      className="origin-center"
-    >
-      <motion.div
-        className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl"
-        style={{
-          // These will be controlled by scroll
-          y: 0,
-          scale: 1,
-          opacity: 1,
-        }}
-      >
-        {/* Gradient Background */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${item.color}`} />
-        
-        {/* Noise Texture Overlay */}
-        <div
-          className="absolute inset-0 opacity-20 mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`,
-          }}
-        />
-        
-        {/* Content */}
-        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-10">
-          {/* Top Section - Icon & Category */}
-          <div className="flex justify-between items-start">
-            <div className="text-5xl md:text-7xl text-white/90 backdrop-blur-sm bg-white/10 p-4 md:p-5 rounded-2xl">
-              <Icon />
-            </div>
-            
-            <span className="text-xs md:text-sm px-4 py-2 glass-effect rounded-full text-white/90 backdrop-blur-md font-medium capitalize">
-              {item.category}
-            </span>
-          </div>
-          
-          {/* Bottom Section - Project Info */}
-          <div className="text-white">
-            <p className="text-xs md:text-sm text-white/70 mb-2 font-medium uppercase tracking-wider">
-              Featured Client
-            </p>
-            <h3 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4">
-              {item.client}
-            </h3>
-            <p className="text-lg md:text-2xl text-white/90 mb-3 md:mb-4 font-medium">
-              {item.title}
-            </p>
-            <p className="text-sm md:text-base text-white/70 leading-relaxed">
-              {item.description}
-            </p>
-          </div>
-        </div>
-        
-        {/* Subtle border glow */}
-        <div className="absolute inset-0 border border-white/20 rounded-3xl pointer-events-none" />
-      </motion.div>
-    </motion.div>
-  );
-};
-
-/**
  * Scroll-driven card component with transforms applied
  */
-const ScrollDrivenCard = ({ item, index, totalCards, dimensions, scrollProgress, isMobile }) => {
+const ScrollDrivenCard = ({ item, index, totalCards, dimensions, scrollProgress, isMobile, onSelect }) => {
   const Icon = item.icon;
   
   // Create scroll transforms for this card
@@ -145,8 +58,10 @@ const ScrollDrivenCard = ({ item, index, totalCards, dimensions, scrollProgress,
       }}
       className="will-change-transform"
     >
-      <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl group flex flex-col bg-slate-900">
-        
+      <div
+        onClick={() => onSelect?.(item)}
+        className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl group flex flex-col bg-slate-900 cursor-pointer"
+      >
         {/* Full Image Background */}
         <div className="absolute inset-0 z-0">
           {item.image ? (
@@ -164,16 +79,28 @@ const ScrollDrivenCard = ({ item, index, totalCards, dimensions, scrollProgress,
           {/* Enhanced Text Readability Gradient */}
           <div className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none" />
         </div>
+
+        {/* Top Metric Badge */}
+        {item.metric && (
+          <div className="absolute top-5 right-5 z-10">
+            <span className="text-[0.65rem] font-bold tracking-wider uppercase px-3 py-1 bg-crimson text-white rounded-full shadow-lg">
+              {item.metric}
+            </span>
+          </div>
+        )}
         
         {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
           <span className="text-[0.65rem] uppercase tracking-[0.18em] text-white/65 mb-2">
-            {item.category} / selected work
+            {item.category} / {item.year || '2024'}
           </span>
           <h3 className="font-display text-3xl md:text-5xl font-medium tracking-[-0.05em]">
             {item.client}
           </h3>
           <p className="mt-2 text-sm md:text-base text-white/75">{item.description}</p>
+          <span className="mt-3 text-xs uppercase tracking-[0.14em] font-semibold text-crimson-light flex items-center gap-1.5">
+            Tap to explore case study →
+          </span>
         </div>
         
         {/* Border Glow */}
@@ -199,9 +126,10 @@ const ScrollDrivenCard = ({ item, index, totalCards, dimensions, scrollProgress,
  * @param {Array} items - Featured project items to display
  * @param {Function} onViewAll - Callback for "View All" button
  */
-const FeaturedScrollStack = ({ items, onViewAll }) => {
+const FeaturedScrollStack = ({ items, onViewAll, onSelect }) => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
+  const [selectedModalItem, setSelectedModalItem] = useState(null);
   
   // Get responsive dimensions
   const dimensions = getResponsiveDimensions(isMobile, isTablet);
@@ -216,6 +144,14 @@ const FeaturedScrollStack = ({ items, onViewAll }) => {
   });
   
   const totalCards = items.length;
+
+  const handleCardClick = (item) => {
+    if (onSelect) {
+      onSelect(item);
+    } else {
+      setSelectedModalItem(item);
+    }
+  };
   
   return (
     <div className="relative w-full overflow-x-clip">
@@ -242,7 +178,7 @@ const FeaturedScrollStack = ({ items, onViewAll }) => {
               Featured <span className="text-gradient">Projects</span>
             </h3>
             <p className="text-eerie/60 text-xs md:text-base font-medium tracking-wide drop-shadow-md">
-              Scroll to explore my best design creations
+              Scroll to explore verified client design systems
             </p>
           </motion.div>
 
@@ -257,6 +193,7 @@ const FeaturedScrollStack = ({ items, onViewAll }) => {
                 dimensions={dimensions}
                 scrollProgress={scrollYProgress}
                 isMobile={isMobile}
+                onSelect={handleCardClick}
               />
             ))}
           </div>
@@ -270,12 +207,18 @@ const FeaturedScrollStack = ({ items, onViewAll }) => {
             onClick={onViewAll}
             whileHover={!isMobile ? { scale: 1.05 } : {}}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 border border-eerie/20 text-eerie font-semibold text-base md:text-lg hover:bg-eerie hover:text-white transition-colors"
+            className="px-8 py-4 border border-eerie/25 bg-cloud-white text-eerie font-semibold text-base md:text-lg hover:bg-eerie hover:text-white transition-colors cursor-pointer shadow-sm"
           >
-            View All Projects →
+            View All {items.length ? '12' : ''} Projects →
           </motion.button>
         </div>
       )}
+
+      {/* Detail Modal for Mobile Stacks */}
+      <ProjectDetailModal
+        item={selectedModalItem}
+        onClose={() => setSelectedModalItem(null)}
+      />
     </div>
   );
 };

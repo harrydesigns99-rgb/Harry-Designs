@@ -9,9 +9,10 @@ const services = [
 
 const process = ['Discover', 'Define', 'Design', 'Deliver'];
 const testimonial = {
-  quote: 'Harry understood the feeling we wanted before we had the words for it. The result feels unmistakably ours.',
-  name: 'Client note',
-  role: 'Brand identity project',
+  quote:
+    'Hariharan understood the exact visual gravity and heritage we needed for our launch before we even had the words for it. The identity system directly influenced our retail traction and customer trust.',
+  name: 'Sendra Gold',
+  role: 'Brand Identity & Launch Partner, Trichy',
 };
 
 const StudioApproach = () => {

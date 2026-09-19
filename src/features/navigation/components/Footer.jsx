@@ -22,7 +22,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <motion.div
-            className="flex flex-wrap md:justify-end gap-x-6 gap-y-3 mb-8"
+            className="flex flex-wrap md:justify-end gap-x-8 gap-y-3 mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -31,30 +31,26 @@ const Footer = () => {
               <motion.a
                 key={link}
                 href={link === 'Resume' ? '/resume' : `#${link.toLowerCase()}`}
-                whileHover={{ y: -2, color: '#D72638' }}
+                whileHover={{ y: -2 }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * DELAYS.tiny, ...TRANSITIONS.fast }}
-                  data-cursor="Navigate"
-                  className="text-stone-400 hover:text-crimson transition-colors text-sm"
+                data-cursor="Navigate"
+                className="text-stone-400 hover:text-white transition-colors text-sm font-medium"
               >
                 {link}
               </motion.a>
             ))}
           </motion.div>
+        </div>
 
-          <div className="border-t border-white/10 pt-6 mt-2 w-full md:absolute md:left-0 md:right-0 md:bottom-0 md:translate-y-full">
-            <p className="text-stone-500 text-xs">
-              © {SITE_INFO.currentYear} {SITE_INFO.fullName}. All rights reserved.
-              <span className="block mt-2">
-                Designed and developed by{' '}
-                  <a href="https://jaywebstudio.in" target="_blank" rel="noopener noreferrer" className="text-crimson hover:text-crimson-light transition-colors font-medium">
-                  Jaywebstudio
-                </a>
-              </span>
-            </p>
-          </div>
+        <div className="border-t border-white/10 pt-8 mt-8 w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+          <p>© {SITE_INFO.currentYear} {SITE_INFO.fullName}. All rights reserved.</p>
+          <p>
+            Designed &amp; Crafted by{' '}
+            <span className="text-white font-medium">Hariharan S</span> • Independent Designer
+          </p>
         </div>
       </div>
 

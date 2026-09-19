@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, animate, useMotionValue, useTransform, useInView } from 'framer-motion';
 import { useIsMobile } from '@/hooks';
 import { fadeInUp, TRANSITIONS, DELAYS } from '@/animations';
 
 const STATS = [
-  { rawNumber: 5, suffix: '+', label: 'Years of freelance experience', gradient: 'from-purple-600 to-pink-600' },
-  { rawNumber: 80, suffix: '+', label: 'Projects Completed', gradient: 'from-blue-600 to-cyan-600' },
-  { rawNumber: 50, suffix: '+', label: 'Happy Clients', gradient: 'from-amber-600 to-orange-600' },
-  { rawNumber: 40, suffix: '+', label: 'Logos Designed', gradient: 'from-emerald-600 to-teal-600' },
+  { rawNumber: 6, suffix: '+', label: 'Years of independent practice' },
+  { rawNumber: 60, suffix: '+', label: 'Global clients partnered with' },
+  { rawNumber: 35, suffix: '+', label: 'Complete brand identity systems' },
+  { rawNumber: 40, suffix: '%', label: 'Sales lift achieved for packaging' },
 ];
 
 const AnimatedCounter = ({ value, suffix }) => {
@@ -36,7 +36,6 @@ const AnimatedCounter = ({ value, suffix }) => {
 };
 
 const StatsGrid = ({ isInView }) => {
-  const [hoveredCard, setHoveredCard] = useState(null);
   const isMobile = useIsMobile();
 
   return (
@@ -45,49 +44,34 @@ const StatsGrid = ({ isInView }) => {
       animate={isInView ? 'visible' : 'hidden'}
       variants={fadeInUp}
       transition={{ delay: DELAYS.xxl, ...TRANSITIONS.slow }}
-      className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+      className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-16"
     >
       {STATS.map((stat, index) => (
         <motion.div
           key={stat.label}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{
-            delay: 0.7 + index * 0.08,
+            delay: 0.5 + index * 0.08,
             duration: 0.5,
             ease: [0.22, 1, 0.36, 1],
           }}
           whileHover={
             !isMobile
               ? {
-                  scale: 1.1,
-                  y: -8,
-                  zIndex: 20,
+                  y: -5,
                   transition: { duration: 0.2 },
                 }
               : {}
           }
-          className="group relative p-4 sm:p-5 md:p-4 lg:p-6 glass-effect rounded-2xl overflow-hidden cursor-pointer flex flex-col justify-center min-h-[140px]"
-          onMouseEnter={() => !isMobile && setHoveredCard(stat.label)}
-          onMouseLeave={() => !isMobile && setHoveredCard(null)}
+          className="group relative p-6 bg-cloud-white border border-eerie/15 transition-all duration-300 hover:border-crimson/50 hover:shadow-md flex flex-col justify-center min-h-[140px]"
         >
-          <motion.div
-            className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 transition-opacity duration-300`}
-            animate={{
-              opacity: !isMobile && hoveredCard === stat.label ? 0.2 : 0,
-            }}
-          />
-
-          <motion.div
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient mb-1 md:mb-2 relative z-10"
-            animate={{
-              scale: !isMobile && hoveredCard === stat.label ? 1.15 : 1,
-            }}
-            transition={{ duration: 0.2 }}
+          <div
+            className="text-3xl sm:text-4xl md:text-5xl font-display font-semibold text-crimson mb-2"
           >
             <AnimatedCounter value={stat.rawNumber} suffix={stat.suffix} />
-          </motion.div>
-          <div className="text-eerie/55 text-xs sm:text-sm md:text-sm lg:text-base leading-tight md:leading-normal relative z-10 group-hover:text-eerie/80 transition-colors font-medium">
+          </div>
+          <div className="text-eerie/70 text-xs sm:text-sm font-medium leading-snug group-hover:text-eerie transition-colors">
             {stat.label}
           </div>
         </motion.div>

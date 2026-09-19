@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { PORTFOLIO_ITEMS, FEATURED_COUNT } from '../data/portfolioData';
 import { usePortfolioFilter } from '../hooks/usePortfolioFilter';
@@ -8,6 +8,7 @@ import FeaturedScrollStack from './FeaturedScrollStack';
 import FeaturedProjects from './FeaturedProjects';
 import PortfolioFilters from './PortfolioFilters';
 import PortfolioGrid from './PortfolioGrid';
+import ProjectDetailModal from './ProjectDetailModal';
 import { fadeInUp, scaleIn, TRANSITIONS, DELAYS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
@@ -15,6 +16,7 @@ const PortfolioSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const isMobile = useIsMobile();
+  const [selectedGridProject, setSelectedGridProject] = useState(null);
 
   const {
     filter,
@@ -121,25 +123,31 @@ const PortfolioSection = () => {
                 <PortfolioFilters filter={filter} setFilter={setFilter} />
 
                 {/* Portfolio Grid */}
-                <PortfolioGrid items={displayItems} />
+                <PortfolioGrid items={displayItems} onSelect={setSelectedGridProject} />
 
                 {/* Back to Featured Button */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: DELAYS.medium, ...TRANSITIONS.medium }}
-                  className="text-center mt-12"
+                  className="text-center mt-14"
                 >
                   <motion.button
                     onClick={handleBackToFeatured}
                     whileHover={!isMobile ? { scale: 1.05 } : {}}
                     whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 px-8 py-3 glass-effect text-white rounded-full font-semibold hover:bg-white/10 transition-colors"
+                    className="inline-flex items-center gap-3 px-8 py-4 border border-eerie/30 bg-cloud-white text-eerie font-semibold text-sm hover:bg-eerie hover:text-white transition-all shadow-sm cursor-pointer"
                   >
-                    <span className="text-xl">←</span>
-                    <span>Back to Featured</span>
+                    <span className="text-lg">←</span>
+                    <span>Back to Featured Selection</span>
                   </motion.button>
                 </motion.div>
+
+                {/* Modal for Grid Items */}
+                <ProjectDetailModal
+                  item={selectedGridProject}
+                  onClose={() => setSelectedGridProject(null)}
+                />
               </div>
             )}
         </div>

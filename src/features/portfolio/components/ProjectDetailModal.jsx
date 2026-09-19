@@ -22,7 +22,7 @@ const ProjectDetailModal = ({ item, onClose }) => {
     <AnimatePresence>
       {item && (
         <motion.div
-          className="fixed inset-0 z-[80] flex items-end md:items-center justify-center p-0 md:p-8"
+          className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6 lg:p-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -38,48 +38,119 @@ const ProjectDetailModal = ({ item, onClose }) => {
             exit={{ y: 40, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             onClick={(event) => event.stopPropagation()}
-            className="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto bg-cloud-dancer text-eerie shadow-2xl"
+            className="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto bg-cloud-dancer text-eerie shadow-2xl border border-eerie/10"
           >
+            {/* Close Button */}
             <button
               type="button"
               onClick={onClose}
               aria-label="Close project details"
-              className="absolute right-5 top-5 z-10 flex h-10 w-10 items-center justify-center border border-eerie/20 text-xl hover:bg-eerie hover:text-white transition-colors"
+              className="absolute right-5 top-5 z-20 flex h-10 w-10 items-center justify-center border border-eerie/20 bg-cloud-dancer/90 text-2xl hover:bg-eerie hover:text-white transition-colors cursor-pointer"
             >
               &times;
             </button>
 
-            <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="min-h-80 lg:min-h-[34rem] bg-eerie overflow-hidden">
+            <div className="grid lg:grid-cols-[1fr_1.1fr]">
+              {/* Left Column: Artwork Image */}
+              <div className="min-h-72 sm:min-h-96 lg:min-h-[36rem] bg-neutral-900 overflow-hidden relative">
                 {item.image ? (
-                  <img src={item.image} alt={`${item.client} project`} className="w-full h-full object-cover" />
+                  <img
+                    src={item.image}
+                    alt={`${item.client} - ${item.title}`}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <div className={`h-full min-h-80 bg-gradient-to-br ${item.color}`} />
                 )}
+                {item.metric && (
+                  <div className="absolute bottom-5 left-5 z-10 bg-crimson text-white px-3 py-1.5 text-xs font-semibold tracking-wider uppercase">
+                    Impact: {item.metric}
+                  </div>
+                )}
               </div>
 
-              <div className="p-7 md:p-12 lg:p-16">
-                <span className="section-kicker !text-eerie/60">Case study / 2024</span>
-                <h2 id="project-title" className="font-display text-4xl md:text-6xl font-medium tracking-[-0.06em] leading-none mt-6">
-                  {item.client}
-                </h2>
-                <p className="mt-5 text-lg text-eerie/65 leading-relaxed">{item.description}</p>
+              {/* Right Column: Case Study Narrative */}
+              <div className="p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <span className="section-kicker !text-crimson">
+                      Case Study / {item.year || '2024'}
+                    </span>
+                    <span className="text-[0.65rem] uppercase tracking-[0.14em] text-eerie/50 border border-eerie/15 px-2.5 py-0.5">
+                      {item.category}
+                    </span>
+                  </div>
 
-                <dl className="grid grid-cols-2 gap-6 mt-10 pt-6 border-t border-eerie/15">
-                  <div><dt className="text-xs uppercase tracking-[0.14em] text-eerie/45">Role</dt><dd className="mt-2 font-medium">Creative direction</dd></div>
-                  <div><dt className="text-xs uppercase tracking-[0.14em] text-eerie/45">Deliverables</dt><dd className="mt-2 font-medium">Identity / packaging</dd></div>
-                </dl>
-
-                <div className="mt-12">
-                  <p className="text-xs uppercase tracking-[0.14em] text-eerie/45 mb-3">The brief</p>
-                  <p className="leading-relaxed text-eerie/70">
-                    Build a distinct visual language that feels considered at every scale, from the first impression to the details customers keep coming back to.
+                  <h2
+                    id="project-title"
+                    className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight leading-tight text-eerie mt-2"
+                  >
+                    {item.client}
+                  </h2>
+                  <p className="text-sm font-semibold tracking-wide text-eerie/60 mt-1 uppercase">
+                    {item.title}
                   </p>
+
+                  <p className="mt-5 text-base sm:text-lg text-eerie/80 leading-relaxed font-normal">
+                    {item.description}
+                  </p>
+
+                  {/* The Brief & Challenge */}
+                  <div className="mt-8 pt-6 border-t border-eerie/15">
+                    <h4 className="text-xs uppercase tracking-[0.14em] text-eerie/50 font-bold mb-2">
+                      The Challenge &amp; Brief
+                    </h4>
+                    <p className="text-sm text-eerie/75 leading-relaxed">
+                      {item.brief || 'Build a distinctive visual identity and packaging system designed for high shelf standout and long-term brand recall.'}
+                    </p>
+                  </div>
+
+                  {/* Strategic Approach */}
+                  <div className="mt-6">
+                    <h4 className="text-xs uppercase tracking-[0.14em] text-eerie/50 font-bold mb-2">
+                      Strategic Approach
+                    </h4>
+                    <p className="text-sm text-eerie/75 leading-relaxed">
+                      {item.approach || 'Unified typography hierarchy, bespoke iconography, and tactile finish specifications tailored to consumer touchpoints.'}
+                    </p>
+                  </div>
+
+                  {/* Deliverables Meta */}
+                  <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-eerie/15">
+                    <div>
+                      <dt className="text-xs uppercase tracking-[0.14em] text-eerie/50 font-medium">Role</dt>
+                      <dd className="mt-1 text-sm font-semibold text-eerie">Creative Direction &amp; Design</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-[0.14em] text-eerie/50 font-medium">Deliverables</dt>
+                      <dd className="mt-1 text-sm font-semibold text-eerie">{item.deliverables || 'Brand Identity & Packaging'}</dd>
+                    </div>
+                  </dl>
                 </div>
 
-                <a href="#contact" onClick={onClose} data-cursor="Start" className="editorial-link mt-10 font-semibold">
-                  Start a similar project <span aria-hidden="true">↗</span>
-                </a>
+                {/* Bottom CTA */}
+                <div className="mt-10 pt-6 border-t border-eerie/15 flex flex-wrap items-center justify-between gap-4">
+                  <a
+                    href="#contact"
+                    onClick={() => {
+                      onClose();
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    data-cursor="Start"
+                    className="inline-flex items-center gap-3 px-6 py-3 bg-crimson text-white font-semibold text-xs tracking-wider uppercase hover:bg-crimson-dark transition-colors"
+                  >
+                    <span>Inquire About A Similar Project</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="text-xs uppercase tracking-[0.14em] text-eerie/60 hover:text-eerie transition-colors font-medium cursor-pointer"
+                  >
+                    Close Window &times;
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>

@@ -74,17 +74,33 @@ const FeaturedCard = ({ item, index, isInView, onSelect }) => {
           }}
         />
 
-        {/* Content - Empty as requested */}
-        <div className="absolute inset-x-0 bottom-0 z-10 p-5 text-left pointer-events-none">
-          <p className="text-[0.65rem] uppercase tracking-[0.18em] text-white/60 mb-2">{item.category} / 2024</p>
-          <h4 className="font-display text-2xl font-medium text-white">{item.client}</h4>
-          <p className="text-sm text-white/70 mt-1">{item.description}</p>
+        {/* Content */}
+        <div className="absolute inset-x-0 bottom-0 z-10 p-6 text-left pointer-events-none">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <p className="text-[0.65rem] uppercase tracking-[0.18em] text-white/70">
+              {item.category} / {item.year || '2024'}
+            </p>
+            {item.metric && (
+              <span className="text-[0.62rem] font-bold uppercase tracking-wider bg-crimson px-2 py-0.5 text-white">
+                {item.metric}
+              </span>
+            )}
+          </div>
+          <h4 className="font-display text-2xl sm:text-3xl font-medium text-white leading-tight">
+            {item.client}
+          </h4>
+          <p className="text-xs uppercase tracking-wide text-white/75 mt-1 font-medium">
+            {item.title}
+          </p>
+          <p className="text-sm text-white/70 mt-2 line-clamp-2 leading-relaxed">
+            {item.description}
+          </p>
         </div>
 
         {/* Animated border */}
         {!isMobile && (
           <motion.div
-            className="absolute inset-0 border border-white/0 transition-all duration-300 pointers-events-none"
+            className="absolute inset-0 border border-white/0 transition-all duration-300 pointer-events-none"
             animate={{
               borderColor: hoveredItem === item.id ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0)',
             }}
@@ -117,7 +133,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
               </h3>
             </div>
             <p className="text-eerie/60 text-base max-w-xs md:text-right">
-              Identity systems and packaging for ambitious people and useful ideas.
+              Identity systems, packaging architecture, and visual worlds with commercial impact.
             </p>
         </div>
 
@@ -140,15 +156,15 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
               !isMobile
                 ? {
                     scale: 1.05,
-                    boxShadow: '0 20px 60px rgba(120, 119, 198, 0.5)',
+                    boxShadow: '0 15px 40px rgba(82, 99, 216, 0.3)',
                   }
                 : {}
             }
             whileTap={{ scale: 0.95 }}
             data-cursor="More"
-            className="group relative inline-flex items-center gap-3 px-7 py-4 border border-eerie/20 text-eerie font-semibold text-sm overflow-hidden"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 border border-eerie/30 text-eerie hover:text-white font-semibold text-sm overflow-hidden transition-colors cursor-pointer"
           >
-            <span className="relative z-10">View All Projects</span>
+            <span className="relative z-10">View All {items.length ? '12' : ''} Projects</span>
             <motion.span
               animate={{ x: [0, 5, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
@@ -161,7 +177,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
                 className="absolute inset-0 bg-crimson"
                 initial={{ x: '-100%' }}
                 whileHover={{ x: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.4 }}
               />
             )}
           </motion.button>

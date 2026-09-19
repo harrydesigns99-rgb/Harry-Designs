@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore, useCallback } from 'react';
 
 /**
  * Hook for responsive media queries
@@ -6,24 +6,24 @@ import { useState, useEffect } from 'react';
  * @returns {boolean} - Whether the media query matches
  */
 export function useMediaQuery(query) {
-  const [matches, setMatches] = useState(false);
+  const subscribe = useCallback(
+    (callback) => {
+      if (typeof window === 'undefined') return () => {};
+      const media = window.matchMedia(query);
+      media.addEventListener('change', callback);
+      return () => media.removeEventListener('change', callback);
+    },
+    [query]
+  );
 
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    
-    // Set initial value
-    setMatches(media.matches);
+  const getSnapshot = () => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia(query).matches;
+  };
 
-    // Create listener
-    const listener = (e) => setMatches(e.matches);
-    
-    // Use addEventListener (modern approach)
-    media.addEventListener('change', listener);
-    
-    return () => media.removeEventListener('change', listener);
-  }, [query]);
+  const getServerSnapshot = () => false;
 
-  return matches;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 /**

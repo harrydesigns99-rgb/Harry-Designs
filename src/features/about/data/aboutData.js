@@ -1,82 +1,77 @@
 import {
   FaPalette,
   FaBox,
-  FaLightbulb,
   FaAward,
   FaFigma,
-  FaHeart,
   FaRocket,
-  FaStar,
   FaBolt,
+  FaCompass,
+  FaLayerGroup,
 } from 'react-icons/fa';
 import {
   SiAdobeillustrator,
   SiAdobephotoshop,
   SiAdobepremierepro,
   SiAdobeaftereffects,
-  SiAffinitydesigner,
+  SiWordpress,
 } from 'react-icons/si';
 
 /**
- * About section data - skills, tools, why Harry
+ * About section data - skills, tools, value propositions
  */
 
 export const WHY_HARRY = [
   {
-    icon: FaPalette,
-    title: 'Design With Purpose',
-    description: 'Every visual decision is driven by meaning, strategy, and clarity',
-    color: 'from-pink-500 to-rose-500',
+    icon: FaCompass,
+    title: 'Strategy & Purpose',
+    description: 'Every visual decision is rooted in commercial strategy, distinct positioning, and long-term brand equity.',
   },
   {
     icon: FaRocket,
-    title: 'Fast Delivery',
-    description: 'Quick turnaround without compromising on quality',
-    color: 'from-blue-500 to-cyan-500',
+    title: 'Proven Commercial Lift',
+    description: 'Design engineered to convert. Track record of delivering measurable revenue growth, including a 40% sales increase for packaging clients.',
   },
   {
     icon: FaBolt,
     title: 'Precision in Every Detail',
-    description: 'From typography to spacing, every detail is intentional.',
-    color: 'from-amber-500 to-yellow-500',
+    description: 'Exacting grid systems, refined typographic hierarchies, and production-ready manufacturing dielines with zero guesswork.',
   },
   {
-    icon: FaStar,
-    title: 'Timeless, High-End Aesthetic',
-    description: 'My work is crafted to remain relevant and elegant over time, ensuring your brand looks premium today and years from now.',
-    color: 'from-crimson to-crimson-dark',
+    icon: FaAward,
+    title: 'Direct Partner Model',
+    description: 'No account managers or agency overhead. Work directly with an experienced designer through rapid, collaborative sprints.',
   },
 ];
 
 export const TOOLS = [
+  {
+    name: 'Illustrator',
+    icon: SiAdobeillustrator,
+    color: 'from-orange-600 to-amber-600',
+  },
   {
     name: 'Photoshop',
     icon: SiAdobephotoshop,
     color: 'from-blue-600 to-cyan-600',
   },
   {
-    name: 'illustrator',
-    icon: SiAdobeillustrator,
-    color: 'from-orange-600 to-yellow-600',
-  },
-  {
-    name: 'premiere pro',
+    name: 'Premiere Pro',
     icon: SiAdobepremierepro,
     color: 'from-purple-600 to-indigo-600',
   },
   {
-    name: 'figma',
+    name: 'Figma',
     icon: FaFigma,
     color: 'from-pink-500 to-rose-500',
   },
   {
-    name: 'after effects',
+    name: 'After Effects',
     icon: SiAdobeaftereffects,
     color: 'from-indigo-600 to-violet-600',
   },
   {
-    name: 'Affinity Designer',
-    icon: SiAffinitydesigner,
+    name: 'WordPress & Web',
+    icon: SiWordpress,
     color: 'from-blue-500 to-teal-500',
   },
 ];
@@ -84,26 +79,22 @@ export const TOOLS = [
 export const SKILLS = [
   {
     icon: FaPalette,
-    title: 'Brand Visual Identity Design',
-    description: 'Creating cohesive, timeless visual systems that express a brand’s essence across every touchpoint.',
-    gradient: 'from-purple-600 to-pink-600',
+    title: 'Brand Identity Systems',
+    description: 'Comprehensive visual frameworks, custom marks, typographic hierarchy, and style guidelines built for long-term scalability.',
   },
   {
     icon: FaBox,
-    title: 'Logo Design',
-    description: 'Designing distinctive logos and refined typographic hierarchies built for longevity and clarity.',
-    gradient: 'from-blue-600 to-cyan-600',
+    title: 'Packaging Architecture',
+    description: 'Shelf-ready packaging, dieline engineering, print substrate selection, and multi-SKU retail line architecture.',
   },
   {
-    icon: FaLightbulb,
-    title: 'Product Packaging',
-    description: 'Designing packaging that captivates and converts customers',
-    gradient: 'from-amber-600 to-orange-600',
+    icon: FaLayerGroup,
+    title: 'Digital & UI Direction',
+    description: 'Responsive web design, digital design tokens, landing pages, and interactive brand touchpoints.',
   },
   {
     icon: FaAward,
-    title: 'Creative Solutions',
-    description: 'Innovative design approaches for complex branding challenges',
-    gradient: 'from-emerald-600 to-teal-600',
+    title: 'Editorial & Print Systems',
+    description: 'Publications, symposium reports, annual reviews, and tactile print collateral with rigorous typographic discipline.',
   },
 ];

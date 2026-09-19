@@ -18,13 +18,37 @@ const projects = [
   ['harrydesigns.in', 'Studio website', 'Self-designed and self-built website with WordPress, HTML, and CSS'],
 ];
 
-const ResumePage = () => {
+const ResumePage = ({ onNavigateHome }) => {
   return (
     <main className="relative min-h-screen overflow-hidden bg-cloud-dancer text-eerie">
       <AnimatedBackdrop tone="light" />
-      <header className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-8 flex items-center justify-between border-b border-eerie/15">
-        <a href="/" className="font-display text-xl font-semibold tracking-[-0.04em]">Harry Designs</a>
-        <a href="/" className="editorial-link text-sm font-semibold">Back to portfolio <span aria-hidden="true">↗</span></a>
+      <header className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-8 flex flex-wrap items-center justify-between gap-4 border-b border-eerie/15">
+        <button
+          type="button"
+          onClick={onNavigateHome || (() => { window.location.href = '/'; })}
+          className="font-display text-xl font-semibold tracking-[-0.04em] cursor-pointer hover:text-crimson transition-colors"
+        >
+          Harry Designs
+        </button>
+
+        <div className="flex items-center gap-6">
+          <a
+            href="/Hariharan_Design_Resume.pdf"
+            download="Hariharan_Design_Resume.pdf"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-crimson text-white text-xs font-semibold uppercase tracking-wider hover:bg-crimson-dark transition-colors"
+          >
+            <span>Download PDF</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+
+          <button
+            type="button"
+            onClick={onNavigateHome || (() => { window.location.href = '/'; })}
+            className="editorial-link text-sm font-semibold cursor-pointer"
+          >
+            Back to portfolio <span aria-hidden="true">↗</span>
+          </button>
+        </div>
       </header>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-16 md:py-24">
@@ -35,11 +59,21 @@ const ResumePage = () => {
             <p className="mt-8 text-xl md:text-2xl text-eerie/65 max-w-xl">Graphic Designer <span className="text-crimson">•</span> Brand, Digital &amp; Production Design</p>
           </div>
           <div className="lg:text-right text-sm leading-7 text-eerie/65 lg:pt-12">
-            <p>6+ years of experience</p>
-            <p>Chennai, Tamil Nadu</p>
-            <a className="block hover:text-crimson transition-colors" href="mailto:sivakumarhariharan007@gmail.com">sivakumarhariharan007@gmail.com</a>
-            <a className="block hover:text-crimson transition-colors" href="https://harrydesigns.in" target="_blank" rel="noreferrer">harrydesigns.in</a>
+            <p className="font-medium text-eerie">6+ years of independent practice</p>
+            <p>Chennai, Tamil Nadu, India</p>
+            <a className="block hover:text-crimson transition-colors font-medium text-eerie" href="mailto:sivakumarhariharan007@gmail.com">sivakumarhariharan007@gmail.com</a>
+            <a className="block hover:text-crimson transition-colors" href="https://harrydesigns.in" target="_blank" rel="noreferrer">harrydesigns.in ↗</a>
             <p>+91 86101 74188</p>
+            <div className="mt-4">
+              <a
+                href="/Hariharan_Design_Resume.pdf"
+                download="Hariharan_Design_Resume.pdf"
+                className="inline-flex items-center gap-2 px-5 py-2.5 border border-eerie/30 bg-cloud-white text-eerie text-xs font-semibold uppercase tracking-wider hover:bg-eerie hover:text-white transition-all"
+              >
+                <span>Download Official Resume (PDF)</span>
+                <span>↓</span>
+              </a>
+            </div>
           </div>
         </section>
 

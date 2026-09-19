@@ -1,11 +1,11 @@
-import { motion, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 /**
  * Single column of images with parallax effect (Desktop)
  */
 const GalleryColumn = ({ images, autoYPercent, smoothY, className = '', offset = '' }) => {
   return (
-    <div className={`relative h-full overflow-hidden ${offset}`}>
+    <div className={`relative h-full overflow-hidden ${offset} ${className}`.trim()}>
       <motion.div className="flex flex-col gap-8" style={{ y: autoYPercent }}>
         <motion.div className="flex flex-col gap-8" style={{ y: smoothY }}>
           {images.map((src, i) => (

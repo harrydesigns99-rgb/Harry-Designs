@@ -13,9 +13,9 @@ const MobileMenu = ({ isOpen, onClose }) => {
         exit="closed"
         variants={menuSlide}
         transition={TRANSITIONS.fast}
-        className="md:hidden relative z-[100] bg-eerie border-t border-white/10"
+        className="md:hidden relative z-[100] bg-cloud-dancer/98 backdrop-blur-xl border-t border-eerie/10 shadow-xl"
       >
-        <div className="px-4 pt-2 pb-4 space-y-2">
+        <div className="px-4 pt-2 pb-6 space-y-2">
           {NAV_LINKS.map((link, index) => (
             <motion.a
               key={link.name}
@@ -25,7 +25,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
               animate="visible"
               variants={fadeInLeft}
               transition={{ delay: DELAYS.tiny * index, ...TRANSITIONS.fast }}
-              className="block px-3 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              className="block px-4 py-3 text-base font-display font-medium text-eerie hover:text-crimson hover:bg-eerie/5 transition-colors"
             >
               {link.name}
             </motion.a>
@@ -37,9 +37,9 @@ const MobileMenu = ({ isOpen, onClose }) => {
             animate="visible"
             variants={fadeInLeft}
             transition={{ delay: DELAYS.large, ...TRANSITIONS.fast }}
-            className="block px-3 py-3 bg-gradient-dark text-white rounded-lg font-semibold text-center"
+            className="block mt-4 px-4 py-3.5 bg-crimson text-white font-semibold text-center hover:bg-crimson-dark transition-colors"
           >
-            Let&apos;s Talk
+            Let&apos;s Talk ↗
           </motion.a>
         </div>
       </motion.div>
