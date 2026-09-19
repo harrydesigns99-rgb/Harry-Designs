@@ -31,14 +31,14 @@ const PortfolioFilters = ({ filter, setFilter }) => {
             className={`relative px-8 py-3.5 rounded-full font-semibold transition-all ${
               filter === btn.value
                 ? 'bg-gradient-dark text-white shadow-xl shadow-crimson/30'
-                : 'glass-effect text-slate-300 hover:text-white hover:border-crimson/50'
+                : 'border border-eerie/20 text-eerie/65 hover:text-eerie hover:border-crimson/50'
             }`}
           >
             <span className="relative z-10 flex items-center gap-2">
               {btn.label}
               <span
                 className={`text-xs px-2 py-0.5 rounded-full ${
-                  filter === btn.value ? 'bg-white/20' : 'bg-white/10'
+                    filter === btn.value ? 'bg-white/20' : 'bg-eerie/10'
                 }`}
               >
                 {count}

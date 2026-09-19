@@ -11,7 +11,7 @@ const GalleryColumn = ({ images, autoYPercent, smoothY, className = '', offset =
           {images.map((src, i) => (
             <div
               key={`col-${i}`}
-              className="w-full aspect-[3/4] rounded-2xl overflow-hidden relative group"
+              className="w-full aspect-[3/4] overflow-hidden relative group"
             >
               <img src={src} alt="Project" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />

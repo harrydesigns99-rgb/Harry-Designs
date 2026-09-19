@@ -26,7 +26,7 @@ const PortfolioSection = () => {
   } = usePortfolioFilter(PORTFOLIO_ITEMS, FEATURED_COUNT);
 
   return (
-    <section id="portfolio" className="relative py-20 md:py-32 bg-eerie" ref={ref}>
+    <section id="portfolio" className="relative py-20 md:py-32 bg-cloud-dancer text-eerie" ref={ref}>
       <div className="absolute inset-x-0 top-0 h-px bg-white/10 pointer-events-none" />
 
       <div className="relative z-10">
@@ -52,10 +52,10 @@ const PortfolioSection = () => {
                   Clients
                 </span>
               </motion.div>
-              <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
+              <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-eerie">
                 Brands I've <span className="text-gradient">Worked With</span>
               </h2>
-              <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-eerie/60 max-w-3xl mx-auto">
                 Trusted by leading global brands to deliver exceptional design solutions
               </p>
             </motion.div>
@@ -90,10 +90,10 @@ const PortfolioSection = () => {
                   variants={fadeInUp}
                   className="text-center mb-16"
                 >
-                  <h3 className="text-2xl md:text-4xl font-bold text-center mb-4 text-white">
+                  <h3 className="text-2xl md:text-4xl font-bold text-center mb-4 text-eerie">
                     Featured <span className="text-gradient">Projects</span>
                   </h3>
-                  <p className="text-center text-slate-400 mb-8 text-sm md:text-base px-4">
+                  <p className="text-center text-eerie/60 mb-8 text-sm md:text-base px-4">
                     Explore all my creative work
                   </p>
                 </motion.div>

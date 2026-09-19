@@ -1,19 +1,13 @@
-import { useRef, useEffect, useState } from 'react';
 import { useTransform } from 'framer-motion';
 import { GALLERY_IMAGES } from '../data/galleryImages';
 import { useAutoScroll } from '../hooks/useAutoScroll';
 import { useParallaxTransform } from '../hooks/useParallaxTransform';
 import GalleryColumn from './GalleryColumn';
 import GalleryRow from './GalleryRow';
-import { CAROUSEL_SETTINGS } from '@/constants';
 
 const ParallaxGallery = () => {
-  const [isPaused, setIsPaused] = useState(false);
-  const containerRef = useRef(null);
-  const scrollTimeout = useRef(null);
-
   // Auto-scroll motion values
-  const { autoY1, autoY2, autoX1, autoX2 } = useAutoScroll(isPaused);
+  const { autoY1, autoY2, autoX1, autoX2 } = useAutoScroll();
 
   // Scroll-based parallax transforms
   const { smoothYLeftRight, smoothYCenter, smoothXRow1, smoothXRow2 } = useParallaxTransform();
@@ -28,35 +22,9 @@ const ParallaxGallery = () => {
   const colImages = [...GALLERY_IMAGES, ...GALLERY_IMAGES];
   const rowImages = [...GALLERY_IMAGES, ...GALLERY_IMAGES];
 
-  // Interaction Handlers
-  const handleMouseEnter = () => setIsPaused(true);
-  const handleMouseLeave = () => setIsPaused(false);
-
-  // Scroll Detection to Pause Auto-Scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsPaused(true);
-      clearTimeout(scrollTimeout.current);
-      scrollTimeout.current = setTimeout(() => {
-        setIsPaused(false);
-      }, CAROUSEL_SETTINGS.pauseOnScroll);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout.current);
-    };
-  }, []);
-
   return (
     <div
-      ref={containerRef}
       className="w-full h-full relative z-10"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleMouseEnter}
-      onTouchEnd={handleMouseLeave}
     >
       {/* DESKTOP LAYOUT */}
       <div className="hidden lg:grid grid-cols-3 gap-8 h-[120vh] -mt-20 overflow-hidden px-12 xl:px-20">

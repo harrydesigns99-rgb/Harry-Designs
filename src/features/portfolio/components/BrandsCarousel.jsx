@@ -21,8 +21,8 @@ const BrandsCarousel = ({ isInView }) => {
     >
       <div className="relative">
         {/* Gradient overlays for smooth edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-eerie to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-eerie to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-cloud-dancer to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-cloud-dancer to-transparent z-10 pointer-events-none" />
 
         {/* Scrolling brands container */}
         <div className="flex">

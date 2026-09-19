@@ -24,7 +24,7 @@ const HeroContent = () => {
 
         {/* Main Headline */}
         <motion.h1
-          className="font-display text-5xl sm:text-6xl md:text-7xl xl:text-[6.7rem] font-medium mb-6 leading-[0.94] tracking-[-0.06em] text-cloud-white"
+          className="font-display text-5xl sm:text-6xl md:text-7xl xl:text-[6.7rem] font-medium mb-6 leading-[0.94] tracking-[-0.06em] text-eerie"
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
@@ -38,7 +38,7 @@ const HeroContent = () => {
 
         {/* Description */}
         <motion.p
-          className="text-base sm:text-lg text-stone-300 font-normal leading-relaxed mx-auto lg:mx-0 max-w-lg mb-8"
+          className="text-base sm:text-lg text-eerie/65 font-normal leading-relaxed mx-auto lg:mx-0 max-w-lg mb-8"
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
@@ -64,12 +64,12 @@ const HeroContent = () => {
           >
             View selected work <span className="text-lg transition-transform group-hover:translate-x-1">↗</span>
           </motion.button>
-          <a data-cursor="Email" href="#contact" className="editorial-link text-sm font-semibold text-stone-300">
+          <a data-cursor="Email" href="#contact" className="editorial-link text-sm font-semibold text-eerie/75">
             Start a project <span aria-hidden="true">↗</span>
           </a>
         </motion.div>
 
-        <div className="mt-16 flex items-center justify-center lg:justify-start gap-8 text-left text-xs uppercase tracking-[0.16em] text-stone-500">
+        <div className="mt-16 flex items-center justify-center lg:justify-start gap-8 text-left text-xs uppercase tracking-[0.16em] text-eerie/45">
           <span>Brand identity</span>
           <span className="h-1 w-1 rounded-full bg-crimson" />
           <span>Packaging</span>

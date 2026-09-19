@@ -20,7 +20,7 @@ const Navbar = () => {
       transition={{ ...TRANSITIONS.medium, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         'fixed w-full z-50 transition-all duration-300',
-        isOpen ? 'bg-eerie' : (scrolled ? 'glass-effect shadow-xl shadow-black/20' : 'bg-transparent')
+        isOpen ? 'bg-cloud-dancer' : (scrolled ? 'glass-effect shadow-xl shadow-black/10' : 'bg-transparent')
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,7 +31,7 @@ const Navbar = () => {
             whileHover={hoverScale}
             aria-label={`${SITE_INFO.fullName} - Home`}
             data-cursor="Home"
-            className="inline-flex items-center gap-3 text-xl font-display font-semibold text-white tracking-[-0.04em]"
+            className="inline-flex items-center gap-3 text-xl font-display font-semibold text-eerie tracking-[-0.04em]"
           >
             <span className="flex h-8 w-8 items-center justify-center bg-crimson text-sm text-white">H</span>
             {SITE_INFO.name}
