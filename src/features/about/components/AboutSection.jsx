@@ -6,6 +6,7 @@ import WhyHarryCards from './WhyHarryCards';
 import SkillsGrid from './SkillsGrid';
 import ToolsCarousel from './ToolsCarousel';
 import StatsGrid from './StatsGrid';
+import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
 const AboutSection = () => {
   const ref = useRef(null);
@@ -16,6 +17,7 @@ const AboutSection = () => {
       className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-cloud-dancer text-eerie overflow-hidden"
       ref={ref}
     >
+      <AnimatedBackdrop tone="light" />
       <div className="absolute inset-x-0 top-0 h-px bg-eerie/15" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

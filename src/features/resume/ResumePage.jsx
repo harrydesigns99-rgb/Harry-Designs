@@ -1,3 +1,5 @@
+import AnimatedBackdrop from '@/components/AnimatedBackdrop';
+
 const skills = [
   'Digital ad & social media creative',
   'Brand identity & visual systems',
@@ -18,13 +20,14 @@ const projects = [
 
 const ResumePage = () => {
   return (
-    <main className="min-h-screen bg-cloud-dancer text-eerie">
-      <header className="max-w-6xl mx-auto px-6 sm:px-10 py-8 flex items-center justify-between border-b border-eerie/15">
+    <main className="relative min-h-screen overflow-hidden bg-cloud-dancer text-eerie">
+      <AnimatedBackdrop tone="light" />
+      <header className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-8 flex items-center justify-between border-b border-eerie/15">
         <a href="/" className="font-display text-xl font-semibold tracking-[-0.04em]">Harry Designs</a>
         <a href="/" className="editorial-link text-sm font-semibold">Back to portfolio <span aria-hidden="true">↗</span></a>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 sm:px-10 py-16 md:py-24">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-16 md:py-24">
         <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 pb-16 border-b border-eerie/20">
           <div>
             <span className="section-kicker mb-6">Resume / profile</span>

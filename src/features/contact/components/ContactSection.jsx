@@ -4,6 +4,7 @@ import ContactInfo from './ContactInfo';
 import ContactForm from './ContactForm';
 import SocialLinks from './SocialLinks';
 import { fadeInUp, fadeInLeft, fadeInRight, scaleIn, TRANSITIONS, DELAYS } from '@/animations';
+import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
 const ContactSection = () => {
   const ref = useRef(null);
@@ -14,6 +15,7 @@ const ContactSection = () => {
       className="relative pt-24 md:pt-36 pb-24 md:pb-36 bg-cloud-dancer text-eerie overflow-hidden"
       ref={ref}
     >
+      <AnimatedBackdrop tone="light" />
       <div className="absolute top-0 right-[12%] h-full w-px bg-eerie/15" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

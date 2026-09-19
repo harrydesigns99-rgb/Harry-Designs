@@ -9,6 +9,7 @@ import FeaturedProjects from './FeaturedProjects';
 import PortfolioFilters from './PortfolioFilters';
 import PortfolioGrid from './PortfolioGrid';
 import { fadeInUp, scaleIn, TRANSITIONS, DELAYS } from '@/animations';
+import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
 const PortfolioSection = () => {
   const ref = useRef(null);
@@ -28,6 +29,7 @@ const PortfolioSection = () => {
 
   return (
     <section id="portfolio" className="relative py-20 md:py-32 bg-cloud-dancer text-eerie" ref={ref}>
+      <AnimatedBackdrop tone="light" />
       <div className="absolute inset-x-0 top-0 h-px bg-white/10 pointer-events-none" />
 
       <div className="relative z-10">

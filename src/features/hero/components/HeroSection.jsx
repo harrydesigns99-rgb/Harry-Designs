@@ -1,6 +1,7 @@
 import { ParallaxGallery } from '@/features/parallax-gallery';
 import HeroContent from './HeroContent';
 import ScrollIndicator from './ScrollIndicator';
+import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
 const HeroSection = () => {
   return (
@@ -8,6 +9,7 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center bg-cloud-dancer text-eerie overflow-hidden border-b border-eerie/15"
     >
+      <AnimatedBackdrop tone="light" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_50%,rgba(82,99,216,0.16),transparent_28%)] pointer-events-none" />
 
       <div className="w-full relative z-10 pt-20 lg:pt-28">

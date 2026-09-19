@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 import { SITE_INFO, FOOTER_LINKS } from '../data/navData';
 import { TRANSITIONS, DELAYS } from '@/animations';
+import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
 const Footer = () => {
   return (
-    <footer className="relative bg-eerie text-white py-10 border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="relative overflow-hidden bg-eerie text-white py-10 border-t border-white/10">
+      <AnimatedBackdrop tone="dark" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <motion.a
             href="#home"
