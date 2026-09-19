@@ -2,8 +2,9 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useIsMobile } from '@/hooks';
 import { fadeInUp, TRANSITIONS } from '@/animations';
+import ProjectDetailModal from './ProjectDetailModal';
 
-const FeaturedCard = ({ item, index, isInView }) => {
+const FeaturedCard = ({ item, index, isInView, onSelect }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const isMobile = useIsMobile();
   const Icon = item.icon;
@@ -33,6 +34,7 @@ const FeaturedCard = ({ item, index, isInView }) => {
       }
       data-cursor="View"
       className="group relative overflow-hidden cursor-pointer"
+      onClick={() => onSelect(item)}
       onMouseEnter={() => !isMobile && setHoveredItem(item.id)}
       onMouseLeave={() => !isMobile && setHoveredItem(null)}
     >
@@ -95,6 +97,7 @@ const FeaturedCard = ({ item, index, isInView }) => {
 
 const FeaturedProjects = ({ items, isInView, onViewAll }) => {
   const isMobile = useIsMobile();
+  const [selectedItem, setSelectedItem] = useState(null);
 
   return (
     <>
@@ -120,7 +123,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 max-w-7xl mx-auto">
           {items.map((item, index) => (
-            <FeaturedCard key={item.id} item={item} index={index} isInView={isInView} />
+            <FeaturedCard key={item.id} item={item} index={index} isInView={isInView} onSelect={setSelectedItem} />
           ))}
         </div>
 
@@ -164,6 +167,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
           </motion.button>
         </motion.div>
       </motion.div>
+      <ProjectDetailModal item={selectedItem} onClose={() => setSelectedItem(null)} />
     </>
   );
 };

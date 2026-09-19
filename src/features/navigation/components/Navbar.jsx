@@ -31,10 +31,15 @@ const Navbar = () => {
             whileHover={hoverScale}
             aria-label={`${SITE_INFO.fullName} - Home`}
             data-cursor="Home"
-            className="text-xl font-display font-semibold text-white tracking-[-0.04em]"
+            className="inline-flex items-center gap-3 text-xl font-display font-semibold text-white tracking-[-0.04em]"
           >
+            <span className="flex h-8 w-8 items-center justify-center bg-crimson text-sm text-white">H</span>
             {SITE_INFO.name}
           </motion.a>
+
+          <span className="hidden xl:inline-flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.16em] text-stone-400 absolute left-1/2 -translate-x-1/2">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Available for select projects
+          </span>
 
           {/* Desktop Navigation */}
           <NavLinks />

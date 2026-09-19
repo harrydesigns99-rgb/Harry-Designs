@@ -7,6 +7,11 @@ const services = [
 ];
 
 const process = ['Discover', 'Define', 'Design', 'Deliver'];
+const testimonial = {
+  quote: 'Harry understood the feeling we wanted before we had the words for it. The result feels unmistakably ours.',
+  name: 'Client note',
+  role: 'Brand identity project',
+};
 
 const StudioApproach = () => {
   return (
@@ -59,6 +64,19 @@ const StudioApproach = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="mt-24 grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-end">
+          <div className="border-t border-eerie/20 pt-6">
+            <span className="text-xs uppercase tracking-[0.16em] text-eerie/45">A small manifesto</span>
+            <p className="font-display text-3xl md:text-5xl leading-[1.02] tracking-[-0.05em] mt-6 max-w-3xl">
+              Make it clear. Make it felt. Make it last longer than the scroll.
+            </p>
+          </div>
+          <blockquote className="border-l-2 border-crimson pl-6">
+            <p className="text-lg leading-relaxed text-eerie/75">“{testimonial.quote}”</p>
+            <footer className="mt-5 text-xs uppercase tracking-[0.14em] text-eerie/45">{testimonial.name} / {testimonial.role}</footer>
+          </blockquote>
         </div>
       </div>
     </section>
