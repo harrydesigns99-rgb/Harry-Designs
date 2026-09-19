@@ -3,9 +3,10 @@
 
 @theme {
   /* Editorial studio color system */
-  --color-crimson: #ff5545;
-  --color-crimson-dark: #d63b32;
-  --color-crimson-light: #ff897c;
+  --color-crimson: #5263d8;
+  --color-crimson-dark: #3947ae;
+  --color-crimson-light: #8490ef;
+  --color-clay: #d4775c;
 
   --color-eerie: #121212;
   --color-eerie-light: #191918;
@@ -20,14 +21,14 @@
 
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(135deg, #ff897c 0%, #ff5545 100%);
+    background: linear-gradient(135deg, #8490ef 0%, #d4775c 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .bg-gradient-dark {
-    background: linear-gradient(135deg, #ff5545 0%, #d63b32 100%);
+    background: linear-gradient(135deg, #5263d8 0%, #3947ae 100%);
   }
 
   .glass-effect {

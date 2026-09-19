@@ -1,6 +1,7 @@
 import { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { useInView } from 'framer-motion';
 import AboutHeader from './AboutHeader';
+import AboutProfile from './AboutProfile';
 import WhyHarryCards from './WhyHarryCards';
 import SkillsGrid from './SkillsGrid';
 import ToolsCarousel from './ToolsCarousel';
@@ -9,50 +10,19 @@ import StatsGrid from './StatsGrid';
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-
   return (
     <section
       id="about"
-      className="relative pt-20 md:pt-32 pb-10 md:pb-16 bg-eerie-light overflow-hidden"
+      className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-eerie-light overflow-hidden"
       ref={ref}
     >
-      {/* Background decorative elements with enhanced animations */}
-      <motion.div
-        style={{ y }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        className="absolute top-20 right-0 w-96 h-96 bg-crimson/10 rounded-full blur-3xl"
-      />
-      <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], [-100, 100]) }}
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        className="absolute bottom-20 left-0 w-96 h-96 bg-crimson-dark/10 rounded-full blur-3xl"
-      />
+      <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header Section */}
-        <AboutHeader isInView={isInView} />
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-24 items-center mb-24 md:mb-36">
+          <AboutHeader isInView={isInView} />
+          <AboutProfile isInView={isInView} />
+        </div>
 
         {/* Why Harry Section */}
         <WhyHarryCards isInView={isInView} />
