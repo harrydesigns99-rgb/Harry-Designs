@@ -5,6 +5,7 @@ import {
   FaGem,
   FaWineBottle,
   FaTshirt,
+  FaPalette,
 } from 'react-icons/fa';
 import { SiNike, SiCocacola, SiStarbucks } from 'react-icons/si';
 
