@@ -51,7 +51,7 @@ const ParallaxGallery = () => {
       className="w-full h-full relative z-10"
     >
       {/* DESKTOP LAYOUT */}
-      <div className="hidden lg:grid grid-cols-3 gap-8 h-[120vh] -mt-20 overflow-hidden px-12 xl:px-20">
+      <div className="hidden lg:grid grid-cols-3 gap-4 xl:gap-6 h-[120vh] -mt-16 overflow-hidden px-2 xl:px-4">
         {/* Column 1 - Auto UP, Scroll UP */}
         <motion.div style={{ x: smoothMouseX, y: smoothMouseY }} className="h-full">
           <GalleryColumn

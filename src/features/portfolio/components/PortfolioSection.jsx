@@ -42,7 +42,7 @@ const PortfolioSection = () => {
       <div className="relative z-10">
         
         {/* ==================== BRANDS SECTION ==================== */}
-        <div className="mb-8 md:mb-16 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 md:mb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header Section */}
             <motion.div
               initial="hidden"
@@ -72,7 +72,7 @@ const PortfolioSection = () => {
             <BrandsCarousel isInView={isInView} />
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
           <div className="flex items-end justify-between gap-6 mb-5">
             <div>
               <span className="section-kicker mb-4">Explore by discipline</span>
@@ -147,7 +147,7 @@ const PortfolioSection = () => {
 
         {/* ==================== FEATURED PROJECTS SECTION ==================== */}
         {viewMode === 'index' ? (
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
             <PortfolioListView
               items={showAll ? displayItems : projects}
               onSelect={(item) => setSelectedGridProject(item)}
@@ -166,7 +166,7 @@ const PortfolioSection = () => {
                 onViewAll={handleShowAll}
               />
             ) : (
-              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Grid View Header */}
                 <motion.div
                   initial="hidden"

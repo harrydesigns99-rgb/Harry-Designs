@@ -40,7 +40,7 @@ const ContactForm = () => {
   } = useContactForm();
 
   return (
-    <div className="border-t border-eerie/15 pt-8">
+    <div className="w-full">
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Success Message */}
         {showSuccess && (

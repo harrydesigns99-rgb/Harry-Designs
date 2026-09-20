@@ -172,3 +172,4 @@ const BeforeAfterSlider = ({
 };
 
 export default BeforeAfterSlider;
+

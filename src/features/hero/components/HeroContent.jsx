@@ -4,7 +4,7 @@ import { TRANSITIONS } from '@/animations';
 const HeroContent = () => {
   return (
     <motion.div
-      className="text-center lg:text-left order-1 lg:order-1 flex flex-col justify-center h-full px-6 sm:px-8 lg:pl-20 xl:pl-32 z-20 py-12 lg:py-0 relative"
+      className="text-center lg:text-left flex flex-col justify-center h-full z-20 relative px-0 lg:pr-6"
     >
       <motion.div
         initial={{ opacity: 0 }}

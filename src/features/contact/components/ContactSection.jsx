@@ -17,7 +17,6 @@ const ContactSection = () => {
       ref={ref}
     >
       <AnimatedBackdrop tone="light" />
-      <div className="absolute top-0 right-[12%] h-full w-px bg-eerie/15" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -44,7 +43,7 @@ const ContactSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Contact Form */}
           <motion.div
             initial="hidden"
@@ -52,6 +51,9 @@ const ContactSection = () => {
             variants={fadeInRight}
             transition={{ delay: DELAYS.small, ...TRANSITIONS.medium }}
           >
+            <h3 className="font-display text-2xl md:text-3xl font-medium tracking-tight mb-8 text-eerie border-b border-eerie/15 pb-4">
+              Project Inquiry
+            </h3>
             <ContactForm />
           </motion.div>
 
@@ -62,14 +64,14 @@ const ContactSection = () => {
             variants={fadeInLeft}
             transition={{ delay: DELAYS.large, ...TRANSITIONS.medium }}
           >
-            <h3 className="text-2xl md:text-3xl font-semibold mb-8 text-eerie">Get In Touch</h3>
+            <h3 className="font-display text-2xl md:text-3xl font-medium tracking-tight mb-8 text-eerie border-b border-eerie/15 pb-4">
+              Direct Channels
+            </h3>
 
             <ContactInfo isInView={isInView} />
 
             {/* Social Links */}
             <SocialLinks isInView={isInView} />
-
-        {/* Empty placeholder removed */}
           </motion.div>
         </div>
       </div>

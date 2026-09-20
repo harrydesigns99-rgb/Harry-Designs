@@ -16,10 +16,18 @@ const ToolsCarousel = ({ isInView }) => {
       transition={{ delay: DELAYS.large, ...TRANSITIONS.slow }}
       className="mb-16"
     >
-      <h3 className="text-3xl md:text-4xl font-bold text-center mb-10 text-eerie">
-        The Tools I <span className="text-gradient">Trust</span>
-      </h3>
-      <div className="relative overflow-hidden rounded-3xl glass-effect p-8 md:p-10">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8 border-b border-eerie/15 pb-6">
+        <div>
+          <span className="section-kicker mb-4">Tech &amp; Production Stack</span>
+          <h3 className="font-display text-4xl md:text-5xl font-medium tracking-tight text-eerie">
+            The Tools I <span className="text-gradient">Trust.</span>
+          </h3>
+        </div>
+        <p className="max-w-xs text-sm text-eerie/60 leading-relaxed">
+          Industry-standard software and craft equipment for pixel-perfect identity and print execution.
+        </p>
+      </div>
+      <div className="relative overflow-hidden border border-eerie/15 bg-cloud-white p-8 md:p-10 shadow-sm">
         <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8">
           {TOOLS.map((tool, index) => {
             const Icon = tool.icon;

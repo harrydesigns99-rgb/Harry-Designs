@@ -8,7 +8,7 @@ const AboutHeader = ({ isInView }) => {
       animate={isInView ? 'visible' : 'hidden'}
       variants={fadeInUp}
       transition={{ ...TRANSITIONS.slow, ease: [0.22, 1, 0.36, 1] }}
-      className="text-left mb-12 md:mb-16"
+      className="text-left mb-10 lg:mb-0"
     >
       <motion.div
         initial="hidden"

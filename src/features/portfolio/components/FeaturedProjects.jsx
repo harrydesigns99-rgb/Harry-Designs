@@ -161,7 +161,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
         animate={isInView ? 'visible' : 'hidden'}
         variants={fadeInUp}
         transition={{ delay: 0.5, ...TRANSITIONS.medium }}
-        className="mb-20 container mx-auto px-4"
+        className="mb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
       >
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12">
@@ -176,7 +176,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
             </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
           {items.map((item, index) => (
             <FeaturedCard key={item.id} item={item} index={index} isInView={isInView} onSelect={setSelectedItem} />
           ))}

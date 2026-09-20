@@ -82,7 +82,7 @@ const PortfolioListView = ({ items, onSelect }) => {
       )}
 
       {/* Editorial Index Table Header */}
-      <div className="hidden md:grid grid-cols-12 gap-4 py-3 border-b border-eerie/20 text-[11px] font-mono uppercase tracking-[0.16em] text-eerie/45 select-none">
+      <div className="hidden md:grid grid-cols-12 gap-4 py-3 px-3 border-b border-eerie/20 text-[11px] font-mono uppercase tracking-[0.16em] text-eerie/45 select-none">
         <span className="col-span-1">No.</span>
         <span className="col-span-4">Client / Brand</span>
         <span className="col-span-3">Discipline</span>
@@ -108,8 +108,8 @@ const PortfolioListView = ({ items, onSelect }) => {
                 setHoveredProject(item);
               }}
               onMouseLeave={() => setHoveredProject(null)}
-              className={`group py-5 sm:py-7 cursor-pointer transition-all duration-200 flex flex-col md:grid md:grid-cols-12 md:gap-4 md:items-center ${
-                isHovered ? 'bg-cloud-white/70 pl-2' : 'hover:pl-2'
+              className={`group py-5 sm:py-7 px-3 cursor-pointer transition-colors duration-150 flex flex-col md:grid md:grid-cols-12 md:gap-4 md:items-center ${
+                isHovered ? 'bg-cloud-white' : 'hover:bg-cloud-white/50'
               }`}
             >
               {/* Mobile View Layout */}
