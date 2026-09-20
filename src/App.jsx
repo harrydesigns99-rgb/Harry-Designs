@@ -4,7 +4,6 @@ import { HeroSection } from '@/features/hero';
 import { AboutSection } from '@/features/about';
 import { PortfolioSection } from '@/features/portfolio';
 import { ContactSection } from '@/features/contact';
-import CustomCursor from '@/components/CustomCursor';
 import StudioApproach from '@/features/studio/StudioApproach';
 import ResumePage from '@/features/resume/ResumePage';
 import { AdminDashboard } from '@/features/cms';
@@ -56,7 +55,6 @@ function App() {
       <div className="min-h-screen bg-cloud-dancer relative overflow-hidden">
         {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
         <LivingBackground />
-        <CustomCursor />
         <ResumePage
           onNavigateHome={() => {
             window.history.pushState({}, '', '/');
@@ -71,7 +69,6 @@ function App() {
     <div className="min-h-screen bg-transparent relative selection:bg-crimson selection:text-white">
       {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
       <LivingBackground />
-      <CustomCursor />
       <div className="relative z-10">
         <Navbar />
         <HeroSection />
