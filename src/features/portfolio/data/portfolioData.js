@@ -50,6 +50,19 @@ export const PORTFOLIO_ITEMS = [
     afterImage: '/image/Image Gallery/Artboard 2.webp',
     beforeLabel: 'Legacy 2023 Packaging',
     afterLabel: 'Redesign 2024 (+40% Lift)',
+    anatomy: {
+      substrate: '60µ Metallized BoPP + Clear Polyethylene Sealant Web',
+      finish: 'Selective UV High-Gloss Curing + Cold Foil Metallic Foil Highlights',
+      printProcess: '8-Color Central Impression CI-Flexo (HD 175 LPI Screen)',
+      dielineType: 'Continuous Fin-Seal Pouch & Roll-Fed Wrap Label Geometry',
+      dimensions: '160 × 240 mm (Pouch) / 95 × 140 mm (Bottle Label)',
+      pantones: [
+        { code: 'PANTONE 130 C', name: 'Mustard Amber Gold', hex: '#f2a900', cmyk: '0 / 32 / 100 / 0' },
+        { code: 'PANTONE 349 C', name: 'Harvest Botanical Green', hex: '#046a38', cmyk: '90 / 30 / 95 / 30' },
+        { code: 'PANTONE 186 C', name: 'Kalyani Crimson', hex: '#ba2026', cmyk: '0 / 100 / 81 / 4' },
+        { code: 'PANTONE Black 7 C', name: 'Deep Olive Noir', hex: '#3d3935', cmyk: '0 / 8 / 22 / 80' },
+      ],
+    },
   },
   {
     id: 2,
@@ -82,6 +95,19 @@ export const PORTFOLIO_ITEMS = [
     year: '2023',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 4.webp',
+    anatomy: {
+      substrate: '300 GSM Tintoretto Gesso Uncoated Cotton Board (FSC Certified)',
+      finish: 'Multi-Level Blind Deboss Monogram + Matte Water-Based Barrier Varnish',
+      printProcess: '4-Color Sheetfed Offset + 2 Spot Metallics',
+      dielineType: 'Rigid Shoulder-Box + Dropper Bottle Wrap Sleeve',
+      dimensions: '45 × 45 × 125 mm Unit Carton',
+      pantones: [
+        { code: 'PANTONE 5773 C', name: 'Sage Botanical Whisper', hex: '#8a9a6b', cmyk: '35 / 15 / 55 / 15' },
+        { code: 'PANTONE 7527 C', name: 'Alabaster Linen', hex: '#d6d2c4', cmyk: '3 / 4 / 14 / 8' },
+        { code: 'PANTONE 872 C', name: 'Champagne Warm Gold', hex: '#85714d', cmyk: '20 / 30 / 70 / 25' },
+        { code: 'PANTONE 419 C', name: 'Sumi Forest Charcoal', hex: '#212721', cmyk: '80 / 70 / 70 / 80' },
+      ],
+    },
   },
   {
     id: 4,
@@ -119,6 +145,19 @@ export const PORTFOLIO_ITEMS = [
     afterImage: '/image/Image Gallery/Artboard 6.webp',
     beforeLabel: 'Legacy Packaging',
     afterLabel: 'Redesigned System (12+ SKUs)',
+    anatomy: {
+      substrate: '280 GSM Unbleached Virgin Brown Kraftboard (Food Contact Certified)',
+      finish: 'Grease-Resistant Eco Aqueous Barrier + Direct Artisan Seal Stamp',
+      printProcess: '3-Color Water-Based Inks on Flexographic Rotary Press',
+      dielineType: 'Auto-Locking Crash Bottom Pastry Box with Interlocking Arch Handle',
+      dimensions: '220 × 160 × 90 mm Pastry Carrier Box',
+      pantones: [
+        { code: 'PANTONE 7578 C', name: 'Toasted Brioche Russet', hex: '#b04a24', cmyk: '15 / 75 / 100 / 10' },
+        { code: 'PANTONE 476 C', name: 'Artisan Cocoa Noir', hex: '#4e3629', cmyk: '50 / 65 / 75 / 60' },
+        { code: 'PANTONE 7407 C', name: 'Crust Ochre Warmth', hex: '#cb9b51', cmyk: '15 / 35 / 75 / 10' },
+        { code: 'PANTONE Warm Red C', name: 'Artisan Seal Red', hex: '#f9423a', cmyk: '0 / 85 / 80 / 0' },
+      ],
+    },
   },
   {
     id: 6,
@@ -135,6 +174,19 @@ export const PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 5.webp',
+    anatomy: {
+      substrate: '0.22mm 100% Infinitely Recyclable Aluminum (Sleek 330ml Can Form)',
+      finish: 'Tactile Satin Matte Curing with High-Gloss Spot Lacquer on Typographic Wordmark',
+      printProcess: 'High-Speed Dry Offset 6-Color Rotary Print on Curved Metal',
+      dielineType: '330ml Sleek Beverage Can 360° Cylinder Seamless Artwork Layout',
+      dimensions: '209 / 211 × 604 mm Cylindrical Can Body',
+      pantones: [
+        { code: 'PANTONE 2685 C', name: 'Electric Ultraviolet', hex: '#330072', cmyk: '95 / 100 / 0 / 10' },
+        { code: 'PANTONE 806 C', name: 'Neon Hyper Pink', hex: '#ff1493', cmyk: '0 / 95 / 0 / 0' },
+        { code: 'PANTONE 3255 C', name: 'Herbal Mint Glow', hex: '#2ee5c8', cmyk: '60 / 0 / 35 / 0' },
+        { code: 'PANTONE 877 C', name: 'Brushed Silver Metallic', hex: '#8a8d8f', cmyk: '0 / 0 / 0 / 45' },
+      ],
+    },
   },
   {
     id: 7,
@@ -151,6 +203,19 @@ export const PORTFOLIO_ITEMS = [
     year: '2023',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 7.webp',
+    anatomy: {
+      substrate: 'Multi-layer Foil Laminate (PET/ALU/PE) with High Aroma Barrier',
+      finish: 'Soft-Matte Velvet Finish + High-Clarity Transparent Spice Freshness Window',
+      printProcess: '7-Color Rotogravure Printing with Micro-Registration',
+      dielineType: 'Stand-Up Doypack Pouch with Reclosable Press-to-Close Zipper',
+      dimensions: '140 × 210 × 70 mm Stand-Up Pouch',
+      pantones: [
+        { code: 'PANTONE 1805 C', name: 'Heritage Madder Red', hex: '#a1332c', cmyk: '15 / 90 / 85 / 20' },
+        { code: 'PANTONE 137 C', name: 'Salem Turmeric Yellow', hex: '#ffa300', cmyk: '0 / 40 / 100 / 0' },
+        { code: 'PANTONE 7519 C', name: 'Cardamom Clove Umber', hex: '#5c3826', cmyk: '40 / 65 / 75 / 45' },
+        { code: 'PANTONE 871 C', name: 'Temple Antique Brass Gold', hex: '#84754e', cmyk: '20 / 25 / 60 / 25' },
+      ],
+    },
   },
   {
     id: 8,

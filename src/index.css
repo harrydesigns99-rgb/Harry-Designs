@@ -1,33 +1,87 @@
 @import "tailwindcss";
 
 @theme {
-  /* Editorial studio color system */
-  --color-crimson: #5263d8;
-  --color-crimson-dark: #3947ae;
-  --color-crimson-light: #8490ef;
-  --color-clay: #d4775c;
+  /* Dynamic studio theme system */
+  --color-crimson: var(--theme-crimson);
+  --color-crimson-dark: var(--theme-crimson-dark);
+  --color-crimson-light: var(--theme-crimson-light);
+  --color-clay: var(--theme-clay);
 
-  --color-eerie: #121212;
-  --color-eerie-light: #191918;
-  --color-eerie-lighter: #292927;
+  --color-eerie: var(--theme-text);
+  --color-eerie-light: var(--theme-text-light);
+  --color-eerie-lighter: var(--theme-text-lighter);
 
-  /* Cloud Colors */
-  --color-cloud-white: #f7f5f0;
-  --color-cloud-dancer: #ede9e0;
+  /* Surfaces & Backdrops */
+  --color-cloud-white: var(--theme-surface);
+  --color-cloud-dancer: var(--theme-bg);
+
   --font-sans: 'DM Sans', sans-serif;
   --font-display: 'Space Grotesk', sans-serif;
 }
 
+:root,
+[data-theme="editorial"] {
+  --theme-bg: #ede9e0;
+  --theme-surface: #f7f5f0;
+  --theme-text: #121212;
+  --theme-text-light: #191918;
+  --theme-text-lighter: #292927;
+  --theme-crimson: #5263d8;
+  --theme-crimson-dark: #3947ae;
+  --theme-crimson-light: #8490ef;
+  --theme-clay: #d4775c;
+  --theme-border: rgba(18, 18, 18, 0.15);
+}
+
+[data-theme="nocturne"] {
+  --theme-bg: #09090b;
+  --theme-surface: #141418;
+  --theme-text: #f4f4f5;
+  --theme-text-light: #e4e4e7;
+  --theme-text-lighter: #d4d4d8;
+  --theme-crimson: #10b981;
+  --theme-crimson-dark: #059669;
+  --theme-crimson-light: #34d399;
+  --theme-clay: #f59e0b;
+  --theme-border: rgba(244, 244, 245, 0.15);
+}
+
+[data-theme="brutalist"] {
+  --theme-bg: #f6f6f7;
+  --theme-surface: #ffffff;
+  --theme-text: #000000;
+  --theme-text-light: #18181b;
+  --theme-text-lighter: #27272a;
+  --theme-crimson: #0047ff;
+  --theme-crimson-dark: #0033b8;
+  --theme-crimson-light: #4d7dff;
+  --theme-clay: #ff3b30;
+  --theme-border: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="kyoto"] {
+  --theme-bg: #f7f3eb;
+  --theme-surface: #ffffff;
+  --theme-text: #181716;
+  --theme-text-light: #2c2a29;
+  --theme-text-lighter: #423f3d;
+  --theme-crimson: #c84131;
+  --theme-crimson-dark: #a03023;
+  --theme-crimson-light: #dc6355;
+  --theme-clay: #b89758;
+  --theme-border: rgba(24, 23, 22, 0.15);
+}
+
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(135deg, #8490ef 0%, #d4775c 100%);
+    background: linear-gradient(135deg, var(--color-crimson-light) 0%, var(--color-clay) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .bg-gradient-dark {
-    background: linear-gradient(135deg, #5263d8 0%, #3947ae 100%);
+    background: linear-gradient(135deg, var(--color-crimson) 0%, var(--color-crimson-dark) 100%);
   }
 
   .glass-effect {
@@ -119,10 +173,11 @@
   }
 
   body {
-    background-color: #ede9e0;
-    color: #121212;
+    background-color: var(--color-cloud-dancer);
+    color: var(--color-eerie);
     font-family: 'DM Sans', sans-serif;
     text-rendering: optimizeLegibility;
+    transition: background-color 300ms ease, color 300ms ease;
   }
 
   ::selection {

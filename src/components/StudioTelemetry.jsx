@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { sound } from '@/utils/audio';
+import { useTheme } from '@/context/useTheme';
 
 const StudioTelemetry = () => {
   const [timeStr, setTimeStr] = useState('');
   const [isMuted, setIsMuted] = useState(() => sound.getMuted());
+  const [isThemeOpen, setIsThemeOpen] = useState(false);
+  const { theme, setTheme, themes } = useTheme();
+  const themeMenuRef = useRef(null);
 
   useEffect(() => {
     const updateTime = () => {
@@ -27,6 +31,16 @@ const StudioTelemetry = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (themeMenuRef.current && !themeMenuRef.current.contains(e.target)) {
+        setIsThemeOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const toggleMute = () => {
     const next = !isMuted;
     setIsMuted(next);
@@ -35,6 +49,8 @@ const StudioTelemetry = () => {
       sound.playSwitch();
     }
   };
+
+  const currentThemeObj = themes.find((t) => t.id === theme) || themes[0];
 
   return (
     <div className="w-full border-b border-eerie/10 bg-cloud-white/80 backdrop-blur-md text-eerie/70 text-[10px] sm:text-[11px] font-mono select-none relative z-30 transition-colors">
@@ -54,8 +70,8 @@ const StudioTelemetry = () => {
           </span>
         </div>
 
-        {/* Right: Commission Status & Sound Toggle */}
-        <div className="flex items-center gap-5 ml-auto sm:ml-0">
+        {/* Right: Commission Status, Theme Switcher & Sound Toggle */}
+        <div className="flex items-center gap-4 sm:gap-5 ml-auto sm:ml-0">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="hidden sm:inline uppercase tracking-widest text-[10px] text-eerie/80 font-bold">
@@ -67,6 +83,60 @@ const StudioTelemetry = () => {
           </div>
 
           <div className="h-3 w-px bg-eerie/20" />
+
+          {/* Theme Switcher Dropdown */}
+          <div className="relative" ref={themeMenuRef}>
+            <button
+              type="button"
+              onClick={() => setIsThemeOpen(!isThemeOpen)}
+              className="flex items-center gap-1.5 px-2 py-0.5 border border-eerie/15 hover:border-eerie text-eerie/80 hover:text-eerie transition-colors cursor-pointer bg-cloud-white"
+              title="Change studio aesthetic theme"
+            >
+              <span
+                className="h-2 w-2 rounded-full border border-eerie/30"
+                style={{ backgroundColor: currentThemeObj.previewAccent }}
+              />
+              <span className="uppercase text-[9px] tracking-wider font-semibold">
+                {currentThemeObj.badge}
+              </span>
+              <span className="text-[8px] opacity-60">▾</span>
+            </button>
+
+            {isThemeOpen && (
+              <div className="absolute right-0 top-full mt-1 w-48 bg-cloud-white border border-eerie/20 shadow-xl py-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="px-3 py-1.5 border-b border-eerie/10 text-[9px] uppercase tracking-wider text-eerie/45 font-bold">
+                  Studio Atmosphere
+                </div>
+                {themes.map((t) => {
+                  const isActive = t.id === theme;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => {
+                        setTheme(t.id);
+                        setIsThemeOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 flex items-center justify-between text-xs transition-colors cursor-pointer ${
+                        isActive
+                          ? 'bg-crimson text-white font-bold'
+                          : 'text-eerie hover:bg-eerie/5'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="h-2.5 w-2.5 rounded-full border border-white/20"
+                          style={{ backgroundColor: t.previewAccent }}
+                        />
+                        <span className="text-[11px] font-medium">{t.name}</span>
+                      </div>
+                      {isActive && <span className="text-[10px]">✓</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
 
           {/* Sound Toggle */}
           <button
@@ -87,4 +157,3 @@ const StudioTelemetry = () => {
 };
 
 export default StudioTelemetry;
-

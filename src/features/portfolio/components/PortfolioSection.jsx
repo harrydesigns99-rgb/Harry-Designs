@@ -19,7 +19,19 @@ const PortfolioSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const isMobile = useIsMobile();
   const [selectedGridProject, setSelectedGridProject] = useState(null);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'index'
+  const [layoutMode, setLayoutMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('harry_portfolio_layout');
+        if (saved && ['loose', 'grid', 'index'].includes(saved)) {
+          return saved;
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return 'grid';
+  });
   const cms = useCMS();
   const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
 
@@ -110,16 +122,44 @@ const PortfolioSection = () => {
               ))}
             </div>
 
-            {/* Grid vs Index View Toggle */}
+            {/* 3-Way Layout Density Switcher: Loose (2-Col), Grid (3-Col), Index (List) */}
             <div className="flex items-center gap-1 bg-white/70 p-1 border border-eerie/15">
               <button
                 type="button"
                 onClick={() => {
                   sound.playSwitch();
-                  setViewMode('grid');
+                  setLayoutMode('loose');
+                  try {
+                    localStorage.setItem('harry_portfolio_layout', 'loose');
+                  } catch {
+                    // ignore
+                  }
+                  setShowAll(true);
                 }}
-                className={`px-3 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                  viewMode === 'grid'
+                title="Spacious 2-column editorial view"
+                className={`px-2.5 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                  layoutMode === 'loose'
+                    ? 'bg-eerie text-white font-bold shadow-sm'
+                    : 'text-eerie/60 hover:text-eerie'
+                }`}
+              >
+                ◫ Loose
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playSwitch();
+                  setLayoutMode('grid');
+                  try {
+                    localStorage.setItem('harry_portfolio_layout', 'grid');
+                  } catch {
+                    // ignore
+                  }
+                  setShowAll(true);
+                }}
+                title="Standard 3-column grid view"
+                className={`px-2.5 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                  layoutMode === 'grid'
                     ? 'bg-eerie text-white font-bold shadow-sm'
                     : 'text-eerie/60 hover:text-eerie'
                 }`}
@@ -130,10 +170,16 @@ const PortfolioSection = () => {
                 type="button"
                 onClick={() => {
                   sound.playSwitch();
-                  setViewMode('index');
+                  setLayoutMode('index');
+                  try {
+                    localStorage.setItem('harry_portfolio_layout', 'index');
+                  } catch {
+                    // ignore
+                  }
                 }}
-                className={`px-3 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                  viewMode === 'index'
+                title="Swiss index list view"
+                className={`px-2.5 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                  layoutMode === 'index'
                     ? 'bg-eerie text-white font-bold shadow-sm'
                     : 'text-eerie/60 hover:text-eerie'
                 }`}
@@ -146,7 +192,7 @@ const PortfolioSection = () => {
 
 
         {/* ==================== FEATURED PROJECTS SECTION ==================== */}
-        {viewMode === 'index' ? (
+        {layoutMode === 'index' ? (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
             <PortfolioListView
               items={showAll ? displayItems : projects}
@@ -175,10 +221,13 @@ const PortfolioSection = () => {
                   className="text-center mb-16"
                 >
                   <h3 className="text-2xl md:text-4xl font-bold text-center mb-4 text-eerie">
-                    Featured <span className="text-gradient">Projects</span>
+                    {layoutMode === 'loose' ? 'Editorial' : 'Featured'}{' '}
+                    <span className="text-gradient">Projects</span>
                   </h3>
                   <p className="text-center text-eerie/60 mb-8 text-sm md:text-base px-4">
-                    Explore all my creative work
+                    {layoutMode === 'loose'
+                      ? 'Expansive high-resolution case studies'
+                      : 'Explore all my creative work'}
                   </p>
                 </motion.div>
 
@@ -186,7 +235,11 @@ const PortfolioSection = () => {
                 <PortfolioFilters filter={filter} setFilter={setFilter} />
 
                 {/* Portfolio Grid */}
-                <PortfolioGrid items={displayItems} onSelect={setSelectedGridProject} />
+                <PortfolioGrid
+                  items={displayItems}
+                  onSelect={setSelectedGridProject}
+                  density={layoutMode}
+                />
 
                 {/* Back to Featured Button */}
                 <motion.div
