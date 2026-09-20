@@ -32,3 +32,4 @@ export function useCMS() {
     resetToDefaults: cmsStore.resetToDefaults.bind(cmsStore),
   };
 }
+

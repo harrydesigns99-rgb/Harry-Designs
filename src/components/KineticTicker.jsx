@@ -70,3 +70,4 @@ const KineticTicker = () => {
 };
 
 export default KineticTicker;
+

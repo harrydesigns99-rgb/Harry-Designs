@@ -33,7 +33,7 @@ const PortfolioSection = () => {
   } = usePortfolioFilter(projects, FEATURED_COUNT);
 
   return (
-    <section id="portfolio" className="relative py-20 md:py-32 bg-cloud-dancer text-eerie" ref={ref}>
+    <section id="portfolio" className="relative py-20 md:py-32 bg-transparent text-eerie" ref={ref}>
       <AnimatedBackdrop tone="light" />
       <div className="absolute inset-x-0 top-0 h-px bg-white/10 pointer-events-none" />
 

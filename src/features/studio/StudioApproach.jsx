@@ -17,7 +17,7 @@ const testimonial = {
 
 const StudioApproach = () => {
   return (
-    <section id="services" className="relative overflow-hidden bg-cloud-dancer text-eerie py-24 md:py-36">
+    <section id="services" className="relative overflow-hidden bg-transparent text-eerie py-24 md:py-36">
       <AnimatedBackdrop tone="light" />
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-16 lg:gap-28">

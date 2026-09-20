@@ -289,3 +289,4 @@ export const GALLERY_IMAGES = ${imagesStr};
     emitChange();
   },
 };
+

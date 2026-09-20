@@ -9,8 +9,11 @@ import StudioApproach from '@/features/studio/StudioApproach';
 import ResumePage from '@/features/resume/ResumePage';
 import { AdminDashboard } from '@/features/cms';
 import KineticTicker from '@/components/KineticTicker';
+import LivingBackground from '@/components/LivingBackground';
+import WandPreloader from '@/components/WandPreloader';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPath, setCurrentPath] = useState(
     typeof window !== 'undefined' ? window.location.pathname : '/'
   );
@@ -50,7 +53,9 @@ function App() {
 
   if (currentPath === '/resume') {
     return (
-      <div className="min-h-screen bg-cloud-dancer">
+      <div className="min-h-screen bg-cloud-dancer relative overflow-hidden">
+        {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
+        <LivingBackground />
         <CustomCursor />
         <ResumePage
           onNavigateHome={() => {
@@ -63,16 +68,20 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-cloud-dancer">
+    <div className="min-h-screen bg-transparent relative selection:bg-crimson selection:text-white">
+      {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
+      <LivingBackground />
       <CustomCursor />
-      <Navbar />
-      <HeroSection />
-      <KineticTicker />
-      <PortfolioSection />
-      <StudioApproach />
-      <AboutSection />
-      <ContactSection />
-      <Footer />
+      <div className="relative z-10">
+        <Navbar />
+        <HeroSection />
+        <KineticTicker />
+        <PortfolioSection />
+        <StudioApproach />
+        <AboutSection />
+        <ContactSection />
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center bg-cloud-dancer text-eerie overflow-hidden border-b border-eerie/15"
+      className="relative min-h-screen flex items-center bg-transparent text-eerie overflow-hidden border-b border-eerie/15"
     >
       <AnimatedBackdrop tone="light" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_50%,rgba(82,99,216,0.16),transparent_28%)] pointer-events-none" />

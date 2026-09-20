@@ -14,7 +14,7 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-cloud-dancer text-eerie overflow-hidden"
+      className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-transparent text-eerie overflow-hidden"
       ref={ref}
     >
       <AnimatedBackdrop tone="light" />

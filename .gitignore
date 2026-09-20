@@ -28,3 +28,4 @@ dist-ssr
 take-screenshots.js
 /tmp/*.png
 .vercel
+.env*
