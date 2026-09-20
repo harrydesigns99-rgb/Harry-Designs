@@ -3,7 +3,7 @@
  */
 
 // Auto-scroll speed for parallax galleries (pixels per frame)
-export const PARALLAX_SPEED = 0.008;
+export const PARALLAX_SPEED = 0.038;
 
 // Scroll thresholds
 export const SCROLL_THRESHOLDS = {

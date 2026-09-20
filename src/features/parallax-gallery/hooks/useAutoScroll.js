@@ -6,7 +6,8 @@ import { PARALLAX_SPEED, CAROUSEL_SETTINGS } from '@/constants';
  * @param {boolean} isPaused - Whether auto-scroll is paused
  * @returns {object} - Motion values for auto-scroll offsets
  */
-export function useAutoScroll() {
+export function useAutoScroll(customSpeed) {
+  const currentSpeed = typeof customSpeed === 'number' ? customSpeed : PARALLAX_SPEED;
 
   // MotionValues for Auto-Scroll offsets
   const autoY1 = useMotionValue(0); // Col 1 & 3 (Up)
@@ -17,11 +18,11 @@ export function useAutoScroll() {
   // Animation Loop
   useAnimationFrame((t, delta) => {
     // Desktop and mobile autoplay remain independent from pointer and page-scroll input.
-    const moveUp = autoY1.get() - PARALLAX_SPEED * delta * 0.05;
-    const moveDown = autoY2.get() + PARALLAX_SPEED * delta * 0.05;
+    const moveUp = autoY1.get() - currentSpeed * delta * 0.05;
+    const moveDown = autoY2.get() + currentSpeed * delta * 0.05;
 
-    const moveLeft = autoX1.get() - PARALLAX_SPEED * delta * 0.05;
-    const moveRight = autoX2.get() + PARALLAX_SPEED * delta * 0.05;
+    const moveLeft = autoX1.get() - currentSpeed * delta * 0.05;
+    const moveRight = autoX2.get() + currentSpeed * delta * 0.05;
 
     let newUp = moveUp;
     if (newUp <= -50) newUp = 0;

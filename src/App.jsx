@@ -7,6 +7,8 @@ import { ContactSection } from '@/features/contact';
 import CustomCursor from '@/components/CustomCursor';
 import StudioApproach from '@/features/studio/StudioApproach';
 import ResumePage from '@/features/resume/ResumePage';
+import { AdminDashboard } from '@/features/cms';
+import KineticTicker from '@/components/KineticTicker';
 
 function App() {
   const [currentPath, setCurrentPath] = useState(
@@ -18,8 +20,33 @@ function App() {
       setCurrentPath(window.location.pathname);
     };
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+
+    // Keyboard shortcut to open Studio CMS (Cmd+K or Ctrl+Shift+A)
+    const handleKeyDown = (e) => {
+      if ((e.metaKey && e.key === 'k') || (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a'))) {
+        e.preventDefault();
+        window.history.pushState({}, '', '/admin');
+        setCurrentPath('/admin');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
+
+  if (currentPath === '/admin' || currentPath === '/cms') {
+    return (
+      <AdminDashboard
+        onNavigateHome={() => {
+          window.history.pushState({}, '', '/');
+          setCurrentPath('/');
+        }}
+      />
+    );
+  }
 
   if (currentPath === '/resume') {
     return (
@@ -40,6 +67,7 @@ function App() {
       <CustomCursor />
       <Navbar />
       <HeroSection />
+      <KineticTicker />
       <PortfolioSection />
       <StudioApproach />
       <AboutSection />

@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { PORTFOLIO_ITEMS, FEATURED_COUNT } from '../data/portfolioData';
 import { usePortfolioFilter } from '../hooks/usePortfolioFilter';
 import { useIsMobile } from '@/hooks';
+import { useCMS } from '@/features/cms';
 import BrandsCarousel from './BrandsCarousel';
 import FeaturedScrollStack from './FeaturedScrollStack';
 import FeaturedProjects from './FeaturedProjects';
@@ -17,6 +18,8 @@ const PortfolioSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const isMobile = useIsMobile();
   const [selectedGridProject, setSelectedGridProject] = useState(null);
+  const cms = useCMS();
+  const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
 
   const {
     filter,
@@ -27,7 +30,7 @@ const PortfolioSection = () => {
     handleShowAll,
     handleBackToFeatured,
     setShowAll,
-  } = usePortfolioFilter(PORTFOLIO_ITEMS, FEATURED_COUNT);
+  } = usePortfolioFilter(projects, FEATURED_COUNT);
 
   return (
     <section id="portfolio" className="relative py-20 md:py-32 bg-cloud-dancer text-eerie" ref={ref}>
@@ -73,13 +76,13 @@ const PortfolioSection = () => {
               <span className="section-kicker mb-4">Explore by discipline</span>
               <h3 className="font-display text-3xl md:text-5xl tracking-[-0.05em]">Different formats. One point of view.</h3>
             </div>
-            <span className="hidden md:block text-xs uppercase tracking-[0.14em] text-eerie/45">{PORTFOLIO_ITEMS.length} projects</span>
+            <span className="hidden md:block text-xs uppercase tracking-[0.14em] text-eerie/45">{projects.length} projects</span>
           </div>
           <div className="flex flex-wrap gap-2 border-y border-eerie/15 py-4">
-            <button type="button" onClick={() => { setFilter('all'); setShowAll(true); }} className="topic-link">All work <span>{PORTFOLIO_ITEMS.length}</span></button>
+            <button type="button" onClick={() => { setFilter('all'); setShowAll(true); }} className="topic-link">All work <span>{projects.length}</span></button>
             {['branding', 'packaging', 'posters', 'brochures', 'uiux'].map((topic) => (
               <button key={topic} type="button" onClick={() => { setFilter(topic); setShowAll(true); }} className="topic-link">
-                {topic === 'uiux' ? 'UI/UX' : topic} <span>{PORTFOLIO_ITEMS.filter((item) => item.category === topic).length}</span>
+                {topic === 'uiux' ? 'UI/UX' : topic} <span>{projects.filter((item) => item.category === topic).length}</span>
               </button>
             ))}
           </div>

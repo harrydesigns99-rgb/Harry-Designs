@@ -1,9 +1,32 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useIsMobile } from '@/hooks';
 
 const PortfolioCard = ({ item, index, onSelect }) => {
   const isMobile = useIsMobile();
   const Icon = item.icon;
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [7, -7]), { damping: 20, stiffness: 220 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-7, 7]), { damping: 20, stiffness: 220 });
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+
+  const handleMouseMove = (e) => {
+    if (isMobile) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const relX = (e.clientX - rect.left) / rect.width;
+    const relY = (e.clientY - rect.top) / rect.height;
+    mouseX.set(relX - 0.5);
+    mouseY.set(relY - 0.5);
+    setGlare({ x: relX * 100, y: relY * 100, opacity: 0.25 });
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    setGlare((prev) => ({ ...prev, opacity: 0 }));
+  };
 
   return (
     <motion.div
@@ -14,19 +37,46 @@ const PortfolioCard = ({ item, index, onSelect }) => {
       transition={{
         delay: index * 0.04,
         duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1],
       }}
+      style={{
+        perspective: 1000,
+        rotateX: !isMobile ? rotateX : 0,
+        rotateY: !isMobile ? rotateY : 0,
+        transformStyle: 'preserve-3d',
+      }}
+      whileHover={
+        !isMobile
+          ? {
+              y: -6,
+              transition: { duration: 0.25 },
+            }
+          : {}
+      }
       data-cursor="View"
       onClick={() => onSelect?.(item)}
-      className="group relative overflow-hidden cursor-pointer bg-neutral-900 border border-eerie/10 aspect-[4/5] flex flex-col justify-end"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group relative overflow-hidden cursor-pointer bg-neutral-900 border border-eerie/10 aspect-[4/5] flex flex-col justify-end shadow-md hover:shadow-xl transition-shadow"
     >
+      {/* Specular Glare */}
+      {!isMobile && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-20"
+          style={{
+            opacity: glare.opacity,
+            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.22) 0%, transparent 60%)`,
+          }}
+        />
+      )}
+
       {/* Background Image / Artwork */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {item.image ? (
           <img
             src={item.image}
             alt={item.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
         ) : (
           <div className={`w-full h-full bg-gradient-to-br ${item.color} flex items-center justify-center`}>

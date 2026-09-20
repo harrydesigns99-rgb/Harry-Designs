@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useState } from 'react';
 import { useIsMobile } from '@/hooks';
 import { fadeInUp, TRANSITIONS } from '@/animations';
@@ -8,6 +8,29 @@ const FeaturedCard = ({ item, index, isInView, onSelect }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const isMobile = useIsMobile();
   const Icon = item.icon;
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { damping: 20, stiffness: 220 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { damping: 20, stiffness: 220 });
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+
+  const handleMouseMove = (e) => {
+    if (isMobile) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const relX = (e.clientX - rect.left) / rect.width;
+    const relY = (e.clientY - rect.top) / rect.height;
+    mouseX.set(relX - 0.5);
+    mouseY.set(relY - 0.5);
+    setGlare({ x: relX * 100, y: relY * 100, opacity: 0.28 });
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    setGlare((prev) => ({ ...prev, opacity: 0 }));
+    if (!isMobile) setHoveredItem(null);
+  };
 
   return (
     <motion.div
@@ -19,27 +42,43 @@ const FeaturedCard = ({ item, index, isInView, onSelect }) => {
           : { opacity: 0, scale: 0.9, x: index === 0 ? -50 : 50 }
       }
       transition={{
-        delay: 0.6 + index * 0.2,
+        delay: 0.4 + index * 0.15,
         duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      style={{
+        perspective: 1000,
+        rotateX: !isMobile ? rotateX : 0,
+        rotateY: !isMobile ? rotateY : 0,
+        transformStyle: 'preserve-3d',
       }}
       whileHover={
         !isMobile
           ? {
-              scale: 1.05,
-              y: -10,
+              y: -8,
               transition: { duration: 0.3 },
             }
           : {}
       }
       data-cursor="View"
-      className="group relative overflow-hidden cursor-pointer"
+      className="group relative overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-shadow"
       onClick={() => onSelect(item)}
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => !isMobile && setHoveredItem(item.id)}
-      onMouseLeave={() => !isMobile && setHoveredItem(null)}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Card container with larger aspect ratio for featured */}
-      <div className="relative overflow-hidden aspect-[4/5] w-full shadow-lg">
+      <div className="relative overflow-hidden aspect-[4/5] w-full">
+        {/* Dynamic Specular Glare */}
+        {!isMobile && (
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-20"
+            style={{
+              opacity: glare.opacity,
+              background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.25) 0%, transparent 60%)`,
+            }}
+          />
+        )}
         
         {/* Full Image Background */}
         <div className="absolute inset-0 z-0">
@@ -47,7 +86,7 @@ const FeaturedCard = ({ item, index, isInView, onSelect }) => {
             <img 
               src={item.image} 
               alt={item.client}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             />
           ) : (
              <div className="absolute inset-0 flex items-center justify-center">

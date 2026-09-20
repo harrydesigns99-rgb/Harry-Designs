@@ -47,10 +47,24 @@ const Footer = () => {
 
         <div className="border-t border-white/10 pt-8 mt-8 w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <p>© {SITE_INFO.currentYear} {SITE_INFO.fullName}. All rights reserved.</p>
-          <p>
-            Designed &amp; Crafted by{' '}
-            <span className="text-white font-medium">Hariharan S</span> • Independent Designer
-          </p>
+          <div className="flex items-center gap-6">
+            <a
+              href="/admin"
+              onClick={(e) => {
+                e.preventDefault();
+                window.history.pushState({}, '', '/admin');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+              }}
+              className="text-stone-500 hover:text-crimson font-mono transition-colors text-[11px] uppercase tracking-wider flex items-center gap-1.5"
+              title="Open Studio Content Management System (⌘K)"
+            >
+              <span>⚙</span> Studio CMS
+            </a>
+            <p>
+              Designed &amp; Crafted by{' '}
+              <span className="text-white font-medium">Hariharan S</span> • Independent Designer
+            </p>
+          </div>
         </div>
       </div>
 

@@ -10,7 +10,8 @@ export function usePortfolioFilter(items, featuredCount) {
 
   const filteredItems = filter === 'all' ? items : items.filter(item => item.category === filter);
   
-  const featuredItems = items.slice(0, featuredCount);
+  const featuredOnly = items.filter(item => item.isFeatured !== false);
+  const featuredItems = (featuredOnly.length > 0 ? featuredOnly : items).slice(0, featuredCount);
   const displayItems = showAll ? filteredItems : featuredItems;
 
   const handleShowAll = () => {

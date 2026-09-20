@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BRANDS } from '../data/portfolioData';
+import { useCMS } from '@/features/cms';
 import BrandCard from './BrandCard';
 import { CARD_DIMENSIONS } from '@/constants';
 import { fadeInUp, TRANSITIONS, DELAYS } from '@/animations';
 
 const BrandsCarousel = ({ isInView }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
+  const cms = useCMS();
+  const brands = cms.brands && cms.brands.length > 0 ? cms.brands : BRANDS;
 
   // Calculate animation distance
-  const scrollDistance = (CARD_DIMENSIONS.width + CARD_DIMENSIONS.gap) * BRANDS.length;
+  const scrollDistance = (CARD_DIMENSIONS.width + CARD_DIMENSIONS.gap) * brands.length;
 
   return (
     <motion.div
@@ -48,7 +51,7 @@ const BrandsCarousel = ({ isInView }) => {
             }}
             className="flex gap-8 pr-8"
           >
-            {BRANDS.map((brand, index) => (
+            {brands.map((brand, index) => (
               <BrandCard
                 key={`brand-1-${index}`}
                 brand={brand}
@@ -74,7 +77,7 @@ const BrandsCarousel = ({ isInView }) => {
             }}
             className="flex gap-8 pr-8"
           >
-            {BRANDS.map((brand, index) => (
+            {brands.map((brand, index) => (
               <BrandCard
                 key={`brand-2-${index}`}
                 brand={brand}
