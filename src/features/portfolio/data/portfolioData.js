@@ -45,6 +45,11 @@ export const PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 2.webp',
+    hasBeforeAfter: true,
+    beforeImage: '/image/samples/2.webp',
+    afterImage: '/image/Image Gallery/Artboard 2.webp',
+    beforeLabel: 'Legacy 2023 Packaging',
+    afterLabel: 'Redesign 2024 (+40% Lift)',
   },
   {
     id: 2,
@@ -109,6 +114,11 @@ export const PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 6.webp',
+    hasBeforeAfter: true,
+    beforeImage: '/image/samples/6.webp',
+    afterImage: '/image/Image Gallery/Artboard 6.webp',
+    beforeLabel: 'Legacy Packaging',
+    afterLabel: 'Redesigned System (12+ SKUs)',
   },
   {
     id: 6,

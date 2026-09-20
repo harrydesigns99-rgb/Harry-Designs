@@ -4,11 +4,12 @@ import { PORTFOLIO_ITEMS, FEATURED_COUNT } from '../data/portfolioData';
 import { usePortfolioFilter } from '../hooks/usePortfolioFilter';
 import { useIsMobile } from '@/hooks';
 import { useCMS } from '@/features/cms';
+import { sound } from '@/utils/audio';
 import BrandsCarousel from './BrandsCarousel';
-import FeaturedScrollStack from './FeaturedScrollStack';
 import FeaturedProjects from './FeaturedProjects';
 import PortfolioFilters from './PortfolioFilters';
 import PortfolioGrid from './PortfolioGrid';
+import PortfolioListView from './PortfolioListView';
 import ProjectDetailModal from './ProjectDetailModal';
 import { fadeInUp, scaleIn, TRANSITIONS, DELAYS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
@@ -18,6 +19,7 @@ const PortfolioSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const isMobile = useIsMobile();
   const [selectedGridProject, setSelectedGridProject] = useState(null);
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'index'
   const cms = useCMS();
   const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
 
@@ -78,19 +80,85 @@ const PortfolioSection = () => {
             </div>
             <span className="hidden md:block text-xs uppercase tracking-[0.14em] text-eerie/45">{projects.length} projects</span>
           </div>
-          <div className="flex flex-wrap gap-2 border-y border-eerie/15 py-4">
-            <button type="button" onClick={() => { setFilter('all'); setShowAll(true); }} className="topic-link">All work <span>{projects.length}</span></button>
-            {['branding', 'packaging', 'posters', 'brochures', 'uiux'].map((topic) => (
-              <button key={topic} type="button" onClick={() => { setFilter(topic); setShowAll(true); }} className="topic-link">
-                {topic === 'uiux' ? 'UI/UX' : topic} <span>{projects.filter((item) => item.category === topic).length}</span>
+          <div className="flex flex-wrap items-center justify-between gap-4 border-y border-eerie/15 py-4">
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  setFilter('all');
+                  setShowAll(true);
+                }}
+                className="topic-link"
+              >
+                All work <span>{projects.length}</span>
               </button>
-            ))}
+              {['branding', 'packaging', 'posters', 'brochures', 'uiux'].map((topic) => (
+                <button
+                  key={topic}
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    setFilter(topic);
+                    setShowAll(true);
+                  }}
+                  className="topic-link"
+                >
+                  {topic === 'uiux' ? 'UI/UX' : topic}{' '}
+                  <span>{projects.filter((item) => item.category === topic).length}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Grid vs Index View Toggle */}
+            <div className="flex items-center gap-1 bg-white/70 p-1 border border-eerie/15">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playSwitch();
+                  setViewMode('grid');
+                }}
+                className={`px-3 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                  viewMode === 'grid'
+                    ? 'bg-eerie text-white font-bold shadow-sm'
+                    : 'text-eerie/60 hover:text-eerie'
+                }`}
+              >
+                ⊞ Grid
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playSwitch();
+                  setViewMode('index');
+                }}
+                className={`px-3 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                  viewMode === 'index'
+                    ? 'bg-eerie text-white font-bold shadow-sm'
+                    : 'text-eerie/60 hover:text-eerie'
+                }`}
+              >
+                ☰ Index
+              </button>
+            </div>
           </div>
         </div>
 
 
         {/* ==================== FEATURED PROJECTS SECTION ==================== */}
-        <div id="featured-projects" className="w-full">
+        {viewMode === 'index' ? (
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <PortfolioListView
+              items={showAll ? displayItems : projects}
+              onSelect={(item) => setSelectedGridProject(item)}
+            />
+            <ProjectDetailModal
+              item={selectedGridProject}
+              onClose={() => setSelectedGridProject(null)}
+            />
+          </div>
+        ) : (
+          <div id="featured-projects" className="w-full">
             {!showAll ? (
               <FeaturedProjects
                 items={featuredItems}
@@ -145,7 +213,8 @@ const PortfolioSection = () => {
                 />
               </div>
             )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

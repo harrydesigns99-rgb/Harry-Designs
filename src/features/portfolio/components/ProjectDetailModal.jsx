@@ -1,12 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import BeforeAfterSlider from '@/components/BeforeAfterSlider';
+import { sound } from '@/utils/audio';
 
 const ProjectDetailModal = ({ item, onClose }) => {
+  const [viewModeOverride, setViewModeOverride] = useState(null);
+  const [lastItemId, setLastItemId] = useState(item?.id);
+
+  if (item?.id !== lastItemId) {
+    setLastItemId(item?.id);
+    setViewModeOverride(null);
+  }
+
+  const viewMode = viewModeOverride ?? (item?.hasBeforeAfter ? 'compare' : 'artwork');
+
   useEffect(() => {
     if (!item) return undefined;
 
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') {
+        sound.playClick();
+        onClose();
+      }
     };
 
     document.body.style.overflow = 'hidden';
@@ -17,6 +32,11 @@ const ProjectDetailModal = ({ item, onClose }) => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [item, onClose]);
+
+  const handleClose = () => {
+    sound.playClick();
+    onClose();
+  };
 
   return (
     <AnimatePresence>
@@ -29,7 +49,7 @@ const ProjectDetailModal = ({ item, onClose }) => {
           role="dialog"
           aria-modal="true"
           aria-labelledby="project-title"
-          onClick={onClose}
+          onClick={handleClose}
         >
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
           <motion.div
@@ -43,7 +63,7 @@ const ProjectDetailModal = ({ item, onClose }) => {
             {/* Close Button */}
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close project details"
               className="absolute right-5 top-5 z-20 flex h-10 w-10 items-center justify-center border border-eerie/20 bg-cloud-dancer/90 text-2xl hover:bg-eerie hover:text-white transition-colors cursor-pointer"
             >
@@ -51,21 +71,64 @@ const ProjectDetailModal = ({ item, onClose }) => {
             </button>
 
             <div className="grid lg:grid-cols-[1fr_1.1fr]">
-              {/* Left Column: Artwork Image */}
-              <div className="min-h-72 sm:min-h-96 lg:min-h-[36rem] bg-neutral-900 overflow-hidden relative">
-                {item.image ? (
-                  <img
-                    src={item.image}
-                    alt={`${item.client} - ${item.title}`}
-                    className="w-full h-full object-cover"
+              {/* Left Column: Artwork Image or Before/After Transformation */}
+              <div className="min-h-72 sm:min-h-96 lg:min-h-[36rem] bg-neutral-900 overflow-hidden relative flex flex-col justify-center">
+                {item.hasBeforeAfter && (
+                  <div className="absolute top-4 left-4 z-40 flex items-center bg-black/70 backdrop-blur-md p-1 border border-white/20 shadow-lg">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sound.playClick();
+                        setViewModeOverride('compare');
+                      }}
+                      className={`px-3 py-1.5 text-[11px] font-semibold tracking-wider uppercase transition-colors ${
+                        viewMode === 'compare'
+                          ? 'bg-crimson text-white shadow-sm'
+                          : 'text-white/70 hover:text-white'
+                      }`}
+                    >
+                      Transformation
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sound.playClick();
+                        setViewModeOverride('artwork');
+                      }}
+                      className={`px-3 py-1.5 text-[11px] font-semibold tracking-wider uppercase transition-colors ${
+                        viewMode === 'artwork'
+                          ? 'bg-white text-eerie shadow-sm'
+                          : 'text-white/70 hover:text-white'
+                      }`}
+                    >
+                      Single View
+                    </button>
+                  </div>
+                )}
+
+                {item.hasBeforeAfter && viewMode === 'compare' ? (
+                  <BeforeAfterSlider
+                    beforeImage={item.beforeImage}
+                    afterImage={item.afterImage}
+                    beforeLabel={item.beforeLabel}
+                    afterLabel={item.afterLabel}
+                    className="w-full h-full min-h-72 sm:min-h-96 lg:min-h-[36rem]"
                   />
+                ) : item.image ? (
+                  <div className="relative w-full h-full min-h-72 sm:min-h-96 lg:min-h-[36rem]">
+                    <img
+                      src={item.image}
+                      alt={`${item.client} - ${item.title}`}
+                      className="w-full h-full object-cover"
+                    />
+                    {item.metric && (
+                      <div className="absolute bottom-5 left-5 z-10 bg-crimson text-white px-3 py-1.5 text-xs font-semibold tracking-wider uppercase">
+                        Impact: {item.metric}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <div className={`h-full min-h-80 bg-gradient-to-br ${item.color}`} />
-                )}
-                {item.metric && (
-                  <div className="absolute bottom-5 left-5 z-10 bg-crimson text-white px-3 py-1.5 text-xs font-semibold tracking-wider uppercase">
-                    Impact: {item.metric}
-                  </div>
                 )}
               </div>
 
@@ -145,7 +208,7 @@ const ProjectDetailModal = ({ item, onClose }) => {
 
                   <button
                     type="button"
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="text-xs uppercase tracking-[0.14em] text-eerie/60 hover:text-eerie transition-colors font-medium cursor-pointer"
                   >
                     Close Window &times;

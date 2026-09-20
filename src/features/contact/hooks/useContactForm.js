@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { sound } from '@/utils/audio';
 
 /**
- * Hook to manage contact form state, asynchronous submission, and delivery
+ * Hook to manage contact form state, client scoping pill selections, and submission
  */
 export function useContactForm() {
   const [formData, setFormData] = useState({
@@ -10,13 +11,49 @@ export function useContactForm() {
     phone: '',
     message: '',
   });
+
+  const [selectedServices, setSelectedServices] = useState(['Packaging Architecture']);
+  const [selectedTimeline, setSelectedTimeline] = useState('Standard (1-2 mo)');
+  const [selectedBudget, setSelectedBudget] = useState('₹1.5L - ₹3L ($2K - $4K)');
+
   const [status, setStatus] = useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
   const [errorMessage, setErrorMessage] = useState('');
 
+  const toggleService = (service) => {
+    setSelectedServices((prev) => {
+      const exists = prev.includes(service);
+      if (exists) {
+        sound.playClick();
+        return prev.filter((s) => s !== service);
+      }
+      sound.playPop();
+      return [...prev, service];
+    });
+  };
+
+  const selectTimeline = (timeline) => {
+    sound.playPop();
+    setSelectedTimeline(timeline);
+  };
+
+  const selectBudget = (budget) => {
+    sound.playPop();
+    setSelectedBudget(budget);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    sound.playPop();
     setStatus('submitting');
     setErrorMessage('');
+
+    const formattedServices = selectedServices.length > 0 ? selectedServices.join(', ') : 'Not specified';
+    const combinedMessage = [
+      `Scope / Services: ${formattedServices}`,
+      `Timeline: ${selectedTimeline}`,
+      `Budget Range: ${selectedBudget}`,
+      `\nClient Note / Brief:\n${formData.message}`,
+    ].join('\n');
 
     try {
       // Send to Web3Forms free API
@@ -27,13 +64,16 @@ export function useContactForm() {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: '6da4194a-024f-404b-add6-06d974b0f825', // Web3Forms access key
+          access_key: '6da4194a-024f-404b-add6-06d974b0f825',
           name: formData.name,
           email: formData.email,
           phone: formData.phone || 'Not provided',
-          message: formData.message,
-          from_name: `${formData.name} (Harry Designs Portfolio Lead)`,
-          subject: `New Project Inquiry from ${formData.name}`,
+          message: combinedMessage,
+          services: formattedServices,
+          timeline: selectedTimeline,
+          budget: selectedBudget,
+          from_name: `${formData.name} (Harry Designs Inquiry)`,
+          subject: `New Project Inquiry from ${formData.name} [${formattedServices}]`,
         }),
       });
 
@@ -44,23 +84,21 @@ export function useContactForm() {
         setFormData({ name: '', email: '', phone: '', message: '' });
         setTimeout(() => setStatus('idle'), 7000);
       } else {
-        // If API fails or key is unverified, fallback to direct mailto
-        triggerMailtoFallback();
+        triggerMailtoFallback(combinedMessage);
         setStatus('success');
         setFormData({ name: '', email: '', phone: '', message: '' });
       }
     } catch {
-      // Network or fetch error: trigger mailto so message is never lost
-      triggerMailtoFallback();
+      triggerMailtoFallback(combinedMessage);
       setStatus('success');
       setFormData({ name: '', email: '', phone: '', message: '' });
     }
   };
 
-  const triggerMailtoFallback = () => {
+  const triggerMailtoFallback = (messageContent) => {
     const subject = encodeURIComponent(`Project Inquiry from ${formData.name}`);
     const body = encodeURIComponent(
-      `Hi Hariharan,\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'N/A'}\n\nProject details:\n${formData.message}\n`
+      `Hi Hariharan,\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'N/A'}\n\n${messageContent}\n`
     );
     window.open(`mailto:sivakumarhariharan007@gmail.com?subject=${subject}&body=${body}`, '_blank');
   };
@@ -72,8 +110,22 @@ export function useContactForm() {
     }));
   };
 
+  // WhatsApp auto-formatted direct link
+  const getWhatsAppLink = () => {
+    const servicesText = selectedServices.length > 0 ? selectedServices.join(', ') : 'a new design project';
+    const message = `Hi Hariharan, I'm interested in discussing a project for *${servicesText}*. Estimated timeline: *${selectedTimeline}*, budget: *${selectedBudget}*.`;
+    return `https://wa.me/918610174188?text=${encodeURIComponent(message)}`;
+  };
+
   return {
     formData,
+    selectedServices,
+    selectedTimeline,
+    selectedBudget,
+    toggleService,
+    selectTimeline,
+    selectBudget,
+    getWhatsAppLink,
     status,
     isSubmitting: status === 'submitting',
     showSuccess: status === 'success',

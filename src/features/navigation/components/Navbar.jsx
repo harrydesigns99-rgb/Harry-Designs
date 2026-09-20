@@ -7,6 +7,7 @@ import NavLinks from './NavLinks';
 import MobileMenu from './MobileMenu';
 import { slideInFromTop, scaleIn, hoverScale, TRANSITIONS, DELAYS } from '@/animations';
 import { cn } from '@/utils';
+import StudioTelemetry from '@/components/StudioTelemetry';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,8 +28,9 @@ const Navbar = () => {
             : 'bg-transparent')
       )}
     >
+      <StudioTelemetry />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20 md:h-24">
+        <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <motion.a
             href="#home"
