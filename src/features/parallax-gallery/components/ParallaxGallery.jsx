@@ -15,7 +15,7 @@ const ParallaxGallery = () => {
   const { autoY1, autoY2, autoX1, autoX2 } = useAutoScroll(speed);
 
   // Scroll-based parallax transforms
-  const { smoothYLeftRight, smoothYCenter, smoothXRow1, smoothXRow2 } = useParallaxTransform();
+  const { smoothYLeftRight, smoothYCenter } = useParallaxTransform();
 
   // Interactive mouse parallax depth
   const mouseX = useMotionValue(0);
@@ -88,21 +88,19 @@ const ParallaxGallery = () => {
 
       {/* MOBILE LAYOUT */}
       <div className="lg:hidden flex flex-col gap-4 mt-8 pb-10 w-full overflow-hidden">
-        {/* Row 1 - Auto LEFT, Scroll LEFT */}
+        {/* Row 1 - Auto LEFT */}
         <GalleryRow
           images={rowImages}
           autoXPercent={autoX1Percent}
-          smoothX={smoothXRow1}
           rotation=""
           overlay="bg-crimson/10"
           marginLeft="-ml-[10%]"
         />
 
-        {/* Row 2 - Auto RIGHT, Scroll RIGHT */}
+        {/* Row 2 - Auto RIGHT */}
         <GalleryRow
           images={rowImages}
           autoXPercent={autoX2Percent}
-          smoothX={smoothXRow2}
           rotation=""
           overlay="bg-crimson-dark/10"
           marginLeft="-ml-[10%]"

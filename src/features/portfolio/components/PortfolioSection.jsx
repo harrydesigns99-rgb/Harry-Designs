@@ -91,20 +91,12 @@ const PortfolioSection = () => {
 
         {/* ==================== FEATURED PROJECTS SECTION ==================== */}
         <div id="featured-projects" className="w-full">
-            {/* Featured Section: Stack for Mobile, Grid for Desktop */}
             {!showAll ? (
-              isMobile ? (
-                <FeaturedScrollStack
-                  items={featuredItems}
-                  onViewAll={handleShowAll}
-                />
-              ) : (
-                <FeaturedProjects
-                  items={featuredItems}
-                  isInView={isInView}
-                  onViewAll={handleShowAll}
-                />
-              )
+              <FeaturedProjects
+                items={featuredItems}
+                isInView={isInView}
+                onViewAll={handleShowAll}
+              />
             ) : (
               <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Grid View Header */}

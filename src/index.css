@@ -200,6 +200,18 @@
     outline: 2px solid var(--color-crimson-light);
     outline-offset: 4px;
   }
+
+  /* GPU compositing & Mobile Anti-Flicker */
+  html, body {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

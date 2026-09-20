@@ -1,110 +1,144 @@
+import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { useEffect } from 'react';
 
 const LivingBackground = () => {
+  const [isTouchDevice] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(pointer: coarse)').matches;
+  });
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 40, stiffness: 60 };
+  const springConfig = { damping: 45, stiffness: 50 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
+    if (isTouchDevice) return undefined;
+
     const handleMouseMove = (e) => {
       const { innerWidth, innerHeight } = window;
-      mouseX.set((e.clientX / innerWidth - 0.5) * 60);
-      mouseY.set((e.clientY / innerHeight - 0.5) * 60);
+      mouseX.set((e.clientX / innerWidth - 0.5) * 45);
+      mouseY.set((e.clientY / innerHeight - 0.5) * 45);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, [isTouchDevice, mouseX, mouseY]);
 
   return (
     <div
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#f4f1ea]"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#f8f6f0]"
+      style={{
+        transform: 'translate3d(0, 0, 0)',
+        WebkitBackfaceVisibility: 'hidden',
+        backfaceVisibility: 'hidden',
+      }}
       aria-hidden="true"
     >
-      {/* Subtle Noise Texture for tactile paper feel */}
+      {/* Subtle Editorial Grain Texture (Lightweight CSS SVG, Zero Thrashing) */}
       <div
-        className="absolute inset-0 opacity-[0.035] mix-blend-multiply pointer-events-none"
+        className="absolute inset-0 opacity-[0.022] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundImage: `radial-gradient(rgba(18, 18, 18, 0.4) 1px, transparent 0)`,
+          backgroundSize: '24px 24px',
         }}
       />
 
-      {/* Floating Ambient Orb 1 - Soft Iris Blue (Top Right) */}
+      {/* Primary Ambient Light Orb - Soft Iris / Atelier Blue (Top-Right) */}
       <motion.div
-        style={{ x: smoothX, y: smoothY }}
-        animate={{
-          x: [0, 80, -40, 0],
-          y: [0, -60, 50, 0],
-          scale: [1, 1.18, 0.95, 1],
-          opacity: [0.22, 0.38, 0.25, 0.22],
-        }}
+        animate={
+          isTouchDevice
+            ? {
+                scale: [1, 1.08, 1],
+                opacity: [0.35, 0.5, 0.35],
+              }
+            : {
+                x: [0, 60, -30, 0],
+                y: [0, -45, 35, 0],
+                scale: [1, 1.12, 0.96, 1],
+                opacity: [0.35, 0.55, 0.4, 0.35],
+              }
+        }
         transition={{
-          duration: 24,
+          duration: 22,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute -top-32 -right-32 w-[650px] h-[650px] rounded-full bg-gradient-to-br from-[#8490ef]/30 via-[#5263d8]/20 to-transparent blur-[110px]"
-      />
-
-      {/* Floating Ambient Orb 2 - Warm Terracotta Amber (Bottom Left) */}
-      <motion.div
+        className="absolute -top-24 -right-24 w-[450px] sm:w-[600px] h-[450px] sm:h-[600px] rounded-full pointer-events-none"
         style={{
-          x: useSpring(mouseX, { damping: 50, stiffness: 45 }),
-          y: useSpring(mouseY, { damping: 50, stiffness: 45 }),
+          background: 'radial-gradient(circle, rgba(132, 144, 239, 0.22) 0%, rgba(82, 99, 216, 0.08) 45%, transparent 70%)',
+          transform: 'translate3d(0, 0, 0)',
+          WebkitBackfaceVisibility: 'hidden',
+          x: !isTouchDevice ? smoothX : 0,
+          y: !isTouchDevice ? smoothY : 0,
         }}
-        animate={{
-          x: [0, -60, 50, 0],
-          y: [0, 70, -35, 0],
-          scale: [1, 1.25, 0.9, 1],
-          opacity: [0.18, 0.32, 0.2, 0.18],
-        }}
-        transition={{
-          duration: 28,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 3,
-        }}
-        className="absolute -bottom-40 -left-40 w-[700px] h-[700px] rounded-full bg-gradient-to-tr from-[#d4775c]/25 via-[#e8a87c]/20 to-transparent blur-[120px]"
       />
 
-      {/* Floating Ambient Orb 3 - Radiant Pearl Crimson (Center Subtle Glow) */}
+      {/* Secondary Ambient Light Orb - Warm Terracotta Sand (Bottom-Left) */}
       <motion.div
-        animate={{
-          x: [0, 40, -50, 0],
-          y: [0, -30, 40, 0],
-          scale: [0.95, 1.15, 1, 0.95],
-          opacity: [0.12, 0.24, 0.15, 0.12],
-        }}
+        animate={
+          isTouchDevice
+            ? {
+                scale: [1, 1.06, 1],
+                opacity: [0.3, 0.45, 0.3],
+              }
+            : {
+                x: [0, -50, 40, 0],
+                y: [0, 50, -25, 0],
+                scale: [1, 1.14, 0.94, 1],
+                opacity: [0.3, 0.48, 0.32, 0.3],
+              }
+        }
         transition={{
-          duration: 20,
+          duration: 26,
           repeat: Infinity,
           ease: 'easeInOut',
-          delay: 6,
+          delay: 2,
         }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[850px] rounded-full bg-gradient-to-r from-[#5263d8]/15 via-[#d4775c]/10 to-transparent blur-[140px]"
+        className="absolute -bottom-28 -left-28 w-[500px] sm:w-[650px] h-[500px] sm:h-[650px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(212, 119, 92, 0.18) 0%, rgba(232, 168, 124, 0.08) 50%, transparent 75%)',
+          transform: 'translate3d(0, 0, 0)',
+          WebkitBackfaceVisibility: 'hidden',
+        }}
       />
 
-      {/* Subtle Architectural Grid Lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(18,18,18,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(18,18,18,0.03)_1px,transparent_1px)] bg-[size:5rem_5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-
-      {/* Animated Light Sweep Line */}
-      <motion.div
-        animate={{
-          x: ['-100%', '200%'],
-          opacity: [0, 0.4, 0],
+      {/* Central Radiance - Subtle Alabaster Highlight */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] h-[700px] sm:h-[900px] rounded-full pointer-events-none opacity-40"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(248, 246, 240, 0.2) 60%, transparent 80%)',
+          transform: 'translate3d(0, 0, 0)',
         }}
-        transition={{
-          duration: 16,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          repeatDelay: 8,
-        }}
-        className="absolute top-0 bottom-0 w-[400px] bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] pointer-events-none"
       />
+
+      {/* Fine Swiss Architectural Grid (Subtle luxury studio lines) */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-40"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(18, 18, 18, 0.025) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(18, 18, 18, 0.025) 1px, transparent 1px)
+          `,
+          backgroundSize: '4rem 4rem',
+        }}
+      />
+
+      {/* Corner Minimal Architectural Crosshairs */}
+      <div className="hidden lg:block absolute top-12 left-12 text-eerie/15 font-mono text-xs select-none">
+        +
+      </div>
+      <div className="hidden lg:block absolute top-12 right-12 text-eerie/15 font-mono text-xs select-none">
+        +
+      </div>
+      <div className="hidden lg:block absolute bottom-12 left-12 text-eerie/15 font-mono text-xs select-none">
+        +
+      </div>
+      <div className="hidden lg:block absolute bottom-12 right-12 text-eerie/15 font-mono text-xs select-none">
+        +
+      </div>
     </div>
   );
 };
