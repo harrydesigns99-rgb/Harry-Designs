@@ -1,23 +1,19 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { PORTFOLIO_ITEMS, FEATURED_COUNT } from '../data/portfolioData';
-import { usePortfolioFilter } from '../hooks/usePortfolioFilter';
-import { useIsMobile } from '@/hooks';
+import { PORTFOLIO_ITEMS, FILTER_BUTTONS } from '../data/portfolioData';
 import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
 import BrandsCarousel from './BrandsCarousel';
-import FeaturedProjects from './FeaturedProjects';
-import PortfolioFilters from './PortfolioFilters';
 import PortfolioGrid from './PortfolioGrid';
 import PortfolioListView from './PortfolioListView';
 import ProjectDetailModal from './ProjectDetailModal';
-import { fadeInUp, scaleIn, TRANSITIONS, DELAYS } from '@/animations';
+import { fadeInUp, scaleIn, TRANSITIONS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
 const PortfolioSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const isMobile = useIsMobile();
+  const [filter, setFilter] = useState('all');
   const [selectedGridProject, setSelectedGridProject] = useState(null);
   const [layoutMode, setLayoutMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -32,19 +28,15 @@ const PortfolioSection = () => {
     }
     return 'grid';
   });
+
   const cms = useCMS();
   const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
 
-  const {
-    filter,
-    setFilter,
-    showAll,
-    displayItems,
-    featuredItems,
-    handleShowAll,
-    handleBackToFeatured,
-    setShowAll,
-  } = usePortfolioFilter(projects, FEATURED_COUNT);
+  // Filtered projects memoized for performance
+  const filteredProjects = useMemo(() => {
+    if (filter === 'all') return projects;
+    return projects.filter((item) => item.category === filter);
+  }, [filter, projects]);
 
   return (
     <section id="portfolio" className="relative py-20 md:py-32 bg-transparent text-eerie" ref={ref}>
@@ -52,78 +44,91 @@ const PortfolioSection = () => {
       <div className="absolute inset-x-0 top-0 h-px bg-white/10 pointer-events-none" />
 
       <div className="relative z-10">
-        
         {/* ==================== BRANDS SECTION ==================== */}
-        <div className="mb-8 md:mb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Header Section */}
+        <div className="mb-16 md:mb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            variants={fadeInUp}
+            transition={{ ...TRANSITIONS.slow, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-12"
+          >
             <motion.div
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
-              variants={fadeInUp}
-              transition={{ ...TRANSITIONS.slow, ease: [0.22, 1, 0.36, 1] }}
-              className="text-center mb-12"
+              variants={scaleIn}
+              transition={TRANSITIONS.medium}
+              className="inline-block mb-4"
             >
-              <motion.div
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
-                variants={scaleIn}
-                transition={TRANSITIONS.medium}
-                className="inline-block mb-4"
-              >
-                <span className="section-kicker mb-4">Selected clients</span>
-              </motion.div>
-              <h2 className="text-4xl md:text-6xl font-display font-bold mb-5 text-eerie">
-                Built with <span className="text-gradient">good people.</span>
-              </h2>
-              <p className="text-lg md:text-xl text-eerie/60 max-w-3xl mx-auto">
-                A selection of brands and teams I&apos;ve helped shape through identity, packaging, and design.
-              </p>
+              <span className="section-kicker mb-4">Selected clients</span>
             </motion.div>
+            <h2 className="text-4xl md:text-6xl font-display font-bold mb-5 text-eerie">
+              Built with <span className="text-gradient">good people.</span>
+            </h2>
+            <p className="text-lg md:text-xl text-eerie/60 max-w-3xl mx-auto">
+              A selection of brands and teams I&apos;ve helped shape through identity, packaging, and design.
+            </p>
+          </motion.div>
 
-            {/* Infinite Scrolling Brands Carousel */}
-            <BrandsCarousel isInView={isInView} />
+          {/* Infinite Scrolling Brands Carousel */}
+          <BrandsCarousel isInView={isInView} />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-          <div className="flex items-end justify-between gap-6 mb-5">
+        {/* ==================== MAIN PORTFOLIO SHOWCASE ==================== */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Single Unified Header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
             <div>
-              <span className="section-kicker mb-4">Explore by discipline</span>
-              <h3 className="font-display text-3xl md:text-5xl tracking-[-0.05em]">Different formats. One point of view.</h3>
+              <span className="section-kicker mb-4">Selected work</span>
+              <h3 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.05em] text-eerie">
+                Different formats. <span className="text-gradient">One point of view.</span>
+              </h3>
             </div>
-            <span className="hidden md:block text-xs uppercase tracking-[0.14em] text-eerie/45">{projects.length} projects</span>
+            <p className="max-w-xs text-sm sm:text-base text-eerie/65 md:text-right leading-relaxed">
+              Identity systems, packaging architecture, and visual worlds with commercial impact.
+            </p>
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-4 border-y border-eerie/15 py-4">
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playClick();
-                  setFilter('all');
-                  setShowAll(true);
-                }}
-                className="topic-link"
-              >
-                All work <span>{projects.length}</span>
-              </button>
-              {['branding', 'packaging', 'posters', 'brochures', 'uiux'].map((topic) => (
-                <button
-                  key={topic}
-                  type="button"
-                  onClick={() => {
-                    sound.playClick();
-                    setFilter(topic);
-                    setShowAll(true);
-                  }}
-                  className="topic-link"
-                >
-                  {topic === 'uiux' ? 'UI/UX' : topic}{' '}
-                  <span>{projects.filter((item) => item.category === topic).length}</span>
-                </button>
-              ))}
+
+          {/* Single Unified Controls Bar: Filter Pills (Left) + 3-Way Layout Switcher (Right) */}
+          <div className="flex flex-wrap items-center justify-between gap-4 border-y border-eerie/15 py-4 mb-12">
+            {/* Category Filters with Counts */}
+            <div className="flex flex-wrap items-center gap-2">
+              {FILTER_BUTTONS.map((btn) => {
+                const count =
+                  btn.value === 'all'
+                    ? projects.length
+                    : projects.filter((item) => item.category === btn.value).length;
+                const isActive = filter === btn.value;
+
+                return (
+                  <button
+                    key={btn.value}
+                    type="button"
+                    onClick={() => {
+                      sound.playClick();
+                      setFilter(btn.value);
+                    }}
+                    className={`px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 border ${
+                      isActive
+                        ? 'bg-crimson text-white border-crimson shadow-xs font-semibold'
+                        : 'bg-cloud-white border-eerie/15 text-eerie/70 hover:text-eerie hover:border-eerie/40'
+                    }`}
+                  >
+                    <span>{btn.label}</span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                        isActive ? 'bg-white/25 text-white' : 'bg-eerie/10 text-eerie/60'
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* 3-Way Layout Density Switcher: Loose (2-Col), Grid (3-Col), Index (List) */}
-            <div className="flex items-center gap-1 bg-cloud-white/80 p-1 border border-eerie/15">
+            <div className="flex items-center gap-1 bg-cloud-white/80 p-1 border border-eerie/15 ml-auto sm:ml-0">
               <button
                 type="button"
                 onClick={() => {
@@ -134,7 +139,6 @@ const PortfolioSection = () => {
                   } catch {
                     // ignore
                   }
-                  setShowAll(true);
                 }}
                 title="Spacious 2-column editorial view"
                 className={`px-2.5 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
@@ -155,7 +159,6 @@ const PortfolioSection = () => {
                   } catch {
                     // ignore
                   }
-                  setShowAll(true);
                 }}
                 title="Standard 3-column grid view"
                 className={`px-2.5 py-1 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
@@ -188,86 +191,42 @@ const PortfolioSection = () => {
               </button>
             </div>
           </div>
-        </div>
 
-
-        {/* ==================== FEATURED PROJECTS SECTION ==================== */}
-        {layoutMode === 'index' ? (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-            <PortfolioListView
-              items={showAll ? displayItems : projects}
-              onSelect={(item) => setSelectedGridProject(item)}
-            />
-            <ProjectDetailModal
-              item={selectedGridProject}
-              onClose={() => setSelectedGridProject(null)}
-            />
-          </div>
-        ) : (
-          <div id="featured-projects" className="w-full">
-            {!showAll ? (
-              <FeaturedProjects
-                items={featuredItems}
-                isInView={isInView}
-                onViewAll={handleShowAll}
+          {/* ==================== WORK DISPLAY: LOOSE / GRID / INDEX ==================== */}
+          {filteredProjects.length === 0 ? (
+            <div className="py-20 text-center border border-dashed border-eerie/20 mb-20">
+              <p className="text-sm font-mono text-eerie/60">No projects found in this category.</p>
+              <button
+                type="button"
+                onClick={() => setFilter('all')}
+                className="mt-3 text-xs font-mono uppercase tracking-wider text-crimson font-bold hover:underline cursor-pointer"
+              >
+                Reset to All Work
+              </button>
+            </div>
+          ) : layoutMode === 'index' ? (
+            <div className="mb-20">
+              <PortfolioListView
+                items={filteredProjects}
+                onSelect={(item) => setSelectedGridProject(item)}
               />
-            ) : (
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Grid View Header */}
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInUp}
-                  className="text-center mb-16"
-                >
-                  <h3 className="text-2xl md:text-4xl font-bold text-center mb-4 text-eerie">
-                    {layoutMode === 'loose' ? 'Editorial' : 'Featured'}{' '}
-                    <span className="text-gradient">Projects</span>
-                  </h3>
-                  <p className="text-center text-eerie/60 mb-8 text-sm md:text-base px-4">
-                    {layoutMode === 'loose'
-                      ? 'Expansive high-resolution case studies'
-                      : 'Explore all my creative work'}
-                  </p>
-                </motion.div>
+            </div>
+          ) : (
+            <div className="mb-20">
+              <PortfolioGrid
+                items={filteredProjects}
+                onSelect={setSelectedGridProject}
+                density={layoutMode}
+              />
+            </div>
+          )}
 
-                {/* Filter Buttons */}
-                <PortfolioFilters filter={filter} setFilter={setFilter} />
-
-                {/* Portfolio Grid */}
-                <PortfolioGrid
-                  items={displayItems}
-                  onSelect={setSelectedGridProject}
-                  density={layoutMode}
-                />
-
-                {/* Back to Featured Button */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: DELAYS.medium, ...TRANSITIONS.medium }}
-                  className="text-center mt-14"
-                >
-                  <motion.button
-                    onClick={handleBackToFeatured}
-                    whileHover={!isMobile ? { scale: 1.05 } : {}}
-                    whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-3 px-8 py-4 border border-eerie/30 bg-cloud-white text-eerie font-semibold text-sm hover:bg-eerie hover:text-white transition-all shadow-sm cursor-pointer"
-                  >
-                    <span className="text-lg">←</span>
-                    <span>Back to Featured Selection</span>
-                  </motion.button>
-                </motion.div>
-
-                {/* Modal for Grid Items */}
-                <ProjectDetailModal
-                  item={selectedGridProject}
-                  onClose={() => setSelectedGridProject(null)}
-                />
-              </div>
-            )}
-          </div>
-        )}
+          {/* Project Detail Modal */}
+          <ProjectDetailModal
+            item={selectedGridProject}
+            onClose={() => setSelectedGridProject(null)}
+          />
+        </div>
       </div>
     </section>
   );
