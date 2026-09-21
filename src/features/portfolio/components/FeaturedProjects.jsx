@@ -201,7 +201,7 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
             }
             whileTap={{ scale: 0.95 }}
             data-cursor="More"
-            className="group relative inline-flex items-center gap-3 px-8 py-4 border border-eerie/30 text-eerie hover:text-white font-semibold text-sm overflow-hidden transition-colors cursor-pointer"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 border border-eerie/30 text-eerie hover:text-white active:bg-crimson active:text-white active:border-crimson font-semibold text-sm overflow-hidden transition-colors cursor-pointer"
           >
             <span className="relative z-10">View All {items.length ? '12' : ''} Projects</span>
             <motion.span
@@ -211,14 +211,12 @@ const FeaturedProjects = ({ items, isInView, onViewAll }) => {
             >
               →
             </motion.span>
-            {!isMobile && (
-              <motion.div
-                className="absolute inset-0 bg-crimson"
-                initial={{ x: '-100%' }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.4 }}
-              />
-            )}
+            <motion.div
+              className="hidden md:block absolute inset-0 bg-crimson"
+              initial={{ x: '-100%' }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.4 }}
+            />
           </motion.button>
         </motion.div>
       </motion.div>

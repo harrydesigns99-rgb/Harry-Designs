@@ -19,8 +19,8 @@ const AboutHeader = ({ isInView }) => {
       >
         <span className="section-kicker">About the designer</span>
       </motion.div>
-      <h2 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.06em] leading-[0.95] mb-6 text-eerie">
-        Meet <span className="text-gradient">Hariharan,</span><br />
+      <h2 className="font-display text-4xl md:text-6xl font-medium tracking-[-0.04em] md:tracking-[-0.06em] leading-[1.04] md:leading-[0.95] mb-6 text-eerie">
+        Meet <span className="text-gradient">Hariharan,</span><br className="hidden sm:inline" />{' '}
         your creative partner.
       </h2>
       <p className="text-base md:text-lg text-eerie/60 max-w-xl leading-relaxed">

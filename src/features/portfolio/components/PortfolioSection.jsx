@@ -123,7 +123,7 @@ const PortfolioSection = () => {
             </div>
 
             {/* 3-Way Layout Density Switcher: Loose (2-Col), Grid (3-Col), Index (List) */}
-            <div className="flex items-center gap-1 bg-white/70 p-1 border border-eerie/15">
+            <div className="flex items-center gap-1 bg-cloud-white/80 p-1 border border-eerie/15">
               <button
                 type="button"
                 onClick={() => {

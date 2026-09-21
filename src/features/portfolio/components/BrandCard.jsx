@@ -10,7 +10,7 @@ const BrandCard = ({ brand, index, hoveredItem, setHoveredItem, duplicate = fals
     <motion.div
       key={`brand-${duplicate ? 2 : 1}-${index}`}
       whileHover={!isMobile ? { scale: 1.1, y: -10 } : {}}
-      className="group relative flex-shrink-0 w-48 h-32 flex flex-col items-center justify-center overflow-hidden px-5 py-4 border-r border-eerie/10 transition-colors hover:bg-white/45"
+      className="group relative flex-shrink-0 w-48 h-32 flex flex-col items-center justify-center overflow-hidden px-5 py-4 border-r border-eerie/10 transition-colors hover:bg-cloud-white/80"
       onMouseEnter={() => !isMobile && setHoveredItem(brand.name)}
       onMouseLeave={() => !isMobile && setHoveredItem(null)}
     >

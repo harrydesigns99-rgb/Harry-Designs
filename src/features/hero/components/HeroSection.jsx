@@ -12,9 +12,9 @@ const HeroSection = () => {
       <AnimatedBackdrop tone="light" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_50%,rgba(82,99,216,0.16),transparent_28%)] pointer-events-none" />
 
-      <div className="w-full relative z-10 pt-24 lg:pt-28 pb-12 lg:pb-0">
+      <div className="w-full relative z-10 pt-32 sm:pt-36 lg:pt-32 xl:pt-36 pb-12 lg:pb-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center min-h-[calc(100vh-8rem)] gap-10 lg:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center min-h-[calc(100vh-10rem)] lg:min-h-[calc(100vh-11rem)] gap-10 lg:gap-8">
             {/* LEFT COLUMN: Text Content - 7 Cols */}
             <div className="order-1 lg:order-1 lg:col-span-7 flex flex-col justify-center">
               <HeroContent />

@@ -22,16 +22,21 @@ const WhyHarryCards = ({ isInView }) => {
               initial={{ opacity: 0, y: 18 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
               transition={{ delay: index * 0.1, ...TRANSITIONS.medium }}
-              className="group grid md:grid-cols-[5rem_1fr_2rem] items-center gap-5 py-6 md:py-8 hover:px-3 transition-all duration-300"
+              className="group grid grid-cols-[3.25rem_1fr] md:grid-cols-[5rem_1fr_2rem] items-center gap-4 sm:gap-5 py-6 md:py-8 hover:px-3 transition-all duration-300"
             >
               <div className="flex h-11 w-11 items-center justify-center border border-eerie/20 text-crimson group-hover:bg-crimson group-hover:text-white transition-colors">
                 <Icon className="text-lg" />
               </div>
               <div>
-                <h4 className="font-display text-2xl text-eerie group-hover:text-crimson-dark transition-colors">{reason.title}</h4>
+                <div className="flex items-center justify-between">
+                  <h4 className="font-display text-xl sm:text-2xl text-eerie group-hover:text-crimson-dark transition-colors">
+                    {reason.title}
+                  </h4>
+                  <span className="md:hidden text-lg text-eerie/40 group-hover:text-crimson transition-colors">↗</span>
+                </div>
                 <p className="mt-1 max-w-2xl text-sm leading-relaxed text-eerie/60">{reason.description}</p>
               </div>
-              <span className="text-xl text-eerie/40 group-hover:text-crimson transition-colors">↗</span>
+              <span className="hidden md:inline-block text-xl text-eerie/40 group-hover:text-crimson transition-colors text-right">↗</span>
             </motion.article>
           );
         })}

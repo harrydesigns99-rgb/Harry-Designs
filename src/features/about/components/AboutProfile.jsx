@@ -216,7 +216,7 @@ const AboutProfile = ({ isInView }) => {
           </div>
 
           {/* Floating Editorial Label Tag */}
-          <div className="relative z-20 -mt-8 ml-6 md:ml-8 max-w-[17rem] bg-cloud-white p-4 border border-eerie/15 shadow-xl transition-colors">
+          <div className="relative z-20 mt-4 sm:-mt-8 mx-auto sm:ml-6 md:ml-8 max-w-[17rem] bg-cloud-white p-4 border border-eerie/15 shadow-xl transition-colors">
             <p className="font-display text-base font-semibold text-eerie">Creative Direction</p>
             <p className="mt-0.5 text-[0.68rem] uppercase tracking-[0.14em] text-eerie/55">
               Crafting identities with commercial lift

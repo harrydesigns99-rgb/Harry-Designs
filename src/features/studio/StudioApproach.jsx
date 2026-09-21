@@ -83,7 +83,7 @@ const StudioApproach = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -6, backgroundColor: '#ffffff', transition: { duration: 0.2 } }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 className="bg-cloud-white border border-eerie/15 p-6 md:p-8 min-h-36 flex flex-col justify-between hover:border-crimson/50 hover:shadow-lg transition-all cursor-pointer group"
               >
                 <div className="flex items-center justify-between">

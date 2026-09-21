@@ -37,7 +37,15 @@ const LivingBackground = () => {
       }}
       aria-hidden="true"
     >
-      {/* Subtle Editorial Grain Texture (Lightweight CSS SVG, Zero Thrashing) */}
+      {/* 1. Tactile Fine-Art Paper & Film Grain Texture */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.035] mix-blend-overlay"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* 2. Micro Dot Grid (Precision Studio Alignment) */}
       <div
         className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{
@@ -46,19 +54,19 @@ const LivingBackground = () => {
         }}
       />
 
-      {/* Primary Ambient Light Orb - Accent Light (Top-Right) */}
+      {/* 3. Primary Ambient Light Orb - Accent Light (Top-Right) */}
       <motion.div
         animate={
           isTouchDevice
             ? {
                 scale: [1, 1.08, 1],
-                opacity: [0.25, 0.4, 0.25],
+                opacity: [0.22, 0.35, 0.22],
               }
             : {
                 x: [0, 60, -30, 0],
                 y: [0, -45, 35, 0],
                 scale: [1, 1.12, 0.96, 1],
-                opacity: [0.25, 0.45, 0.3, 0.25],
+                opacity: [0.22, 0.38, 0.28, 0.22],
               }
         }
         transition={{
@@ -76,19 +84,19 @@ const LivingBackground = () => {
         }}
       />
 
-      {/* Secondary Ambient Light Orb - Secondary Tonal Glow (Bottom-Left) */}
+      {/* 4. Secondary Ambient Light Orb - Secondary Tonal Glow (Bottom-Left) */}
       <motion.div
         animate={
           isTouchDevice
             ? {
                 scale: [1, 1.06, 1],
-                opacity: [0.2, 0.35, 0.2],
+                opacity: [0.18, 0.3, 0.18],
               }
             : {
                 x: [0, -50, 40, 0],
                 y: [0, 50, -25, 0],
                 scale: [1, 1.14, 0.94, 1],
-                opacity: [0.2, 0.38, 0.24, 0.2],
+                opacity: [0.18, 0.32, 0.22, 0.18],
               }
         }
         transition={{
@@ -105,20 +113,19 @@ const LivingBackground = () => {
         }}
       />
 
-      {/* Fine Architectural Grid (Subtle luxury studio lines) */}
+      {/* 5. Fine Architectural Grid (Subtle luxury studio lines) */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-30"
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
           backgroundImage: `
             linear-gradient(to right, var(--color-eerie) 1px, transparent 1px),
             linear-gradient(to bottom, var(--color-eerie) 1px, transparent 1px)
           `,
           backgroundSize: '4rem 4rem',
-          opacity: 0.035,
         }}
       />
 
-      {/* Corner Minimal Architectural Crosshairs */}
+      {/* 6. Corner Minimal Architectural Crosshairs */}
       <div className="hidden lg:block absolute top-12 left-12 text-eerie/15 font-mono text-xs select-none">
         +
       </div>

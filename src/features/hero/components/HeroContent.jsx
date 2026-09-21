@@ -20,7 +20,7 @@ const HeroContent = () => {
           transition={{ delay: 0.2, ...TRANSITIONS.medium }}
         >
           <span className="section-kicker">Independent designer / Chennai, India</span>
-          <span className="hidden sm:inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full border border-emerald-600/30 bg-emerald-50 text-emerald-700 text-[10px] font-mono uppercase tracking-wider font-semibold">
+          <span className="hidden sm:inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-mono uppercase tracking-wider font-semibold">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
             Available for Q3/Q4 Projects
           </span>
@@ -29,7 +29,7 @@ const HeroContent = () => {
         {/* Main Kinetic Headline with Masked Reveal */}
         <div className="overflow-hidden mb-6">
           <motion.h1
-            className="font-display text-5xl sm:text-6xl md:text-7xl xl:text-[6.7rem] font-medium leading-[0.94] tracking-[-0.06em] text-eerie"
+            className="font-display text-4xl sm:text-6xl md:text-7xl xl:text-[6.7rem] font-medium leading-[1.02] sm:leading-[0.94] tracking-[-0.03em] sm:tracking-[-0.06em] text-eerie"
             initial={{ y: '100%', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{
@@ -88,7 +88,7 @@ const HeroContent = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.8 }}
-          className="mt-16 flex items-center justify-center lg:justify-start gap-8 text-left text-xs uppercase tracking-[0.16em] text-eerie/45"
+          className="mt-12 sm:mt-16 flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-8 text-left text-xs uppercase tracking-[0.16em] text-eerie/45"
         >
           <span className="hover:text-eerie transition-colors">Brand identity</span>
           <span className="h-1 w-1 rounded-full bg-crimson" />

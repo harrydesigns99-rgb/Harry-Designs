@@ -27,7 +27,7 @@ const ToolsCarousel = ({ isInView }) => {
           Industry-standard software and craft equipment for pixel-perfect identity and print execution.
         </p>
       </div>
-      <div className="relative overflow-hidden border border-eerie/15 bg-cloud-white p-8 md:p-10 shadow-sm">
+      <div className="relative overflow-hidden border border-eerie/15 bg-cloud-white p-5 sm:p-8 md:p-10 shadow-sm">
         <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8">
           {TOOLS.map((tool, index) => {
             const Icon = tool.icon;

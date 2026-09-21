@@ -147,7 +147,7 @@ const PortfolioListView = ({ items, onSelect }) => {
               </div>
 
               <div className="hidden md:block col-span-3">
-                <span className="text-xs uppercase tracking-wider font-mono px-2.5 py-1 bg-white border border-eerie/15 text-eerie/70 group-hover:border-crimson/50 transition-colors">
+                <span className="text-xs uppercase tracking-wider font-mono px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/70 group-hover:border-crimson/50 transition-colors">
                   {item.category}
                 </span>
               </div>
