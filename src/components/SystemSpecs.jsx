@@ -30,18 +30,21 @@ const SystemSpecs = ({ specs = DEFAULT_SPECS, client, title, category }) => {
   return (
     <div className="w-full space-y-6 text-eerie">
       {/* Header Banner */}
-      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-eerie/15">
-        <div>
-          <span className="text-[10px] uppercase font-mono tracking-widest text-crimson font-bold">
-            TECHNICAL DESIGN SYSTEM &amp; SPECIFICATIONS
+      <div className="border-b border-eerie/15 pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
+            <span>●</span> 04 / TECHNICAL DESIGN SYSTEM &amp; SPECIFICATIONS
           </span>
-          <h3 className="text-base sm:text-lg font-display font-medium text-eerie">
-            {client} — {title || 'System Architecture'}
-          </h3>
+          <span className="text-[10px] font-mono px-2.5 py-0.5 border border-eerie/20 bg-eerie/5 text-eerie/80 uppercase">
+            {category || 'Identity'} System Standard
+          </span>
         </div>
-        <span className="text-[10px] font-mono px-2 py-0.5 border border-eerie/20 bg-eerie/5 text-eerie/80 uppercase">
-          {category || 'Identity'} System Architecture
-        </span>
+        <h3 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-eerie">
+          Design System &amp; Production Architecture
+        </h3>
+        <p className="mt-2 text-sm sm:text-base text-eerie/70 max-w-3xl leading-relaxed">
+          Mathematical grid alignments, optical typographic hierarchies, accessible color token separations, and production specifications for {client}{title ? ` — ${title}` : ''}.
+        </p>
       </div>
 
       {/* 1. Interactive Color Palette System */}

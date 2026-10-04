@@ -81,286 +81,290 @@ const CaseStudyScreen = ({
       className="min-h-screen bg-cloud-dancer text-eerie selection:bg-crimson selection:text-white"
     >
       {/* ==================== TOP NAVIGATION BAR ==================== */}
-      <header className="sticky top-0 z-50 bg-cloud-dancer/95 backdrop-blur-md border-b border-eerie/15 px-4 sm:px-8 py-3 flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-4">
-          {/* Back Button & Project Breadcrumbs */}
-          <div className="flex items-center gap-3 min-w-0">
+      <header className="sticky top-0 z-50 bg-cloud-dancer/95 backdrop-blur-md border-b border-eerie/15 py-3">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-2.5">
+          <div className="flex items-center justify-between gap-4">
+            {/* Back Button & Project Breadcrumbs */}
+            <div className="flex items-center gap-3 min-w-0">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  onNavigateHome?.();
+                }}
+                className="inline-flex items-center gap-2 px-3 py-1.5 border border-eerie/20 bg-cloud-white hover:bg-eerie hover:text-white transition-all text-xs font-mono uppercase tracking-wider font-semibold cursor-pointer"
+              >
+                <span>←</span>
+                <span>All Work</span>
+              </button>
+
+              <span className="text-eerie/20 hidden sm:inline">|</span>
+
+              <div className="flex items-center gap-2 truncate">
+                <span className="font-display font-medium text-sm sm:text-base text-eerie truncate">
+                  {currentProject.client}
+                </span>
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 border border-eerie/15 text-eerie/60 hidden md:inline">
+                  {currentProject.category}
+                </span>
+                <span className="text-[10px] font-mono text-eerie/40 hidden lg:inline">
+                  [{currentIndex + 1} of {projects.length}]
+                </span>
+              </div>
+            </div>
+
+            {/* Right Controls: Prev/Next & Studio CMS */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex items-center border border-eerie/20 bg-cloud-white">
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    onNavigateProject?.(prevProject.id);
+                  }}
+                  title={`Previous: ${prevProject.client}`}
+                  className="px-2.5 sm:px-3 py-1 text-xs font-mono text-eerie/70 hover:text-eerie hover:bg-eerie/5 border-r border-eerie/15 transition-colors cursor-pointer"
+                >
+                  ← Prev
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    onNavigateProject?.(nextProject.id);
+                  }}
+                  title={`Next: ${nextProject.client}`}
+                  className="px-2.5 sm:px-3 py-1 text-xs font-mono text-eerie/70 hover:text-eerie hover:bg-eerie/5 transition-colors cursor-pointer"
+                >
+                  Next →
+                </button>
+              </div>
+
+              <a
+                href="/admin"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.pushState({}, '', '/admin');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                }}
+                className="px-2.5 py-1 border border-eerie/20 bg-cloud-white text-[10px] font-mono uppercase tracking-wider text-eerie/60 hover:text-crimson hover:border-crimson transition-all hidden sm:inline"
+                title="Open Studio CMS Editor"
+              >
+                CMS ⚙
+              </a>
+            </div>
+          </div>
+
+          {/* Section Jump Anchors Bar */}
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pt-1.5 pb-0.5 border-t border-eerie/10 text-xs font-mono">
             <button
               type="button"
-              onClick={() => {
-                sound.playClick();
-                onNavigateHome?.();
-              }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 border border-eerie/20 bg-cloud-white hover:bg-eerie hover:text-white transition-all text-xs font-mono uppercase tracking-wider font-semibold cursor-pointer"
+              onClick={() => scrollToSection('screen-hero')}
+              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
             >
-              <span>←</span>
-              <span>All Work</span>
+              <span>✦</span>
+              <span>01 Overview</span>
             </button>
 
-            <span className="text-eerie/20 hidden sm:inline">|</span>
-
-            <div className="flex items-center gap-2 truncate">
-              <span className="font-display font-medium text-sm sm:text-base text-eerie truncate">
-                {currentProject.client}
-              </span>
-              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 border border-eerie/15 text-eerie/60 hidden md:inline">
-                {currentProject.category}
-              </span>
-              <span className="text-[10px] font-mono text-eerie/40 hidden lg:inline">
-                [{currentIndex + 1} of {projects.length}]
-              </span>
-            </div>
-          </div>
-
-          {/* Right Controls: Prev/Next & Studio CMS */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="flex items-center border border-eerie/20 bg-cloud-white">
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playClick();
-                  onNavigateProject?.(prevProject.id);
-                }}
-                title={`Previous: ${prevProject.client}`}
-                className="px-2.5 sm:px-3 py-1 text-xs font-mono text-eerie/70 hover:text-eerie hover:bg-eerie/5 border-r border-eerie/15 transition-colors cursor-pointer"
-              >
-                ← Prev
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playClick();
-                  onNavigateProject?.(nextProject.id);
-                }}
-                title={`Next: ${nextProject.client}`}
-                className="px-2.5 sm:px-3 py-1 text-xs font-mono text-eerie/70 hover:text-eerie hover:bg-eerie/5 transition-colors cursor-pointer"
-              >
-                Next →
-              </button>
-            </div>
-
-            <a
-              href="/admin"
-              onClick={(e) => {
-                e.preventDefault();
-                window.history.pushState({}, '', '/admin');
-                window.dispatchEvent(new PopStateEvent('popstate'));
-              }}
-              className="px-2.5 py-1 border border-eerie/20 bg-cloud-white text-[10px] font-mono uppercase tracking-wider text-eerie/60 hover:text-crimson hover:border-crimson transition-all hidden sm:inline"
-              title="Open Studio CMS Editor"
+            <button
+              type="button"
+              onClick={() => scrollToSection('screen-process')}
+              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-crimson font-bold hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
             >
-              CMS ⚙
-            </a>
+              <span>✎</span>
+              <span>02 The Making Process</span>
+              <span className="text-[9px] px-1 py-0.2 bg-crimson/10 rounded-xs text-crimson">5 PHASES</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollToSection('screen-studio-process')}
+              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
+            >
+              <span>⚙</span>
+              <span>03 The Process Behind The Process</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollToSection('screen-specs')}
+              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
+            >
+              <span>◫</span>
+              <span>04 {currentProject.category === 'packaging' ? 'Print Anatomy & Dieline' : 'System Specs'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollToSection('screen-impact')}
+              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
+            >
+              <span>★</span>
+              <span>05 Commercial Impact</span>
+            </button>
           </div>
-        </div>
-
-        {/* Section Jump Anchors Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1 pb-0.5 border-t border-eerie/10 text-xs font-mono">
-          <button
-            type="button"
-            onClick={() => scrollToSection('screen-hero')}
-            className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-          >
-            <span>✦</span>
-            <span>01 Overview</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => scrollToSection('screen-process')}
-            className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-crimson font-bold hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-          >
-            <span>✎</span>
-            <span>02 The Making Process</span>
-            <span className="text-[9px] px-1 py-0.2 bg-crimson/10 rounded-xs text-crimson">5 PHASES</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => scrollToSection('screen-studio-process')}
-            className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-          >
-            <span>⚙</span>
-            <span>03 The Process Behind The Process</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => scrollToSection('screen-specs')}
-            className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-          >
-            <span>◫</span>
-            <span>04 {currentProject.category === 'packaging' ? 'Print Anatomy & Dieline' : 'System Specs'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => scrollToSection('screen-impact')}
-            className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-          >
-            <span>★</span>
-            <span>05 Commercial Impact</span>
-          </button>
         </div>
       </header>
 
       {/* ==================== MAIN CASE STUDY CONTENT ==================== */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 sm:space-y-24">
         {/* -------------------- SECTION 01: HERO STORY & BRIEF -------------------- */}
         <section id="screen-hero" className="space-y-8">
-          {/* Header Title & Metadata */}
-          <div className="space-y-4 border-b border-eerie/15 pb-8">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <span className="section-kicker !text-crimson">
-                Case Study / {currentProject.year || '2024'}
+          {/* Header Title & Badges */}
+          <div className="border-b border-eerie/15 pb-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
+                <span>●</span> 01 / OVERVIEW &amp; STRATEGIC BRIEF
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-xs uppercase font-mono tracking-widest text-eerie/60 border border-eerie/15 px-3 py-1">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-eerie/60 border border-eerie/15 px-2.5 py-0.5">
                   {currentProject.category}
                 </span>
                 {currentProject.metric && (
-                  <span className="text-xs font-mono font-bold tracking-wider px-3 py-1 bg-crimson text-white">
+                  <span className="text-[10px] font-mono font-bold tracking-wider px-2.5 py-0.5 bg-crimson text-white">
                     {currentProject.metric}
                   </span>
                 )}
               </div>
             </div>
-
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-eerie leading-[1.05]">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-eerie leading-[1.06]">
               {currentProject.client}
             </h1>
-            <p className="text-base sm:text-xl font-medium tracking-wide text-eerie/60 uppercase">
+            <p className="text-sm sm:text-base font-semibold tracking-wide text-eerie/60 uppercase mt-1">
               {currentProject.title}
             </p>
           </div>
 
-          {/* Visual Showcase (Slider or Artwork) */}
-          <div className="w-full bg-neutral-900 border border-eerie/15 overflow-hidden relative shadow-xl">
-            {hasEarlyConcept && (
-              <div className="absolute top-4 left-4 z-30 flex items-center bg-black/80 backdrop-blur-md p-1 border border-white/20 shadow-lg">
-                <button
-                  type="button"
-                  onClick={() => {
-                    sound.playClick();
-                    setViewModeOverride('compare');
-                  }}
-                  className={`px-3 py-1.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
-                    viewMode === 'compare'
-                      ? 'bg-crimson text-white shadow-sm'
-                      : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  Transformation Slider
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    sound.playClick();
-                    setViewModeOverride('artwork');
-                  }}
-                  className={`px-3 py-1.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
-                    viewMode === 'artwork'
-                      ? 'bg-white text-eerie shadow-sm'
-                      : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  Final Production Single View
-                </button>
-              </div>
-            )}
-
-            {hasEarlyConcept && viewMode === 'compare' ? (
-              <BeforeAfterSlider
-                beforeImage={currentProject.beforeImage || currentProject.process?.conceptImage}
-                afterImage={currentProject.afterImage || currentProject.image}
-                beforeLabel={currentProject.beforeLabel || currentProject.process?.conceptLabel || 'Initial Concept Exploration'}
-                afterLabel={currentProject.afterLabel || currentProject.process?.finalLabel || 'Final Production System'}
-                className="w-full h-80 sm:h-[28rem] md:h-[36rem] lg:h-[42rem]"
-              />
-            ) : currentProject.image ? (
-              <div className="relative w-full h-80 sm:h-[28rem] md:h-[36rem] lg:h-[42rem] bg-neutral-950 flex items-center justify-center">
-                <img
-                  src={currentProject.image}
-                  alt={`${currentProject.client} - ${currentProject.title}`}
-                  className="w-full h-full object-cover"
-                />
-                {currentProject.metric && (
-                  <div className="absolute bottom-6 left-6 z-10 bg-crimson text-white px-4 py-2 text-xs font-semibold tracking-wider uppercase shadow-lg">
-                    Impact: {currentProject.metric}
+          {/* 2-Column Balanced Architecture: Left Artwork / Right Story */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            {/* Left Column: Visual Artwork Frame (Aspect 3/4 - Zero Cropping!) */}
+            <div className="lg:col-span-6 space-y-3">
+              <div className="relative w-full aspect-[3/4] bg-neutral-900 border border-eerie/15 overflow-hidden shadow-xl flex items-center justify-center">
+                {hasEarlyConcept && (
+                  <div className="absolute top-3 left-3 z-30 flex items-center bg-black/80 backdrop-blur-md p-1 border border-white/20 shadow-md">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sound.playClick();
+                        setViewModeOverride('compare');
+                      }}
+                      className={`px-2.5 py-1 text-[10px] font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
+                        viewMode === 'compare'
+                          ? 'bg-crimson text-white shadow-sm'
+                          : 'text-white/70 hover:text-white'
+                      }`}
+                    >
+                      Transformation
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sound.playClick();
+                        setViewModeOverride('artwork');
+                      }}
+                      className={`px-2.5 py-1 text-[10px] font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
+                        viewMode === 'artwork'
+                          ? 'bg-white text-eerie shadow-sm'
+                          : 'text-white/70 hover:text-white'
+                      }`}
+                    >
+                      Final Single View
+                    </button>
                   </div>
                 )}
-              </div>
-            ) : (
-              <div className={`w-full h-96 bg-gradient-to-br ${currentProject.color}`} />
-            )}
-          </div>
 
-          {/* Project Narrative & Strategic Brief Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-4">
-            <div className="lg:col-span-8 space-y-6">
-              <p className="text-lg sm:text-2xl text-eerie/85 leading-relaxed font-normal">
+                {hasEarlyConcept && viewMode === 'compare' ? (
+                  <BeforeAfterSlider
+                    beforeImage={currentProject.beforeImage || currentProject.process?.conceptImage}
+                    afterImage={currentProject.afterImage || currentProject.image}
+                    beforeLabel={currentProject.beforeLabel || currentProject.process?.conceptLabel || 'Initial Concept'}
+                    afterLabel={currentProject.afterLabel || currentProject.process?.finalLabel || 'Final System'}
+                    className="w-full h-full"
+                  />
+                ) : currentProject.image ? (
+                  <div className="relative w-full h-full bg-neutral-950 flex items-center justify-center p-2">
+                    <img
+                      src={currentProject.image}
+                      alt={`${currentProject.client} - ${currentProject.title}`}
+                      className="w-full h-full object-contain"
+                    />
+                    {currentProject.metric && (
+                      <div className="absolute bottom-4 left-4 z-10 bg-crimson text-white px-3 py-1.5 text-xs font-semibold tracking-wider uppercase shadow-md">
+                        Impact: {currentProject.metric}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className={`w-full h-full bg-gradient-to-br ${currentProject.color}`} />
+                )}
+              </div>
+
+              {/* Sub-caption under artwork */}
+              <div className="flex items-center justify-between text-[11px] font-mono text-eerie/50 px-1">
+                <span>Production Master Asset</span>
+                <span>Aspect 3:4 • High-Resolution</span>
+              </div>
+            </div>
+
+            {/* Right Column: Case Study Narrative, Brief, and Meta Matrix */}
+            <div className="lg:col-span-6 space-y-6">
+              <p className="text-base sm:text-lg text-eerie/85 leading-relaxed font-normal">
                 {currentProject.description}
               </p>
 
-              <div className="p-6 bg-cloud-white border border-eerie/15 space-y-5">
+              {/* The Brief & Challenge Box */}
+              <div className="p-6 bg-cloud-white border border-eerie/15 space-y-4">
                 <div>
-                  <h4 className="text-[11px] uppercase font-mono tracking-widest text-crimson font-bold mb-2">
+                  <h4 className="text-[10px] uppercase font-mono tracking-widest text-crimson font-bold mb-1.5">
                     The Challenge &amp; Strategic Brief
                   </h4>
-                  <p className="text-sm sm:text-base text-eerie/80 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-eerie/80 leading-relaxed">
                     {currentProject.brief ||
                       'Engineer a distinctive visual identity and packaging system designed for high shelf standout and long-term brand equity.'}
                   </p>
                 </div>
 
                 <div className="pt-4 border-t border-eerie/10">
-                  <h4 className="text-[11px] uppercase font-mono tracking-widest text-crimson font-bold mb-2">
+                  <h4 className="text-[10px] uppercase font-mono tracking-widest text-crimson font-bold mb-1.5">
                     Strategic Approach
                   </h4>
-                  <p className="text-sm sm:text-base text-eerie/80 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-eerie/80 leading-relaxed">
                     {currentProject.approach ||
                       'Unified typographic hierarchy, bespoke iconography, and tactile finish specifications tailored to consumer touchpoints.'}
                   </p>
                 </div>
               </div>
-            </div>
 
-            {/* Sidebar Meta Info */}
-            <div className="lg:col-span-4 p-6 bg-cloud-white border border-eerie/15 space-y-6 self-start">
-              <h4 className="text-xs font-mono uppercase tracking-widest text-eerie/50 font-bold border-b border-eerie/10 pb-2">
-                Project Matrix
-              </h4>
-
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Client</div>
-                <div className="text-sm font-semibold text-eerie mt-1">{currentProject.client}</div>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Discipline</div>
-                <div className="text-sm font-semibold text-eerie mt-1 capitalize">{currentProject.category}</div>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Role</div>
-                <div className="text-sm font-semibold text-eerie mt-1">Creative Direction &amp; Packaging Design</div>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Deliverables</div>
-                <div className="text-sm font-semibold text-eerie mt-1">{currentProject.deliverables || 'Packaging & Identity Architecture'}</div>
-              </div>
-
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Year</div>
-                <div className="text-sm font-semibold text-eerie mt-1">{currentProject.year || '2024'}</div>
+              {/* Project Meta Information Grid */}
+              <div className="p-6 bg-cloud-white border border-eerie/15">
+                <div className="text-[10px] font-mono uppercase tracking-widest text-eerie/50 font-bold border-b border-eerie/10 pb-2 mb-4">
+                  Project Architecture Matrix
+                </div>
+                <dl className="grid grid-cols-2 gap-4">
+                  <div>
+                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Client</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5">{currentProject.client}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Discipline</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5 capitalize">{currentProject.category}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Role</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5">Creative Direction &amp; Packaging</dd>
+                  </div>
+                  <div>
+                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Deliverables</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5 truncate">{currentProject.deliverables || 'Identity & Packaging'}</dd>
+                  </div>
+                </dl>
               </div>
             </div>
           </div>
         </section>
 
         {/* -------------------- SECTION 02: THE MAKING PROCESS (5 PHASES) -------------------- */}
-        <section id="screen-process" className="pt-10 border-t border-eerie/15">
+        <section id="screen-process" className="pt-12 sm:pt-16 border-t border-eerie/15">
           <DesignProcessNarrative
             process={currentProject.process}
             finalImage={currentProject.image}
@@ -371,7 +375,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 03: PROCESS BEHIND THE PROCESS (STUDIO BLUEPRINT) -------------------- */}
-        <section id="screen-studio-process" className="pt-10 border-t border-eerie/15">
+        <section id="screen-studio-process" className="pt-12 sm:pt-16 border-t border-eerie/15">
           <ProcessBehindProcess
             data={processBehindProcessData}
             client={currentProject.client}
@@ -380,7 +384,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 04: TECHNICAL SPECS & DIELINE -------------------- */}
-        <section id="screen-specs" className="pt-10 border-t border-eerie/15">
+        <section id="screen-specs" className="pt-12 sm:pt-16 border-t border-eerie/15">
           {currentProject.category === 'packaging' ? (
             <PackagingAnatomy
               anatomy={currentProject.anatomy}
@@ -399,21 +403,24 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 05: COMMERCIAL IMPACT -------------------- */}
-        <section id="screen-impact" className="pt-10 border-t border-eerie/15 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-eerie/15 pb-4">
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
-                05 / OUTCOMES &amp; COMMERCIAL RESULTS
+        <section id="screen-impact" className="pt-12 sm:pt-16 border-t border-eerie/15 space-y-8">
+          <div className="border-b border-eerie/15 pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
+                <span>●</span> 05 / OUTCOMES &amp; COMMERCIAL RESULTS
               </span>
-              <h3 className="text-2xl sm:text-3xl font-display font-medium text-eerie">
-                Commercial Velocity &amp; Shelf Lift
-              </h3>
+              {currentProject.metric && (
+                <span className="px-3 py-1 bg-crimson text-white text-xs font-mono font-bold uppercase tracking-wider">
+                  {currentProject.metric}
+                </span>
+              )}
             </div>
-            {currentProject.metric && (
-              <span className="px-4 py-1.5 bg-crimson text-white text-xs font-mono font-bold uppercase tracking-wider">
-                {currentProject.metric}
-              </span>
-            )}
+            <h3 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-eerie">
+              Commercial Velocity &amp; Shelf Lift
+            </h3>
+            <p className="mt-2 text-sm sm:text-base text-eerie/70 max-w-3xl leading-relaxed">
+              Measurable retail sales velocity, institutional reach, and category standout achieved following deployment for {currentProject.client}.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -456,7 +463,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- NEXT PROJECT FEATURE CARD & FOOTER -------------------- */}
-        <section className="pt-10 border-t border-eerie/15 space-y-8">
+        <section className="pt-12 sm:pt-16 border-t border-eerie/15 space-y-8">
           {/* Next Project Teaser */}
           {nextProject && onNavigateProject && (
             <div
@@ -495,7 +502,7 @@ const CaseStudyScreen = ({
           )}
 
           {/* Contact Inquiry CTA */}
-          <div className="p-8 sm:p-12 bg-cloud-dancer border border-eerie/20 text-center space-y-5">
+          <div className="p-8 sm:p-12 bg-cloud-white border border-eerie/20 text-center space-y-5 shadow-sm">
             <span className="section-kicker !text-crimson">Start A Conversation</span>
             <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium text-eerie">
               Ready to create work with commercial impact?

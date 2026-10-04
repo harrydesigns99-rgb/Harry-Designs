@@ -40,18 +40,21 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
   return (
     <div className="w-full space-y-6 text-eerie">
       {/* Header Banner */}
-      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-eerie/15">
-        <div>
-          <span className="text-[10px] uppercase font-mono tracking-widest text-crimson font-bold">
-            TECHNICAL PRINT ANATOMY &amp; SPECIFICATIONS
+      <div className="border-b border-eerie/15 pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
+            <span>●</span> 04 / TECHNICAL PRINT ANATOMY &amp; DIELINE
           </span>
-          <h3 className="text-base sm:text-lg font-display font-medium text-eerie">
-            {client} — {title || 'Packaging Engineering'}
-          </h3>
+          <span className="text-[10px] font-mono px-2.5 py-0.5 border border-eerie/20 bg-eerie/5 text-eerie/80">
+            ISO 12647-2 PRINT READY
+          </span>
         </div>
-        <span className="text-[10px] font-mono px-2 py-0.5 border border-eerie/20 bg-eerie/5 text-eerie/80">
-          ISO 12647-2 PRINT READY
-        </span>
+        <h3 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-eerie">
+          Print Anatomy &amp; Engineering Specifications
+        </h3>
+        <p className="mt-2 text-sm sm:text-base text-eerie/70 max-w-3xl leading-relaxed">
+          Production-grade substrate selections, spot ink color separations, CAD dieline geometries, and retail shelf standoff simulation for {client}{title ? ` — ${title}` : ''}.
+        </p>
       </div>
 
       {/* 1. Interactive Pantone & Ink System */}
