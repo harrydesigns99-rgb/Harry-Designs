@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { useInView } from 'framer-motion';
 import AboutHeader from './AboutHeader';
 import AboutProfile from './AboutProfile';
-import WhyHarryCards from './WhyHarryCards';
 import SkillsGrid from './SkillsGrid';
 import ToolsCarousel from './ToolsCarousel';
 import StatsGrid from './StatsGrid';
@@ -25,9 +24,6 @@ const AboutSection = () => {
           <AboutHeader isInView={isInView} />
           <AboutProfile isInView={isInView} />
         </div>
-
-        {/* Why Harry Section */}
-        <WhyHarryCards isInView={isInView} />
 
         {/* Skills Section */}
         <SkillsGrid isInView={isInView} />

@@ -150,6 +150,21 @@ const StudioTelemetry = () => {
               {isMuted ? 'Muted' : 'Sound'}
             </span>
           </button>
+
+          {/* Studio CMS Link */}
+          <a
+            href="/admin"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', '/admin');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+            }}
+            className="flex items-center gap-1 px-2 py-0.5 border border-eerie/15 hover:border-crimson text-eerie/80 hover:text-crimson transition-colors cursor-pointer"
+            title="Open Studio CMS Dashboard (Cmd+K)"
+          >
+            <span>⚙</span>
+            <span className="uppercase text-[9px] tracking-wider font-semibold">CMS</span>
+          </a>
         </div>
       </div>
     </div>

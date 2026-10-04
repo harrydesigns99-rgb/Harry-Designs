@@ -10,7 +10,7 @@ import ProjectDetailModal from './ProjectDetailModal';
 import { fadeInUp, scaleIn, TRANSITIONS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
-const PortfolioSection = () => {
+const PortfolioSection = ({ onSelectProject }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [filter, setFilter] = useState('all');
@@ -208,26 +208,28 @@ const PortfolioSection = () => {
             <div className="mb-20">
               <PortfolioListView
                 items={filteredProjects}
-                onSelect={(item) => setSelectedGridProject(item)}
+                onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
               />
             </div>
           ) : (
             <div className="mb-20">
               <PortfolioGrid
                 items={filteredProjects}
-                onSelect={setSelectedGridProject}
+                onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
                 density={layoutMode}
               />
             </div>
           )}
 
-          {/* Project Detail Modal */}
-          <ProjectDetailModal
-            item={selectedGridProject}
-            items={filteredProjects}
-            onSelectProject={setSelectedGridProject}
-            onClose={() => setSelectedGridProject(null)}
-          />
+          {/* Project Detail Modal (Fallback if onSelectProject not passed) */}
+          {!onSelectProject && (
+            <ProjectDetailModal
+              item={selectedGridProject}
+              items={filteredProjects}
+              onSelectProject={setSelectedGridProject}
+              onClose={() => setSelectedGridProject(null)}
+            />
+          )}
         </div>
       </div>
     </section>

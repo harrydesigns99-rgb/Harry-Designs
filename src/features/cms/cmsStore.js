@@ -41,9 +41,28 @@ function safeWrite(key, value) {
   }
 }
 
+function getInitialProjects() {
+  const stored = safeRead(STORAGE_KEYS.PROJECTS, null);
+  if (!stored || !Array.isArray(stored)) {
+    return PORTFOLIO_ITEMS;
+  }
+  return stored.map((item) => {
+    const defaultItem = PORTFOLIO_ITEMS.find((p) => p.id === item.id);
+    if (!defaultItem) return item;
+    return {
+      ...defaultItem,
+      ...item,
+      process: item.process || defaultItem.process,
+      anatomy: item.anatomy || defaultItem.anatomy,
+      systemSpecs: item.systemSpecs || defaultItem.systemSpecs,
+      processBehindProcess: item.processBehindProcess || defaultItem.processBehindProcess,
+    };
+  });
+}
+
 // In-memory state for fast reactive access
 let currentData = {
-  projects: safeRead(STORAGE_KEYS.PROJECTS, PORTFOLIO_ITEMS),
+  projects: getInitialProjects(),
   galleryImages: safeRead(STORAGE_KEYS.GALLERY, GALLERY_IMAGES),
   brands: safeRead(STORAGE_KEYS.BRANDS, BRANDS),
   settings: safeRead(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS),

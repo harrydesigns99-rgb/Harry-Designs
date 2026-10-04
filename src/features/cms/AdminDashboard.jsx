@@ -318,6 +318,19 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         Edit
                       </button>
 
+                      <a
+                        href={`/project/${project.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.history.pushState({}, '', `/project/${project.id}`);
+                          window.dispatchEvent(new PopStateEvent('popstate'));
+                        }}
+                        className="px-3 py-1.5 border border-eerie/20 hover:border-crimson hover:text-crimson text-xs font-semibold uppercase tracking-wider text-eerie/70 transition-colors cursor-pointer flex items-center gap-1"
+                        title="Open dedicated case study screen"
+                      >
+                        View Screen ↗
+                      </a>
+
                       <button
                         onClick={() => {
                           if (confirm(`Delete project "${project.client} — ${project.title}"?`)) {

@@ -7,6 +7,7 @@ import { ContactSection } from '@/features/contact';
 import StudioApproach from '@/features/studio/StudioApproach';
 import ResumePage from '@/features/resume/ResumePage';
 import { AdminDashboard } from '@/features/cms';
+import CaseStudyScreen from '@/features/portfolio/components/CaseStudyScreen';
 import KineticTicker from '@/components/KineticTicker';
 import LivingBackground from '@/components/LivingBackground';
 import WandPreloader from '@/components/WandPreloader';
@@ -51,6 +52,33 @@ function App() {
     );
   }
 
+  if (currentPath.startsWith('/project')) {
+    const parts = currentPath.split('/');
+    const projectId = parseInt(parts[2], 10) || 1;
+    return (
+      <ThemeProvider>
+        <div className="min-h-screen bg-cloud-dancer relative overflow-hidden">
+          {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
+          <LivingBackground />
+          <CaseStudyScreen
+            projectId={projectId}
+            onNavigateHome={() => {
+              window.history.pushState({}, '', '/');
+              setCurrentPath('/');
+              setTimeout(() => {
+                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+              }, 50);
+            }}
+            onNavigateProject={(id) => {
+              window.history.pushState({}, '', `/project/${id}`);
+              setCurrentPath(`/project/${id}`);
+            }}
+          />
+        </div>
+      </ThemeProvider>
+    );
+  }
+
   if (currentPath === '/resume') {
     return (
       <ThemeProvider>
@@ -68,6 +96,12 @@ function App() {
     );
   }
 
+  const navigateToProject = (id) => {
+    window.history.pushState({}, '', `/project/${id}`);
+    setCurrentPath(`/project/${id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-transparent relative selection:bg-crimson selection:text-white">
@@ -77,7 +111,7 @@ function App() {
           <Navbar />
           <HeroSection />
           <KineticTicker />
-          <PortfolioSection />
+          <PortfolioSection onSelectProject={(project) => navigateToProject(project.id)} />
           <StudioApproach />
           <AboutSection />
           <ContactSection />

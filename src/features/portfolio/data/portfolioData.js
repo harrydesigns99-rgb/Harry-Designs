@@ -962,3 +962,57 @@ export const FILTER_BUTTONS = [
 
 // Number of featured items for scroll stack (6 selected projects)
 export const FEATURED_COUNT = 6;
+
+/**
+ * Helper to compute the Process Behind the Process studio protocol data for any project
+ */
+export const getProcessBehindProcess = (project) => {
+  if (project?.processBehindProcess) return project.processBehindProcess;
+
+  const isPackaging = project?.category === 'packaging';
+  const isBranding = project?.category === 'branding';
+
+  return {
+    subtitle: 'The Unseen Labor & Studio Diagnostic Behind the Work',
+    quote: isPackaging
+      ? "Great packaging doesn't happen in Figma; it happens on supermarket aisles, at 1:1 paperboard print proofs, and through dozens of discarded directions."
+      : isBranding
+      ? "A brand identity is only as strong as its simplest touchpoint. If it doesn't hold authority when blind-embossed or viewed at 16px, it gets dismantled and rebuilt."
+      : "Digital craft is not about decoration; it is about cognitive clarity, spatial rhythm, and removing friction between user and architecture.",
+    pillars: [
+      {
+        label: isPackaging ? 'The Aisle Standout Test' : isBranding ? 'The Hallmark Scale Test' : 'Spatial Flow & Rhythm',
+        metric: isPackaging ? '10-Foot Distance Rule' : isBranding ? '16px Monogram Check' : 'Sub-50ms Latency',
+        detail: isPackaging
+          ? "Audited at 10ft, 5ft, and hand-distance. If a customer can't register the brand mark within 1.2 seconds, the hierarchy is redesigned from scratch."
+          : isBranding
+          ? "Tested from 2-meter exterior showroom signage down to micro-embossed wax seals and tiny digital favicon avatars to guarantee unmistakable recognition."
+          : "Structured fluid column hierarchy with strict baseline rhythm, eliminating layout shifts and visual stutter.",
+      },
+      {
+        label: 'Discarded Directions',
+        metric: '12+ Concepts Killed',
+        detail: "Explored and eliminated over a dozen alternative concept directions before presenting the singular, most commercially resilient solution.",
+      },
+      {
+        label: isPackaging ? '1:1 CAD Mockup Prototyping' : isBranding ? 'Materiality & Foil Calibration' : 'Keyboard-First Interaction',
+        metric: isPackaging ? 'Physical Scale Proofs' : isBranding ? 'Press Drawdown Samples' : 'Zero-Friction UX',
+        detail: isPackaging
+          ? "Hand-folded 8 physical CAD paperboard mockups in studio to test thumb-rest positioning, structural corner crush resistance, and unboxing tactile friction."
+          : isBranding
+          ? "Executed metallic ink drawdowns and brass die debossing tests on heavy uncoated cotton stocks to evaluate real tactile hand-feel."
+          : "Prototyped interactive states with keyboard navigation shortcuts and micro-interactions, cutting cognitive overhead.",
+      },
+      {
+        label: isPackaging ? 'Fluorescent Store Lighting Check' : isBranding ? 'Bilingual Optical Balance' : 'Accessibility & Contrast Ratio',
+        metric: isPackaging ? 'D50 vs Fluorescent 4000K' : isBranding ? 'Optical Harmonization' : 'WCAG 2.1 AAA Standard',
+        detail: isPackaging
+          ? "Calibrated Pantone ink separations under standardized D50 press proof lighting and harsh 4000K supermarket fluorescent fixtures to prevent color dullness."
+          : isBranding
+          ? "Adjusted optical counters, stroke weights, and terminal curves to ensure flawless balance across diverse cultural mediums."
+          : "Exceeded AAA color contrast compliance across light and dark display modes for maximum readability.",
+      },
+    ],
+    deepDive: "The true design process is an adversarial dialogue between artistic instinct and commercial reality. Before presenting any direction to the client, every curve, dieline crease, and typographic kerning is stress-tested against real shelf glare, barcode scanner tolerances, and production realities.",
+  };
+};
