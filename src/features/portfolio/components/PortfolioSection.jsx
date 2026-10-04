@@ -224,6 +224,8 @@ const PortfolioSection = () => {
           {/* Project Detail Modal */}
           <ProjectDetailModal
             item={selectedGridProject}
+            items={filteredProjects}
+            onSelectProject={setSelectedGridProject}
             onClose={() => setSelectedGridProject(null)}
           />
         </div>
