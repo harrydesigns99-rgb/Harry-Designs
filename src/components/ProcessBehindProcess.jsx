@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 
 const ProcessBehindProcess = ({ data, client, category }) => {
   if (!data) return null;
@@ -41,13 +40,9 @@ const ProcessBehindProcess = ({ data, client, category }) => {
       {/* 4 Pillars of Studio Rigor */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {data.pillars?.map((pillar, idx) => (
-          <motion.div
+          <div
             key={pillar.label}
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.08, duration: 0.4 }}
-            className="p-5 sm:p-6 bg-cloud-white border border-eerie/15 space-y-3 flex flex-col justify-between hover:border-crimson/50 transition-colors"
+            className="p-5 sm:p-6 bg-cloud-white border border-eerie/15 space-y-3 flex flex-col justify-between hover:border-crimson/50 transition-all shadow-xs hover:shadow-sm"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
@@ -66,7 +61,7 @@ const ProcessBehindProcess = ({ data, client, category }) => {
             <p className="text-xs sm:text-sm text-eerie/75 leading-relaxed">
               {pillar.detail}
             </p>
-          </motion.div>
+          </div>
         ))}
       </div>
 

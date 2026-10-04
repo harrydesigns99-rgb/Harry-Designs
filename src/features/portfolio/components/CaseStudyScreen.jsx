@@ -68,7 +68,14 @@ const CaseStudyScreen = ({
     sound.playClick();
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const header = document.querySelector('header');
+      const headerOffset = header ? header.offsetHeight + 16 : 96;
+      const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = Math.max(0, elementPosition - headerOffset);
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -207,11 +214,11 @@ const CaseStudyScreen = ({
       </header>
 
       {/* ==================== MAIN CASE STUDY CONTENT ==================== */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 sm:space-y-24">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
         {/* -------------------- SECTION 01: HERO STORY & BRIEF -------------------- */}
-        <section id="screen-hero" className="space-y-8">
+        <section id="screen-hero" className="space-y-6 scroll-mt-24 sm:scroll-mt-28">
           {/* Header Title & Badges */}
-          <div className="border-b border-eerie/15 pb-6">
+          <div className="border-b border-eerie/15 pb-5">
             <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
               <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
                 <span>●</span> 01 / OVERVIEW &amp; STRATEGIC BRIEF
@@ -239,22 +246,30 @@ const CaseStudyScreen = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* Left Column: Visual Artwork Frame (Aspect 3/4 - Zero Cropping!) */}
             <div className="lg:col-span-6 space-y-3">
-              <div className="relative w-full aspect-[3/4] bg-neutral-900 border border-eerie/15 overflow-hidden shadow-xl flex items-center justify-center">
+              {/* Studio Stage Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-eerie/70 font-semibold">
+                    {viewMode === 'compare' ? 'Transformation Comparison' : 'Production Master Artwork'}
+                  </span>
+                </div>
+
                 {hasEarlyConcept && (
-                  <div className="absolute top-3 left-3 z-30 flex items-center bg-black/80 backdrop-blur-md p-1 border border-white/20 shadow-md">
+                  <div className="inline-flex items-center border border-eerie/20 bg-cloud-white p-0.5 shadow-xs">
                     <button
                       type="button"
                       onClick={() => {
                         sound.playClick();
                         setViewModeOverride('compare');
                       }}
-                      className={`px-2.5 py-1 text-[10px] font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
+                      className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider font-semibold transition-colors cursor-pointer ${
                         viewMode === 'compare'
-                          ? 'bg-crimson text-white shadow-sm'
-                          : 'text-white/70 hover:text-white'
+                          ? 'bg-crimson text-white shadow-xs'
+                          : 'text-eerie/70 hover:text-eerie hover:bg-eerie/5'
                       }`}
                     >
-                      Transformation
+                      ↔ Slider View
                     </button>
                     <button
                       type="button"
@@ -262,17 +277,20 @@ const CaseStudyScreen = ({
                         sound.playClick();
                         setViewModeOverride('artwork');
                       }}
-                      className={`px-2.5 py-1 text-[10px] font-semibold tracking-wider uppercase transition-colors cursor-pointer ${
+                      className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider font-semibold transition-colors cursor-pointer ${
                         viewMode === 'artwork'
-                          ? 'bg-white text-eerie shadow-sm'
-                          : 'text-white/70 hover:text-white'
+                          ? 'bg-crimson text-white shadow-xs'
+                          : 'text-eerie/70 hover:text-eerie hover:bg-eerie/5'
                       }`}
                     >
-                      Final Single View
+                      ✦ Final Artwork
                     </button>
                   </div>
                 )}
+              </div>
 
+              {/* Artwork Box with Capped Responsive Max-Height */}
+              <div className="relative w-full aspect-[3/4] max-h-[500px] sm:max-h-[560px] lg:max-h-[600px] bg-neutral-900 border border-eerie/15 overflow-hidden shadow-lg flex items-center justify-center">
                 {hasEarlyConcept && viewMode === 'compare' ? (
                   <BeforeAfterSlider
                     beforeImage={currentProject.beforeImage || currentProject.process?.conceptImage}
@@ -289,7 +307,7 @@ const CaseStudyScreen = ({
                       className="w-full h-full object-contain"
                     />
                     {currentProject.metric && (
-                      <div className="absolute bottom-4 left-4 z-10 bg-crimson text-white px-3 py-1.5 text-xs font-semibold tracking-wider uppercase shadow-md">
+                      <div className="absolute bottom-4 left-4 z-10 bg-crimson text-white px-3 py-1.5 text-xs font-semibold tracking-wider uppercase shadow-md font-mono">
                         Impact: {currentProject.metric}
                       </div>
                     )}
@@ -364,7 +382,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 02: THE MAKING PROCESS (5 PHASES) -------------------- */}
-        <section id="screen-process" className="pt-12 sm:pt-16 border-t border-eerie/15">
+        <section id="screen-process" className="pt-8 sm:pt-12 border-t border-eerie/15 scroll-mt-24 sm:scroll-mt-28">
           <DesignProcessNarrative
             process={currentProject.process}
             finalImage={currentProject.image}
@@ -375,7 +393,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 03: PROCESS BEHIND THE PROCESS (STUDIO BLUEPRINT) -------------------- */}
-        <section id="screen-studio-process" className="pt-12 sm:pt-16 border-t border-eerie/15">
+        <section id="screen-studio-process" className="pt-8 sm:pt-12 border-t border-eerie/15 scroll-mt-24 sm:scroll-mt-28">
           <ProcessBehindProcess
             data={processBehindProcessData}
             client={currentProject.client}
@@ -384,7 +402,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 04: TECHNICAL SPECS & DIELINE -------------------- */}
-        <section id="screen-specs" className="pt-12 sm:pt-16 border-t border-eerie/15">
+        <section id="screen-specs" className="pt-8 sm:pt-12 border-t border-eerie/15 scroll-mt-24 sm:scroll-mt-28">
           {currentProject.category === 'packaging' ? (
             <PackagingAnatomy
               anatomy={currentProject.anatomy}
@@ -403,7 +421,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 05: COMMERCIAL IMPACT -------------------- */}
-        <section id="screen-impact" className="pt-12 sm:pt-16 border-t border-eerie/15 space-y-8">
+        <section id="screen-impact" className="pt-8 sm:pt-12 border-t border-eerie/15 space-y-8 scroll-mt-24 sm:scroll-mt-28">
           <div className="border-b border-eerie/15 pb-4">
             <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
               <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
@@ -463,7 +481,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- NEXT PROJECT FEATURE CARD & FOOTER -------------------- */}
-        <section className="pt-12 sm:pt-16 border-t border-eerie/15 space-y-8">
+        <section className="pt-8 sm:pt-12 border-t border-eerie/15 space-y-8">
           {/* Next Project Teaser */}
           {nextProject && onNavigateProject && (
             <div

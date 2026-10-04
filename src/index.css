@@ -160,6 +160,15 @@
   .topic-link:focus-visible span {
     color: rgba(255, 255, 255, 0.7);
   }
+
+  /* Utility to hide native scrollbars while preserving touch/trackpad scrolling */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @layer base {

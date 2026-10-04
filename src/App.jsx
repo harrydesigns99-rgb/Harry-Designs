@@ -57,23 +57,25 @@ function App() {
     const projectId = parseInt(parts[2], 10) || 1;
     return (
       <ThemeProvider>
-        <div className="min-h-screen bg-cloud-dancer relative overflow-hidden">
+        <div className="min-h-screen bg-cloud-dancer relative">
           {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
           <LivingBackground />
-          <CaseStudyScreen
-            projectId={projectId}
-            onNavigateHome={() => {
-              window.history.pushState({}, '', '/');
-              setCurrentPath('/');
-              setTimeout(() => {
-                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
-              }, 50);
-            }}
-            onNavigateProject={(id) => {
-              window.history.pushState({}, '', `/project/${id}`);
-              setCurrentPath(`/project/${id}`);
-            }}
-          />
+          <div className="relative z-10">
+            <CaseStudyScreen
+              projectId={projectId}
+              onNavigateHome={() => {
+                window.history.pushState({}, '', '/');
+                setCurrentPath('/');
+                setTimeout(() => {
+                  document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+                }, 50);
+              }}
+              onNavigateProject={(id) => {
+                window.history.pushState({}, '', `/project/${id}`);
+                setCurrentPath(`/project/${id}`);
+              }}
+            />
+          </div>
         </div>
       </ThemeProvider>
     );
@@ -82,15 +84,17 @@ function App() {
   if (currentPath === '/resume') {
     return (
       <ThemeProvider>
-        <div className="min-h-screen bg-cloud-dancer relative overflow-hidden">
+        <div className="min-h-screen bg-cloud-dancer relative">
           {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
           <LivingBackground />
-          <ResumePage
-            onNavigateHome={() => {
-              window.history.pushState({}, '', '/');
-              setCurrentPath('/');
-            }}
-          />
+          <div className="relative z-10">
+            <ResumePage
+              onNavigateHome={() => {
+                window.history.pushState({}, '', '/');
+                setCurrentPath('/');
+              }}
+            />
+          </div>
         </div>
       </ThemeProvider>
     );

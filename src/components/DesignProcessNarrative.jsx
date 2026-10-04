@@ -185,28 +185,28 @@ const DesignProcessNarrative = ({
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="border border-eerie/20 bg-neutral-900 p-2 space-y-2">
+                  <div className="border border-eerie/20 bg-neutral-900 p-2.5 space-y-2">
                     <div className="text-[10px] font-mono uppercase tracking-wider text-white/70 px-1 font-bold">
                       {process.conceptLabel || 'Initial Concept Exploration'}
                     </div>
-                    <div className="aspect-[4/3] overflow-hidden bg-neutral-950">
+                    <div className="aspect-[3/4] max-h-[380px] mx-auto overflow-hidden bg-neutral-950 flex items-center justify-center p-2">
                       <img
                         src={process.conceptImage}
                         alt="Initial Concept"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   </div>
 
-                  <div className="border border-crimson/40 bg-neutral-900 p-2 space-y-2">
+                  <div className="border border-crimson/40 bg-neutral-900 p-2.5 space-y-2">
                     <div className="text-[10px] font-mono uppercase tracking-wider text-crimson-light px-1 font-bold">
                       {process.finalLabel || 'Final Production System'}
                     </div>
-                    <div className="aspect-[4/3] overflow-hidden bg-neutral-950">
+                    <div className="aspect-[3/4] max-h-[380px] mx-auto overflow-hidden bg-neutral-950 flex items-center justify-center p-2">
                       <img
                         src={finalImage}
                         alt="Final Production"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   </div>
