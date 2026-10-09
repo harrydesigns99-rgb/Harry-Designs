@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useContactForm } from '../hooks/useContactForm';
-import { TRANSITIONS } from '@/animations';
+import { sound } from '@/utils/audio';
 
 const SERVICE_OPTIONS = [
   'Packaging Architecture',
@@ -40,15 +40,15 @@ const ContactForm = () => {
   } = useContactForm();
 
   return (
-    <div className="w-full">
+    <div className="w-full text-[#1d1d1f]">
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Success Message */}
         {showSuccess && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-sm"
+            className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-sm"
           >
             ✓ Thank you! Your inquiry and project scope have been received. Hariharan will get back to you within 24 hours.
           </motion.div>
@@ -57,10 +57,10 @@ const ContactForm = () => {
         {/* 1. Services Pill Selector */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <label className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/65">
+            <label className="block text-xs uppercase tracking-wider font-mono font-medium text-[#86868b]">
               1. Required Capabilities &amp; Scope
             </label>
-            <span className="text-[11px] text-eerie/45 font-mono">
+            <span className="text-[11px] text-[#86868b] font-mono">
               {selectedServices.length} selected
             </span>
           </div>
@@ -71,14 +71,17 @@ const ContactForm = () => {
                 <button
                   key={service}
                   type="button"
-                  onClick={() => toggleService(service)}
-                  className={`px-3.5 py-2 text-xs uppercase tracking-wider font-semibold transition-all duration-150 cursor-pointer ${
+                  onClick={() => {
+                    sound.playClick();
+                    toggleService(service);
+                  }}
+                  className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-crimson text-white border border-crimson shadow-sm'
-                      : 'bg-transparent text-eerie/70 border border-eerie/20 hover:border-eerie hover:text-eerie'
+                      ? 'bg-crimson text-white shadow-xs'
+                      : 'bg-black/[0.04] text-[#1d1d1f]/80 hover:bg-black/[0.08] border border-black/[0.05]'
                   }`}
                 >
-                  <span className="mr-1.5 opacity-70">{isSelected ? '✓' : '+'}</span>
+                  <span className="mr-1.5 opacity-80">{isSelected ? '✓' : '+'}</span>
                   {service}
                 </button>
               );
@@ -90,7 +93,7 @@ const ContactForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
           {/* Timeline Selector */}
           <div>
-            <label className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/65 mb-3">
+            <label className="block text-xs uppercase tracking-wider font-mono font-medium text-[#86868b] mb-3">
               2. Target Launch Timeline
             </label>
             <div className="flex flex-wrap gap-2">
@@ -100,11 +103,14 @@ const ContactForm = () => {
                   <button
                     key={timeline}
                     type="button"
-                    onClick={() => selectTimeline(timeline)}
-                    className={`px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-150 cursor-pointer ${
+                    onClick={() => {
+                      sound.playClick();
+                      selectTimeline(timeline);
+                    }}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-eerie text-white border border-eerie shadow-sm'
-                        : 'bg-transparent text-eerie/70 border border-eerie/20 hover:border-eerie hover:text-eerie'
+                        ? 'bg-[#1d1d1f] text-white shadow-xs'
+                        : 'bg-black/[0.04] text-[#1d1d1f]/80 hover:bg-black/[0.08] border border-black/[0.05]'
                     }`}
                   >
                     {timeline}
@@ -116,7 +122,7 @@ const ContactForm = () => {
 
           {/* Budget Selector */}
           <div>
-            <label className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/65 mb-3">
+            <label className="block text-xs uppercase tracking-wider font-mono font-medium text-[#86868b] mb-3">
               3. Estimated Budget Allocation
             </label>
             <div className="flex flex-wrap gap-2">
@@ -126,11 +132,14 @@ const ContactForm = () => {
                   <button
                     key={budget}
                     type="button"
-                    onClick={() => selectBudget(budget)}
-                    className={`px-3 py-1.5 text-xs font-semibold tracking-wide transition-all duration-150 cursor-pointer ${
+                    onClick={() => {
+                      sound.playClick();
+                      selectBudget(budget);
+                    }}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-eerie text-white border border-eerie shadow-sm'
-                        : 'bg-transparent text-eerie/70 border border-eerie/20 hover:border-eerie hover:text-eerie'
+                        ? 'bg-[#1d1d1f] text-white shadow-xs'
+                        : 'bg-black/[0.04] text-[#1d1d1f]/80 hover:bg-black/[0.08] border border-black/[0.05]'
                     }`}
                   >
                     {budget}
@@ -142,72 +151,72 @@ const ContactForm = () => {
         </div>
 
         {/* 3. Client Details */}
-        <div className="space-y-6 pt-4 border-t border-eerie/10">
+        <div className="space-y-6 pt-4 border-t border-black/[0.06]">
           <div>
-            <label htmlFor="name" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-2">
+            <label htmlFor="name" className="block text-xs uppercase tracking-wider font-mono font-medium text-[#86868b] mb-2">
               Your Name *
             </label>
             <motion.input
-              whileFocus={{ scale: 1.005 }}
+              whileFocus={{ scale: 1.002 }}
               type="text"
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none text-eerie placeholder-eerie/40 text-base"
+              className="w-full px-4 py-3 rounded-2xl bg-black/[0.03] border border-black/[0.08] focus:border-crimson focus:bg-white transition-all outline-none text-[#1d1d1f] placeholder-[#86868b]/60 text-sm sm:text-base"
               placeholder="e.g. Alex Morgan"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="email" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-2">
+              <label htmlFor="email" className="block text-xs uppercase tracking-wider font-mono font-medium text-[#86868b] mb-2">
                 Your Email *
               </label>
               <motion.input
-                whileFocus={{ scale: 1.005 }}
+                whileFocus={{ scale: 1.002 }}
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none text-eerie placeholder-eerie/40 text-base"
+                className="w-full px-4 py-3 rounded-2xl bg-black/[0.03] border border-black/[0.08] focus:border-crimson focus:bg-white transition-all outline-none text-[#1d1d1f] placeholder-[#86868b]/60 text-sm sm:text-base"
                 placeholder="alex@brand.com"
               />
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-2">
+              <label htmlFor="phone" className="block text-xs uppercase tracking-wider font-mono font-medium text-[#86868b] mb-2">
                 Phone / WhatsApp (Optional)
               </label>
               <motion.input
-                whileFocus={{ scale: 1.005 }}
+                whileFocus={{ scale: 1.002 }}
                 type="tel"
                 id="phone"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none text-eerie placeholder-eerie/40 text-base"
+                className="w-full px-4 py-3 rounded-2xl bg-black/[0.03] border border-black/[0.08] focus:border-crimson focus:bg-white transition-all outline-none text-[#1d1d1f] placeholder-[#86868b]/60 text-sm sm:text-base"
                 placeholder="+91 86101 74188"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-xs uppercase tracking-[0.14em] font-semibold text-eerie/55 mb-2">
+            <label htmlFor="message" className="block text-xs uppercase tracking-wider font-mono font-medium text-[#86868b] mb-2">
               Brief Description &amp; Objectives *
             </label>
             <motion.textarea
-              whileFocus={{ scale: 1.005 }}
+              whileFocus={{ scale: 1.002 }}
               id="message"
               name="message"
               value={formData.message}
               onChange={handleChange}
               required
               rows="4"
-              className="w-full px-0 py-3 bg-transparent border-b border-eerie/20 focus:border-crimson transition-all outline-none resize-none text-eerie placeholder-eerie/40 text-base"
+              className="w-full px-4 py-3 rounded-2xl bg-black/[0.03] border border-black/[0.08] focus:border-crimson focus:bg-white transition-all outline-none resize-none text-[#1d1d1f] placeholder-[#86868b]/60 text-sm sm:text-base"
               placeholder="Tell me about your brand, current bottlenecks, key deliverables, and vision..."
             />
           </div>
@@ -217,34 +226,23 @@ const ContactForm = () => {
         <motion.button
           type="submit"
           disabled={isSubmitting}
-          whileHover={{
-            scale: 1.01,
-            boxShadow: '0 12px 36px rgba(82, 99, 216, 0.25)',
-          }}
+          whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
           data-cursor="Send"
-          className="group relative w-full px-8 py-4 bg-crimson text-white font-semibold overflow-hidden hover:bg-crimson-dark transition-colors cursor-pointer flex items-center justify-center gap-3 disabled:opacity-75"
+          className="w-full px-8 py-4 rounded-full bg-crimson text-white font-medium text-xs sm:text-sm uppercase tracking-wider hover:bg-crimson-dark transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-70"
         >
-          <span className="relative z-10 font-display tracking-wider uppercase text-sm">
-            {isSubmitting ? 'Submitting Inquiry...' : 'Submit Commission Inquiry →'}
-          </span>
-          <motion.div
-            className="absolute inset-0 bg-white/10"
-            initial={{ x: '-100%' }}
-            whileHover={{ x: 0 }}
-            transition={TRANSITIONS.fast}
-          />
+          <span>{isSubmitting ? 'Submitting Inquiry...' : 'Submit Commission Inquiry →'}</span>
         </motion.button>
 
         {/* WhatsApp & Direct Channels */}
         <div className="pt-2 text-center">
-          <p className="text-xs text-eerie/60">
+          <p className="text-xs text-[#86868b]">
             Prefer direct messaging?{' '}
             <a
               href={getWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-crimson font-semibold hover:underline inline-flex items-center gap-1"
+              className="text-crimson font-medium hover:underline inline-flex items-center gap-1"
             >
               <span>Chat on WhatsApp with pre-filled scope</span>
               <span aria-hidden="true">↗</span>

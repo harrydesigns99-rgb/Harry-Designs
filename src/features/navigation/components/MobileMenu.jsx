@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../data/navData';
 import { TRANSITIONS, DELAYS, fadeInLeft, menuSlide } from '@/animations';
+import { sound } from '@/utils/audio';
 
 const MobileMenu = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
@@ -13,34 +14,42 @@ const MobileMenu = ({ isOpen, onClose }) => {
         exit="closed"
         variants={menuSlide}
         transition={TRANSITIONS.fast}
-        className="md:hidden relative z-[100] bg-cloud-dancer/98 backdrop-blur-xl border-t border-eerie/10 shadow-xl"
+        className="md:hidden mt-2 p-3 rounded-3xl apple-glass shadow-2xl border border-black/[0.08] backdrop-blur-2xl"
       >
-        <div className="px-4 pt-2 pb-6 space-y-2">
+        <div className="space-y-1">
           {NAV_LINKS.map((link, index) => (
             <motion.a
               key={link.name}
               href={link.href}
-              onClick={onClose}
+              onClick={() => {
+                sound.playClick();
+                onClose();
+              }}
               initial="hidden"
               animate="visible"
               variants={fadeInLeft}
               transition={{ delay: DELAYS.tiny * index, ...TRANSITIONS.fast }}
-              className="block px-4 py-3 text-base font-display font-medium text-eerie hover:text-crimson hover:bg-eerie/5 transition-colors"
+              className="block px-4 py-2.5 rounded-2xl text-sm font-medium text-[#1d1d1f] hover:bg-black/[0.04] transition-colors"
             >
               {link.name}
             </motion.a>
           ))}
-          <motion.a
-            href="#contact"
-            onClick={onClose}
-            initial="hidden"
-            animate="visible"
-            variants={fadeInLeft}
-            transition={{ delay: DELAYS.large, ...TRANSITIONS.fast }}
-            className="block mt-4 px-4 py-3.5 bg-crimson text-white font-semibold text-center hover:bg-crimson-dark transition-colors"
-          >
-            Let&apos;s Talk ↗
-          </motion.a>
+          <div className="pt-2">
+            <motion.a
+              href="#contact"
+              onClick={() => {
+                sound.playClick();
+                onClose();
+              }}
+              initial="hidden"
+              animate="visible"
+              variants={fadeInLeft}
+              transition={{ delay: DELAYS.large, ...TRANSITIONS.fast }}
+              className="block w-full py-3 rounded-full bg-crimson text-white text-xs font-semibold uppercase tracking-wider text-center hover:bg-crimson-dark transition-colors shadow-sm"
+            >
+              Let&apos;s Talk ↗
+            </motion.a>
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

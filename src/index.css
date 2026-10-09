@@ -21,16 +21,16 @@
 
 :root,
 [data-theme="editorial"] {
-  --theme-bg: #ede9e0;
-  --theme-surface: #f7f5f0;
-  --theme-text: #121212;
-  --theme-text-light: #191918;
-  --theme-text-lighter: #292927;
-  --theme-crimson: #5263d8;
-  --theme-crimson-dark: #3947ae;
-  --theme-crimson-light: #8490ef;
-  --theme-clay: #d4775c;
-  --theme-border: rgba(18, 18, 18, 0.15);
+  --theme-bg: #fbfbfd;
+  --theme-surface: #ffffff;
+  --theme-text: #1d1d1f;
+  --theme-text-light: #424245;
+  --theme-text-lighter: #86868b;
+  --theme-crimson: #ba2026;
+  --theme-crimson-dark: #96171c;
+  --theme-crimson-light: #e03a41;
+  --theme-clay: #f56300;
+  --theme-border: rgba(0, 0, 0, 0.07);
 }
 
 [data-theme="nocturne"] {
@@ -88,6 +88,43 @@
     background: rgba(247, 245, 240, 0.04);
     backdrop-filter: blur(18px);
     border: 1px solid rgba(247, 245, 240, 0.12);
+  }
+
+  /* Apple Pro Design System Utilities */
+  .apple-glass {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  [data-theme="nocturne"] .apple-glass {
+    background: rgba(20, 20, 24, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .apple-card {
+    background-color: var(--color-cloud-white);
+    border: 1px solid var(--theme-border);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .apple-card:hover {
+    box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  }
+
+  .apple-pill {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+  }
+
+  [data-theme="nocturne"] .apple-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .section-kicker {
@@ -159,15 +196,6 @@
   .topic-link:hover span,
   .topic-link:focus-visible span {
     color: rgba(255, 255, 255, 0.7);
-  }
-
-  /* Utility to hide native scrollbars while preserving touch/trackpad scrolling */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   }
 }
 

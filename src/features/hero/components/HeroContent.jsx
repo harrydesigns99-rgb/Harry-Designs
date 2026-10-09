@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { TRANSITIONS } from '@/animations';
+import { sound } from '@/utils/audio';
 
 const HeroContent = () => {
   return (
@@ -12,29 +13,32 @@ const HeroContent = () => {
         transition={{ ...TRANSITIONS.verySlow }}
         className="max-w-3xl"
       >
-        {/* Availability Badge & Location */}
+        {/* Availability Badge & Studio Origin */}
         <motion.div
-          className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6"
-          initial={{ opacity: 0, y: 15 }}
+          className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-6"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, ...TRANSITIONS.medium }}
+          transition={{ delay: 0.15, ...TRANSITIONS.medium }}
         >
-          <span className="section-kicker">Independent designer / Chennai, India</span>
-          <span className="hidden sm:inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-mono uppercase tracking-wider font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b]">
+            <span className="h-1.5 w-1.5 rounded-full bg-crimson" />
+            <span>Independent Design Studio // Chennai, IN</span>
+          </div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-xs font-mono font-medium">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Available for Q3/Q4 Projects
+            Available for Select Projects
           </span>
         </motion.div>
 
-        {/* Main Kinetic Headline with Masked Reveal */}
+        {/* Main Keynote Kinetic Headline */}
         <div className="overflow-hidden mb-6">
           <motion.h1
-            className="font-display text-4xl sm:text-6xl md:text-7xl xl:text-[6.7rem] font-medium leading-[1.02] sm:leading-[0.94] tracking-[-0.03em] sm:tracking-[-0.06em] text-eerie"
+            className="font-display text-4xl sm:text-6xl md:text-7xl xl:text-[6.2rem] font-medium leading-[1.04] sm:leading-[0.96] tracking-tight text-[#1d1d1f]"
             initial={{ y: '100%', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{
-              delay: 0.35,
-              duration: 1.1,
+              delay: 0.25,
+              duration: 1.0,
               ease: [0.16, 1, 0.3, 1],
             }}
           >
@@ -45,56 +49,66 @@ const HeroContent = () => {
           </motion.h1>
         </div>
 
-        {/* Description */}
+        {/* Description Narrative */}
         <motion.p
-          className="text-base sm:text-lg text-eerie/65 font-normal leading-relaxed mx-auto lg:mx-0 max-w-lg mb-8"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-base sm:text-lg text-[#1d1d1f]/70 font-normal leading-relaxed mx-auto lg:mx-0 max-w-lg mb-8"
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.5, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          Harry Designs is an independent studio creating visual identities, packaging, and brand
-          worlds for people building what comes next.
+          Harry Designs crafts distinctive brand identities, shelf-dominant packaging systems, and visual worlds engineered for lasting commercial impact.
         </motion.p>
 
-        {/* CTAs with Magnetic Spring Physics */}
+        {/* Apple Rounded-Full CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-6"
+          transition={{ delay: 0.65, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3.5"
         >
           <motion.button
             data-cursor="Explore"
-            onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            className="group inline-flex items-center gap-5 px-7 py-4 bg-crimson text-white font-semibold text-sm transition-all hover:bg-crimson-dark shadow-md hover:shadow-lg cursor-pointer"
+            onClick={() => {
+              sound.playClick();
+              document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-crimson text-white font-medium text-xs sm:text-sm tracking-wide transition-all hover:bg-crimson-dark shadow-md hover:shadow-lg cursor-pointer"
           >
             <span>View selected work</span>
-            <span className="text-lg transition-transform group-hover:translate-x-1 group-hover:-translate-y-0.5">↗</span>
+            <span className="text-sm">↗</span>
           </motion.button>
+
           <motion.a
             data-cursor="Email"
             href="#contact"
-            whileHover={{ x: 3 }}
-            className="editorial-link text-sm font-semibold text-eerie/75 flex items-center gap-1.5"
+            onClick={() => sound.playClick()}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-black/[0.05] hover:bg-black/[0.09] text-[#1d1d1f] font-medium text-xs sm:text-sm tracking-wide border border-black/[0.05] transition-all cursor-pointer"
           >
-            Start a project <span aria-hidden="true">↗</span>
+            <span>Start a project</span>
+            <span className="text-sm">→</span>
           </motion.a>
         </motion.div>
 
-        {/* Disciplines */}
+        {/* Disciplines Segmented Pill Tags */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="mt-12 sm:mt-16 flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-8 text-left text-xs uppercase tracking-[0.16em] text-eerie/45"
+          transition={{ delay: 0.8, duration: 0.7 }}
+          className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-2"
         >
-          <span className="hover:text-eerie transition-colors">Brand identity</span>
-          <span className="h-1 w-1 rounded-full bg-crimson" />
-          <span className="hover:text-eerie transition-colors">Packaging</span>
-          <span className="h-1 w-1 rounded-full bg-crimson" />
-          <span className="hover:text-eerie transition-colors">Art direction</span>
+          <span className="px-3 py-1 rounded-full bg-black/[0.03] border border-black/[0.05] text-xs font-mono text-[#86868b]">
+            Brand Identity
+          </span>
+          <span className="px-3 py-1 rounded-full bg-black/[0.03] border border-black/[0.05] text-xs font-mono text-[#86868b]">
+            Packaging Systems
+          </span>
+          <span className="px-3 py-1 rounded-full bg-black/[0.03] border border-black/[0.05] text-xs font-mono text-[#86868b]">
+            Art Direction
+          </span>
         </motion.div>
       </motion.div>
     </motion.div>

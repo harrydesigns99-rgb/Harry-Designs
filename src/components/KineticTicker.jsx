@@ -7,11 +7,11 @@ const TICKER_ITEMS = [
   '✦',
   'Art Direction & Styling',
   '✦',
-  'Commercial Impact',
+  'Commercial Shelf Impact',
   '✦',
-  'Editorial Design',
+  'ISO 12647-2 Calibration',
   '✦',
-  'Luxury Finish Oversight',
+  'Tactile Substrates & Foils',
   '✦',
   'Creative Direction',
   '✦',
@@ -19,13 +19,13 @@ const TICKER_ITEMS = [
 
 const KineticTicker = () => {
   return (
-    <div className="relative w-full overflow-hidden border-y border-eerie/15 bg-cloud-white py-3 z-10 select-none">
+    <div className="relative w-full overflow-hidden border-y border-black/[0.06] bg-white/60 backdrop-blur-md py-3.5 z-10 select-none">
       <div className="flex w-max">
         {/* Set 1 */}
         <motion.div
           animate={{ x: [0, '-50%'] }}
           transition={{
-            duration: 25,
+            duration: 28,
             repeat: Infinity,
             ease: 'linear',
           }}
@@ -34,8 +34,8 @@ const KineticTicker = () => {
           {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, idx) => (
             <span
               key={`tick-1-${idx}`}
-              className={`font-mono text-xs uppercase tracking-[0.22em] ${
-                item === '✦' ? 'text-crimson text-sm' : 'text-eerie/60 font-semibold'
+              className={`font-mono text-xs uppercase tracking-wider ${
+                item === '✦' ? 'text-crimson text-sm' : 'text-[#86868b] font-medium'
               }`}
             >
               {item}
@@ -47,7 +47,7 @@ const KineticTicker = () => {
         <motion.div
           animate={{ x: [0, '-50%'] }}
           transition={{
-            duration: 25,
+            duration: 28,
             repeat: Infinity,
             ease: 'linear',
           }}
@@ -56,8 +56,8 @@ const KineticTicker = () => {
           {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, idx) => (
             <span
               key={`tick-2-${idx}`}
-              className={`font-mono text-xs uppercase tracking-[0.22em] ${
-                item === '✦' ? 'text-crimson text-sm' : 'text-eerie/60 font-semibold'
+              className={`font-mono text-xs uppercase tracking-wider ${
+                item === '✦' ? 'text-crimson text-sm' : 'text-[#86868b] font-medium'
               }`}
             >
               {item}
@@ -70,4 +70,3 @@ const KineticTicker = () => {
 };
 
 export default KineticTicker;
-

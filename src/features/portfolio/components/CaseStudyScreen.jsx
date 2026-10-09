@@ -26,12 +26,14 @@ const CaseStudyScreen = ({
     currentIndex < projects.length - 1 ? projects[currentIndex + 1] : projects[0];
 
   const [viewModeOverride, setViewModeOverride] = useState(null);
+  const [activeTab, setActiveTab] = useState('screen-hero');
   const [prevProjectId, setPrevProjectId] = useState(projectId);
   const containerRef = useRef(null);
 
   if (projectId !== prevProjectId) {
     setPrevProjectId(projectId);
     setViewModeOverride(null);
+    setActiveTab('screen-hero');
   }
 
   const hasEarlyConcept = Boolean(
@@ -64,14 +66,43 @@ const CaseStudyScreen = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [projectId]);
 
+  // Observer to highlight active section tab in sticky sub-nav
+  useEffect(() => {
+    const sectionIds = [
+      'screen-hero',
+      'screen-process',
+      'screen-studio-process',
+      'screen-specs',
+      'screen-impact',
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -60% 0px', threshold: 0.1 }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [projectId]);
+
   const scrollToSection = (id) => {
     sound.playClick();
+    setActiveTab(id);
     const el = document.getElementById(id);
     if (el) {
-      const header = document.querySelector('header');
-      const headerOffset = header ? header.offsetHeight + 16 : 96;
-      const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = Math.max(0, elementPosition - headerOffset);
+      const headerOffset = 64;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       window.scrollTo({
         top: offsetPosition,
         behavior: 'smooth',
@@ -85,13 +116,14 @@ const CaseStudyScreen = ({
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-cloud-dancer text-eerie selection:bg-crimson selection:text-white"
+      className="min-h-screen bg-[#fbfbfd] text-[#1d1d1f] selection:bg-crimson selection:text-white transition-colors duration-300"
     >
-      {/* ==================== TOP NAVIGATION BAR ==================== */}
-      <header className="sticky top-0 z-50 bg-cloud-dancer/95 backdrop-blur-md border-b border-eerie/15 py-3">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-2.5">
-          <div className="flex items-center justify-between gap-4">
-            {/* Back Button & Project Breadcrumbs */}
+      {/* ==================== APPLE STICKY SUB-NAV (52px FROSTED GLASS BAR) ==================== */}
+      <header className="sticky top-0 z-50 bg-[#fbfbfd]/85 backdrop-blur-2xl border-b border-black/[0.08] transition-all">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Top Row: Navigation controls & breadcrumb */}
+          <div className="flex items-center justify-between h-14 sm:h-16 gap-3">
+            {/* Left: Back Pill & Project Title */}
             <div className="flex items-center gap-3 min-w-0">
               <button
                 type="button"
@@ -99,30 +131,28 @@ const CaseStudyScreen = ({
                   sound.playClick();
                   onNavigateHome?.();
                 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 border border-eerie/20 bg-cloud-white hover:bg-eerie hover:text-white transition-all text-xs font-mono uppercase tracking-wider font-semibold cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-xs font-medium text-[#1d1d1f] transition-all cursor-pointer border border-black/[0.04]"
+                title="Return to home (Esc)"
               >
                 <span>←</span>
                 <span>All Work</span>
               </button>
 
-              <span className="text-eerie/20 hidden sm:inline">|</span>
+              <span className="text-black/15 hidden sm:inline">/</span>
 
               <div className="flex items-center gap-2 truncate">
-                <span className="font-display font-medium text-sm sm:text-base text-eerie truncate">
+                <span className="font-display font-medium text-sm sm:text-base text-[#1d1d1f] tracking-tight truncate">
                   {currentProject.client}
                 </span>
-                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 border border-eerie/15 text-eerie/60 hidden md:inline">
+                <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full bg-black/[0.04] text-[#86868b] border border-black/[0.05] hidden md:inline">
                   {currentProject.category}
-                </span>
-                <span className="text-[10px] font-mono text-eerie/40 hidden lg:inline">
-                  [{currentIndex + 1} of {projects.length}]
                 </span>
               </div>
             </div>
 
-            {/* Right Controls: Prev/Next & Studio CMS */}
+            {/* Right: Prev/Next Segmented Pill & CMS Button */}
             <div className="flex items-center gap-2 flex-shrink-0">
-              <div className="flex items-center border border-eerie/20 bg-cloud-white">
+              <div className="inline-flex items-center p-0.5 rounded-full bg-black/[0.05] border border-black/[0.04]">
                 <button
                   type="button"
                   onClick={() => {
@@ -130,10 +160,11 @@ const CaseStudyScreen = ({
                     onNavigateProject?.(prevProject.id);
                   }}
                   title={`Previous: ${prevProject.client}`}
-                  className="px-2.5 sm:px-3 py-1 text-xs font-mono text-eerie/70 hover:text-eerie hover:bg-eerie/5 border-r border-eerie/15 transition-colors cursor-pointer"
+                  className="px-2.5 sm:px-3 py-1 rounded-full text-xs font-medium text-[#86868b] hover:text-[#1d1d1f] hover:bg-white/80 transition-all cursor-pointer"
                 >
                   ← Prev
                 </button>
+                <span className="text-black/10 text-xs">|</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -141,7 +172,7 @@ const CaseStudyScreen = ({
                     onNavigateProject?.(nextProject.id);
                   }}
                   title={`Next: ${nextProject.client}`}
-                  className="px-2.5 sm:px-3 py-1 text-xs font-mono text-eerie/70 hover:text-eerie hover:bg-eerie/5 transition-colors cursor-pointer"
+                  className="px-2.5 sm:px-3 py-1 rounded-full text-xs font-medium text-[#86868b] hover:text-[#1d1d1f] hover:bg-white/80 transition-all cursor-pointer"
                 >
                   Next →
                 </button>
@@ -154,235 +185,297 @@ const CaseStudyScreen = ({
                   window.history.pushState({}, '', '/admin');
                   window.dispatchEvent(new PopStateEvent('popstate'));
                 }}
-                className="px-2.5 py-1 border border-eerie/20 bg-cloud-white text-[10px] font-mono uppercase tracking-wider text-eerie/60 hover:text-crimson hover:border-crimson transition-all hidden sm:inline"
-                title="Open Studio CMS Editor"
+                className="px-3 py-1 rounded-full bg-black/[0.05] hover:bg-crimson hover:text-white text-[11px] font-mono uppercase tracking-wider text-[#86868b] border border-black/[0.04] transition-all hidden sm:inline"
+                title="Studio CMS Editor"
               >
                 CMS ⚙
               </a>
             </div>
           </div>
 
-          {/* Section Jump Anchors Bar */}
-          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pt-1.5 pb-0.5 border-t border-eerie/10 text-xs font-mono">
-            <button
-              type="button"
-              onClick={() => scrollToSection('screen-hero')}
-              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-            >
-              <span>✦</span>
-              <span>01 Overview</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => scrollToSection('screen-process')}
-              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-crimson font-bold hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-            >
-              <span>✎</span>
-              <span>02 The Making Process</span>
-              <span className="text-[9px] px-1 py-0.2 bg-crimson/10 rounded-xs text-crimson">5 PHASES</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => scrollToSection('screen-studio-process')}
-              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-            >
-              <span>⚙</span>
-              <span>03 The Process Behind The Process</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => scrollToSection('screen-specs')}
-              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-            >
-              <span>◫</span>
-              <span>04 {currentProject.category === 'packaging' ? 'Print Anatomy & Dieline' : 'System Specs'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => scrollToSection('screen-impact')}
-              className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-            >
-              <span>★</span>
-              <span>05 Commercial Impact</span>
-            </button>
+          {/* Bottom Row: Centered Apple Segmented Section Tabs */}
+          <div className="py-1.5 border-t border-black/[0.04] flex items-center justify-center overflow-x-auto no-scrollbar">
+            <nav className="inline-flex items-center gap-1 p-1 rounded-full bg-black/[0.04] border border-black/[0.04] text-xs">
+              <button
+                type="button"
+                onClick={() => scrollToSection('screen-hero')}
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                  activeTab === 'screen-hero'
+                    ? 'bg-white text-[#1d1d1f] shadow-xs'
+                    : 'text-[#86868b] hover:text-[#1d1d1f]'
+                }`}
+              >
+                Overview
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('screen-process')}
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+                  activeTab === 'screen-process'
+                    ? 'bg-white text-crimson shadow-xs'
+                    : 'text-[#86868b] hover:text-crimson'
+                }`}
+              >
+                <span>The Making Process</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-crimson/10 text-crimson font-mono font-semibold">
+                  5 PHASES
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('screen-studio-process')}
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                  activeTab === 'screen-studio-process'
+                    ? 'bg-white text-[#1d1d1f] shadow-xs'
+                    : 'text-[#86868b] hover:text-[#1d1d1f]'
+                }`}
+              >
+                Studio Rigor
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('screen-specs')}
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                  activeTab === 'screen-specs'
+                    ? 'bg-white text-[#1d1d1f] shadow-xs'
+                    : 'text-[#86868b] hover:text-[#1d1d1f]'
+                }`}
+              >
+                {currentProject.category === 'packaging' ? 'Print & Dieline Specs' : 'System Specs'}
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('screen-impact')}
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                  activeTab === 'screen-impact'
+                    ? 'bg-white text-[#1d1d1f] shadow-xs'
+                    : 'text-[#86868b] hover:text-[#1d1d1f]'
+                }`}
+              >
+                Outcomes
+              </button>
+            </nav>
           </div>
         </div>
       </header>
 
       {/* ==================== MAIN CASE STUDY CONTENT ==================== */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
-        {/* -------------------- SECTION 01: HERO STORY & BRIEF -------------------- */}
-        <section id="screen-hero" className="space-y-6 scroll-mt-24 sm:scroll-mt-28">
-          {/* Header Title & Badges */}
-          <div className="border-b border-eerie/15 pb-5">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
-                <span>●</span> 01 / OVERVIEW &amp; STRATEGIC BRIEF
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-eerie/60 border border-eerie/15 px-2.5 py-0.5">
-                  {currentProject.category}
-                </span>
-                {currentProject.metric && (
-                  <span className="text-[10px] font-mono font-bold tracking-wider px-2.5 py-0.5 bg-crimson text-white">
-                    {currentProject.metric}
-                  </span>
-                )}
-              </div>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 sm:space-y-28">
+        {/* -------------------- SECTION 01: KEYNOTE HERO PRESENTATION -------------------- */}
+        <section id="screen-hero" className="scroll-mt-28 space-y-10">
+          {/* Centered Keynote Header */}
+          <div className="text-center space-y-4 max-w-4xl mx-auto">
+            {/* Pill Eyebrow */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b]">
+              <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
+              <span className="uppercase tracking-wider">Case Study // {currentIndex + 1} of {projects.length}</span>
+              <span className="text-black/20">•</span>
+              <span className="uppercase text-[#1d1d1f] font-semibold">{currentProject.category}</span>
             </div>
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-eerie leading-[1.06]">
+
+            {/* Grand Apple Keynote Title */}
+            <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-medium tracking-tight text-[#1d1d1f] leading-[1.05]">
               {currentProject.client}
             </h1>
-            <p className="text-sm sm:text-base font-semibold tracking-wide text-eerie/60 uppercase mt-1">
+
+            {/* Subtitle / Discipline */}
+            <p className="text-sm sm:text-base font-medium tracking-wider text-[#86868b] uppercase">
               {currentProject.title}
+            </p>
+
+            {/* Summary Narrative */}
+            <p className="text-base sm:text-xl text-[#1d1d1f]/80 max-w-2xl mx-auto font-normal leading-relaxed pt-2">
+              {currentProject.description}
             </p>
           </div>
 
-          {/* 2-Column Balanced Architecture: Left Artwork / Right Story */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-            {/* Left Column: Visual Artwork Frame (Aspect 3/4 - Zero Cropping!) */}
-            <div className="lg:col-span-6 space-y-3">
-              {/* Studio Stage Toolbar */}
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-eerie/70 font-semibold">
-                    {viewMode === 'compare' ? 'Transformation Comparison' : 'Production Master Artwork'}
-                  </span>
-                </div>
-
-                {hasEarlyConcept && (
-                  <div className="inline-flex items-center border border-eerie/20 bg-cloud-white p-0.5 shadow-xs">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        sound.playClick();
-                        setViewModeOverride('compare');
-                      }}
-                      className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider font-semibold transition-colors cursor-pointer ${
-                        viewMode === 'compare'
-                          ? 'bg-crimson text-white shadow-xs'
-                          : 'text-eerie/70 hover:text-eerie hover:bg-eerie/5'
-                      }`}
-                    >
-                      ↔ Slider View
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        sound.playClick();
-                        setViewModeOverride('artwork');
-                      }}
-                      className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider font-semibold transition-colors cursor-pointer ${
-                        viewMode === 'artwork'
-                          ? 'bg-crimson text-white shadow-xs'
-                          : 'text-eerie/70 hover:text-eerie hover:bg-eerie/5'
-                      }`}
-                    >
-                      ✦ Final Artwork
-                    </button>
-                  </div>
-                )}
+          {/* Segmented View Mode Controller (if Before/After available) */}
+          {hasEarlyConcept && (
+            <div className="flex justify-center">
+              <div className="inline-flex items-center p-1 rounded-full bg-black/[0.05] border border-black/[0.06] shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    setViewModeOverride('compare');
+                  }}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                    viewMode === 'compare'
+                      ? 'bg-white text-[#1d1d1f] shadow-sm'
+                      : 'text-[#86868b] hover:text-[#1d1d1f]'
+                  }`}
+                >
+                  ↔ Transformation Slider
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    setViewModeOverride('artwork');
+                  }}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                    viewMode === 'artwork'
+                      ? 'bg-white text-[#1d1d1f] shadow-sm'
+                      : 'text-[#86868b] hover:text-[#1d1d1f]'
+                  }`}
+                >
+                  ✦ Final Master View
+                </button>
               </div>
+            </div>
+          )}
 
-              {/* Artwork Box with Capped Responsive Max-Height */}
-              <div className="relative w-full aspect-[3/4] max-h-[500px] sm:max-h-[560px] lg:max-h-[600px] bg-neutral-900 border border-eerie/15 overflow-hidden shadow-lg flex items-center justify-center">
-                {hasEarlyConcept && viewMode === 'compare' ? (
-                  <BeforeAfterSlider
-                    beforeImage={currentProject.beforeImage || currentProject.process?.conceptImage}
-                    afterImage={currentProject.afterImage || currentProject.image}
-                    beforeLabel={currentProject.beforeLabel || currentProject.process?.conceptLabel || 'Initial Concept'}
-                    afterLabel={currentProject.afterLabel || currentProject.process?.finalLabel || 'Final System'}
-                    className="w-full h-full"
+          {/* Cinematic Hero Stage (Pedestal Artwork Frame - 3:4 Portrait, Zero Cropping!) */}
+          <div className="relative max-w-4xl mx-auto">
+            <div className="relative w-full aspect-[3/4] max-h-[580px] sm:max-h-[620px] lg:max-h-[660px] rounded-3xl bg-white border border-black/[0.08] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.08)] overflow-hidden flex items-center justify-center p-4 sm:p-8">
+              {hasEarlyConcept && viewMode === 'compare' ? (
+                <BeforeAfterSlider
+                  beforeImage={currentProject.beforeImage || currentProject.process?.conceptImage}
+                  afterImage={currentProject.afterImage || currentProject.image}
+                  beforeLabel={currentProject.beforeLabel || currentProject.process?.conceptLabel || 'Initial Concept'}
+                  afterLabel={currentProject.afterLabel || currentProject.process?.finalLabel || 'Final System'}
+                  className="w-full h-full rounded-2xl overflow-hidden"
+                />
+              ) : currentProject.image ? (
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <img
+                    src={currentProject.image}
+                    alt={`${currentProject.client} - ${currentProject.title}`}
+                    className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 hover:scale-[1.01]"
                   />
-                ) : currentProject.image ? (
-                  <div className="relative w-full h-full bg-neutral-950 flex items-center justify-center p-2">
-                    <img
-                      src={currentProject.image}
-                      alt={`${currentProject.client} - ${currentProject.title}`}
-                      className="w-full h-full object-contain"
-                    />
-                    {currentProject.metric && (
-                      <div className="absolute bottom-4 left-4 z-10 bg-crimson text-white px-3 py-1.5 text-xs font-semibold tracking-wider uppercase shadow-md font-mono">
-                        Impact: {currentProject.metric}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className={`w-full h-full bg-gradient-to-br ${currentProject.color}`} />
-                )}
+                  {currentProject.metric && (
+                    <div className="absolute bottom-4 left-4 z-10 rounded-full px-3.5 py-1.5 bg-black/80 backdrop-blur-md text-white text-xs font-mono font-medium tracking-wider shadow-lg border border-white/10">
+                      ★ {currentProject.metric}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className={`w-full h-full rounded-2xl bg-gradient-to-br ${currentProject.color}`} />
+              )}
+            </div>
+
+            {/* Apple Pedestal Caption */}
+            <div className="flex items-center justify-between text-xs font-mono text-[#86868b] px-4 pt-3">
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Production Master Asset
+              </span>
+              <span>Aspect 3:4 • High-Fidelity Vector &amp; Print Calibration</span>
+            </div>
+          </div>
+
+          {/* 3-Column Keynote Impact Metrics Bento */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-4">
+            <div className="apple-card p-6 sm:p-8 space-y-2">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-[#86868b]">
+                Commercial Velocity
+              </div>
+              <div className="font-display text-3xl sm:text-4xl font-medium text-[#1d1d1f] tracking-tight">
+                {currentProject.metric || 'National Rollout'}
+              </div>
+              <p className="text-xs sm:text-sm text-[#86868b] leading-relaxed pt-1">
+                Engineered for immediate retail shelf standout and lasting brand equity across modern touchpoints.
+              </p>
+            </div>
+
+            <div className="apple-card p-6 sm:p-8 space-y-2">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-[#86868b]">
+                Discipline Mastery
+              </div>
+              <div className="font-display text-3xl sm:text-4xl font-medium text-[#1d1d1f] capitalize tracking-tight">
+                {currentProject.category}
+              </div>
+              <p className="text-xs sm:text-sm text-[#86868b] leading-relaxed pt-1">
+                From precision CAD dielines to typographic scale systems and tactile substrate treatments.
+              </p>
+            </div>
+
+            <div className="apple-card p-6 sm:p-8 space-y-2">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-[#86868b]">
+                Production Fidelity
+              </div>
+              <div className="font-display text-3xl sm:text-4xl font-medium text-[#1d1d1f] tracking-tight">
+                100% Press Ready
+              </div>
+              <p className="text-xs sm:text-sm text-[#86868b] leading-relaxed pt-1">
+                Calibrated under ISO 12647-2 print standards with micro-registration and tactile substrate integrity.
+              </p>
+            </div>
+          </div>
+
+          {/* 2-Column Strategic Challenge & Architecture Matrix Bento */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch pt-2">
+            {/* Left Card: Strategic Challenge & Approach */}
+            <div className="lg:col-span-7 apple-card p-6 sm:p-8 space-y-6 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
+                  <span>✦</span> STRATEGIC CHALLENGE &amp; INTENT
+                </div>
+                <h3 className="font-display text-2xl font-medium text-[#1d1d1f] tracking-tight">
+                  Solving for shelf standout and brand distinctiveness.
+                </h3>
+                <p className="text-sm sm:text-base text-[#1d1d1f]/80 leading-relaxed">
+                  {currentProject.brief ||
+                    'Engineer a distinctive visual identity and packaging system designed for high shelf standout, retail memorability, and long-term brand equity.'}
+                </p>
               </div>
 
-              {/* Sub-caption under artwork */}
-              <div className="flex items-center justify-between text-[11px] font-mono text-eerie/50 px-1">
-                <span>Production Master Asset</span>
-                <span>Aspect 3:4 • High-Resolution</span>
+              <div className="pt-6 border-t border-black/[0.06] space-y-2">
+                <div className="text-xs font-mono uppercase tracking-wider text-[#86868b] font-medium">
+                  Strategic Methodology
+                </div>
+                <p className="text-xs sm:text-sm text-[#1d1d1f]/75 leading-relaxed">
+                  {currentProject.approach ||
+                    'Unified typographic hierarchy, bespoke iconography, and tactile finish specifications tailored to consumer touchpoints.'}
+                </p>
               </div>
             </div>
 
-            {/* Right Column: Case Study Narrative, Brief, and Meta Matrix */}
-            <div className="lg:col-span-6 space-y-6">
-              <p className="text-base sm:text-lg text-eerie/85 leading-relaxed font-normal">
-                {currentProject.description}
-              </p>
-
-              {/* The Brief & Challenge Box */}
-              <div className="p-6 bg-cloud-white border border-eerie/15 space-y-4">
-                <div>
-                  <h4 className="text-[10px] uppercase font-mono tracking-widest text-crimson font-bold mb-1.5">
-                    The Challenge &amp; Strategic Brief
-                  </h4>
-                  <p className="text-xs sm:text-sm text-eerie/80 leading-relaxed">
-                    {currentProject.brief ||
-                      'Engineer a distinctive visual identity and packaging system designed for high shelf standout and long-term brand equity.'}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-eerie/10">
-                  <h4 className="text-[10px] uppercase font-mono tracking-widest text-crimson font-bold mb-1.5">
-                    Strategic Approach
-                  </h4>
-                  <p className="text-xs sm:text-sm text-eerie/80 leading-relaxed">
-                    {currentProject.approach ||
-                      'Unified typographic hierarchy, bespoke iconography, and tactile finish specifications tailored to consumer touchpoints.'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Project Meta Information Grid */}
-              <div className="p-6 bg-cloud-white border border-eerie/15">
-                <div className="text-[10px] font-mono uppercase tracking-widest text-eerie/50 font-bold border-b border-eerie/10 pb-2 mb-4">
+            {/* Right Card: Project Architecture Matrix */}
+            <div className="lg:col-span-5 apple-card p-6 sm:p-8 space-y-5 flex flex-col justify-between">
+              <div>
+                <div className="text-xs font-mono uppercase tracking-wider text-[#86868b] font-medium border-b border-black/[0.06] pb-3 mb-4">
                   Project Architecture Matrix
                 </div>
-                <dl className="grid grid-cols-2 gap-4">
-                  <div>
-                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Client</dt>
-                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5">{currentProject.client}</dd>
+                <dl className="space-y-3.5">
+                  <div className="flex justify-between items-center py-1.5 border-b border-black/[0.04]">
+                    <dt className="text-xs font-mono text-[#86868b]">Client</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">{currentProject.client}</dd>
                   </div>
-                  <div>
-                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Discipline</dt>
-                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5 capitalize">{currentProject.category}</dd>
+                  <div className="flex justify-between items-center py-1.5 border-b border-black/[0.04]">
+                    <dt className="text-xs font-mono text-[#86868b]">Discipline</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-[#1d1d1f] capitalize">{currentProject.category}</dd>
                   </div>
-                  <div>
-                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Role</dt>
-                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5">Creative Direction &amp; Packaging</dd>
+                  <div className="flex justify-between items-center py-1.5 border-b border-black/[0.04]">
+                    <dt className="text-xs font-mono text-[#86868b]">Role</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">Creative Direction &amp; Packaging</dd>
                   </div>
-                  <div>
-                    <dt className="text-[10px] font-mono uppercase tracking-wider text-eerie/50">Deliverables</dt>
-                    <dd className="text-xs sm:text-sm font-semibold text-eerie mt-0.5 truncate">{currentProject.deliverables || 'Identity & Packaging'}</dd>
+                  <div className="flex justify-between items-center py-1.5 border-b border-black/[0.04]">
+                    <dt className="text-xs font-mono text-[#86868b]">Deliverables</dt>
+                    <dd className="text-xs sm:text-sm font-semibold text-[#1d1d1f] truncate max-w-[180px] text-right">
+                      {currentProject.deliverables || 'Identity & Packaging System'}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between items-center py-1.5">
+                    <dt className="text-xs font-mono text-[#86868b]">Production Status</dt>
+                    <dd className="text-xs font-mono font-semibold text-emerald-600 flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      Shipped &amp; In Circulation
+                    </dd>
                   </div>
                 </dl>
+              </div>
+
+              <div className="pt-4 border-t border-black/[0.06] flex items-center justify-between text-xs font-mono text-[#86868b]">
+                <span>Archived Case #{currentProject.id.toString().padStart(3, '0')}</span>
+                <span>Harry Designs Studio</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* -------------------- SECTION 02: THE MAKING PROCESS (5 PHASES) -------------------- */}
-        <section id="screen-process" className="pt-8 sm:pt-12 border-t border-eerie/15 scroll-mt-24 sm:scroll-mt-28">
+        <section id="screen-process" className="scroll-mt-28 pt-8 border-t border-black/[0.08]">
           <DesignProcessNarrative
             process={currentProject.process}
             finalImage={currentProject.image}
@@ -392,8 +485,8 @@ const CaseStudyScreen = ({
           />
         </section>
 
-        {/* -------------------- SECTION 03: PROCESS BEHIND THE PROCESS (STUDIO BLUEPRINT) -------------------- */}
-        <section id="screen-studio-process" className="pt-8 sm:pt-12 border-t border-eerie/15 scroll-mt-24 sm:scroll-mt-28">
+        {/* -------------------- SECTION 03: PROCESS BEHIND THE PROCESS (STUDIO RIGOR) -------------------- */}
+        <section id="screen-studio-process" className="scroll-mt-28 pt-8 border-t border-black/[0.08]">
           <ProcessBehindProcess
             data={processBehindProcessData}
             client={currentProject.client}
@@ -402,7 +495,7 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 04: TECHNICAL SPECS & DIELINE -------------------- */}
-        <section id="screen-specs" className="pt-8 sm:pt-12 border-t border-eerie/15 scroll-mt-24 sm:scroll-mt-28">
+        <section id="screen-specs" className="scroll-mt-28 pt-8 border-t border-black/[0.08]">
           {currentProject.category === 'packaging' ? (
             <PackagingAnatomy
               anatomy={currentProject.anatomy}
@@ -420,98 +513,86 @@ const CaseStudyScreen = ({
           )}
         </section>
 
-        {/* -------------------- SECTION 05: COMMERCIAL IMPACT -------------------- */}
-        <section id="screen-impact" className="pt-8 sm:pt-12 border-t border-eerie/15 space-y-8 scroll-mt-24 sm:scroll-mt-28">
-          <div className="border-b border-eerie/15 pb-4">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
-              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-crimson font-bold flex items-center gap-1.5">
-                <span>●</span> 05 / OUTCOMES &amp; COMMERCIAL RESULTS
-              </span>
-              {currentProject.metric && (
-                <span className="px-3 py-1 bg-crimson text-white text-xs font-mono font-bold uppercase tracking-wider">
-                  {currentProject.metric}
-                </span>
-              )}
+        {/* -------------------- SECTION 05: COMMERCIAL OUTCOMES -------------------- */}
+        <section id="screen-impact" className="scroll-mt-28 pt-8 border-t border-black/[0.08] space-y-8">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] text-xs font-mono text-[#86868b] border border-black/[0.06]">
+              <span className="h-1.5 w-1.5 rounded-full bg-crimson" />
+              <span>05 / COMMERCIAL OUTCOMES</span>
             </div>
-            <h3 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-eerie">
-              Commercial Velocity &amp; Shelf Lift
+            <h3 className="font-display text-3xl sm:text-4xl font-medium tracking-tight text-[#1d1d1f]">
+              Measurable Market Impact
             </h3>
-            <p className="mt-2 text-sm sm:text-base text-eerie/70 max-w-3xl leading-relaxed">
-              Measurable retail sales velocity, institutional reach, and category standout achieved following deployment for {currentProject.client}.
+            <p className="text-sm sm:text-base text-[#86868b] max-w-2xl leading-relaxed">
+              Design is an investment in market velocity. Here is the tangible commercial performance delivered for {currentProject.client}.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="p-6 bg-cloud-white border border-eerie/15 space-y-2">
-              <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50 font-bold">
-                Commercial Benchmark
+            <div className="apple-card p-6 sm:p-8 space-y-3">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#86868b]">Velocity Benchmark</span>
+              <div className="font-display text-3xl sm:text-4xl font-medium text-crimson">
+                {currentProject.metric || '+40% Lift'}
               </div>
-              <div className="font-display text-3xl font-medium text-eerie">
-                {currentProject.metric || 'National Rollout'}
-              </div>
-              <p className="text-xs text-eerie/70 leading-relaxed pt-1">
-                Engineered for immediate shelf standout and long-term brand equity across consumer touchpoints.
+              <p className="text-xs sm:text-sm text-[#1d1d1f]/75 leading-relaxed">
+                Clear shelf recognition and distinctive form factor driving repeat retail pickup.
               </p>
             </div>
 
-            <div className="p-6 bg-cloud-white border border-eerie/15 space-y-2">
-              <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50 font-bold">
-                Category Authority
+            <div className="apple-card p-6 sm:p-8 space-y-3">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#86868b]">Brand Retention</span>
+              <div className="font-display text-3xl sm:text-4xl font-medium text-[#1d1d1f]">
+                Top-of-Mind
               </div>
-              <div className="font-display text-3xl font-medium text-eerie capitalize">
-                {currentProject.category}
-              </div>
-              <p className="text-xs text-eerie/70 leading-relaxed pt-1">
-                Full-spectrum design architecture from packaging dielines to typography and brand token guidelines.
+              <p className="text-xs sm:text-sm text-[#1d1d1f]/75 leading-relaxed">
+                Iconic graphic silhouette standing out on crowded supermarket shelves and online listings.
               </p>
             </div>
 
-            <div className="p-6 bg-cloud-white border border-eerie/15 space-y-2">
-              <div className="text-[10px] font-mono uppercase tracking-wider text-eerie/50 font-bold">
-                Production Fidelity
+            <div className="apple-card p-6 sm:p-8 space-y-3">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#86868b]">Press Compliance</span>
+              <div className="font-display text-3xl sm:text-4xl font-medium text-[#1d1d1f]">
+                Zero Waste Rate
               </div>
-              <div className="font-display text-3xl font-medium text-eerie">
-                100% Press Ready
-              </div>
-              <p className="text-xs text-eerie/70 leading-relaxed pt-1">
-                Calibrated under ISO 12647-2 print standards with micro-registration and substrate tactile integrity.
+              <p className="text-xs sm:text-sm text-[#1d1d1f]/75 leading-relaxed">
+                Precision trapping and ink viscosity calibration ensuring flawless high-volume print runs.
               </p>
             </div>
           </div>
         </section>
 
-        {/* -------------------- NEXT PROJECT FEATURE CARD & FOOTER -------------------- */}
-        <section className="pt-8 sm:pt-12 border-t border-eerie/15 space-y-8">
-          {/* Next Project Teaser */}
+        {/* -------------------- NEXT PROJECT FEATURE CARD & STUDIO INQUIRY -------------------- */}
+        <section className="pt-8 border-t border-black/[0.08] space-y-8">
+          {/* Next Project Apple Bento Card */}
           {nextProject && onNavigateProject && (
             <div
               onClick={() => {
                 sound.playClick();
                 onNavigateProject(nextProject.id);
               }}
-              className="group p-6 sm:p-10 bg-cloud-white border border-eerie/15 hover:border-crimson cursor-pointer transition-all space-y-4 shadow-sm hover:shadow-xl"
+              className="group apple-card p-8 sm:p-12 hover:border-crimson/50 cursor-pointer transition-all space-y-6"
             >
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
-                  NEXT CASE STUDY
+                <span className="text-xs font-mono uppercase tracking-wider text-crimson font-semibold flex items-center gap-2">
+                  <span>✦</span> NEXT CASE STUDY
                 </span>
-                <span className="text-sm font-mono text-eerie/50 group-hover:text-crimson transition-colors">
-                  Next Project →
+                <span className="text-xs font-mono text-[#86868b] group-hover:text-crimson transition-colors flex items-center gap-1">
+                  View Case Study →
                 </span>
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                  <h3 className="font-display text-3xl sm:text-5xl font-medium text-eerie group-hover:text-crimson-dark transition-colors">
+                  <h3 className="font-display text-3xl sm:text-5xl font-medium text-[#1d1d1f] group-hover:text-crimson transition-colors tracking-tight">
                     {nextProject.client}
                   </h3>
-                  <p className="text-sm sm:text-base text-eerie/60 mt-1 uppercase font-semibold">
+                  <p className="text-sm sm:text-base text-[#86868b] mt-1 uppercase font-medium">
                     {nextProject.title}
                   </p>
                 </div>
 
                 {nextProject.metric && (
-                  <span className="px-3 py-1 bg-eerie text-white group-hover:bg-crimson text-xs font-mono font-bold uppercase transition-colors self-start sm:self-auto">
+                  <span className="px-3.5 py-1.5 rounded-full bg-black/[0.05] group-hover:bg-crimson group-hover:text-white text-xs font-mono font-medium tracking-wider transition-colors self-start sm:self-auto border border-black/[0.05]">
                     {nextProject.metric}
                   </span>
                 )}
@@ -519,17 +600,19 @@ const CaseStudyScreen = ({
             </div>
           )}
 
-          {/* Contact Inquiry CTA */}
-          <div className="p-8 sm:p-12 bg-cloud-white border border-eerie/20 text-center space-y-5 shadow-sm">
-            <span className="section-kicker !text-crimson">Start A Conversation</span>
-            <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium text-eerie">
+          {/* Contact Inquiry Bento Card */}
+          <div className="apple-card p-8 sm:p-14 text-center space-y-5 bg-gradient-to-b from-white to-[#fbfbfd]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
+              <span>●</span> INITIATE A PROJECT
+            </div>
+            <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium text-[#1d1d1f] tracking-tight">
               Ready to create work with commercial impact?
             </h3>
-            <p className="max-w-2xl mx-auto text-sm sm:text-base text-eerie/70 leading-relaxed">
-              Whether launching a new product line or modernizing established supermarket packaging, let&apos;s build designs that demand shelf space.
+            <p className="max-w-xl mx-auto text-sm sm:text-base text-[#86868b] leading-relaxed">
+              Whether launching a new product line or modernizing established packaging, let&apos;s build designs that demand shelf space.
             </p>
 
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
+            <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
               <button
                 type="button"
                 onClick={() => {
@@ -539,7 +622,7 @@ const CaseStudyScreen = ({
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                   }, 100);
                 }}
-                className="px-8 py-3.5 bg-crimson text-white font-semibold text-xs tracking-wider uppercase hover:bg-crimson-dark transition-all cursor-pointer shadow-md hover:shadow-xl"
+                className="px-7 py-3 rounded-full bg-crimson text-white font-medium text-xs tracking-wider uppercase hover:bg-crimson-dark transition-all cursor-pointer shadow-md hover:shadow-lg"
               >
                 Inquire About A Project ↗
               </button>
@@ -550,7 +633,7 @@ const CaseStudyScreen = ({
                   sound.playClick();
                   onNavigateHome?.();
                 }}
-                className="px-6 py-3.5 border border-eerie/20 bg-cloud-white text-eerie font-semibold text-xs tracking-wider uppercase hover:bg-eerie hover:text-white transition-all cursor-pointer"
+                className="px-6 py-3 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] font-medium text-xs tracking-wider uppercase transition-all cursor-pointer border border-black/[0.04]"
               >
                 Back to All Work
               </button>

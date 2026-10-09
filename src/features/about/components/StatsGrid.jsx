@@ -4,10 +4,10 @@ import { useIsMobile } from '@/hooks';
 import { fadeInUp, TRANSITIONS, DELAYS } from '@/animations';
 
 const STATS = [
-  { rawNumber: 6, suffix: '+', label: 'Years of independent practice' },
-  { rawNumber: 60, suffix: '+', label: 'Global clients partnered with' },
-  { rawNumber: 35, suffix: '+', label: 'Complete brand identity systems' },
-  { rawNumber: 40, suffix: '%', label: 'Sales lift achieved for packaging' },
+  { rawNumber: 6, suffix: '+', label: 'Years of independent studio practice' },
+  { rawNumber: 60, suffix: '+', label: 'Global clients & partners launched' },
+  { rawNumber: 35, suffix: '+', label: 'Brand identity architectures deployed' },
+  { rawNumber: 40, suffix: '%', label: 'Average sales velocity lift achieved' },
 ];
 
 const AnimatedCounter = ({ value, suffix }) => {
@@ -44,7 +44,7 @@ const StatsGrid = ({ isInView }) => {
       animate={isInView ? 'visible' : 'hidden'}
       variants={fadeInUp}
       transition={{ delay: DELAYS.xxl, ...TRANSITIONS.slow }}
-      className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-16"
+      className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-16"
     >
       {STATS.map((stat, index) => (
         <motion.div
@@ -52,26 +52,24 @@ const StatsGrid = ({ isInView }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{
-            delay: 0.5 + index * 0.08,
+            delay: 0.4 + index * 0.08,
             duration: 0.5,
-            ease: [0.22, 1, 0.36, 1],
+            ease: [0.16, 1, 0.3, 1],
           }}
           whileHover={
             !isMobile
               ? {
-                  y: -5,
+                  y: -4,
                   transition: { duration: 0.2 },
                 }
               : {}
           }
-          className="group relative p-6 bg-cloud-white border border-eerie/15 transition-all duration-300 hover:border-crimson/50 hover:shadow-md flex flex-col justify-center min-h-[140px]"
+          className="apple-card p-6 sm:p-8 bg-white border border-black/[0.08] flex flex-col justify-center min-h-[150px] space-y-2 hover:border-black/[0.18] transition-all"
         >
-          <div
-            className="text-3xl sm:text-4xl md:text-5xl font-display font-semibold text-crimson mb-2"
-          >
+          <div className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-[#1d1d1f] tracking-tight">
             <AnimatedCounter value={stat.rawNumber} suffix={stat.suffix} />
           </div>
-          <div className="text-eerie/70 text-xs sm:text-sm font-medium leading-snug group-hover:text-eerie transition-colors">
+          <div className="text-[#86868b] text-xs sm:text-sm font-normal leading-relaxed">
             {stat.label}
           </div>
         </motion.div>

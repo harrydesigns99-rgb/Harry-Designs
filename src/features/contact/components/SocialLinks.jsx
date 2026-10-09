@@ -4,28 +4,29 @@ import { fadeInUp, TRANSITIONS, DELAYS } from '@/animations';
 
 const SocialLinks = ({ isInView }) => {
   return (
-    <div className="mt-12">
-      <h4 className="text-lg font-semibold mb-6 text-eerie">Follow Me</h4>
-      <div className="flex space-x-4">
+    <div className="mt-10">
+      <h4 className="text-sm uppercase tracking-wider font-mono text-[#86868b] mb-4">
+        Direct Studio Channels
+      </h4>
+      <div className="flex gap-3">
         {SOCIAL_LINKS.map((social, index) => {
           const Icon = social.icon;
           return (
             <motion.a
               key={social.name}
               href={social.url}
-              whileHover={{ scale: 1.2, y: -5 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.08, y: -2 }}
+              whileTap={{ scale: 0.95 }}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
               variants={fadeInUp}
               transition={{ delay: DELAYS.xxl + index * DELAYS.tiny, ...TRANSITIONS.medium }}
-              className="relative w-14 h-14 border border-eerie/20 flex items-center justify-center text-crimson hover:text-white transition-colors text-xl group overflow-hidden"
+              className="relative w-12 h-12 rounded-full border border-black/[0.08] bg-white flex items-center justify-center text-crimson hover:bg-crimson hover:text-white transition-all text-lg shadow-xs hover:shadow-md cursor-pointer"
               aria-label={social.name}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <span className="relative z-10">
-                <Icon />
-              </span>
-              <motion.div className="absolute inset-0 bg-gradient-dark opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Icon />
             </motion.a>
           );
         })}
