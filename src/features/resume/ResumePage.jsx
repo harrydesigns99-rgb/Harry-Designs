@@ -52,11 +52,18 @@ const ResumePage = ({ onNavigateHome }) => {
       </header>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-16 md:py-24">
-        <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 pb-16 border-b border-eerie/20">
-          <div>
-            <span className="section-kicker mb-6">Resume / profile</span>
-            <h1 className="font-display text-6xl md:text-8xl font-medium tracking-[-0.08em] leading-[0.85]">Hariharan S</h1>
-            <p className="mt-8 text-xl md:text-2xl text-eerie/65 max-w-xl">Graphic Designer <span className="text-crimson">•</span> Brand, Digital &amp; Production Design</p>
+        <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 pb-16 border-b border-black/[0.08] items-center">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <img
+              src="/image/hariharan.jpg"
+              alt="Hariharan S"
+              className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover object-[center_18%] border border-black/[0.08] shadow-md flex-shrink-0"
+            />
+            <div>
+              <span className="section-kicker mb-2">Resume / profile</span>
+              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.06em] leading-[0.9]">Hariharan S</h1>
+              <p className="mt-3 text-lg sm:text-xl text-[#1d1d1f]/65">Brand &amp; Packaging Designer <span className="text-crimson">•</span> Creative Direction</p>
+            </div>
           </div>
           <div className="lg:text-right text-sm leading-7 text-eerie/65 lg:pt-12">
             <p className="font-medium text-eerie">6+ years of independent practice</p>
