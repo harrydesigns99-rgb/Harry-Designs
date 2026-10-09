@@ -13,16 +13,21 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-transparent text-eerie overflow-hidden"
+      className="relative pt-24 md:pt-36 pb-16 md:pb-24 bg-transparent text-[#1d1d1f] overflow-hidden"
       ref={ref}
     >
       <AnimatedBackdrop tone="light" />
-      <div className="absolute inset-x-0 top-0 h-px bg-eerie/15" />
+      <div className="absolute inset-x-0 top-0 h-px bg-black/[0.06]" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-24 items-center mb-24 md:mb-36">
-          <AboutHeader isInView={isInView} />
-          <AboutProfile isInView={isInView} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-24 sm:space-y-32">
+        {/* Leadership & Executive Atelier Card */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+          <div className="lg:col-span-7">
+            <AboutHeader isInView={isInView} />
+          </div>
+          <div className="lg:col-span-5">
+            <AboutProfile isInView={isInView} />
+          </div>
         </div>
 
         {/* Skills Section */}

@@ -1,13 +1,18 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
 
 const AboutProfile = ({ isInView }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'channels'
 
-  const handleFlip = () => {
+  const handleCopyEmail = () => {
     sound.playClick();
-    setIsFlipped(!isFlipped);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText('harrydesigns99@gmail.com');
+    }
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   const handleDownloadVCard = (e) => {
@@ -19,7 +24,7 @@ const AboutProfile = ({ isInView }) => {
       'N:S;Hariharan;;;',
       'FN:Hariharan S',
       'ORG:Harry Designs Studio',
-      'TITLE:Brand & Packaging Designer',
+      'TITLE:Principal Brand & Packaging Designer',
       'EMAIL;type=INTERNET;type=WORK;type=pref:harrydesigns99@gmail.com',
       'URL:https://harry-portfolio-2.vercel.app',
       'NOTE:Creative Direction, Packaging Architecture & Visual Identity',
@@ -39,188 +44,192 @@ const AboutProfile = ({ isInView }) => {
   };
 
   return (
-    <div className="order-1 lg:order-2">
+    <div className="w-full flex justify-center">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-md mx-auto lg:max-w-none flex justify-center"
+        initial={{ opacity: 0, y: 24 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+        transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-lg"
       >
-        <div className="relative p-0 md:p-4 group w-full max-w-md">
-          {/* Subtle warm ambient halo */}
-          <div className="absolute inset-8 bg-gradient-to-br from-crimson/15 to-[#d4775c]/15 blur-3xl pointer-events-none" />
+        {/* Apple Executive Atelier Card */}
+        <div className="apple-card p-6 sm:p-8 md:p-9 bg-white border border-black/[0.08] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.06)] rounded-3xl space-y-6 relative overflow-hidden transition-all">
+          {/* Top Status Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-xs font-mono font-medium">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Available for Commissions
+            </span>
 
-          {/* 3D Flippable Card Container */}
-          <div
-            className="relative [perspective:1200px] cursor-pointer"
-            onClick={handleFlip}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleFlip();
-              }
-            }}
-            title="Click to flip atelier pass"
-          >
-            <motion.div
-              animate={{ rotateY: isFlipped ? 180 : 0 }}
-              transition={{ duration: 0.65, ease: [0.23, 1, 0.32, 1] }}
-              style={{ transformStyle: 'preserve-3d' }}
-              className="relative w-full aspect-[4/5] shadow-2xl select-none"
-            >
-              {/* ================= FRONT SIDE: Atelier Card ================= */}
-              <div
-                style={{ backfaceVisibility: 'hidden' }}
-                className="absolute inset-0 bg-eerie border border-eerie/20 flex flex-col justify-between p-8 sm:p-10 text-white overflow-hidden"
-              >
-                {/* Top Bar: Coordinates & Craft Seal */}
-                <div className="flex items-center justify-between border-b border-white/15 pb-5">
-                  <div>
-                    <span className="text-[0.62rem] uppercase tracking-[0.2em] text-white/50 block">
-                      Studio Coordinates
-                    </span>
-                    <span className="text-xs font-mono text-white/80 tracking-wider">
-                      Chennai, TN • 13.08° N
-                    </span>
-                  </div>
-                  <div className="h-8 w-8 rounded-full border border-white/20 flex items-center justify-center text-xs font-serif italic text-crimson-light">
-                    H
-                  </div>
-                </div>
-
-                {/* Center: Bespoke Monogram & Typographic Art Direction */}
-                <div className="my-auto py-6 text-center relative">
-                  <div className="inline-block relative mb-4">
-                    <span className="font-display text-7xl sm:text-8xl md:text-9xl font-semibold tracking-tighter text-white/90">
-                      H<span className="text-crimson">.</span>
-                    </span>
-                    <div className="absolute -bottom-2 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-crimson to-transparent" />
-                  </div>
-                  <p className="font-display text-xl sm:text-2xl font-medium tracking-tight text-white mt-2">
-                    Hariharan S
-                  </p>
-                  <p className="text-xs uppercase tracking-[0.18em] text-white/55 mt-1 font-sans">
-                    Brand &amp; Packaging Designer
-                  </p>
-                </div>
-
-                {/* Bottom Meta & Availability Badge */}
-                <div className="border-t border-white/15 pt-5 space-y-3">
-                  <div className="flex items-center justify-between text-xs text-white/70">
-                    <span className="uppercase tracking-[0.14em] text-[0.65rem] text-white/45">
-                      Experience
-                    </span>
-                    <span className="font-medium text-white">6+ Years Practice</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs text-white/70">
-                    <span className="uppercase tracking-[0.14em] text-[0.65rem] text-white/45">
-                      Specialization
-                    </span>
-                    <span className="font-medium text-white">Packaging &amp; Identity</span>
-                  </div>
-                  <div className="pt-2 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-[0.68rem] text-emerald-400 font-medium">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>Available for Select Commissions</span>
-                    </div>
-                    <span className="text-[10px] font-mono text-white/50 border border-white/15 px-2 py-0.5 group-hover:border-crimson group-hover:text-crimson transition-colors">
-                      ⟳ Tap to Flip
-                    </span>
-                  </div>
-                </div>
-
-                {/* Fine framing border */}
-                <div className="absolute inset-2 border border-white/10 pointer-events-none" />
-              </div>
-
-              {/* ================= BACK SIDE: Digital Atelier Pass & Direct vCard ================= */}
-              <div
-                style={{
-                  backfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)',
-                }}
-                className="absolute inset-0 bg-neutral-900 border border-eerie/30 flex flex-col justify-between p-8 sm:p-10 text-white overflow-hidden"
-              >
-                {/* Header: Atelier Pass Token */}
-                <div className="flex items-center justify-between border-b border-white/15 pb-4">
-                  <div>
-                    <span className="text-[0.62rem] uppercase tracking-[0.2em] text-crimson font-mono font-bold block">
-                      OFFICIAL ATELIER PASS
-                    </span>
-                    <span className="text-[11px] font-mono text-white/60 tracking-wider">
-                      PASS NO: HS-2024-CH
-                    </span>
-                  </div>
-                  <span className="text-[9px] font-mono bg-white/10 text-white/80 px-2 py-0.5 border border-white/20">
-                    VERIFIED
-                  </span>
-                </div>
-
-                {/* Direct Contact & Credentials */}
-                <div className="space-y-4 my-auto py-2">
-                  <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-white/40 block">
-                      Direct Inquiries
-                    </span>
-                    <a
-                      href="mailto:harrydesigns99@gmail.com"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-sm sm:text-base font-mono font-semibold text-white hover:text-crimson transition-colors"
-                    >
-                      harrydesigns99@gmail.com
-                    </a>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-white/40 block">
-                      Primary Disciplines
-                    </span>
-                    <p className="text-xs text-white/80 leading-relaxed">
-                      Custom Packaging Dielines • FMCG &amp; Retail Brand Systems • Print Production
-                      Supervision • Editorial Design
-                    </p>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-white/40 block">
-                      Base of Operations
-                    </span>
-                    <p className="text-xs text-white/80">Chennai, Tamil Nadu, India (UTC +05:30)</p>
-                  </div>
-
-                  {/* 1-Click vCard Contact Download Button */}
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={handleDownloadVCard}
-                      className="w-full py-2.5 px-4 bg-crimson hover:bg-crimson-dark text-white font-mono text-xs uppercase tracking-wider font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <span>📇</span>
-                      <span>Save Studio Contact (.vcf)</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Back Footer */}
-                <div className="border-t border-white/15 pt-3 flex items-center justify-between text-[10px] font-mono text-white/50">
-                  <span>HARRY DESIGNS ATELIER</span>
-                  <span className="text-crimson font-bold">⟳ Flip to Front</span>
-                </div>
-
-                {/* Fine framing border */}
-                <div className="absolute inset-2 border border-white/10 pointer-events-none" />
-              </div>
-            </motion.div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-mono text-[#86868b]">
+              <span>Chennai, IN</span>
+              <span className="text-black/20">•</span>
+              <span>13.08° N</span>
+            </div>
           </div>
 
-          {/* Floating Editorial Label Tag */}
-          <div className="relative z-20 mt-4 sm:-mt-8 mx-auto sm:ml-6 md:ml-8 max-w-[17rem] bg-cloud-white p-4 border border-eerie/15 shadow-xl transition-colors">
-            <p className="font-display text-base font-semibold text-eerie">Creative Direction</p>
-            <p className="mt-0.5 text-[0.68rem] uppercase tracking-[0.14em] text-eerie/55">
-              Crafting identities with commercial lift
+          {/* Profile Stage */}
+          <div className="text-center space-y-3 pt-1">
+            {/* Monogram Seal */}
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-black/[0.03] border border-black/[0.06] flex items-center justify-center font-display text-2xl sm:text-3xl font-semibold text-[#1d1d1f] shadow-inner mx-auto relative group">
+              <span>H</span>
+              <span className="text-crimson">.</span>
+            </div>
+
+            <div>
+              <h3 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-[#1d1d1f]">
+                Hariharan S
+              </h3>
+              <p className="text-xs uppercase tracking-wider font-mono text-[#86868b] mt-1">
+                Principal Brand &amp; Packaging Designer
+              </p>
+            </div>
+
+            {/* Philosophy Callout */}
+            <p className="text-xs sm:text-sm text-[#1d1d1f]/75 italic max-w-sm mx-auto leading-relaxed pt-1">
+              &ldquo;Translating founder ambition into shelf standout, tactile substrate finishes, and durable commercial equity.&rdquo;
             </p>
+          </div>
+
+          {/* Segmented View Toggle (Specs vs Direct Channels) */}
+          <div className="flex justify-center">
+            <div className="inline-flex items-center p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-xs">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  setActiveTab('profile');
+                }}
+                className={`px-3.5 py-1 rounded-full font-medium transition-all cursor-pointer ${
+                  activeTab === 'profile'
+                    ? 'bg-white text-[#1d1d1f] shadow-xs'
+                    : 'text-[#86868b] hover:text-[#1d1d1f]'
+                }`}
+              >
+                Studio Specs
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  setActiveTab('channels');
+                }}
+                className={`px-3.5 py-1 rounded-full font-medium transition-all cursor-pointer ${
+                  activeTab === 'channels'
+                    ? 'bg-white text-[#1d1d1f] shadow-xs'
+                    : 'text-[#86868b] hover:text-[#1d1d1f]'
+                }`}
+              >
+                Direct Channels
+              </button>
+            </div>
+          </div>
+
+          {/* Dynamic Content: Specs Matrix OR Direct Channels */}
+          <AnimatePresence mode="wait">
+            {activeTab === 'profile' ? (
+              <motion.div
+                key="specs"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="grid grid-cols-2 gap-3 pt-1"
+              >
+                <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] space-y-1">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-[#86868b]">
+                    Experience
+                  </div>
+                  <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
+                    6+ Years Practice
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] space-y-1">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-[#86868b]">
+                    Specialization
+                  </div>
+                  <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
+                    Packaging &amp; Identity
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] space-y-1">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-[#86868b]">
+                    Production Rigor
+                  </div>
+                  <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
+                    100% Press Ready
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] space-y-1">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-[#86868b]">
+                    Operations
+                  </div>
+                  <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
+                    Chennai • Global Remote
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="channels"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-3 pt-1"
+              >
+                <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-[#86868b]">
+                      Studio Inquiries
+                    </div>
+                    <div className="text-xs sm:text-sm font-mono font-medium text-[#1d1d1f]">
+                      harrydesigns99@gmail.com
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="px-2.5 py-1 rounded-full bg-white border border-black/[0.08] text-xs font-mono font-medium text-[#1d1d1f] hover:bg-black/[0.04] transition-all cursor-pointer shadow-xs"
+                  >
+                    {copiedEmail ? '✓ Copied' : 'Copy'}
+                  </button>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-[#86868b]">
+                      Primary Deliverables
+                    </div>
+                    <div className="text-xs text-[#1d1d1f] font-medium">
+                      Custom Dielines • FMCG Identity • Print Supervision
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Action Row: Save Contact (.vcf) & Copy Email */}
+          <div className="pt-2 border-t border-black/[0.06] flex flex-col sm:flex-row items-center gap-2.5">
+            <button
+              type="button"
+              onClick={handleDownloadVCard}
+              className="w-full sm:flex-1 py-2.5 px-4 rounded-full bg-crimson hover:bg-crimson-dark text-white font-medium text-xs tracking-wider uppercase transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>📇</span>
+              <span>Save Studio Contact (.vcf)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCopyEmail}
+              className="w-full sm:w-auto py-2.5 px-4 rounded-full bg-black/[0.04] hover:bg-black/[0.08] border border-black/[0.06] text-[#1d1d1f] text-xs font-medium transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <span>{copiedEmail ? '✓ Copied' : 'Copy Email'}</span>
+            </button>
           </div>
         </div>
       </motion.div>
