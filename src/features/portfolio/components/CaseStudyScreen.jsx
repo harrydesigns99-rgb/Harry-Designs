@@ -63,7 +63,7 @@ const CaseStudyScreen = ({
 
   // Scroll to top when project changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   }, [projectId]);
 
   // Observer to highlight active section tab in sticky sub-nav
@@ -100,7 +100,7 @@ const CaseStudyScreen = ({
     setActiveTab(id);
     const el = document.getElementById(id);
     if (el) {
-      const headerOffset = 68;
+      const headerOffset = 64;
       const elementPosition = el.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       window.scrollTo({
@@ -125,7 +125,7 @@ const CaseStudyScreen = ({
           <div className="flex flex-col lg:flex-row lg:items-center justify-between py-2 sm:py-2.5 gap-2 sm:gap-3">
             {/* Top row controls: Back Button, Client Title & Prev/Next */}
             <div className="flex items-center justify-between gap-3 min-w-0">
-              <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
                 <button
                   type="button"
                   onClick={() => {
@@ -137,23 +137,23 @@ const CaseStudyScreen = ({
                 >
                   <span>←</span>
                   <span className="hidden sm:inline">All Work</span>
-                  <span className="sm:hidden">Back</span>
+                  <span className="sm:hidden">Work</span>
                 </button>
 
                 <span className="text-black/15 hidden sm:inline">/</span>
 
-                <div className="flex items-center gap-2 truncate">
+                <div className="flex items-center gap-1.5 sm:gap-2 truncate">
                   <span className="font-display font-medium text-sm sm:text-base text-[#1d1d1f] tracking-tight truncate">
                     {currentProject.client}
                   </span>
-                  <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full bg-black/[0.04] text-[#86868b] border border-black/[0.05] hidden md:inline">
+                  <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full bg-black/[0.04] text-[#86868b] border border-black/[0.05] hidden sm:inline">
                     {currentProject.category}
                   </span>
                 </div>
               </div>
 
               {/* Mobile Right Controls: Prev/Next */}
-              <div className="flex items-center gap-2 lg:hidden flex-shrink-0">
+              <div className="flex items-center gap-1.5 lg:hidden flex-shrink-0">
                 <div className="inline-flex items-center p-0.5 rounded-full bg-black/[0.05] border border-black/[0.04]">
                   <button
                     type="button"
@@ -162,7 +162,7 @@ const CaseStudyScreen = ({
                       onNavigateProject?.(prevProject.id);
                     }}
                     title={`Previous: ${prevProject.client}`}
-                    className="px-2 py-1 rounded-full text-xs font-medium text-[#86868b] hover:text-[#1d1d1f] transition-all cursor-pointer"
+                    className="px-2.5 py-1 rounded-full text-xs font-medium text-[#86868b] hover:text-[#1d1d1f] transition-all cursor-pointer"
                   >
                     ←
                   </button>
@@ -174,7 +174,7 @@ const CaseStudyScreen = ({
                       onNavigateProject?.(nextProject.id);
                     }}
                     title={`Next: ${nextProject.client}`}
-                    className="px-2 py-1 rounded-full text-xs font-medium text-[#86868b] hover:text-[#1d1d1f] transition-all cursor-pointer"
+                    className="px-2.5 py-1 rounded-full text-xs font-medium text-[#86868b] hover:text-[#1d1d1f] transition-all cursor-pointer"
                   >
                     →
                   </button>
@@ -183,11 +183,11 @@ const CaseStudyScreen = ({
             </div>
 
             {/* Center: Segmented Section Jump Tabs */}
-            <nav className="inline-flex items-center gap-1 p-1 rounded-full bg-black/[0.04] border border-black/[0.04] text-xs overflow-x-auto no-scrollbar mx-auto lg:mx-0">
+            <nav className="inline-flex items-center gap-1 p-1 rounded-full bg-black/[0.04] border border-black/[0.04] text-xs overflow-x-auto no-scrollbar mx-auto lg:mx-0 max-w-full">
               <button
                 type="button"
                 onClick={() => scrollToSection('screen-hero')}
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'screen-hero'
                     ? 'bg-white text-[#1d1d1f] shadow-xs'
                     : 'text-[#86868b] hover:text-[#1d1d1f]'
@@ -198,7 +198,7 @@ const CaseStudyScreen = ({
               <button
                 type="button"
                 onClick={() => scrollToSection('screen-process')}
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 flex-shrink-0 ${
                   activeTab === 'screen-process'
                     ? 'bg-white text-crimson shadow-xs'
                     : 'text-[#86868b] hover:text-crimson'
@@ -212,7 +212,7 @@ const CaseStudyScreen = ({
               <button
                 type="button"
                 onClick={() => scrollToSection('screen-studio-process')}
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'screen-studio-process'
                     ? 'bg-white text-[#1d1d1f] shadow-xs'
                     : 'text-[#86868b] hover:text-[#1d1d1f]'
@@ -223,7 +223,7 @@ const CaseStudyScreen = ({
               <button
                 type="button"
                 onClick={() => scrollToSection('screen-specs')}
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'screen-specs'
                     ? 'bg-white text-[#1d1d1f] shadow-xs'
                     : 'text-[#86868b] hover:text-[#1d1d1f]'
@@ -234,7 +234,7 @@ const CaseStudyScreen = ({
               <button
                 type="button"
                 onClick={() => scrollToSection('screen-impact')}
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'screen-impact'
                     ? 'bg-white text-[#1d1d1f] shadow-xs'
                     : 'text-[#86868b] hover:text-[#1d1d1f]'
@@ -290,11 +290,11 @@ const CaseStudyScreen = ({
       </header>
 
       {/* ==================== MAIN CASE STUDY CONTENT (TIGHT HARMONIC SPACING) ==================== */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-16 sm:pb-20 space-y-14 sm:space-y-18">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-16 sm:pb-20 space-y-12 sm:space-y-16">
         {/* -------------------- SECTION 01: KEYNOTE HERO PRESENTATION -------------------- */}
         <section id="screen-hero" className="scroll-mt-20 space-y-6 sm:space-y-7">
           {/* Compact Centered Keynote Header */}
-          <div className="text-center space-y-2.5 sm:space-y-3 max-w-4xl mx-auto">
+          <div className="text-center space-y-2 sm:space-y-3 max-w-4xl mx-auto">
             {/* Pill Eyebrow */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b]">
               <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
@@ -304,7 +304,7 @@ const CaseStudyScreen = ({
             </div>
 
             {/* Grand Apple Keynote Title (Tightly Scaled) */}
-            <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight text-[#1d1d1f] leading-tight">
+            <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-[#1d1d1f] leading-tight">
               {currentProject.client}
             </h1>
 
@@ -314,7 +314,7 @@ const CaseStudyScreen = ({
             </p>
 
             {/* Summary Narrative */}
-            <p className="text-sm sm:text-base text-[#1d1d1f]/80 max-w-2xl mx-auto font-normal leading-relaxed">
+            <p className="text-xs sm:text-base text-[#1d1d1f]/80 max-w-2xl mx-auto font-normal leading-relaxed">
               {currentProject.description}
             </p>
           </div>
@@ -329,7 +329,7 @@ const CaseStudyScreen = ({
                     sound.playClick();
                     setViewModeOverride('compare');
                   }}
-                  className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                  className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                     viewMode === 'compare'
                       ? 'bg-white text-[#1d1d1f] shadow-sm'
                       : 'text-[#86868b] hover:text-[#1d1d1f]'
@@ -343,7 +343,7 @@ const CaseStudyScreen = ({
                     sound.playClick();
                     setViewModeOverride('artwork');
                   }}
-                  className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                  className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                     viewMode === 'artwork'
                       ? 'bg-white text-[#1d1d1f] shadow-sm'
                       : 'text-[#86868b] hover:text-[#1d1d1f]'
@@ -357,14 +357,14 @@ const CaseStudyScreen = ({
 
           {/* Cinematic Hero Stage (Immediate Viewport Visibility, Zero Cropping!) */}
           <div className="relative max-w-4xl mx-auto">
-            <div className="relative w-full aspect-[3/4] max-h-[460px] sm:max-h-[500px] lg:max-h-[540px] rounded-3xl bg-white border border-black/[0.08] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.07)] overflow-hidden flex items-center justify-center p-3 sm:p-6">
+            <div className="relative w-full aspect-[4/3] sm:aspect-[3/4] max-h-[320px] sm:max-h-[480px] lg:max-h-[520px] rounded-2xl sm:rounded-3xl bg-white border border-black/[0.08] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.07)] overflow-hidden flex items-center justify-center p-3 sm:p-6">
               {hasEarlyConcept && viewMode === 'compare' ? (
                 <BeforeAfterSlider
                   beforeImage={currentProject.beforeImage || currentProject.process?.conceptImage}
                   afterImage={currentProject.afterImage || currentProject.image}
                   beforeLabel={currentProject.beforeLabel || currentProject.process?.conceptLabel || 'Initial Concept'}
                   afterLabel={currentProject.afterLabel || currentProject.process?.finalLabel || 'Final System'}
-                  className="w-full h-full rounded-2xl overflow-hidden"
+                  className="w-full h-full rounded-xl sm:rounded-2xl overflow-hidden"
                 />
               ) : currentProject.image ? (
                 <div className="relative w-full h-full flex items-center justify-center">
@@ -374,13 +374,13 @@ const CaseStudyScreen = ({
                     className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 hover:scale-[1.01]"
                   />
                   {currentProject.metric && (
-                    <div className="absolute bottom-3 left-3 z-10 rounded-full px-3 py-1 bg-black/80 backdrop-blur-md text-white text-xs font-mono font-medium tracking-wider shadow-lg border border-white/10">
+                    <div className="absolute bottom-3 left-3 z-10 rounded-full px-2.5 sm:px-3 py-1 bg-black/80 backdrop-blur-md text-white text-[11px] sm:text-xs font-mono font-medium tracking-wider shadow-lg border border-white/10">
                       ★ {currentProject.metric}
                     </div>
                   )}
                 </div>
               ) : (
-                <div className={`w-full h-full rounded-2xl bg-gradient-to-br ${currentProject.color}`} />
+                <div className={`w-full h-full rounded-xl sm:rounded-2xl bg-gradient-to-br ${currentProject.color}`} />
               )}
             </div>
 
@@ -642,7 +642,7 @@ const CaseStudyScreen = ({
               Whether launching a new product line or modernizing established packaging, let&apos;s build designs that demand shelf space.
             </p>
 
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => {
@@ -652,7 +652,7 @@ const CaseStudyScreen = ({
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                   }, 100);
                 }}
-                className="px-6 py-2.5 rounded-full bg-crimson text-white font-medium text-xs tracking-wider uppercase hover:bg-crimson-dark transition-all cursor-pointer shadow-md hover:shadow-lg"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-crimson text-white font-medium text-xs tracking-wider uppercase hover:bg-crimson-dark transition-all cursor-pointer shadow-md hover:shadow-lg text-center"
               >
                 Inquire About A Project ↗
               </button>
@@ -663,7 +663,7 @@ const CaseStudyScreen = ({
                   sound.playClick();
                   onNavigateHome?.();
                 }}
-                className="px-5 py-2.5 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] font-medium text-xs tracking-wider uppercase transition-all cursor-pointer border border-black/[0.04]"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] font-medium text-xs tracking-wider uppercase transition-all cursor-pointer border border-black/[0.04] text-center"
               >
                 Back to All Work
               </button>

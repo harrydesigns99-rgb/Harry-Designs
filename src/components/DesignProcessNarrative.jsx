@@ -49,7 +49,7 @@ const DesignProcessNarrative = ({
                   sound.playClick();
                   setActiveStageIndex(idx);
                 }}
-                className={`flex-1 sm:flex-initial text-left px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
+                className={`flex-shrink-0 sm:flex-1 text-left px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition-all cursor-pointer ${
                   isActive
                     ? 'bg-white text-[#1d1d1f] shadow-sm'
                     : 'text-[#86868b] hover:text-[#1d1d1f] hover:bg-black/[0.02]'
@@ -68,7 +68,7 @@ const DesignProcessNarrative = ({
                   </span>
                 </div>
                 <div
-                  className={`text-xs truncate max-w-[140px] sm:max-w-[160px] mt-0.5 ${
+                  className={`text-xs truncate max-w-[130px] sm:max-w-[160px] mt-0.5 ${
                     isActive ? 'text-[#1d1d1f] font-medium' : 'text-[#86868b]'
                   }`}
                 >
@@ -169,7 +169,7 @@ const DesignProcessNarrative = ({
               </div>
 
               {comparisonMode === 'slider' ? (
-                <div className="w-full h-80 sm:h-96 md:h-[28rem] rounded-2xl bg-neutral-900 border border-black/[0.08] relative overflow-hidden shadow-lg">
+                <div className="w-full h-64 sm:h-96 md:h-[28rem] rounded-xl sm:rounded-2xl bg-neutral-900 border border-black/[0.08] relative overflow-hidden shadow-lg">
                   <BeforeAfterSlider
                     beforeImage={process.conceptImage}
                     afterImage={finalImage}

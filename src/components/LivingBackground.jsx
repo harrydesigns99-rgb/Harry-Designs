@@ -37,13 +37,15 @@ const LivingBackground = () => {
       }}
       aria-hidden="true"
     >
-      {/* 1. Tactile Fine-Art Paper & Film Grain Texture */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.035] mix-blend-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E")`,
-        }}
-      />
+      {/* 1. Tactile Fine-Art Paper & Film Grain Texture (Desktop only to prevent mobile GPU repaint flicker) */}
+      {!isTouchDevice && (
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+      )}
 
       {/* 2. Micro Dot Grid (Precision Studio Alignment) */}
       <div
@@ -55,63 +57,60 @@ const LivingBackground = () => {
       />
 
       {/* 3. Primary Ambient Light Orb - Accent Light (Top-Right) */}
+      {/* Outer wrapper tracks mouse parallax without fighting inner animation */}
       <motion.div
-        animate={
-          isTouchDevice
-            ? {
-                scale: [1, 1.08, 1],
-                opacity: [0.22, 0.35, 0.22],
-              }
-            : {
-                x: [0, 60, -30, 0],
-                y: [0, -45, 35, 0],
-                scale: [1, 1.12, 0.96, 1],
-                opacity: [0.22, 0.38, 0.28, 0.22],
-              }
-        }
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        className="absolute -top-24 -right-24 w-[450px] sm:w-[600px] h-[450px] sm:h-[600px] rounded-full pointer-events-none"
+        className="absolute -top-24 -right-24 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, var(--color-crimson-light) 0%, transparent 70%)',
-          transform: 'translate3d(0, 0, 0)',
-          WebkitBackfaceVisibility: 'hidden',
           x: !isTouchDevice ? smoothX : 0,
           y: !isTouchDevice ? smoothY : 0,
         }}
-      />
+      >
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.2, 0.32, 0.2],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="w-[380px] sm:w-[540px] h-[380px] sm:h-[540px] rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, var(--color-crimson-light) 0%, transparent 70%)',
+            transform: 'translate3d(0, 0, 0)',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
+        />
+      </motion.div>
 
       {/* 4. Secondary Ambient Light Orb - Secondary Tonal Glow (Bottom-Left) */}
       <motion.div
-        animate={
-          isTouchDevice
-            ? {
-                scale: [1, 1.06, 1],
-                opacity: [0.18, 0.3, 0.18],
-              }
-            : {
-                x: [0, -50, 40, 0],
-                y: [0, 50, -25, 0],
-                scale: [1, 1.14, 0.94, 1],
-                opacity: [0.18, 0.32, 0.22, 0.18],
-              }
-        }
-        transition={{
-          duration: 26,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 2,
-        }}
-        className="absolute -bottom-28 -left-28 w-[500px] sm:w-[650px] h-[500px] sm:h-[650px] rounded-full pointer-events-none"
+        className="absolute -bottom-28 -left-28 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, var(--color-clay) 0%, transparent 70%)',
-          transform: 'translate3d(0, 0, 0)',
-          WebkitBackfaceVisibility: 'hidden',
+          x: !isTouchDevice ? smoothX : 0,
+          y: !isTouchDevice ? smoothY : 0,
         }}
-      />
+      >
+        <motion.div
+          animate={{
+            scale: [1, 1.08, 1],
+            opacity: [0.15, 0.28, 0.15],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 1.5,
+          }}
+          className="w-[420px] sm:w-[580px] h-[420px] sm:h-[580px] rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, var(--color-clay) 0%, transparent 70%)',
+            transform: 'translate3d(0, 0, 0)',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
+        />
+      </motion.div>
 
       {/* 5. Fine Architectural Grid (Subtle luxury studio lines) */}
       <div

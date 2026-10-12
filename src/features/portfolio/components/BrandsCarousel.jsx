@@ -3,16 +3,12 @@ import { motion } from 'framer-motion';
 import { BRANDS } from '../data/portfolioData';
 import { useCMS } from '@/features/cms';
 import BrandCard from './BrandCard';
-import { CARD_DIMENSIONS } from '@/constants';
 import { fadeInUp, TRANSITIONS, DELAYS } from '@/animations';
 
 const BrandsCarousel = ({ isInView }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const cms = useCMS();
   const brands = cms.brands && cms.brands.length > 0 ? cms.brands : BRANDS;
-
-  // Calculate animation distance
-  const scrollDistance = (CARD_DIMENSIONS.width + CARD_DIMENSIONS.gap) * brands.length;
 
   return (
     <motion.div
@@ -35,22 +31,22 @@ const BrandsCarousel = ({ isInView }) => {
         <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 md:w-32 bg-gradient-to-l from-cloud-dancer to-transparent z-10 pointer-events-none" />
 
         {/* Scrolling brands container */}
-        <div className="flex">
-          {/* First set */}
+        <div className="flex w-max">
           <motion.div
             animate={{
-              x: [0, -scrollDistance],
+              x: [0, '-50%'],
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: 'loop',
-                duration: 30,
+                duration: 32,
                 ease: 'linear',
               },
             }}
-            className="flex gap-8 pr-8"
+            className="flex items-center gap-8 pr-8"
           >
+            {/* Set 1 */}
             {brands.map((brand, index) => (
               <BrandCard
                 key={`brand-1-${index}`}
@@ -60,23 +56,8 @@ const BrandsCarousel = ({ isInView }) => {
                 setHoveredItem={setHoveredItem}
               />
             ))}
-          </motion.div>
 
-          {/* Second set (duplicate for seamless loop) */}
-          <motion.div
-            animate={{
-              x: [0, -scrollDistance],
-            }}
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: 'loop',
-                duration: 30,
-                ease: 'linear',
-              },
-            }}
-            className="flex gap-8 pr-8"
-          >
+            {/* Set 2 (duplicate for seamless loop) */}
             {brands.map((brand, index) => (
               <BrandCard
                 key={`brand-2-${index}`}

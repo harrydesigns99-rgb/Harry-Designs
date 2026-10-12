@@ -115,11 +115,11 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
           </div>
 
           {/* Dieline View Toggles */}
-          <div className="inline-flex items-center p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-xs">
+          <div className="inline-flex flex-wrap items-center p-0.5 sm:p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-xs">
             <button
               type="button"
               onClick={() => setShowBleed(!showBleed)}
-              className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
                 showBleed ? 'bg-red-500/10 text-red-600 font-semibold shadow-xs' : 'text-[#86868b]'
               }`}
             >
@@ -128,7 +128,7 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
             <button
               type="button"
               onClick={() => setShowCrease(!showCrease)}
-              className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
                 showCrease ? 'bg-fuchsia-500/10 text-fuchsia-600 font-semibold shadow-xs' : 'text-[#86868b]'
               }`}
             >
@@ -137,7 +137,7 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
             <button
               type="button"
               onClick={() => setShowCut(!showCut)}
-              className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
                 showCut ? 'bg-emerald-500/10 text-emerald-600 font-semibold shadow-xs' : 'text-[#86868b]'
               }`}
             >
@@ -147,7 +147,7 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
         </div>
 
         {/* SVG Dieline Blueprint */}
-        <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-neutral-950 rounded-2xl overflow-hidden border border-neutral-800 p-4 flex items-center justify-center">
+        <div className="relative w-full aspect-[16/10] sm:aspect-[21/9] bg-neutral-950 rounded-xl sm:rounded-2xl overflow-hidden border border-neutral-800 p-3 sm:p-4 flex items-center justify-center">
           {/* Millimeter graph grid */}
           <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -264,7 +264,7 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
 
       {/* 4. 10-Foot Retail Shelf Standout Simulator */}
       {image && (
-        <div className="apple-card p-6 sm:p-8 space-y-5 bg-white border border-black/[0.08]">
+        <div className="apple-card p-4 sm:p-7 space-y-4 sm:space-y-5 rounded-2xl sm:rounded-3xl bg-white border border-black/[0.08]">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <span className="text-xs font-mono uppercase tracking-wider text-crimson font-semibold flex items-center gap-2">
@@ -294,13 +294,13 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
             />
             <div className="flex justify-between text-[11px] font-mono text-[#86868b] mt-1.5">
               <span>1 ft (Close Inspect)</span>
-              <span>5 ft (Shopper Aisle Scan)</span>
-              <span>10 ft (Aisle Standout Test)</span>
+              <span>5 ft (Shopper Scan)</span>
+              <span>10 ft (Aisle Pop)</span>
             </div>
           </div>
 
           {/* Simulated Shelf Preview */}
-          <div className="relative w-full h-52 sm:h-64 bg-neutral-950 rounded-2xl overflow-hidden flex items-center justify-center p-4 border border-neutral-800">
+          <div className="relative w-full h-48 sm:h-64 bg-neutral-950 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center p-3 sm:p-4 border border-neutral-800">
             {/* Shelf line */}
             <div className="absolute bottom-5 inset-x-0 h-2 bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-t border-amber-500/30" />
 

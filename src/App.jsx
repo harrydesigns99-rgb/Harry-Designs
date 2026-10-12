@@ -41,82 +41,65 @@ function App() {
     };
   }, []);
 
-  if (currentPath === '/admin' || currentPath === '/cms') {
-    return (
-      <AdminDashboard
-        onNavigateHome={() => {
-          window.history.pushState({}, '', '/');
-          setCurrentPath('/');
-        }}
-      />
-    );
-  }
-
-  if (currentPath.startsWith('/project')) {
-    const parts = currentPath.split('/');
-    const projectId = parseInt(parts[2], 10) || 1;
-    return (
-      <ThemeProvider>
-        <div className="min-h-screen bg-[#fbfbfd] relative overflow-x-clip">
-          {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
-          <LivingBackground />
-          <CaseStudyScreen
-            projectId={projectId}
-            onNavigateHome={() => {
-              window.history.pushState({}, '', '/');
-              setCurrentPath('/');
-              setTimeout(() => {
-                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
-              }, 50);
-            }}
-            onNavigateProject={(id) => {
-              window.history.pushState({}, '', `/project/${id}`);
-              setCurrentPath(`/project/${id}`);
-            }}
-          />
-        </div>
-      </ThemeProvider>
-    );
-  }
-
-  if (currentPath === '/resume') {
-    return (
-      <ThemeProvider>
-        <div className="min-h-screen bg-[#fbfbfd] relative overflow-x-clip">
-          {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
-          <LivingBackground />
-          <ResumePage
-            onNavigateHome={() => {
-              window.history.pushState({}, '', '/');
-              setCurrentPath('/');
-            }}
-          />
-        </div>
-      </ThemeProvider>
-    );
-  }
-
   const navigateToProject = (id) => {
     window.history.pushState({}, '', `/project/${id}`);
     setCurrentPath(`/project/${id}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
+  };
+
+  const navigateHome = (targetSectionId = null) => {
+    window.history.pushState({}, '', '/');
+    setCurrentPath('/');
+    if (targetSectionId) {
+      setTimeout(() => {
+        const el = document.getElementById(targetSectionId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 80);
+    } else {
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-transparent relative selection:bg-crimson selection:text-white">
+      <div className="min-h-screen bg-[#fbfbfd] relative selection:bg-crimson selection:text-white overflow-x-clip">
         {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
         <LivingBackground />
-        <div className="relative z-10">
-          <Navbar />
-          <HeroSection />
-          <KineticTicker />
-          <PortfolioSection onSelectProject={(project) => navigateToProject(project.id)} />
-          <StudioApproach />
-          <AboutSection />
-          <ContactSection />
-          <Footer />
-        </div>
+
+        {currentPath === '/admin' || currentPath === '/cms' ? (
+          <div className="relative z-10">
+            <AdminDashboard onNavigateHome={() => navigateHome()} />
+          </div>
+        ) : currentPath.startsWith('/project') ? (
+          <div className="relative z-10">
+            <CaseStudyScreen
+              projectId={parseInt(currentPath.split('/')[2], 10) || 1}
+              onNavigateHome={() => navigateHome('portfolio')}
+              onNavigateProject={(id) => {
+                window.history.pushState({}, '', `/project/${id}`);
+                setCurrentPath(`/project/${id}`);
+                window.scrollTo(0, 0);
+              }}
+            />
+          </div>
+        ) : currentPath === '/resume' ? (
+          <div className="relative z-10">
+            <ResumePage onNavigateHome={() => navigateHome()} />
+          </div>
+        ) : (
+          <div className="relative z-10">
+            <Navbar />
+            <HeroSection />
+            <KineticTicker />
+            <PortfolioSection onSelectProject={(project) => navigateToProject(project.id)} />
+            <StudioApproach />
+            <AboutSection />
+            <ContactSection />
+            <Footer />
+          </div>
+        )}
       </div>
     </ThemeProvider>
   );

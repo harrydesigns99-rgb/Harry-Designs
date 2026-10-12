@@ -92,13 +92,13 @@ const BeforeAfterSlider = ({
       tabIndex={0}
       onKeyDown={handleKeyDown}
       onPointerDown={handlePointerDown}
-      className={`relative select-none overflow-hidden touch-none cursor-ew-resize bg-neutral-900 group ${className}`}
+      className={`relative select-none overflow-hidden touch-pan-y cursor-ew-resize bg-neutral-900 group ${className}`}
     >
       {/* After Image (Full Base) */}
       <img
         src={afterImage}
         alt="After Redesign"
-        className="w-full h-full object-cover pointer-events-none"
+        className="w-full h-full object-contain pointer-events-none"
         loading="lazy"
         draggable={false}
       />
@@ -113,7 +113,7 @@ const BeforeAfterSlider = ({
         <img
           src={beforeImage}
           alt="Before Redesign"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
           loading="lazy"
           draggable={false}
         />
@@ -128,7 +128,7 @@ const BeforeAfterSlider = ({
 
         {/* Handle Knob */}
         <div
-          className={`absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 sm:-left-5 rounded-full bg-white text-eerie shadow-[0_4px_16px_rgba(0,0,0,0.45)] flex items-center justify-center border-2 border-crimson transition-transform duration-100 ${
+          className={`absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 sm:-left-5 rounded-full bg-white text-eerie shadow-[0_4px_16px_rgba(0,0,0,0.45)] flex items-center justify-center border-2 border-crimson transition-transform duration-100 touch-none pointer-events-auto cursor-ew-resize ${
             isDragging ? 'scale-110' : 'group-hover:scale-105'
           }`}
         >
