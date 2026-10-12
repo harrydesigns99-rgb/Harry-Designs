@@ -317,19 +317,6 @@ const CaseStudyScreen = ({
                   Next →
                 </button>
               </div>
-
-              <a
-                href="/admin"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.history.pushState({}, '', '/admin');
-                  window.dispatchEvent(new PopStateEvent('popstate'));
-                }}
-                className="px-3 py-1 rounded-full bg-black/[0.05] hover:bg-crimson hover:text-white text-[11px] font-mono uppercase tracking-wider text-[#86868b] border border-black/[0.04] transition-all"
-                title="Studio CMS Editor"
-              >
-                CMS ⚙
-              </a>
             </div>
           </div>
         </div>
