@@ -10,10 +10,13 @@ import ProjectDetailModal from './ProjectDetailModal';
 import { fadeInUp, scaleIn, TRANSITIONS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
-const PortfolioSection = ({ onSelectProject }) => {
+const INITIAL_PROJECTS_COUNT = 4;
+
+const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [filter, setFilter] = useState('all');
+  const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGridProject, setSelectedGridProject] = useState(null);
   const [layoutMode, setLayoutMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -37,6 +40,14 @@ const PortfolioSection = ({ onSelectProject }) => {
     if (filter === 'all') return projects;
     return projects.filter((item) => item.category === filter);
   }, [filter, projects]);
+
+  // Displayed projects: only 4 initially when viewing all, or all if expanded
+  const displayedProjects = useMemo(() => {
+    if (filter === 'all' && !isExpanded) {
+      return filteredProjects.slice(0, INITIAL_PROJECTS_COUNT);
+    }
+    return filteredProjects;
+  }, [filter, isExpanded, filteredProjects]);
 
   return (
     <section id="portfolio" className="relative py-20 md:py-32 bg-transparent text-[#1d1d1f]" ref={ref}>
@@ -197,7 +208,7 @@ const PortfolioSection = ({ onSelectProject }) => {
           </div>
 
           {/* ==================== WORK DISPLAY: LOOSE / GRID / INDEX ==================== */}
-          {filteredProjects.length === 0 ? (
+          {displayedProjects.length === 0 ? (
             <div className="py-20 text-center apple-card p-10 mb-20">
               <p className="text-sm font-mono text-[#86868b]">No projects found in this category.</p>
               <button
@@ -209,21 +220,110 @@ const PortfolioSection = ({ onSelectProject }) => {
               </button>
             </div>
           ) : layoutMode === 'index' ? (
-            <div className="mb-20">
+            <div className="mb-12">
               <PortfolioListView
-                items={filteredProjects}
+                items={displayedProjects}
                 onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
               />
             </div>
           ) : (
-            <div className="mb-20">
+            <div className="mb-12">
               <PortfolioGrid
-                items={filteredProjects}
+                items={displayedProjects}
                 onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
                 density={layoutMode}
               />
             </div>
           )}
+
+          {/* ==================== LOAD MORE / FULL ARCHIVE CONTROLS ==================== */}
+          {filter === 'all' && filteredProjects.length > INITIAL_PROJECTS_COUNT && (
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 mb-12">
+              {/* Load More Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playPop();
+                  setIsExpanded(!isExpanded);
+                }}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-crimson hover:bg-crimson-dark text-white text-xs sm:text-sm font-medium tracking-wide uppercase transition-all shadow-md hover:shadow-lg cursor-pointer"
+              >
+                {isExpanded ? (
+                  <>
+                    <span>Show Curated Selection (4)</span>
+                    <span className="text-sm">↑</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Load More Selected Projects ({filteredProjects.length - INITIAL_PROJECTS_COUNT} More)</span>
+                    <span className="text-sm">↓</span>
+                  </>
+                )}
+              </button>
+
+              {/* View Full Archive in Dedicated Page */}
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  onNavigateWork?.();
+                }}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] text-xs sm:text-sm font-medium tracking-wide uppercase border border-black/[0.06] transition-all cursor-pointer"
+              >
+                <span>View Full Archive Screen</span>
+                <span className="text-sm">↗</span>
+              </button>
+
+              {/* Open in New Tab */}
+              <a
+                href="/work"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => sound.playPop()}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] text-xs sm:text-sm font-medium tracking-wide uppercase border border-black/[0.06] transition-all cursor-pointer"
+                title="Open full portfolio archive in a new browser tab"
+              >
+                <span>Open in New Tab</span>
+                <span className="text-sm">⧉</span>
+              </a>
+            </div>
+          )}
+
+          {/* ==================== DZINR-INSPIRED STUDIO MANIFESTO BANNER ==================== */}
+          <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-20">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
+              <span>●</span> COMPLETE CASE ARCHIVE
+            </div>
+            <h4 className="font-display text-2xl sm:text-4xl font-medium text-[#1d1d1f] tracking-tight max-w-3xl mx-auto leading-tight">
+              These are not just projects. They are stories of our clients, packaging systems, and the commercial impact we made.
+            </h4>
+            <p className="text-xs sm:text-sm text-[#86868b] max-w-xl mx-auto leading-relaxed">
+              Explore the full {projects.length}-project catalog featuring retail pouch dielines, CAD specifications, bilingual identities, and press-ready master files.
+            </p>
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  onNavigateWork?.();
+                }}
+                className="px-6 py-2.5 rounded-full bg-crimson text-white font-medium text-xs tracking-wider uppercase hover:bg-crimson-dark transition-all cursor-pointer shadow-md hover:shadow-lg inline-flex items-center gap-2"
+              >
+                <span>Explore Full Portfolio Archive</span>
+                <span>↗</span>
+              </button>
+              <a
+                href="/work"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => sound.playPop()}
+                className="px-5 py-2.5 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] font-medium text-xs tracking-wider uppercase border border-black/[0.04] transition-all cursor-pointer inline-flex items-center gap-2"
+              >
+                <span>Open Archive in New Tab</span>
+                <span>⧉</span>
+              </a>
+            </div>
+          </div>
 
           {/* Project Detail Modal (Fallback if onSelectProject not passed) */}
           {!onSelectProject && (

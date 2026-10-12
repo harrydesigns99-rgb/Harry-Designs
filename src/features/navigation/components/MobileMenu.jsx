@@ -21,9 +21,17 @@ const MobileMenu = ({ isOpen, onClose }) => {
             <motion.a
               key={link.name}
               href={link.href}
-              onClick={() => {
+              onClick={(e) => {
                 sound.playClick();
                 onClose();
+                if (link.href.startsWith('/')) {
+                  if (!e.metaKey && !e.ctrlKey) {
+                    e.preventDefault();
+                    window.history.pushState({}, '', link.href);
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                    window.scrollTo(0, 0);
+                  }
+                }
               }}
               initial="hidden"
               animate="visible"

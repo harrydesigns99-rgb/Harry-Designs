@@ -13,6 +13,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 const AdminDashboard = lazy(() => import('@/features/cms').then((m) => ({ default: m.AdminDashboard })));
 const CaseStudyScreen = lazy(() => import('@/features/portfolio/components/CaseStudyScreen'));
 const ResumePage = lazy(() => import('@/features/resume/ResumePage'));
+const WorkArchiveScreen = lazy(() => import('@/features/portfolio/components/WorkArchiveScreen'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +49,12 @@ function App() {
     window.scrollTo(0, 0);
   };
 
+  const navigateToWork = () => {
+    window.history.pushState({}, '', '/work');
+    setCurrentPath('/work');
+    window.scrollTo(0, 0);
+  };
+
   const navigateHome = (targetSectionId = null) => {
     window.history.pushState({}, '', '/');
     setCurrentPath('/');
@@ -80,6 +87,13 @@ function App() {
             <div className="relative z-10">
               <AdminDashboard onNavigateHome={() => navigateHome()} />
             </div>
+          ) : currentPath === '/work' || currentPath === '/projects' || currentPath === '/archive' ? (
+            <div className="relative z-10">
+              <WorkArchiveScreen
+                onNavigateHome={(targetSectionId) => navigateHome(targetSectionId || 'portfolio')}
+                onSelectProject={(project) => navigateToProject(project.id)}
+              />
+            </div>
           ) : currentPath.startsWith('/project') ? (
             <div className="relative z-10">
               <CaseStudyScreen
@@ -101,7 +115,10 @@ function App() {
               <Navbar />
               <HeroSection />
               <KineticTicker />
-              <PortfolioSection onSelectProject={(project) => navigateToProject(project.id)} />
+              <PortfolioSection
+                onSelectProject={(project) => navigateToProject(project.id)}
+                onNavigateWork={navigateToWork}
+              />
               <StudioApproach />
               <AboutSection />
               <ContactSection />

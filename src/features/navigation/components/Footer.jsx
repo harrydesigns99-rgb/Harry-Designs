@@ -27,21 +27,41 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {FOOTER_LINKS.map((link, index) => (
-              <motion.a
-                key={link}
-                href={link === 'Resume' ? '/resume' : `#${link.toLowerCase()}`}
-                whileHover={{ y: -2 }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * DELAYS.tiny, ...TRANSITIONS.fast }}
-                data-cursor="Navigate"
-                className="text-stone-400 hover:text-white transition-colors text-sm font-medium"
-              >
-                {link}
-              </motion.a>
-            ))}
+            {FOOTER_LINKS.map((link, index) => {
+              const href =
+                link === 'Resume'
+                  ? '/resume'
+                  : link === 'Archive'
+                  ? '/work'
+                  : link === 'Work'
+                  ? '#portfolio'
+                  : `#${link.toLowerCase()}`;
+              return (
+                <motion.a
+                  key={link}
+                  href={href}
+                  onClick={(e) => {
+                    if (href.startsWith('/')) {
+                      if (!e.metaKey && !e.ctrlKey) {
+                        e.preventDefault();
+                        window.history.pushState({}, '', href);
+                        window.dispatchEvent(new PopStateEvent('popstate'));
+                        window.scrollTo(0, 0);
+                      }
+                    }
+                  }}
+                  whileHover={{ y: -2 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * DELAYS.tiny, ...TRANSITIONS.fast }}
+                  data-cursor="Navigate"
+                  className="text-stone-400 hover:text-white transition-colors text-sm font-medium"
+                >
+                  {link}
+                </motion.a>
+              );
+            })}
           </motion.div>
         </div>
 
