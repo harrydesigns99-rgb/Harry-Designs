@@ -222,31 +222,38 @@ const ContactForm = () => {
           </div>
         </div>
 
-        {/* Submit CTA */}
-        <motion.button
-          type="submit"
-          disabled={isSubmitting}
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.99 }}
-          data-cursor="Send"
-          className="w-full px-8 py-4 rounded-full bg-crimson text-white font-medium text-xs sm:text-sm uppercase tracking-wider hover:bg-crimson-dark transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-70"
-        >
-          <span>{isSubmitting ? 'Submitting Inquiry...' : 'Submit Commission Inquiry →'}</span>
-        </motion.button>
+        {/* Action CTAs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <motion.button
+            type="submit"
+            disabled={isSubmitting}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            data-cursor="Send"
+            className="w-full px-6 py-4 rounded-full bg-crimson text-white font-medium text-xs sm:text-sm uppercase tracking-wider hover:bg-crimson-dark transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-70 text-center"
+          >
+            <span>{isSubmitting ? 'Submitting Inquiry...' : 'Submit Commission Inquiry →'}</span>
+          </motion.button>
 
-        {/* WhatsApp & Direct Channels */}
-        <div className="pt-2 text-center">
-          <p className="text-xs text-[#86868b]">
-            Prefer direct messaging?{' '}
-            <a
-              href={getWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-crimson font-medium hover:underline inline-flex items-center gap-1"
-            >
-              <span>Chat on WhatsApp with pre-filled scope</span>
-              <span aria-hidden="true">↗</span>
-            </a>
+          <motion.a
+            href={getWhatsAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={() => sound.playPop()}
+            className="w-full px-6 py-4 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-medium text-xs sm:text-sm uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md hover:shadow-lg text-center"
+          >
+            <span>💬 Chat on WhatsApp</span>
+            <span aria-hidden="true">↗</span>
+          </motion.a>
+        </div>
+
+        {/* Studio Response Guarantee */}
+        <div className="pt-1 text-center">
+          <p className="text-xs text-[#86868b] flex items-center justify-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 inline-block" />
+            <span>Direct studio access • All NDA &amp; commercial rights guaranteed • 24-hr response</span>
           </p>
         </div>
       </form>

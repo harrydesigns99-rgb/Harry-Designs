@@ -20,4 +20,14 @@ export default defineConfig({
       '@/assets': path.resolve(__dirname, './src/assets'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-motion': ['framer-motion'],
+        },
+      },
+    },
+  },
 });

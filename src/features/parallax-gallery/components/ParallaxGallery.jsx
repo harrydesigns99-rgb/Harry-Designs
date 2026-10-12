@@ -82,8 +82,8 @@ const ParallaxGallery = () => {
         </motion.div>
 
         {/* Gradient overlays */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cloud-dancer to-transparent z-20 pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cloud-dancer to-transparent z-20 pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--theme-bg)] to-transparent z-20 pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--theme-bg)] to-transparent z-20 pointer-events-none" />
       </div>
 
       {/* MOBILE LAYOUT */}

@@ -22,8 +22,8 @@ const HeroSection = () => {
 
             {/* RIGHT COLUMN: Parallax Gallery - 5 Cols */}
             <div className="order-2 lg:order-2 lg:col-span-5 h-auto lg:h-[82vh] w-full flex items-center justify-center relative overflow-hidden rounded-3xl">
-              <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#fbfbfd] to-transparent z-20 pointer-events-none" />
-              <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#fbfbfd] to-transparent z-20 pointer-events-none" />
+              <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[var(--theme-bg)] to-transparent z-20 pointer-events-none" />
+              <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--theme-bg)] to-transparent z-20 pointer-events-none" />
               <ParallaxGallery />
             </div>
           </div>

@@ -28,12 +28,15 @@ const CaseStudyScreen = ({
   const [viewModeOverride, setViewModeOverride] = useState(null);
   const [activeTab, setActiveTab] = useState('screen-hero');
   const [prevProjectId, setPrevProjectId] = useState(projectId);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [sharedToast, setSharedToast] = useState(false);
   const containerRef = useRef(null);
 
   if (projectId !== prevProjectId) {
     setPrevProjectId(projectId);
     setViewModeOverride(null);
     setActiveTab('screen-hero');
+    setIsLightboxOpen(false);
   }
 
   const hasEarlyConcept = Boolean(
@@ -42,10 +45,36 @@ const CaseStudyScreen = ({
   const viewMode =
     viewModeOverride ?? (currentProject?.hasBeforeAfter ? 'compare' : 'artwork');
 
+  const handleShare = async () => {
+    sound.playClick();
+    const shareData = {
+      title: `${currentProject.client} — ${currentProject.title}`,
+      text: `Case study for ${currentProject.client}: ${currentProject.description}`,
+      url: window.location.href,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch {
+        // user cancelled or fallback
+      }
+    }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setSharedToast(true);
+      setTimeout(() => setSharedToast(false), 2200);
+    }
+  };
+
   // Keyboard navigation: Left/Right to change projects, Escape to go back
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        if (isLightboxOpen) {
+          setIsLightboxOpen(false);
+          return;
+        }
         sound.playClick();
         onNavigateHome?.();
       } else if (e.key === 'ArrowLeft' && prevProject && onNavigateProject) {
@@ -59,7 +88,7 @@ const CaseStudyScreen = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [prevProject, nextProject, onNavigateHome, onNavigateProject]);
+  }, [prevProject, nextProject, onNavigateHome, onNavigateProject, isLightboxOpen]);
 
   // Scroll to top when project changes
   useEffect(() => {
@@ -152,8 +181,16 @@ const CaseStudyScreen = ({
                 </div>
               </div>
 
-              {/* Mobile Right Controls: Prev/Next */}
+              {/* Mobile Right Controls: Prev/Next & Share */}
               <div className="flex items-center gap-1.5 lg:hidden flex-shrink-0">
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="px-2 py-1 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-xs font-mono text-[#86868b] border border-black/[0.04] transition-all cursor-pointer flex items-center gap-1"
+                  title="Share this case study"
+                >
+                  <span>{sharedToast ? '✓' : '↗'}</span>
+                </button>
                 <div className="inline-flex items-center p-0.5 rounded-full bg-black/[0.05] border border-black/[0.04]">
                   <button
                     type="button"
@@ -244,8 +281,17 @@ const CaseStudyScreen = ({
               </button>
             </nav>
 
-            {/* Desktop Right Controls: Prev/Next & CMS */}
+            {/* Desktop Right Controls: Prev/Next, Share & CMS */}
             <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+              <button
+                type="button"
+                onClick={handleShare}
+                className="px-3 py-1 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[11px] font-mono uppercase tracking-wider text-[#86868b] hover:text-[#1d1d1f] border border-black/[0.04] transition-all flex items-center gap-1.5 cursor-pointer"
+                title="Share this case study"
+              >
+                <span>{sharedToast ? '✓ Copied URL' : 'Share ↗'}</span>
+              </button>
+
               <div className="inline-flex items-center p-0.5 rounded-full bg-black/[0.05] border border-black/[0.04]">
                 <button
                   type="button"
@@ -367,7 +413,7 @@ const CaseStudyScreen = ({
                   className="w-full h-full rounded-xl sm:rounded-2xl overflow-hidden"
                 />
               ) : currentProject.image ? (
-                <div className="relative w-full h-full flex items-center justify-center">
+                <div className="relative w-full h-full flex items-center justify-center group">
                   <img
                     src={currentProject.image}
                     alt={`${currentProject.client} - ${currentProject.title}`}
@@ -378,6 +424,17 @@ const CaseStudyScreen = ({
                       ★ {currentProject.metric}
                     </div>
                   )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sound.playClick();
+                      setIsLightboxOpen(true);
+                    }}
+                    className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 hover:bg-black/90 backdrop-blur-md text-white text-xs font-mono tracking-wide shadow-lg border border-white/15 opacity-90 hover:opacity-100 transition-all cursor-pointer"
+                    title="Inspect High-Res Artwork in Lightbox"
+                  >
+                    <span>🔍</span> Inspect Asset
+                  </button>
                 </div>
               ) : (
                 <div className={`w-full h-full rounded-xl sm:rounded-2xl bg-gradient-to-br ${currentProject.color}`} />
@@ -390,7 +447,16 @@ const CaseStudyScreen = ({
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 Production Master Asset
               </span>
-              <span>Aspect 3:4 • ISO 12647-2 Certified</span>
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  setIsLightboxOpen(true);
+                }}
+                className="hover:text-[#1d1d1f] transition-colors underline decoration-dotted cursor-pointer"
+              >
+                Inspect Artwork 4K ↗
+              </button>
             </div>
           </div>
 
@@ -671,6 +737,65 @@ const CaseStudyScreen = ({
           </div>
         </section>
       </main>
+
+      {/* 4K Master Asset Lightbox Modal */}
+      {isLightboxOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-between p-4 sm:p-8 animate-fadeIn"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          {/* Header */}
+          <div
+            className="w-full max-w-6xl flex items-center justify-between text-white/80 py-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              <div className="font-mono text-xs sm:text-sm">
+                <span className="text-white font-semibold">{currentProject.client}</span> — {currentProject.title} (Master View)
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline-block font-mono text-xs text-white/50">
+                Press [Esc] to exit
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  setIsLightboxOpen(false);
+                }}
+                className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors cursor-pointer border border-white/20"
+              >
+                ✕ Close
+              </button>
+            </div>
+          </div>
+
+          {/* Lightbox Image Container */}
+          <div
+            className="relative flex-1 w-full max-w-6xl flex items-center justify-center p-2 sm:p-6 select-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={currentProject.image || currentProject.process?.conceptImage}
+              alt={currentProject.title}
+              className="max-h-[82vh] max-w-full w-auto h-auto object-contain drop-shadow-2xl rounded-xl"
+            />
+          </div>
+
+          {/* Lightbox Footer Bar */}
+          <div
+            className="w-full max-w-6xl flex items-center justify-between text-[11px] sm:text-xs font-mono text-white/50 pt-2 border-t border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span>{currentProject.category || 'Packaging Design & System'}</span>
+            <span>Zero Cropping • 100% Fidelity</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

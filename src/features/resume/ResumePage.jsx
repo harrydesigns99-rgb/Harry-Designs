@@ -20,7 +20,7 @@ const projects = [
 
 const ResumePage = ({ onNavigateHome }) => {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-cloud-dancer text-eerie">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--theme-bg)] text-[var(--theme-text)]">
       <AnimatedBackdrop tone="light" />
       <header className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-8 flex flex-wrap items-center justify-between gap-4 border-b border-eerie/15">
         <button
