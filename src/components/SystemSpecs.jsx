@@ -28,22 +28,22 @@ const SystemSpecs = ({ specs = DEFAULT_SPECS, client, title, category }) => {
   };
 
   return (
-    <div className="w-full space-y-10 text-[#1d1d1f]">
+    <div className="w-full space-y-6 sm:space-y-8 text-[#1d1d1f]">
       {/* Header Banner */}
-      <div className="text-center sm:text-left space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
+      <div className="text-center sm:text-left space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
           <span>●</span> 04 / TECHNICAL {category ? `${category.toUpperCase()} SYSTEM` : 'DESIGN SYSTEM'} &amp; SPECIFICATIONS
         </div>
-        <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#1d1d1f]">
+        <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-[#1d1d1f]">
           Design System &amp; Production Architecture
         </h3>
-        <p className="text-sm sm:text-base text-[#86868b] max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#86868b] max-w-2xl leading-relaxed">
           Mathematical grid alignments, optical typographic hierarchies, accessible color token separations, and production specifications for {client}{title ? ` — ${title}` : ''}.
         </p>
       </div>
 
       {/* 1. Interactive Color Palette System (Apple Swatches) */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-mono uppercase tracking-wider text-[#86868b] font-medium">
             Color Palette &amp; Token Architecture (Tap to Copy HEX)

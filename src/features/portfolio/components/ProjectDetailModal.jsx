@@ -220,10 +220,10 @@ const ProjectDetailModal = ({
           </div>
 
           {/* ==================== LONG-FORM CONTINUOUS EDITORIAL CASE STUDY ==================== */}
-          <div className="p-4 sm:p-8 lg:p-12 space-y-16">
+          <div className="p-4 sm:p-6 lg:p-8 space-y-10 sm:space-y-12">
             {/* -------------------- SECTION 01: HERO STORY & BRIEF -------------------- */}
-            <section id="modal-story" className="space-y-8">
-              <div className="grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-start">
+            <section id="modal-story" className="space-y-6">
+              <div className="grid lg:grid-cols-[1.1fr_1fr] gap-6 lg:gap-8 items-start">
                 {/* Artwork View / Before-After Hero */}
                 <div className="w-full bg-neutral-900 border border-eerie/15 overflow-hidden relative flex flex-col justify-center">
                   {hasEarlyConcept && (
@@ -265,17 +265,17 @@ const ProjectDetailModal = ({
                       afterImage={item.afterImage || item.image}
                       beforeLabel={item.beforeLabel || item.process?.conceptLabel || 'Initial Concept'}
                       afterLabel={item.afterLabel || item.process?.finalLabel || 'Final System'}
-                      className="w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-[32rem]"
+                      className="w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-[28rem]"
                     />
                   ) : item.image ? (
-                    <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-[32rem] bg-neutral-950 flex items-center justify-center">
+                    <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-[28rem] bg-neutral-950 flex items-center justify-center p-3 sm:p-5">
                       <img
                         src={item.image}
                         alt={`${item.client} - ${item.title}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                       {item.metric && (
-                        <div className="absolute bottom-4 left-4 z-10 bg-crimson text-white px-3 py-1 text-xs font-semibold tracking-wider uppercase shadow-md">
+                        <div className="absolute bottom-3 left-3 z-10 bg-crimson text-white px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase shadow-md">
                           Impact: {item.metric}
                         </div>
                       )}
@@ -353,7 +353,7 @@ const ProjectDetailModal = ({
             </section>
 
             {/* -------------------- SECTION 02: THE MAKING PROCESS -------------------- */}
-            <section id="modal-process" className="pt-8 border-t border-eerie/15">
+            <section id="modal-process" className="pt-6 sm:pt-8 border-t border-eerie/15">
               <DesignProcessNarrative
                 process={item.process}
                 finalImage={item.image}
@@ -364,7 +364,7 @@ const ProjectDetailModal = ({
             </section>
 
             {/* -------------------- SECTION 03: PROCESS BEHIND THE PROCESS -------------------- */}
-            <section id="modal-studio-process" className="pt-8 border-t border-eerie/15">
+            <section id="modal-studio-process" className="pt-6 sm:pt-8 border-t border-eerie/15">
               <ProcessBehindProcess
                 data={item.processBehindProcess || getProcessBehindProcess(item)}
                 client={item.client}
@@ -373,7 +373,7 @@ const ProjectDetailModal = ({
             </section>
 
             {/* -------------------- SECTION 04: TECHNICAL ANATOMY / SYSTEM SPECS -------------------- */}
-            <section id="modal-specs" className="pt-8 border-t border-eerie/15">
+            <section id="modal-specs" className="pt-6 sm:pt-8 border-t border-eerie/15">
               {item.category === 'packaging' ? (
                 <PackagingAnatomy
                   anatomy={item.anatomy}
@@ -392,7 +392,7 @@ const ProjectDetailModal = ({
             </section>
 
             {/* -------------------- SECTION 04: COMMERCIAL IMPACT & DELIVERABLES -------------------- */}
-            <section id="modal-impact" className="pt-8 border-t border-eerie/15 space-y-6">
+            <section id="modal-impact" className="pt-6 sm:pt-8 border-t border-eerie/15 space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-eerie/15 pb-4">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">

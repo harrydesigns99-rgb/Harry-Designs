@@ -22,23 +22,23 @@ const DesignProcessNarrative = ({
   const hasConceptImage = Boolean(process.conceptImage);
 
   return (
-    <div className="w-full space-y-10 text-[#1d1d1f]">
+    <div className="w-full space-y-6 sm:space-y-8 text-[#1d1d1f]">
       {/* Section Header */}
-      <div className="text-center sm:text-left space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
+      <div className="text-center sm:text-left space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
           <span>●</span> 02 / THE MAKING PROCESS • 5-PHASE CRAFT METHODOLOGY
         </div>
-        <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#1d1d1f]">
+        <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-[#1d1d1f]">
           The Process Behind the Design
         </h3>
-        <p className="text-sm sm:text-base text-[#86868b] max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#86868b] max-w-2xl leading-relaxed">
           How strategic diagnosis, iterative prototyping, material exploration, and production oversight shaped the {title ? `"${title}"` : ''} {category || 'design'} for {client}.
         </p>
       </div>
 
       {/* Apple Segmented Stepper Track */}
       <div className="overflow-x-auto no-scrollbar pb-1">
-        <div className="inline-flex items-center gap-1.5 p-1.5 rounded-2xl bg-black/[0.04] border border-black/[0.05] min-w-full sm:min-w-0">
+        <div className="inline-flex items-center gap-1.5 p-1 rounded-2xl bg-black/[0.04] border border-black/[0.05] min-w-full sm:min-w-0">
           {stages.map((stage, idx) => {
             const isActive = activeStageIndex === idx;
             return (
@@ -49,7 +49,7 @@ const DesignProcessNarrative = ({
                   sound.playClick();
                   setActiveStageIndex(idx);
                 }}
-                className={`flex-1 sm:flex-initial text-left px-4 py-2.5 rounded-xl transition-all cursor-pointer ${
+                className={`flex-1 sm:flex-initial text-left px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
                   isActive
                     ? 'bg-white text-[#1d1d1f] shadow-sm'
                     : 'text-[#86868b] hover:text-[#1d1d1f] hover:bg-black/[0.02]'
@@ -68,7 +68,7 @@ const DesignProcessNarrative = ({
                   </span>
                 </div>
                 <div
-                  className={`text-xs truncate max-w-[150px] sm:max-w-[170px] mt-1 ${
+                  className={`text-xs truncate max-w-[140px] sm:max-w-[160px] mt-0.5 ${
                     isActive ? 'text-[#1d1d1f] font-medium' : 'text-[#86868b]'
                   }`}
                 >
@@ -84,39 +84,39 @@ const DesignProcessNarrative = ({
       <AnimatePresence mode="wait">
         <motion.div
           key={activeStageIndex}
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-          className="apple-card p-6 sm:p-10 space-y-8 bg-white border border-black/[0.08]"
+          exit={{ opacity: 0, y: -14 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="apple-card p-5 sm:p-7 space-y-5 bg-white border border-black/[0.08]"
         >
           {/* Stage Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-black/[0.06] pb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-black/[0.06] pb-4">
             <div>
-              <div className="text-xs font-mono uppercase tracking-wider text-crimson font-semibold mb-1">
+              <div className="text-xs font-mono uppercase tracking-wider text-crimson font-semibold mb-0.5">
                 Phase {currentStage.step} • {currentStage.phase}
               </div>
-              <h4 className="font-display text-2xl sm:text-3xl font-medium text-[#1d1d1f] tracking-tight">
+              <h4 className="font-display text-xl sm:text-2xl font-medium text-[#1d1d1f] tracking-tight">
                 {currentStage.title}
               </h4>
             </div>
-            <span className="px-3 py-1 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b] self-start sm:self-auto">
+            <span className="px-3 py-0.5 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b] self-start sm:self-auto">
               Deliverable: {currentStage.artifact || 'Design Specification'}
             </span>
           </div>
 
           {/* Narrative Paragraph */}
-          <p className="text-base sm:text-lg text-[#1d1d1f]/85 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-[#1d1d1f]/85 leading-relaxed font-normal">
             {currentStage.narrative}
           </p>
 
           {/* Strategic Rationale Highlight Callout */}
           {currentStage.decision && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-black/[0.02] border-l-4 border-crimson space-y-2">
+            <div className="p-4 sm:p-5 rounded-2xl bg-black/[0.02] border-l-4 border-crimson space-y-1.5">
               <div className="text-[11px] font-mono uppercase tracking-wider text-crimson font-semibold flex items-center gap-1.5">
                 <span>✦</span> Strategic Design Rationale
               </div>
-              <p className="text-sm sm:text-base text-[#1d1d1f]/90 font-medium leading-relaxed italic">
+              <p className="text-xs sm:text-sm text-[#1d1d1f]/90 font-medium leading-relaxed italic">
                 &ldquo;{currentStage.decision}&rdquo;
               </p>
             </div>
@@ -124,13 +124,13 @@ const DesignProcessNarrative = ({
 
           {/* Visual Evolution Slider (Concept Exploration vs Final Production) */}
           {(currentStage.hasComparison || activeStageIndex === 2) && hasConceptImage && (
-            <div className="pt-6 border-t border-black/[0.06] space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="pt-4 border-t border-black/[0.06] space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <div>
                   <span className="text-xs font-mono uppercase tracking-wider text-crimson font-semibold">
                     Visual Craft Evolution
                   </span>
-                  <h5 className="text-base sm:text-lg font-display font-medium text-[#1d1d1f]">
+                  <h5 className="text-sm sm:text-base font-display font-medium text-[#1d1d1f]">
                     Initial Concept Exploration vs. Final Master
                   </h5>
                 </div>

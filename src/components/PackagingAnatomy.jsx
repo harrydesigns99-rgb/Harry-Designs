@@ -38,22 +38,22 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
   const blurPx = (shelfDistance * 0.85).toFixed(1);
 
   return (
-    <div className="w-full space-y-10 text-[#1d1d1f]">
+    <div className="w-full space-y-6 sm:space-y-8 text-[#1d1d1f]">
       {/* Header Banner */}
-      <div className="text-center sm:text-left space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
+      <div className="text-center sm:text-left space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
           <span>●</span> 04 / TECHNICAL PRINT ANATOMY &amp; DIELINE SPECS
         </div>
-        <h3 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#1d1d1f]">
+        <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-[#1d1d1f]">
           Print Anatomy &amp; Engineering Specifications
         </h3>
-        <p className="text-sm sm:text-base text-[#86868b] max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#86868b] max-w-2xl leading-relaxed">
           Production-grade substrate selections, spot ink color separations, CAD dieline geometries, and retail shelf standoff simulation for {client}{title ? ` — ${title}` : ''}.
         </p>
       </div>
 
       {/* 1. Interactive Pantone & Ink System (Apple Color Chips) */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-mono uppercase tracking-wider text-[#86868b] font-medium">
             Color Separation &amp; Spot Inks (Tap to Copy HEX)
