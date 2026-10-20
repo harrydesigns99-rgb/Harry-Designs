@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useCMS } from './useCMS';
+import { DEFAULT_PROFILE } from './cmsStore';
 import AdminAuthGate from './AdminAuthGate';
 import ProjectEditorModal from './ProjectEditorModal';
 
@@ -34,6 +35,12 @@ const AdminDashboard = ({ onNavigateHome }) => {
   // Brand inputs
   const [newBrandName, setNewBrandName] = useState('');
   const [newBrandLogo, setNewBrandLogo] = useState('');
+
+  // Profile inputs & state
+  const profileFileRef = useRef(null);
+  const [profileSavedToast, setProfileSavedToast] = useState(false);
+  const currentProfile = { ...DEFAULT_PROFILE, ...(cms.profile || {}) };
+  const [profileForm, setProfileForm] = useState(currentProfile);
 
   // Backup file ref
   const importFileRef = useRef(null);
@@ -100,6 +107,27 @@ const AdminDashboard = ({ onNavigateHome }) => {
       cms.addGalleryImage(event.target.result);
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleProfileImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result;
+      if (dataUrl) {
+        setProfileForm((prev) => ({ ...prev, image: dataUrl }));
+        cms.updateProfile({ image: dataUrl });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveProfile = (e) => {
+    e.preventDefault();
+    cms.updateProfile(profileForm);
+    setProfileSavedToast(true);
+    setTimeout(() => setProfileSavedToast(false), 2500);
   };
 
   return (
@@ -170,6 +198,17 @@ const AdminDashboard = ({ onNavigateHome }) => {
             }`}
           >
             Client Logos ({cms.brands.length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab('profile')}
+            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+              activeTab === 'profile'
+                ? 'bg-eerie text-white font-bold shadow-sm'
+                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+            }`}
+          >
+            Founder Profile &amp; Photo
           </button>
 
           <button
@@ -567,6 +606,263 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   </button>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: FOUNDER PROFILE & PHOTO */}
+        {/* ========================================================= */}
+        {activeTab === 'profile' && (
+          <div className="space-y-6">
+            {profileSavedToast && (
+              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-xs flex items-center justify-between animate-fadeIn">
+                <span>✓ Founder profile and portrait updated successfully! Changes reflect live across the site.</span>
+                <span className="font-mono text-[10px]">Saved</span>
+              </div>
+            )}
+
+            <div className="bg-white border border-eerie/15 p-6 md:p-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-eerie/10 pb-5 mb-6">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
+                    Founder Atelier Identity
+                  </span>
+                  <h3 className="font-display font-bold text-2xl text-eerie mt-1">
+                    Founder Profile &amp; Photo
+                  </h3>
+                  <p className="text-xs text-eerie/60 mt-1">
+                    Update your founder photo, title, credentials, and quote displayed in the Leadership card.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (confirm('Reset profile to factory defaults?')) {
+                        setProfileForm(DEFAULT_PROFILE);
+                        cms.updateProfile(DEFAULT_PROFILE);
+                      }
+                    }}
+                    className="px-3.5 py-2 text-xs font-mono uppercase tracking-wider text-eerie/60 hover:text-crimson border border-eerie/20 hover:border-crimson transition-colors cursor-pointer"
+                  >
+                    Reset Defaults
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveProfile}
+                    className="px-5 py-2 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                  >
+                    Save Changes →
+                  </button>
+                </div>
+              </div>
+
+              <form onSubmit={handleSaveProfile} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Left Column: Portrait Stage & Upload */}
+                <div className="lg:col-span-5 space-y-4">
+                  <div className="text-xs font-mono font-semibold uppercase tracking-wider text-eerie/80">
+                    Portrait Preview
+                  </div>
+
+                  <div className="relative w-full aspect-[4/5] max-h-[380px] rounded-2xl overflow-hidden bg-neutral-100 border border-black/[0.08] shadow-sm group">
+                    <img
+                      src={profileForm.image || '/image/hariharan.jpg'}
+                      alt={profileForm.name}
+                      className="w-full h-full object-cover object-[center_18%]"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex flex-col justify-end p-4 text-white">
+                      <div className="font-display text-lg font-medium">
+                        {profileForm.name}
+                      </div>
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-white/80">
+                        {profileForm.role}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Photo Actions */}
+                  <div className="space-y-3 pt-2">
+                    <input
+                      type="file"
+                      ref={profileFileRef}
+                      accept="image/*"
+                      onChange={handleProfileImageUpload}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => profileFileRef.current?.click()}
+                      className="w-full py-2.5 px-4 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                    >
+                      <span>📷</span> Upload New Photo
+                    </button>
+
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Or Image URL / Path:
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.image}
+                        onChange={(e) => setProfileForm({ ...profileForm, image: e.target.value })}
+                        placeholder="/image/hariharan.jpg"
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs font-mono outline-none focus:border-eerie bg-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Founder Metadata Inputs */}
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.name}
+                        onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+                        required
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-medium"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Role Title *
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.role}
+                        onChange={(e) => setProfileForm({ ...profileForm, role: e.target.value })}
+                        required
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Experience Badge
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.experience}
+                        onChange={(e) => setProfileForm({ ...profileForm, experience: e.target.value })}
+                        placeholder="6+ Years Practice"
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Specialization
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.specialization}
+                        onChange={(e) => setProfileForm({ ...profileForm, specialization: e.target.value })}
+                        placeholder="Packaging & Identity"
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Production Rigor
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.rigor}
+                        onChange={(e) => setProfileForm({ ...profileForm, rigor: e.target.value })}
+                        placeholder="ISO 12647-2 Ready"
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Studio Location
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.location}
+                        onChange={(e) => setProfileForm({ ...profileForm, location: e.target.value })}
+                        placeholder="Chennai • Global Remote"
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Studio Email
+                      </label>
+                      <input
+                        type="email"
+                        value={profileForm.email}
+                        onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                        placeholder="harrydesigns99@gmail.com"
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                        Phone / WhatsApp
+                      </label>
+                      <input
+                        type="tel"
+                        value={profileForm.phone}
+                        onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+                        placeholder="+91 86101 74188"
+                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      Availability Status Text
+                    </label>
+                    <input
+                      type="text"
+                      value={profileForm.statusText}
+                      onChange={(e) => setProfileForm({ ...profileForm, statusText: e.target.value })}
+                      placeholder="Available for Commissions"
+                      className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      Philosophy Quote
+                    </label>
+                    <textarea
+                      value={profileForm.philosophy}
+                      onChange={(e) => setProfileForm({ ...profileForm, philosophy: e.target.value })}
+                      rows="3"
+                      className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white resize-none"
+                    />
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      className="w-full py-3 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                    >
+                      Save Profile Changes
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         )}

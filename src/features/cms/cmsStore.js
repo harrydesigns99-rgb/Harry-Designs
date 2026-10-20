@@ -7,6 +7,21 @@ const STORAGE_KEYS = {
   BRANDS: 'harry_designs_cms_brands_v1',
   SETTINGS: 'harry_designs_cms_settings_v1',
   AUTH: 'harry_designs_cms_auth_v1',
+  PROFILE: 'harry_designs_cms_profile_v1',
+};
+
+export const DEFAULT_PROFILE = {
+  name: 'Hariharan S',
+  role: 'Principal Brand & Packaging Architect',
+  image: '/image/hariharan.jpg',
+  experience: '6+ Years Practice',
+  specialization: 'Packaging & Identity',
+  rigor: 'ISO 12647-2 Ready',
+  location: 'Chennai • Global Remote',
+  email: 'harrydesigns99@gmail.com',
+  phone: '+91 86101 74188',
+  philosophy: 'Translating founder ambition into shelf standout, tactile substrate finishes, and durable commercial equity.',
+  statusText: 'Available for Commissions',
 };
 
 const DEFAULT_SETTINGS = {
@@ -66,6 +81,7 @@ let currentData = {
   galleryImages: safeRead(STORAGE_KEYS.GALLERY, GALLERY_IMAGES),
   brands: safeRead(STORAGE_KEYS.BRANDS, BRANDS),
   settings: safeRead(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS),
+  profile: safeRead(STORAGE_KEYS.PROFILE, DEFAULT_PROFILE),
   isAuthenticated: safeRead(STORAGE_KEYS.AUTH, false),
 };
 
@@ -215,6 +231,14 @@ export const cmsStore = {
     emitChange();
   },
 
+  // Profile operations
+  updateProfile(patch) {
+    const updated = { ...currentData.profile, ...patch };
+    currentData = { ...currentData, profile: updated };
+    safeWrite(STORAGE_KEYS.PROFILE, updated);
+    emitChange();
+  },
+
   // Backup, Export, Reset
   exportBackupJSON() {
     return JSON.stringify(
@@ -225,6 +249,7 @@ export const cmsStore = {
         galleryImages: currentData.galleryImages,
         brands: currentData.brands,
         settings: currentData.settings,
+        profile: currentData.profile,
       },
       null,
       2
@@ -249,6 +274,10 @@ export const cmsStore = {
       if (parsed.settings && typeof parsed.settings === 'object') {
         currentData.settings = { ...DEFAULT_SETTINGS, ...parsed.settings };
         safeWrite(STORAGE_KEYS.SETTINGS, currentData.settings);
+      }
+      if (parsed.profile && typeof parsed.profile === 'object') {
+        currentData.profile = { ...DEFAULT_PROFILE, ...parsed.profile };
+        safeWrite(STORAGE_KEYS.PROFILE, currentData.profile);
       }
       emitChange();
       return { success: true };
@@ -299,12 +328,14 @@ export const GALLERY_IMAGES = ${imagesStr};
       galleryImages: GALLERY_IMAGES,
       brands: BRANDS,
       settings: DEFAULT_SETTINGS,
+      profile: DEFAULT_PROFILE,
       isAuthenticated: currentData.isAuthenticated,
     };
     safeWrite(STORAGE_KEYS.PROJECTS, PORTFOLIO_ITEMS);
     safeWrite(STORAGE_KEYS.GALLERY, GALLERY_IMAGES);
     safeWrite(STORAGE_KEYS.BRANDS, BRANDS);
     safeWrite(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+    safeWrite(STORAGE_KEYS.PROFILE, DEFAULT_PROFILE);
     emitChange();
   },
 };

@@ -13,7 +13,7 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="relative pt-24 md:pt-36 pb-24 md:pb-36 bg-transparent text-eerie overflow-hidden"
+      className="relative py-14 md:py-20 bg-transparent text-eerie overflow-hidden"
       ref={ref}
     >
       <AnimatedBackdrop tone="light" />
@@ -24,7 +24,7 @@ const ContactSection = () => {
           animate={isInView ? 'visible' : 'hidden'}
           variants={fadeInUp}
           transition={{ ...TRANSITIONS.slow, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <motion.div
             initial="hidden"

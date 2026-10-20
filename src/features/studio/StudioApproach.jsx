@@ -38,9 +38,9 @@ const testimonial = {
 
 const StudioApproach = () => {
   return (
-    <section id="services" className="relative overflow-hidden bg-transparent text-[#1d1d1f] py-24 md:py-36">
+    <section id="services" className="relative overflow-hidden bg-transparent text-[#1d1d1f] py-12 md:py-16">
       <AnimatedBackdrop tone="light" />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 sm:space-y-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
         {/* ==================== 1. CAPABILITIES BENTO ==================== */}
         <div className="space-y-12">
           <div className="text-center sm:text-left space-y-3 max-w-2xl">

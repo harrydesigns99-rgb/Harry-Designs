@@ -1,25 +1,20 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
-
-const IMAGE_THEMES = [
-  { id: 'natural', label: '✦ Natural', filter: 'brightness(1.02) contrast(1.02)', src: '/image/hariharan.jpg' },
-  { id: 'monochrome', label: '◐ Leica Mono', filter: 'grayscale(1) contrast(1.18) brightness(0.96)', src: '/image/hariharan-bw.jpg' },
-  { id: 'warm', label: '☀ Warm Film', filter: 'sepia(0.24) contrast(1.06) brightness(1.02) saturate(1.12)', src: '/image/hariharan.jpg' },
-  { id: 'noir', label: '◆ Studio Noir', filter: 'contrast(1.2) brightness(0.92) saturate(0.85)', src: '/image/hariharan-bw.jpg' },
-];
+import { useCMS } from '@/features/cms';
+import { DEFAULT_PROFILE } from '@/features/cms/cmsStore';
 
 const AboutProfile = ({ isInView }) => {
-  const [copiedEmail, setCopiedEmail] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState('natural');
-  const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'channels'
+  const cms = useCMS();
+  const profile = { ...DEFAULT_PROFILE, ...(cms.profile || {}) };
 
-  const currentTheme = IMAGE_THEMES.find((t) => t.id === selectedTheme) || IMAGE_THEMES[0];
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'channels'
 
   const handleCopyEmail = () => {
     sound.playClick();
     if (navigator.clipboard) {
-      navigator.clipboard.writeText('harrydesigns99@gmail.com');
+      navigator.clipboard.writeText(profile.email || 'harrydesigns99@gmail.com');
     }
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
@@ -31,14 +26,14 @@ const AboutProfile = ({ isInView }) => {
     const vcardData = [
       'BEGIN:VCARD',
       'VERSION:3.0',
-      'N:S;Hariharan;;;',
-      'FN:Hariharan S',
+      `FN:${profile.name || 'Hariharan S'}`,
       'ORG:Harry Designs Studio',
-      'TITLE:Principal Brand & Packaging Designer',
-      'EMAIL;type=INTERNET;type=WORK;type=pref:harrydesigns99@gmail.com',
+      `TITLE:${profile.role || 'Principal Brand & Packaging Designer'}`,
+      `EMAIL;type=INTERNET;type=WORK;type=pref:${profile.email || 'harrydesigns99@gmail.com'}`,
+      `TEL;type=CELL:${profile.phone || '+91 86101 74188'}`,
       'URL:https://harry-portfolio-2.vercel.app',
       'NOTE:Creative Direction, Packaging Architecture & Visual Identity',
-      'ADR;type=WORK:;;Chennai;Tamil Nadu;;India',
+      `ADR;type=WORK:;;${profile.location || 'Chennai;Tamil Nadu;;India'}`,
       'END:VCARD',
     ].join('\r\n');
 
@@ -46,7 +41,7 @@ const AboutProfile = ({ isInView }) => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'Hariharan_S_Studio.vcf');
+    link.setAttribute('download', `${(profile.name || 'Hariharan_S').replace(/\s+/g, '_')}_Studio.vcf`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -67,24 +62,21 @@ const AboutProfile = ({ isInView }) => {
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-4">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-xs font-mono font-medium">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Available for Commissions
+              {profile.statusText || 'Available for Commissions'}
             </span>
 
             <div className="inline-flex items-center gap-1.5 text-xs font-mono text-[#86868b]">
-              <span>Chennai, IN</span>
-              <span className="text-black/20">•</span>
-              <span>13.08° N</span>
+              <span>{profile.location?.split('•')[0]?.trim() || 'Chennai, IN'}</span>
             </div>
           </div>
 
           {/* Real Founder Portrait Stage */}
           <div className="space-y-3">
             <div className="relative w-full aspect-[4/5] max-h-[380px] sm:max-h-[400px] rounded-2xl overflow-hidden bg-neutral-100 border border-black/[0.08] shadow-sm group">
-              {/* Portrait Image with Dynamic Theme Grading */}
+              {/* Portrait Image Clean */}
               <img
-                src={currentTheme.src}
-                alt="Hariharan S - Principal Brand &amp; Packaging Designer"
-                style={{ filter: currentTheme.filter }}
+                src={profile.image || '/image/hariharan.jpg'}
+                alt={`${profile.name} - ${profile.role}`}
                 className="w-full h-full object-cover object-[center_18%] transition-transform duration-700 ease-out group-hover:scale-103"
               />
 
@@ -94,54 +86,25 @@ const AboutProfile = ({ isInView }) => {
                   Studio Founder
                 </span>
                 <span className="apple-glass px-2.5 py-1 text-[10px] font-mono text-[#1d1d1f]/80 rounded-full border border-black/[0.08] shadow-xs">
-                  6+ Yrs Exp
+                  {profile.experience}
                 </span>
               </div>
 
               {/* Bottom Subtle Vignette Gradient with Name Overlay */}
               <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex flex-col justify-end p-4 text-white">
                 <div className="font-display text-xl sm:text-2xl font-medium tracking-tight">
-                  Hariharan S
+                  {profile.name}
                 </div>
                 <div className="text-[11px] font-mono uppercase tracking-wider text-white/80">
-                  Principal Brand &amp; Packaging Architect
+                  {profile.role}
                 </div>
-              </div>
-            </div>
-
-            {/* Interactive Portrait Theme Grader Pills */}
-            <div className="flex items-center justify-between gap-1 pt-1 overflow-x-auto no-scrollbar">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-[#86868b] hidden sm:inline">
-                Theme:
-              </span>
-              <div className="inline-flex items-center gap-1 p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-[11px] w-full sm:w-auto justify-between sm:justify-start">
-                {IMAGE_THEMES.map((theme) => {
-                  const isActive = selectedTheme === theme.id;
-                  return (
-                    <button
-                      key={theme.id}
-                      type="button"
-                      onClick={() => {
-                        sound.playClick();
-                        setSelectedTheme(theme.id);
-                      }}
-                      className={`px-2.5 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap ${
-                        isActive
-                          ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
-                          : 'text-[#86868b] hover:text-[#1d1d1f]'
-                      }`}
-                    >
-                      {theme.label}
-                    </button>
-                  );
-                })}
               </div>
             </div>
           </div>
 
           {/* Philosophy Statement */}
           <p className="text-xs sm:text-sm text-[#1d1d1f]/80 italic text-center leading-relaxed px-2">
-            &ldquo;Translating founder ambition into shelf standout, tactile substrate finishes, and durable commercial equity.&rdquo;
+            &ldquo;{profile.philosophy}&rdquo;
           </p>
 
           {/* Segmented View Toggle (Specs vs Direct Channels) */}
@@ -194,7 +157,7 @@ const AboutProfile = ({ isInView }) => {
                     Experience
                   </div>
                   <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
-                    6+ Years Practice
+                    {profile.experience}
                   </div>
                 </div>
 
@@ -203,7 +166,7 @@ const AboutProfile = ({ isInView }) => {
                     Specialization
                   </div>
                   <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
-                    Packaging &amp; Identity
+                    {profile.specialization}
                   </div>
                 </div>
 
@@ -212,7 +175,7 @@ const AboutProfile = ({ isInView }) => {
                     Production Rigor
                   </div>
                   <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
-                    ISO 12647-2 Ready
+                    {profile.rigor}
                   </div>
                 </div>
 
@@ -221,7 +184,7 @@ const AboutProfile = ({ isInView }) => {
                     Operations
                   </div>
                   <div className="text-xs sm:text-sm font-semibold text-[#1d1d1f]">
-                    Chennai • Global Remote
+                    {profile.location}
                   </div>
                 </div>
               </motion.div>
@@ -240,7 +203,7 @@ const AboutProfile = ({ isInView }) => {
                       Studio Inquiries
                     </div>
                     <div className="text-xs sm:text-sm font-mono font-medium text-[#1d1d1f]">
-                      harrydesigns99@gmail.com
+                      {profile.email}
                     </div>
                   </div>
                   <button
@@ -250,6 +213,17 @@ const AboutProfile = ({ isInView }) => {
                   >
                     {copiedEmail ? '✓ Copied' : 'Copy'}
                   </button>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-[#86868b]">
+                      WhatsApp / Phone
+                    </div>
+                    <div className="text-xs sm:text-sm font-mono font-medium text-[#1d1d1f]">
+                      {profile.phone}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-black/[0.02] border border-black/[0.05] flex items-center justify-between">
@@ -292,3 +266,4 @@ const AboutProfile = ({ isInView }) => {
 };
 
 export default AboutProfile;
+

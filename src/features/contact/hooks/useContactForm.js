@@ -47,13 +47,7 @@ export function useContactForm() {
     setStatus('submitting');
     setErrorMessage('');
 
-    const formattedServices = selectedServices.length > 0 ? selectedServices.join(', ') : 'Not specified';
-    const combinedMessage = [
-      `Scope / Services: ${formattedServices}`,
-      `Timeline: ${selectedTimeline}`,
-      `Budget Range: ${selectedBudget}`,
-      `\nClient Note / Brief:\n${formData.message}`,
-    ].join('\n');
+    const combinedMessage = formData.message;
 
     try {
       // Send to Web3Forms free API
@@ -69,11 +63,8 @@ export function useContactForm() {
           email: formData.email,
           phone: formData.phone || 'Not provided',
           message: combinedMessage,
-          services: formattedServices,
-          timeline: selectedTimeline,
-          budget: selectedBudget,
           from_name: `${formData.name} (Harry Designs Inquiry)`,
-          subject: `New Project Inquiry from ${formData.name} [${formattedServices}]`,
+          subject: `New Project Inquiry from ${formData.name}`,
         }),
       });
 
@@ -112,8 +103,8 @@ export function useContactForm() {
 
   // WhatsApp auto-formatted direct link
   const getWhatsAppLink = () => {
-    const servicesText = selectedServices.length > 0 ? selectedServices.join(', ') : 'a new design project';
-    const message = `Hi Hariharan, I'm interested in discussing a project for *${servicesText}*. Estimated timeline: *${selectedTimeline}*, budget: *${selectedBudget}*.`;
+    const clientName = formData.name ? ` My name is ${formData.name}.` : '';
+    const message = `Hi Hariharan, I'm interested in discussing a design project.${clientName}`;
     return `https://wa.me/918610174188?text=${encodeURIComponent(message)}`;
   };
 

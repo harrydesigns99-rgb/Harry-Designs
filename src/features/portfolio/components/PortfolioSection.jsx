@@ -10,7 +10,7 @@ import ProjectDetailModal from './ProjectDetailModal';
 import { fadeInUp, scaleIn, TRANSITIONS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
-const INITIAL_PROJECTS_COUNT = 4;
+const INITIAL_PROJECTS_COUNT = 6;
 
 const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const ref = useRef(null);
@@ -50,13 +50,13 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   }, [filter, isExpanded, filteredProjects]);
 
   return (
-    <section id="portfolio" className="relative py-20 md:py-32 bg-transparent text-[#1d1d1f]" ref={ref}>
+    <section id="portfolio" className="relative pt-14 pb-8 md:pt-20 md:pb-10 bg-transparent text-[#1d1d1f]" ref={ref}>
       <AnimatedBackdrop tone="light" />
       <div className="absolute inset-x-0 top-0 h-px bg-black/[0.06] pointer-events-none" />
 
       <div className="relative z-10">
         {/* ==================== BRANDS SECTION ==================== */}
-        <div className="mb-20 md:mb-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-14 md:mb-18 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
@@ -250,7 +250,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
               >
                 {isExpanded ? (
                   <>
-                    <span>Show Curated Selection (4)</span>
+                    <span>Show Curated Selection (6)</span>
                     <span className="text-sm">↑</span>
                   </>
                 ) : (
@@ -290,7 +290,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
           )}
 
           {/* ==================== DZINR-INSPIRED STUDIO MANIFESTO BANNER ==================== */}
-          <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-20">
+          <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
               <span>●</span> COMPLETE CASE ARCHIVE
             </div>

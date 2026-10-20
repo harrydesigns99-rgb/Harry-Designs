@@ -1,45 +1,23 @@
-import { useState, useEffect } from 'react';
-import { sound } from '@/utils/audio';
+import { useEffect } from 'react';
 import { THEMES } from '@/constants/themes';
 import { ThemeContext } from './ThemeContextCore';
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setThemeState] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = localStorage.getItem('harry_designs_theme');
-        if (stored && THEMES.some((t) => t.id === stored)) {
-          return stored;
-        }
-      } catch {
-        // ignore
-      }
-    }
-    return 'editorial';
-  });
+  const theme = 'editorial';
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-theme', 'editorial');
       try {
-        localStorage.setItem('harry_designs_theme', theme);
+        localStorage.setItem('harry_designs_theme', 'editorial');
       } catch {
         // ignore
       }
     }
-  }, [theme]);
+  }, []);
 
-  const setTheme = (newTheme) => {
-    if (newTheme === theme) return;
-    sound.playSwitch();
-    setThemeState(newTheme);
-  };
-
-  const cycleTheme = () => {
-    const currentIndex = THEMES.findIndex((t) => t.id === theme);
-    const nextIndex = (currentIndex + 1) % THEMES.length;
-    setTheme(THEMES[nextIndex].id);
-  };
+  const setTheme = () => {};
+  const cycleTheme = () => {};
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, cycleTheme, themes: THEMES }}>

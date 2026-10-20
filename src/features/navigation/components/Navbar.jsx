@@ -6,7 +6,6 @@ import NavLinks from './NavLinks';
 import MobileMenu from './MobileMenu';
 import { slideInFromTop, scaleIn, hoverScale, TRANSITIONS, DELAYS } from '@/animations';
 import { sound } from '@/utils/audio';
-import StudioTelemetry from '@/components/StudioTelemetry';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,13 +18,8 @@ const Navbar = () => {
       transition={{ ...TRANSITIONS.medium, ease: [0.22, 1, 0.36, 1] }}
       className="fixed top-0 inset-x-0 z-50 pointer-events-none flex flex-col items-center"
     >
-      {/* Studio Telemetry Bar at top */}
-      <div className="w-full pointer-events-auto">
-        <StudioTelemetry />
-      </div>
-
       {/* Floating Apple Frosted Glass Pill Navbar */}
-      <div className="w-full max-w-5xl px-4 sm:px-6 pt-2.5 sm:pt-3 pointer-events-auto">
+      <div className="w-full max-w-5xl px-4 sm:px-6 pt-4 sm:pt-5 pointer-events-auto">
         <div className="apple-glass rounded-full px-4 sm:px-6 py-2 sm:py-2.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-black/[0.08] flex items-center justify-between">
           {/* Logo Mark */}
           <motion.a
