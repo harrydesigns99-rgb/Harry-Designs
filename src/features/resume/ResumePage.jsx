@@ -1,4 +1,6 @@
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
+import { useCMS } from '@/features/cms';
+import { DEFAULT_PROFILE } from '@/features/cms/cmsStore';
 
 const skills = [
   'Digital ad & social media creative',
@@ -19,6 +21,9 @@ const projects = [
 ];
 
 const ResumePage = ({ onNavigateHome }) => {
+  const cms = useCMS();
+  const profile = { ...DEFAULT_PROFILE, ...(cms?.profile || {}) };
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[var(--theme-bg)] text-[var(--theme-text)]">
       <AnimatedBackdrop tone="light" />
@@ -55,22 +60,34 @@ const ResumePage = ({ onNavigateHome }) => {
         <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 pb-16 border-b border-black/[0.08] items-center">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
             <img
-              src="/image/hariharan.jpg"
-              alt="Hariharan S"
+              src={profile.image || '/image/hariharan.jpg'}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/image/hariharan.jpg';
+              }}
+              alt={profile.name || 'Hariharan S'}
               className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover object-[center_18%] border border-black/[0.08] shadow-md flex-shrink-0"
             />
             <div>
               <span className="section-kicker mb-2">Resume / profile</span>
-              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.06em] leading-[0.9]">Hariharan S</h1>
-              <p className="mt-3 text-lg sm:text-xl text-[#1d1d1f]/65">Brand &amp; Packaging Designer <span className="text-crimson">•</span> Creative Direction</p>
+              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.06em] leading-[0.9]">
+                {profile.name}
+              </h1>
+              <p className="mt-3 text-lg sm:text-xl text-[#1d1d1f]/65">
+                {profile.role} <span className="text-crimson">•</span> Creative Direction
+              </p>
             </div>
           </div>
           <div className="lg:text-right text-sm leading-7 text-eerie/65 lg:pt-12">
-            <p className="font-medium text-eerie">6+ years of independent practice</p>
-            <p>Chennai, Tamil Nadu, India</p>
-            <a className="block hover:text-crimson transition-colors font-medium text-eerie" href="mailto:sivakumarhariharan007@gmail.com">sivakumarhariharan007@gmail.com</a>
-            <a className="block hover:text-crimson transition-colors" href="https://harrydesigns.in" target="_blank" rel="noreferrer">harrydesigns.in ↗</a>
-            <p>+91 86101 74188</p>
+            <p className="font-medium text-eerie">{profile.experience || '6+ years of independent practice'}</p>
+            <p>{profile.location || 'Chennai, Tamil Nadu, India'}</p>
+            <a className="block hover:text-crimson transition-colors font-medium text-eerie" href={`mailto:${profile.email || 'sivakumarhariharan007@gmail.com'}`}>
+              {profile.email || 'sivakumarhariharan007@gmail.com'}
+            </a>
+            <a className="block hover:text-crimson transition-colors" href="https://harrydesigns.in" target="_blank" rel="noreferrer">
+              harrydesigns.in ↗
+            </a>
+            <p>{profile.phone || '+91 86101 74188'}</p>
             <div className="mt-4">
               <a
                 href="/Hariharan_Design_Resume.pdf"

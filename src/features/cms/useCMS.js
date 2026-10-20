@@ -25,10 +25,12 @@ export function useCMS() {
     addBrand: cmsStore.addBrand.bind(cmsStore),
     removeBrand: cmsStore.removeBrand.bind(cmsStore),
     updateSettings: cmsStore.updateSettings.bind(cmsStore),
+    updateProfile: cmsStore.updateProfile.bind(cmsStore),
     exportBackupJSON: cmsStore.exportBackupJSON.bind(cmsStore),
     importBackupJSON: cmsStore.importBackupJSON.bind(cmsStore),
     generatePortfolioDataCode: cmsStore.generatePortfolioDataCode.bind(cmsStore),
     generateGalleryImagesCode: cmsStore.generateGalleryImagesCode.bind(cmsStore),
+    generateProfileDataCode: cmsStore.generateProfileDataCode.bind(cmsStore),
     resetToDefaults: cmsStore.resetToDefaults.bind(cmsStore),
   };
 }

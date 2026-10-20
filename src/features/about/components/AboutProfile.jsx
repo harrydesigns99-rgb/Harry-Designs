@@ -76,6 +76,10 @@ const AboutProfile = ({ isInView }) => {
               {/* Portrait Image Clean */}
               <img
                 src={profile.image || '/image/hariharan.jpg'}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/image/hariharan.jpg';
+                }}
                 alt={`${profile.name} - ${profile.role}`}
                 className="w-full h-full object-cover object-[center_18%] transition-transform duration-700 ease-out group-hover:scale-103"
               />

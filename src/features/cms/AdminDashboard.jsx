@@ -1,8 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useCMS } from './useCMS';
 import { DEFAULT_PROFILE } from './cmsStore';
 import AdminAuthGate from './AdminAuthGate';
 import ProjectEditorModal from './ProjectEditorModal';
+import { optimizeImageFile } from '@/utils/imageOptimizer';
 
 const PRESET_ARTBOARDS = [
   '/image/Image Gallery/Artboard 1.webp',
@@ -39,8 +40,16 @@ const AdminDashboard = ({ onNavigateHome }) => {
   // Profile inputs & state
   const profileFileRef = useRef(null);
   const [profileSavedToast, setProfileSavedToast] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const currentProfile = { ...DEFAULT_PROFILE, ...(cms.profile || {}) };
   const [profileForm, setProfileForm] = useState(currentProfile);
+
+  // Keep profile form in sync when cms.profile updates
+  useEffect(() => {
+    if (cms.profile) {
+      setProfileForm({ ...DEFAULT_PROFILE, ...cms.profile });
+    }
+  }, [cms.profile]);
 
   // Backup file ref
   const importFileRef = useRef(null);
@@ -64,10 +73,10 @@ const AdminDashboard = ({ onNavigateHome }) => {
   });
 
   const handleCopyCode = (type) => {
-    const code =
-      type === 'portfolio'
-        ? cms.generatePortfolioDataCode()
-        : cms.generateGalleryImagesCode();
+    let code = '';
+    if (type === 'portfolio') code = cms.generatePortfolioDataCode();
+    else if (type === 'gallery') code = cms.generateGalleryImagesCode();
+    else if (type === 'profile') code = cms.generateProfileDataCode();
     navigator.clipboard.writeText(code);
     setCopiedSection(type);
     setTimeout(() => setCopiedSection(null), 2500);
@@ -99,32 +108,45 @@ const AdminDashboard = ({ onNavigateHome }) => {
     reader.readAsText(file);
   };
 
-  const handleGalleryUpload = (e) => {
+  const handleGalleryUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      cms.addGalleryImage(event.target.result);
-    };
-    reader.readAsDataURL(file);
+    try {
+      const optimized = await optimizeImageFile(file, 1600, 1600, 0.85);
+      cms.addGalleryImage(optimized);
+    } catch {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        cms.addGalleryImage(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleProfileImageUpload = (e) => {
+  const handleProfileImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result;
-      if (dataUrl) {
-        setProfileForm((prev) => ({ ...prev, image: dataUrl }));
-        cms.updateProfile({ image: dataUrl });
+    try {
+      setIsUploadingPhoto(true);
+      const optimizedDataUrl = await optimizeImageFile(file, 1000, 1200, 0.88);
+      const updated = { ...profileForm, image: optimizedDataUrl };
+      setProfileForm(updated);
+      cms.updateProfile(updated);
+      setProfileSavedToast(true);
+      setTimeout(() => setProfileSavedToast(false), 2500);
+    } catch (err) {
+      console.error('[CMS] Failed to process profile image:', err);
+      alert('Could not process selected image. Please try another file.');
+    } finally {
+      setIsUploadingPhoto(false);
+      if (profileFileRef.current) {
+        profileFileRef.current.value = '';
       }
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleSaveProfile = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     cms.updateProfile(profileForm);
     setProfileSavedToast(true);
     setTimeout(() => setProfileSavedToast(false), 2500);
@@ -670,6 +692,10 @@ const AdminDashboard = ({ onNavigateHome }) => {
                     <img
                       src={profileForm.image || '/image/hariharan.jpg'}
                       alt={profileForm.name}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = '/image/hariharan.jpg';
+                      }}
                       className="w-full h-full object-cover object-[center_18%]"
                     />
                     <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex flex-col justify-end p-4 text-white">
@@ -693,10 +719,23 @@ const AdminDashboard = ({ onNavigateHome }) => {
                     />
                     <button
                       type="button"
+                      disabled={isUploadingPhoto}
                       onClick={() => profileFileRef.current?.click()}
-                      className="w-full py-2.5 px-4 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                      className={`w-full py-2.5 px-4 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm ${
+                        isUploadingPhoto ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
+                      }`}
                     >
-                      <span>📷</span> Upload New Photo
+                      {isUploadingPhoto ? (
+                        <>
+                          <span className="h-3 w-3 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                          <span>Optimizing &amp; Saving Photo...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>📷</span>
+                          <span>Upload New Photo</span>
+                        </>
+                      )}
                     </button>
 
                     <div>
@@ -903,6 +942,15 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   {copiedSection === 'gallery'
                     ? '✓ Copied galleryImages.js!'
                     : 'Copy galleryImages.js Code'}
+                </button>
+
+                <button
+                  onClick={() => handleCopyCode('profile')}
+                  className="px-6 py-3 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                >
+                  {copiedSection === 'profile'
+                    ? '✓ Copied Profile Code!'
+                    : 'Copy Profile Code'}
                 </button>
 
                 <button
