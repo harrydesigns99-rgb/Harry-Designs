@@ -75,3 +75,4 @@ export function optimizeImageFile(file, maxWidth = 1000, maxHeight = 1200, quali
     reader.readAsDataURL(file);
   });
 }
+

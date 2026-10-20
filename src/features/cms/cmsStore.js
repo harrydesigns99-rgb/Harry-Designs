@@ -67,7 +67,10 @@ function getInitialProjects() {
     return {
       ...defaultItem,
       ...item,
-      process: item.process || defaultItem.process,
+      process: {
+        ...(defaultItem.process || {}),
+        ...(item.process || {}),
+      },
       anatomy: item.anatomy || defaultItem.anatomy,
       systemSpecs: item.systemSpecs || defaultItem.systemSpecs,
       processBehindProcess: item.processBehindProcess || defaultItem.processBehindProcess,

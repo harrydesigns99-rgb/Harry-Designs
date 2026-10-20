@@ -78,6 +78,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
     isFeatured: project?.isFeatured !== false,
     hasBeforeAfter: project?.hasBeforeAfter || false,
     process: {
+      summary: project?.process?.summary || '',
       conceptImage: project?.process?.conceptImage || project?.beforeImage || '',
       conceptLabel: project?.process?.conceptLabel || project?.beforeLabel || 'Initial Concept Exploration',
       finalLabel: project?.process?.finalLabel || project?.afterLabel || 'Final Production System',
@@ -514,10 +515,32 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           )}
 
           {/* ========================================================= */}
-          {/* TAB 2: 5-STAGE MAKING PROCESS */}
+          {/* TAB 2: DESIGN PROCESS */}
           {/* ========================================================= */}
           {activeTab === 'making-process' && (
             <div className="space-y-6">
+              {/* Process Behind Design Summary Paragraph */}
+              <div className="p-4 bg-cloud-white border border-eerie/15 space-y-2">
+                <label className="block text-[10px] font-mono uppercase tracking-wider text-crimson font-bold">
+                  Process Behind the Design (Summary Paragraph)
+                </label>
+                <textarea
+                  rows="3"
+                  placeholder="Enter the concise narrative paragraph explaining the strategic process behind this design..."
+                  value={formData.process.summary || ''}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      process: { ...formData.process, summary: e.target.value },
+                    })
+                  }
+                  className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs outline-none focus:border-eerie resize-none"
+                />
+                <p className="text-[10px] font-mono text-eerie/50">
+                  This paragraph is displayed prominently in &ldquo;The Process Behind the Design&rdquo; section on the case study screen.
+                </p>
+              </div>
+
               {/* Early Concept / Exploration Image for Before-After Comparison */}
               <div className="p-4 bg-cloud-white border border-eerie/15 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">

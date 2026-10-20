@@ -186,8 +186,7 @@ const ProjectDetailModal = ({
                 className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-crimson font-bold hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
               >
                 <span>✎</span>
-                <span>02 The Making Process</span>
-                <span className="text-[9px] px-1 py-0.2 bg-crimson/10 rounded-xs text-crimson">5 PHASES</span>
+                <span>02 The Design Process</span>
               </button>
 
               <button
@@ -352,14 +351,16 @@ const ProjectDetailModal = ({
               </div>
             </section>
 
-            {/* -------------------- SECTION 02: THE MAKING PROCESS -------------------- */}
+            {/* -------------------- SECTION 02: THE DESIGN PROCESS -------------------- */}
             <section id="modal-process" className="pt-6 sm:pt-8 border-t border-eerie/15">
               <DesignProcessNarrative
                 process={item.process}
-                finalImage={item.image}
                 client={item.client}
                 title={item.title}
                 category={item.category}
+                description={item.description}
+                approach={item.approach}
+                brief={item.brief}
               />
             </section>
 

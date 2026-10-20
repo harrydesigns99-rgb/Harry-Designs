@@ -65,6 +65,7 @@ export const PORTFOLIO_ITEMS = [
       ],
     },
     process: {
+      summary: 'Beginning with an audit of tier-1 supermarket aisles, we identified widespread shelf clutter and visual fatigue across competing edible oil brands. The redesign established a modern heritage identity through bespoke botanical vector line art and a disciplined golden-ratio dieline architecture. We re-engineered the packaging with 60µ Metallized BoPP substrate, selective UV gloss curing, and supervised 8-color CI-Flexo press runs to achieve radiant shelf presence and an immediate +40% retail sales lift.',
       conceptImage: '/image/samples/2.webp',
       conceptLabel: 'Legacy 2023 Pouch & Label',
       finalLabel: 'Redesigned Modern Architecture (+40% Lift)',
@@ -140,6 +141,7 @@ export const PORTFOLIO_ITEMS = [
       standard: 'ISO 12647-2 Multi-Level Brass Debossing & Hot-Foil Stamping Standard',
     },
     process: {
+      summary: 'To elevate Sendra Gold above traditional regional jewellers, we audited heritage bullion and luxury packaging codes to develop a sacred geometry ingot monogram. The system was realized through custom rigid presentation boxes finished in G.F Smith Colorplan Ebony, multi-level hot foil stamping with Kurz Luxor 385 Gold, and architectural showroom typography designed to convey intergenerational institutional permanence.',
       conceptImage: '/image/samples/1.webp',
       conceptLabel: 'Initial Monogram & Seal Draft',
       finalLabel: 'Final Trichy Flagship Visual Identity',
@@ -217,6 +219,7 @@ export const PORTFOLIO_ITEMS = [
       ],
     },
     process: {
+      summary: 'Positioning Diyaa Pure within the conscious clean beauty segment required stripping away greenwashed tropes in favor of typographic serenity and handcrafted botanical flora. We engineered 100% plastic-free unit cartons on FSC-certified Tintoretto Gesso cotton board with blind debossing, pairing sustainable water-based barrier coatings with an unboxing experience that reinforced organic purity.',
       conceptImage: '/image/samples/4.webp',
       conceptLabel: 'Early Minimalist Skincare Draft',
       finalLabel: 'Final Botanical Glass & Box System',
@@ -292,6 +295,7 @@ export const PORTFOLIO_ITEMS = [
       standard: 'Government of India National Scientific Communication Accessibility Standard',
     },
     process: {
+      summary: 'Confronted with decentralized, inconsistent institutional collateral across national scientific laboratories, we unified CSIR’s visual identity through mathematical optical harmonization between Devanagari shirorekha letterforms and Latin cap-height grids. We established modular editorial templates, standardized technical symposium assets, and published a centralized vector asset portal ensuring rigorous typographic legibility across nationwide research publications.',
       conceptImage: '/image/samples/3.webp',
       conceptLabel: 'Initial Bilingual Grid Proposal',
       finalLabel: 'Standardized Institutional Visual System',
@@ -374,6 +378,7 @@ export const PORTFOLIO_ITEMS = [
       ],
     },
     process: {
+      summary: 'Addressing retail friction during peak morning counter rushes, we redesigned Thomas Bakers’ packaging system around rapid-assembly auto-lock crash-bottom boxes and twist-handle takeaway bags. Grounded in a classic European boulangerie aesthetic with custom artisanal crests, the collateral was produced on food-grade virgin unbleached kraft using non-toxic water-based inks across 12 distinct SKU formats.',
       conceptImage: '/image/samples/6.webp',
       conceptLabel: 'Legacy Pastry Box Packaging',
       finalLabel: 'Redesigned System (12+ SKUs)',
@@ -451,6 +456,7 @@ export const PORTFOLIO_ITEMS = [
       ],
     },
     process: {
+      summary: 'To stand out in high-velocity supermarket cooler doors, Mo Elixir’s ready-to-drink aluminum cans were architected around hyper-vibrant chromatic gradients and bold neo-grotesque typography. We engineered 360-degree cylindrical dielines calibrated for curved metal distortion, executing 6-color dry offset printing with tactile matte-satin protective curing for exceptional hand-feel and retail refrigeration resilience.',
       conceptImage: '/image/samples/5.webp',
       conceptLabel: 'Early Beverage Can Explorations',
       finalLabel: 'Hyper-Vibrant Sleek Can Launch',
@@ -528,6 +534,7 @@ export const PORTFOLIO_ITEMS = [
       ],
     },
     process: {
+      summary: 'Drawing inspiration from ancestral South Indian brass spice boxes (Anjarai Petti), we structured a warm earth-toned packaging architecture using traditional geometric kolam line work. We engineered custom stand-up doypack pouches featuring multi-layer aroma-barrier foil laminates, airtight reclosable zippers, and transparent product inspection windows calibrated for rotogravure production.',
       conceptImage: '/image/samples/7.webp',
       conceptLabel: 'Initial Spice Pouch Concept',
       finalLabel: 'Heritage Spice Doypack System',
@@ -603,6 +610,7 @@ export const PORTFOLIO_ITEMS = [
       standard: '100% Post-Consumer Recycled Hemp Stock with Non-Toxic Soy Inks',
     },
     process: {
+      summary: 'For this regenerative agro-living eco community, the identity was mapped directly from topological contour surveys and minimalist architectural seals. We developed a comprehensive environmental wayfinding system, on-site signage, and recycled seed-paper stationery printed with vegetable-based earth pigments to mirror the community’s permaculture ethos.',
       conceptImage: '/image/samples/8.webp',
       conceptLabel: 'Early Farmstay Logo Exploration',
       finalLabel: 'Complete Agro-Living Brand System',
@@ -678,6 +686,7 @@ export const PORTFOLIO_ITEMS = [
       standard: 'Sub-1s LCP, WCAG 2.1 AAA Accessibility, Zero-Layout Shift Architecture',
     },
     process: {
+      summary: 'Crafted for an international architectural studio, the digital experience was constructed around an asymmetric modernist blueprint rhythm and generous negative space. We implemented full-screen architectural project canvases, spec drawers, restrained micro-interactions, and a sub-second high-performance web architecture to let the physical spatial photography command complete focus.',
       conceptImage: '/image/samples/9.webp',
       conceptLabel: 'Initial Wireframes & Layout Draft',
       finalLabel: 'Architectural Editorial Web Experience',
@@ -753,6 +762,7 @@ export const PORTFOLIO_ITEMS = [
       standard: 'FSC-Certified Recycled Paperboard + Open-Access PDF Accessibility Standard',
     },
     process: {
+      summary: 'Tasked with translating complex environmental research data into compelling policy documents, we developed an asymmetrical 4-column editorial grid system for CSIR-NEERI. We formulated an ecological palette paired with clean data visualization architectures, producing parliamentary and public editions on 100% recycled FSC paper stock with vegetable inks.',
       conceptImage: '/image/samples/10.webp',
       conceptLabel: 'Initial Environmental Report Layout',
       finalLabel: 'Annual Scientific Publication System',
@@ -828,6 +838,7 @@ export const PORTFOLIO_ITEMS = [
       standard: '300 GSM Somerset Satin 100% Cotton Rag Screen-Printed Edition',
     },
     process: {
+      summary: 'Celebrating analog printmaking culture, Quill Studio’s identity and exhibition posters were composed with experimental woodtype, analog kinetic rhythm, and command of raw negative space. The limited-run posters were hand-pulled via 3-color silkscreen with metallic spot inks on 350gsm archival cotton rag, creating collectible tactile artifacts that completely sold out on opening night.',
       conceptImage: '/image/samples/11.webp',
       conceptLabel: 'Initial Woodtype Poster Sketch',
       finalLabel: 'Limited Silkscreen Exhibition Posters',
@@ -903,6 +914,7 @@ export const PORTFOLIO_ITEMS = [
       standard: 'Enterprise WCAG AAA Contrast & Sub-50ms Keyboard Event Latency Standard',
     },
     process: {
+      summary: 'To eliminate dispatch bottlenecks in enterprise high-volume fulfillment warehouses, we designed a keyboard-first, high-contrast WCAG AAA commerce platform. Built on an atomic design token system spanning 48 modular components, the interface drastically reduced order verification keystrokes and visual fatigue across dark and light warehouse floor lighting conditions.',
       conceptLabel: 'Early Wireframe Workflow Matrix',
       finalLabel: 'Enterprise Logistics Design System',
       stages: [

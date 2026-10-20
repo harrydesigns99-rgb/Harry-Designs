@@ -241,10 +241,7 @@ const CaseStudyScreen = ({
                     : 'text-[#86868b] hover:text-crimson'
                 }`}
               >
-                <span>Making Process</span>
-                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-crimson/10 text-crimson font-mono font-semibold">
-                  5 PHASES
-                </span>
+                <span>Design Process</span>
               </button>
               <button
                 type="button"
@@ -557,14 +554,16 @@ const CaseStudyScreen = ({
           </div>
         </section>
 
-        {/* -------------------- SECTION 02: THE MAKING PROCESS (5 PHASES) -------------------- */}
-        <section id="screen-process" className="scroll-mt-20 pt-10 sm:pt-12 border-t border-black/[0.08]">
+        {/* -------------------- SECTION 02: THE DESIGN PROCESS -------------------- */}
+        <section id="screen-process" className="scroll-mt-20 pt-8 sm:pt-10 border-t border-black/[0.08]">
           <DesignProcessNarrative
             process={currentProject.process}
-            finalImage={currentProject.image}
             client={currentProject.client}
             title={currentProject.title}
             category={currentProject.category}
+            description={currentProject.description}
+            approach={currentProject.approach}
+            brief={currentProject.brief}
           />
         </section>
 
