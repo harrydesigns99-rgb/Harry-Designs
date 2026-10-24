@@ -19,19 +19,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const [filter, setFilter] = useState('all');
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGridProject, setSelectedGridProject] = useState(null);
-  const [layoutMode, setLayoutMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem('harry_portfolio_layout');
-        if (saved && ['3d', 'grid', 'index'].includes(saved)) {
-          return saved;
-        }
-      } catch {
-        // ignore
-      }
-    }
-    return '3d';
-  });
+  const [layoutMode, setLayoutMode] = useState('3d');
 
   const cms = useCMS();
   const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
@@ -88,27 +76,90 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
         </div>
 
         {/* ==================== MAIN PORTFOLIO SHOWCASE ==================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+        {/* Section Header & Layout Switcher */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-6 border-b border-black/[0.06]">
             <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b]">
-                <span className="h-1.5 w-1.5 rounded-full bg-crimson" />
-                <span>SELECTED WORK // ARCHIVE</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
+                <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
+                <span>SELECTED WORK // 3D PARALLAX SHOWCASE</span>
               </div>
-              <h3 className="font-display text-4xl md:text-6xl font-medium tracking-tight text-[#1d1d1f]">
-                Different formats. <span className="text-gradient">One point of view.</span>
+              <h3 className="font-display text-4xl sm:text-5xl md:text-7xl font-medium tracking-tight text-[#1d1d1f] leading-[0.95]">
+                Work that <span className="text-crimson italic font-serif font-light">delivered.</span>
               </h3>
             </div>
-            <p className="max-w-xs text-sm sm:text-base text-[#86868b] md:text-right leading-relaxed">
-              Identity systems, packaging architecture, and visual worlds designed for commercial impact.
-            </p>
-          </div>
 
-          {/* Apple Segmented Controls Bar: Filter Pills (Left) + 3-Way Layout Switcher (Right) */}
-          <div className="flex flex-wrap items-center justify-between gap-4 py-3 mb-10 border-y border-black/[0.06]">
-            {/* Category Segmented Pills */}
-            <div className="inline-flex items-center gap-1 p-1 rounded-full bg-black/[0.04] border border-black/[0.05] overflow-x-auto no-scrollbar">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <p className="max-w-xs text-xs sm:text-sm text-[#86868b] leading-relaxed">
+                Identity systems, packaging architecture, and visual worlds designed for commercial impact.
+              </p>
+
+              {/* Layout Mode Pill Switcher */}
+              <div className="inline-flex items-center p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playSwitch();
+                    setLayoutMode('3d');
+                  }}
+                  className={`px-3.5 py-1.5 rounded-full font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                    layoutMode === '3d'
+                      ? 'bg-crimson text-white shadow-xs font-semibold'
+                      : 'text-[#86868b] hover:text-[#1d1d1f]'
+                  }`}
+                >
+                  <span>◈</span>
+                  <span>3D Showcase</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playSwitch();
+                    setLayoutMode('grid');
+                  }}
+                  className={`px-3.5 py-1.5 rounded-full font-medium transition-all cursor-pointer ${
+                    layoutMode === 'grid'
+                      ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
+                      : 'text-[#86868b] hover:text-[#1d1d1f]'
+                  }`}
+                >
+                  ⊞ 2D Grid
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playSwitch();
+                    setLayoutMode('index');
+                  }}
+                  className={`px-3.5 py-1.5 rounded-full font-medium transition-all cursor-pointer ${
+                    layoutMode === 'index'
+                      ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
+                      : 'text-[#86868b] hover:text-[#1d1d1f]'
+                  }`}
+                >
+                  ☰ Index
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 1. PRIMARY: FULL-WIDTH 3D PARALLAX SHOWCASE (ADWANTS.IN STYLE) */}
+        {layoutMode === '3d' ? (
+          <div className="w-full overflow-hidden">
+            <Parallax3DShowcase
+              projects={projects}
+              onSelectProject={(item) =>
+                onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
+              }
+              onNavigateWork={onNavigateWork}
+            />
+          </div>
+        ) : (
+          /* 2. SECONDARY: FLAT 2D GRID OR INDEX LIST WITH FILTER PILLS */
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-1 p-1 mb-8 rounded-full bg-black/[0.04] border border-black/[0.05] overflow-x-auto no-scrollbar w-fit">
               {FILTER_BUTTONS.map((btn) => {
                 const count =
                   btn.value === 'all'
@@ -143,163 +194,64 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
               })}
             </div>
 
-            {/* Apple Layout Switcher: 3D Parallax Showcase (◈), Grid (⊞), Index (☰) */}
-            <div className="inline-flex items-center p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-xs ml-auto sm:ml-0">
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playSwitch();
-                  setLayoutMode('3d');
-                  try {
-                    localStorage.setItem('harry_portfolio_layout', '3d');
-                  } catch {
-                    // ignore
-                  }
-                }}
-                title="Interactive 3D Parallax Perspective Showcase"
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-                  layoutMode === '3d'
-                    ? 'bg-crimson text-white shadow-xs font-semibold'
-                    : 'text-[#86868b] hover:text-[#1d1d1f]'
-                }`}
-              >
-                <span>◈</span>
-                <span>3D Showcase</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playSwitch();
-                  setLayoutMode('grid');
-                  try {
-                    localStorage.setItem('harry_portfolio_layout', 'grid');
-                  } catch {
-                    // ignore
-                  }
-                }}
-                title="Curated 3-column grid view"
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
-                  layoutMode === 'grid'
-                    ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
-                    : 'text-[#86868b] hover:text-[#1d1d1f]'
-                }`}
-              >
-                ⊞ Grid
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playSwitch();
-                  setLayoutMode('index');
-                  try {
-                    localStorage.setItem('harry_portfolio_layout', 'index');
-                  } catch {
-                    // ignore
-                  }
-                }}
-                title="Index list view"
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
-                  layoutMode === 'index'
-                    ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
-                    : 'text-[#86868b] hover:text-[#1d1d1f]'
-                }`}
-              >
-                ☰ Index
-              </button>
-            </div>
+            {displayedProjects.length === 0 ? (
+              <div className="py-20 text-center apple-card p-10 mb-20">
+                <p className="text-sm font-mono text-[#86868b]">No projects found in this category.</p>
+                <button
+                  type="button"
+                  onClick={() => setFilter('all')}
+                  className="mt-3 px-4 py-1.5 rounded-full bg-crimson text-white text-xs font-medium cursor-pointer"
+                >
+                  Reset to All Work
+                </button>
+              </div>
+            ) : layoutMode === 'index' ? (
+              <div className="mb-12">
+                <PortfolioListView
+                  items={displayedProjects}
+                  onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
+                />
+              </div>
+            ) : (
+              <div className="mb-12">
+                <PortfolioGrid
+                  items={displayedProjects}
+                  onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
+                  density="grid"
+                />
+              </div>
+            )}
+
+            {/* Load More Button for 2D Grid */}
+            {filter === 'all' && filteredProjects.length > INITIAL_PROJECTS_COUNT && (
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 mb-12">
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playPop();
+                    setIsExpanded(!isExpanded);
+                  }}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-crimson hover:bg-crimson-dark text-white text-xs sm:text-sm font-medium tracking-wide uppercase transition-all shadow-md hover:shadow-lg cursor-pointer"
+                >
+                  {isExpanded ? (
+                    <>
+                      <span>Show Curated Selection (6)</span>
+                      <span className="text-sm">↑</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Load More Selected Projects ({filteredProjects.length - INITIAL_PROJECTS_COUNT} More)</span>
+                      <span className="text-sm">↓</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
+        )}
 
-          {/* ==================== WORK DISPLAY: 3D SHOWCASE / GRID / INDEX ==================== */}
-          {layoutMode === '3d' ? (
-            <div className="mb-8">
-              <Parallax3DShowcase
-                projects={filteredProjects}
-                onSelectProject={(item) =>
-                  onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
-                }
-                onNavigateWork={onNavigateWork}
-              />
-            </div>
-          ) : displayedProjects.length === 0 ? (
-            <div className="py-20 text-center apple-card p-10 mb-20">
-              <p className="text-sm font-mono text-[#86868b]">No projects found in this category.</p>
-              <button
-                type="button"
-                onClick={() => setFilter('all')}
-                className="mt-3 px-4 py-1.5 rounded-full bg-crimson text-white text-xs font-medium cursor-pointer"
-              >
-                Reset to All Work
-              </button>
-            </div>
-          ) : layoutMode === 'index' ? (
-            <div className="mb-12">
-              <PortfolioListView
-                items={displayedProjects}
-                onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
-              />
-            </div>
-          ) : (
-            <div className="mb-12">
-              <PortfolioGrid
-                items={displayedProjects}
-                onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
-                density="grid"
-              />
-            </div>
-          )}
-
-          {/* ==================== LOAD MORE / FULL ARCHIVE CONTROLS ==================== */}
-          {layoutMode !== '3d' && filter === 'all' && filteredProjects.length > INITIAL_PROJECTS_COUNT && (
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 mb-12">
-              {/* Load More Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playPop();
-                  setIsExpanded(!isExpanded);
-                }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-crimson hover:bg-crimson-dark text-white text-xs sm:text-sm font-medium tracking-wide uppercase transition-all shadow-md hover:shadow-lg cursor-pointer"
-              >
-                {isExpanded ? (
-                  <>
-                    <span>Show Curated Selection (6)</span>
-                    <span className="text-sm">↑</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Load More Selected Projects ({filteredProjects.length - INITIAL_PROJECTS_COUNT} More)</span>
-                    <span className="text-sm">↓</span>
-                  </>
-                )}
-              </button>
-
-              {/* View Full Archive in Dedicated Page */}
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playClick();
-                  onNavigateWork?.();
-                }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] text-xs sm:text-sm font-medium tracking-wide uppercase border border-black/[0.06] transition-all cursor-pointer"
-              >
-                <span>View Full Archive Screen</span>
-                <span className="text-sm">↗</span>
-              </button>
-
-              {/* Open in New Tab */}
-              <a
-                href="/work"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => sound.playPop()}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] text-xs sm:text-sm font-medium tracking-wide uppercase border border-black/[0.06] transition-all cursor-pointer"
-                title="Open full portfolio archive in a new browser tab"
-              >
-                <span>Open in New Tab</span>
-                <span className="text-sm">⧉</span>
-              </a>
-            </div>
-          )}
+        {/* ==================== COMMON ARCHIVE & MANIFESTO FOOTER ==================== */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
 
           {/* ==================== DZINR-INSPIRED STUDIO MANIFESTO BANNER ==================== */}
           <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-4">
