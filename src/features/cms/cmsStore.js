@@ -2,13 +2,23 @@ import { PORTFOLIO_ITEMS, BRANDS } from '@/features/portfolio/data/portfolioData
 import { GALLERY_IMAGES } from '@/features/parallax-gallery/data/galleryImages';
 
 const STORAGE_KEYS = {
-  PROJECTS: 'harry_designs_cms_projects_v1',
+  PROJECTS: 'harry_designs_cms_projects_v2',
   GALLERY: 'harry_designs_cms_gallery_v1',
   BRANDS: 'harry_designs_cms_brands_v1',
   SETTINGS: 'harry_designs_cms_settings_v1',
   AUTH: 'harry_designs_cms_auth_v1',
   PROFILE: 'harry_designs_cms_profile_v1',
 };
+
+// Clean legacy corrupted storage caches on init
+if (typeof window !== 'undefined') {
+  try {
+    localStorage.removeItem('harry_designs_cms_projects_v1');
+    localStorage.removeItem('harry_portfolio_layout');
+  } catch {
+    // ignore
+  }
+}
 
 export const DEFAULT_PROFILE = {
   name: 'Hariharan S',
@@ -58,9 +68,30 @@ function safeWrite(key, value) {
 
 function getInitialProjects() {
   const stored = safeRead(STORAGE_KEYS.PROJECTS, null);
-  if (!stored || !Array.isArray(stored)) {
+  if (!stored || !Array.isArray(stored) || stored.length === 0) {
     return PORTFOLIO_ITEMS;
   }
+
+  // Validate integrity: ensure no cross-contaminated titles or corrupt project mappings
+  const isCorrupted = stored.some((item) => {
+    const defaultItem = PORTFOLIO_ITEMS.find((p) => p.id === item.id);
+    if (!defaultItem) return false;
+    // Check if client doesn't match default client or if title is cross-pollinated
+    if (defaultItem.id === 1 && (item.client !== 'Gokul Oils' || item.title !== 'Packaging & Label Architecture')) {
+      return true;
+    }
+    if (defaultItem.id === 2 && (item.client !== 'Sendra Gold' || item.title !== 'Luxury Gold & Bullion Identity')) {
+      return true;
+    }
+    return false;
+  });
+
+  if (isCorrupted) {
+    console.warn('[CMS] Corrupted projects detected in storage. Resetting to verified PORTFOLIO_ITEMS.');
+    safeWrite(STORAGE_KEYS.PROJECTS, PORTFOLIO_ITEMS);
+    return PORTFOLIO_ITEMS;
+  }
+
   return stored.map((item) => {
     const defaultItem = PORTFOLIO_ITEMS.find((p) => p.id === item.id);
     if (!defaultItem) return item;
@@ -73,7 +104,6 @@ function getInitialProjects() {
       },
       anatomy: item.anatomy || defaultItem.anatomy,
       systemSpecs: item.systemSpecs || defaultItem.systemSpecs,
-      processBehindProcess: item.processBehindProcess || defaultItem.processBehindProcess,
     };
   });
 }

@@ -5,6 +5,8 @@ import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 
 /**
  * ShowcaseCard component representing an individual project in 3D parallax space
+ * Optimized with 16:10 aspect ratio and responsive scaling to ensure 2 rows
+ * fit entirely inside the viewport without overlapping the floating navbar or bottom pill.
  */
 const ShowcaseCard = memo(({ project, onSelect }) => {
   return (
@@ -13,7 +15,7 @@ const ShowcaseCard = memo(({ project, onSelect }) => {
         sound.playClick();
         onSelect?.(project);
       }}
-      className="group relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden bg-[#16161a] border border-white/10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.65)] cursor-pointer transform-gpu transition-all duration-500 hover:shadow-[0_28px_70px_-12px_rgba(186,32,38,0.45)] hover:border-crimson/50 hover:-translate-y-2 select-none"
+      className="group relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden bg-[#16161a] border border-white/10 shadow-[0_16px_45px_-15px_rgba(0,0,0,0.65)] cursor-pointer transform-gpu transition-all duration-500 hover:shadow-[0_24px_60px_-10px_rgba(186,32,38,0.45)] hover:border-crimson/50 hover:-translate-y-1.5 select-none"
     >
       {/* High-Resolution Project Artwork */}
       <img
@@ -24,10 +26,10 @@ const ShowcaseCard = memo(({ project, onSelect }) => {
       />
 
       {/* Dark Cinematic Vignette Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 opacity-75 group-hover:opacity-95 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15 opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
 
       {/* Top Floating Badges */}
-      <div className="absolute top-2.5 sm:top-3.5 inset-x-2.5 sm:inset-x-3.5 flex items-center justify-between pointer-events-none">
+      <div className="absolute top-2.5 sm:top-3 inset-x-2.5 sm:inset-x-3 flex items-center justify-between pointer-events-none z-10">
         <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider font-semibold bg-black/60 backdrop-blur-md text-white border border-white/15 shadow-sm">
           {project.category}
         </span>
@@ -39,19 +41,19 @@ const ShowcaseCard = memo(({ project, onSelect }) => {
       </div>
 
       {/* Bottom Content Information Overlay */}
-      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-5 md:p-6 text-white flex flex-col justify-end">
-        <span className="text-[9px] sm:text-[11px] font-mono uppercase tracking-wider text-crimson font-semibold">
+      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 md:p-5 text-white flex flex-col justify-end z-10">
+        <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-crimson font-semibold">
           {project.client}
         </span>
-        <h4 className="font-display text-sm sm:text-lg md:text-xl lg:text-2xl font-medium tracking-tight text-white group-hover:text-white transition-colors mt-0.5 line-clamp-1">
+        <h4 className="font-display text-xs sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-white group-hover:text-white transition-colors mt-0.5 line-clamp-1">
           {project.title}
         </h4>
-        <p className="text-[11px] sm:text-xs text-white/70 line-clamp-1 mt-1 font-normal hidden sm:block">
+        <p className="text-[10px] sm:text-xs text-white/70 line-clamp-1 mt-0.5 font-normal hidden sm:block">
           {project.description || project.approach}
         </p>
 
         {/* Action Link Revealed on Hover */}
-        <div className="mt-2 sm:mt-3 flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-mono text-crimson font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="mt-1.5 sm:mt-2 flex items-center gap-1.5 text-[10px] sm:text-xs font-mono text-crimson font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <span>Explore Case Study</span>
           <span className="group-hover:translate-x-1.5 transition-transform">→</span>
         </div>
@@ -68,6 +70,7 @@ ShowcaseCard.displayName = 'ShowcaseCard';
  * - Oblique 3D perspective scroll runway that stays pinned on the screen.
  * - Parallax counter-glide across 3 columns.
  * - Smoothly unwinds and settles into a crystal-clear 2D grid view of all 6 projects from 65% to 100% of runway.
+ * - Scaled and padded so 2 rows sit completely clear of the floating navbar and screen borders.
  */
 const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
   const containerRef = useRef(null);
@@ -91,21 +94,21 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
   const rotateX = useTransform(
     scrollYProgress,
     [0, 0.65, 1],
-    [isMobile ? 16 : 42, 0, 0]
+    [isMobile ? 16 : 40, 0, 0]
   );
   const rotateZ = useTransform(
     scrollYProgress,
     [0, 0.65, 1],
-    [isMobile ? -4 : -14, 0, 0]
+    [isMobile ? -4 : -12, 0, 0]
   );
 
   // 2. Perspective Scale:
-  // Starts dramatically zoomed in (1.85 desktop / 1.35 mobile), scales down to fit all 6 cards
-  // into the viewport (0.78 desktop / 0.92 mobile) at 0.65 and stays locked flat until 1.0
+  // Starts dramatically zoomed in (1.65 desktop / 1.25 mobile), scales down to fit all 6 cards
+  // perfectly in the safe viewport area (0.70 desktop / 0.90 mobile) at 0.65 and stays locked flat until 1.0
   const scale = useTransform(
     scrollYProgress,
     [0, 0.65, 1],
-    [isMobile ? 1.35 : 1.85, isMobile ? 0.92 : 0.78, isMobile ? 0.92 : 0.78]
+    [isMobile ? 1.25 : 1.65, isMobile ? 0.90 : 0.70, isMobile ? 0.90 : 0.70]
   );
 
   // 3. Subtle vertical center adjustment
@@ -128,22 +131,22 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
   const col1Y = useTransform(
     scrollYProgress,
     [0, 0.65, 1],
-    [isMobile ? 40 : 120, 0, 0]
+    [isMobile ? 35 : 100, 0, 0]
   );
   const col2Y = useTransform(
     scrollYProgress,
     [0, 0.65, 1],
-    [isMobile ? -40 : -140, 0, 0]
+    [isMobile ? -35 : -120, 0, 0]
   );
   const col3Y = useTransform(
     scrollYProgress,
     [0, 0.65, 1],
-    [isMobile ? 60 : 180, 0, 0]
+    [isMobile ? 50 : 150, 0, 0]
   );
 
   // 6. Settled 2D View Pill Indicator (fades in when 2D view is reached)
   const settledPillOpacity = useTransform(scrollYProgress, [0, 0.6, 0.68, 1], [0, 0, 1, 1]);
-  const settledPillY = useTransform(scrollYProgress, [0, 0.6, 0.68, 1], [14, 14, 0, 0]);
+  const settledPillY = useTransform(scrollYProgress, [0, 0.6, 0.68, 1], [12, 12, 0, 0]);
 
   // Take exactly 6 projects for the permanent curated showcase (2 rows of 3 columns)
   const items = useMemo(() => {
@@ -167,14 +170,15 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
         className={`${isMobile ? 'h-[190vh]' : 'h-[280vh] md:h-[300vh]'} relative`}
       >
         {/* Sticky 3D Viewport pinned to screen during scroll runway */}
+        {/* Safe padding pt-16 sm:pt-20 pb-14 sm:pb-16 guarantees clear separation from Navbar and bottom */}
         <div
           className={`sticky top-0 ${
             isMobile ? 'h-[100dvh]' : 'h-screen'
-          } w-full overflow-hidden flex flex-col items-center justify-center`}
+          } w-full overflow-hidden flex flex-col items-center justify-center pt-16 sm:pt-20 pb-14 sm:pb-16 px-2 sm:px-4`}
           style={{ perspective: '2000px' }}
         >
           {/* Subtle Ambient Radial Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,37,69,0.07)_0%,transparent_65%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,37,69,0.06)_0%,transparent_65%)] pointer-events-none" />
 
           {/* 3D Tilted Plane containing 3 Parallax Columns (settles into flat 2D grid) */}
           <motion.div
@@ -186,39 +190,39 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
               opacity,
               transformStyle: 'preserve-3d',
             }}
-            className={`flex gap-3 sm:gap-6 md:gap-8 ${
-              isMobile ? 'w-[96vw]' : 'w-[125vw] md:w-[120vw]'
-            } max-w-[2000px] mx-auto px-2 sm:px-4 transform-gpu`}
+            className={`flex gap-3 sm:gap-4 md:gap-5 ${
+              isMobile ? 'w-[96vw]' : 'w-[115vw] md:w-[108vw]'
+            } max-w-[1550px] mx-auto px-2 sm:px-4 transform-gpu`}
           >
             {/* Column 1 */}
-            <motion.div style={{ y: col1Y }} className="flex flex-col gap-3 sm:gap-6 md:gap-8 w-1/3">
+            <motion.div style={{ y: col1Y }} className="flex flex-col gap-3 sm:gap-4 md:gap-5 w-1/3">
               {col1.map((p) => (
                 <ShowcaseCard key={`col1-${p.id}`} project={p} onSelect={onSelectProject} />
               ))}
             </motion.div>
 
             {/* Column 2 (Counter-direction parallax glide) */}
-            <motion.div style={{ y: col2Y }} className="flex flex-col gap-3 sm:gap-6 md:gap-8 w-1/3">
+            <motion.div style={{ y: col2Y }} className="flex flex-col gap-3 sm:gap-4 md:gap-5 w-1/3">
               {col2.map((p) => (
                 <ShowcaseCard key={`col2-${p.id}`} project={p} onSelect={onSelectProject} />
               ))}
             </motion.div>
 
             {/* Column 3 */}
-            <motion.div style={{ y: col3Y }} className="flex flex-col gap-3 sm:gap-6 md:gap-8 w-1/3">
+            <motion.div style={{ y: col3Y }} className="flex flex-col gap-3 sm:gap-4 md:gap-5 w-1/3">
               {col3.map((p) => (
                 <ShowcaseCard key={`col3-${p.id}`} project={p} onSelect={onSelectProject} />
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Floating Pill: Fades in when 2D view is reached */}
+          {/* Floating Pill: Fades in when 2D view is reached with clear breathing room below cards */}
           <motion.div
             style={{ opacity: settledPillOpacity, y: settledPillY }}
-            className="absolute bottom-6 sm:bottom-8 inset-x-0 flex justify-center pointer-events-none z-30 px-4"
+            className="absolute bottom-4 sm:bottom-6 inset-x-0 flex justify-center pointer-events-none z-30 px-4"
           >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/15 text-white shadow-2xl text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-crimson animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md border border-white/15 text-white shadow-2xl text-[10px] sm:text-xs font-mono">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-crimson animate-pulse" />
               <span className="font-semibold text-white/95">6 FEATURED CASE STUDIES // 2D VIEW</span>
               <span className="text-white/30 hidden sm:inline">|</span>
               <span className="text-white/70 hidden sm:inline">CLICK ANY TO EXPLORE</span>
