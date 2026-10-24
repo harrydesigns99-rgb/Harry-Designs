@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, memo } from 'react';
+import { useRef, useState, useEffect, useMemo, memo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { sound } from '@/utils/audio';
 import { PORTFOLIO_ITEMS } from '../data/portfolioData';
@@ -13,45 +13,45 @@ const ShowcaseCard = memo(({ project, onSelect }) => {
         sound.playClick();
         onSelect?.(project);
       }}
-      className="group relative w-full aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden bg-[#16161a] border border-white/10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.7)] cursor-pointer transform-gpu transition-all duration-500 hover:shadow-[0_28px_70px_-12px_rgba(186,32,38,0.45)] hover:border-crimson/40 hover:-translate-y-2"
+      className="group relative w-full aspect-[4/3] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden bg-[#16161a] border border-white/10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.65)] cursor-pointer transform-gpu transition-all duration-500 hover:shadow-[0_28px_70px_-12px_rgba(186,32,38,0.45)] hover:border-crimson/50 hover:-translate-y-2 select-none"
     >
       {/* High-Resolution Project Artwork */}
       <img
         src={project.image}
         alt={project.title}
         loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
       />
 
       {/* Dark Cinematic Vignette Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 opacity-75 group-hover:opacity-95 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 opacity-75 group-hover:opacity-95 transition-opacity duration-500" />
 
       {/* Top Floating Badges */}
-      <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between pointer-events-none">
-        <span className="px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-black/60 backdrop-blur-md text-white border border-white/15 shadow-sm">
+      <div className="absolute top-2.5 sm:top-3.5 inset-x-2.5 sm:inset-x-3.5 flex items-center justify-between pointer-events-none">
+        <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider font-semibold bg-black/60 backdrop-blur-md text-white border border-white/15 shadow-sm">
           {project.category}
         </span>
         {project.metric && (
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-crimson backdrop-blur-md text-white border border-white/20 shadow-sm">
+          <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-mono font-bold bg-crimson backdrop-blur-md text-white border border-white/20 shadow-sm">
             {project.metric}
           </span>
         )}
       </div>
 
       {/* Bottom Content Information Overlay */}
-      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 text-white flex flex-col justify-end">
-        <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-crimson font-semibold">
+      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-5 md:p-6 text-white flex flex-col justify-end">
+        <span className="text-[9px] sm:text-[11px] font-mono uppercase tracking-wider text-crimson font-semibold">
           {project.client}
         </span>
-        <h4 className="font-display text-base sm:text-xl md:text-2xl font-medium tracking-tight text-white group-hover:text-white transition-colors mt-0.5">
+        <h4 className="font-display text-sm sm:text-lg md:text-xl lg:text-2xl font-medium tracking-tight text-white group-hover:text-white transition-colors mt-0.5 line-clamp-1">
           {project.title}
         </h4>
-        <p className="text-xs text-white/70 line-clamp-1 mt-1 font-normal">
+        <p className="text-[11px] sm:text-xs text-white/70 line-clamp-1 mt-1 font-normal hidden sm:block">
           {project.description || project.approach}
         </p>
 
         {/* Action Link Revealed on Hover */}
-        <div className="mt-3 flex items-center gap-2 text-xs font-mono text-crimson font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="mt-2 sm:mt-3 flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-mono text-crimson font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <span>Explore Case Study</span>
           <span className="group-hover:translate-x-1.5 transition-transform">→</span>
         </div>
@@ -64,11 +64,12 @@ ShowcaseCard.displayName = 'ShowcaseCard';
 
 /**
  * Parallax3DShowcase Component
- * Recreates the adwants.in 3D perspective scroll effect:
- * 3 vertical columns tilted at an oblique angle inside a 2000px perspective field
- * that smoothly unroll and flatten as the visitor scrolls through the runway.
+ * Permanent 3D Parallax Showcase modeled after adwants.in:
+ * - Oblique 3D perspective scroll runway that stays pinned on the screen.
+ * - Parallax counter-glide across 3 columns.
+ * - Smoothly unwinds and settles into a crystal-clear 2D grid view of all 6 projects from 65% to 100% of runway.
  */
-const Parallax3DShowcase = ({ projects = [], onSelectProject, onNavigateWork }) => {
+const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
   const containerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -85,45 +86,97 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject, onNavigateWork }) 
     offset: ['start start', 'end end'],
   });
 
-  // Exact adwants.in 3D Perspective Angles & Zoom Scale:
-  // Starts tilted in 3D space, smoothly flattens out into straight frontal view
-  const rotateX = useTransform(scrollYProgress, [0, 1], [isMobile ? 15 : 45, 0]);
-  const rotateZ = useTransform(scrollYProgress, [0, 1], [isMobile ? -4 : -15, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [isMobile ? 1.45 : 1.95, isMobile ? 1 : 0.65]);
-  const translateY = useTransform(scrollYProgress, [0, 1], ['2%', '0%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.85, 1, 1, 1]);
+  // 1. Perspective Rotations:
+  // Starts in 3D tilted space, unwinds to 0deg by 0.65 progress, and stays perfectly flat in 2D view from 0.65 to 1.0
+  const rotateX = useTransform(
+    scrollYProgress,
+    [0, 0.65, 1],
+    [isMobile ? 16 : 42, 0, 0]
+  );
+  const rotateZ = useTransform(
+    scrollYProgress,
+    [0, 0.65, 1],
+    [isMobile ? -4 : -14, 0, 0]
+  );
 
-  // Parallax Column Shifts: Column 2 glides in reverse direction against columns 1 and 3
-  const col1Y = useTransform(scrollYProgress, [0, 1], [isMobile ? 40 : 100, 0]);
-  const col2Y = useTransform(scrollYProgress, [0, 1], [isMobile ? -40 : -100, 0]);
-  const col3Y = useTransform(scrollYProgress, [0, 1], [isMobile ? 80 : 200, 0]);
+  // 2. Perspective Scale:
+  // Starts dramatically zoomed in (1.85 desktop / 1.35 mobile), scales down to fit all 6 cards
+  // into the viewport (0.78 desktop / 0.92 mobile) at 0.65 and stays locked flat until 1.0
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.65, 1],
+    [isMobile ? 1.35 : 1.85, isMobile ? 0.92 : 0.78, isMobile ? 0.92 : 0.78]
+  );
 
-  // Use projects or fallback to all 12 PORTFOLIO_ITEMS
-  const items = projects && projects.length > 0 ? projects : PORTFOLIO_ITEMS;
+  // 3. Subtle vertical center adjustment
+  const translateY = useTransform(
+    scrollYProgress,
+    [0, 0.65, 1],
+    ['2%', '0%', '0%']
+  );
 
-  // Distribute projects evenly into 3 columns
-  const col1 = items.filter((_, idx) => idx % 3 === 0);
-  const col2 = items.filter((_, idx) => idx % 3 === 1);
-  const col3 = items.filter((_, idx) => idx % 3 === 2);
+  // 4. Subtle fade in
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.08, 0.92, 1],
+    [0.75, 1, 1, 1]
+  );
+
+  // 5. Parallax Column Shifts:
+  // Column 1 and 3 slide down to 0, Column 2 glides up to 0 (counter-direction).
+  // All reach 0 at progress 0.65, perfectly locking the 2 rows of 3 columns into a flat 2D grid.
+  const col1Y = useTransform(
+    scrollYProgress,
+    [0, 0.65, 1],
+    [isMobile ? 40 : 120, 0, 0]
+  );
+  const col2Y = useTransform(
+    scrollYProgress,
+    [0, 0.65, 1],
+    [isMobile ? -40 : -140, 0, 0]
+  );
+  const col3Y = useTransform(
+    scrollYProgress,
+    [0, 0.65, 1],
+    [isMobile ? 60 : 180, 0, 0]
+  );
+
+  // 6. Settled 2D View Pill Indicator (fades in when 2D view is reached)
+  const settledPillOpacity = useTransform(scrollYProgress, [0, 0.6, 0.68, 1], [0, 0, 1, 1]);
+  const settledPillY = useTransform(scrollYProgress, [0, 0.6, 0.68, 1], [14, 14, 0, 0]);
+
+  // Take exactly 6 projects for the permanent curated showcase (2 rows of 3 columns)
+  const items = useMemo(() => {
+    const list = projects && projects.length > 0 ? projects : PORTFOLIO_ITEMS;
+    return list.slice(0, 6);
+  }, [projects]);
+
+  // Distribute into 3 columns so Row 1 is items[0..2] and Row 2 is items[3..5]:
+  // Column 1: [items[0], items[3]]
+  // Column 2: [items[1], items[4]]
+  // Column 3: [items[2], items[5]]
+  const col1 = [items[0], items[3]].filter(Boolean);
+  const col2 = [items[1], items[4]].filter(Boolean);
+  const col3 = [items[2], items[5]].filter(Boolean);
 
   return (
     <div className="w-full relative">
       {/* Scroll Runway giving the physical height to scroll through */}
       <div
         ref={containerRef}
-        className={`${isMobile ? 'h-[150vh]' : 'h-[260vh] md:h-[300vh]'} relative`}
+        className={`${isMobile ? 'h-[190vh]' : 'h-[280vh] md:h-[300vh]'} relative`}
       >
-        {/* Sticky 3D Viewport pinned to screen */}
+        {/* Sticky 3D Viewport pinned to screen during scroll runway */}
         <div
           className={`sticky top-0 ${
-            isMobile ? 'h-[62vh]' : 'h-screen'
-          } w-full overflow-hidden flex items-center justify-center`}
+            isMobile ? 'h-[100dvh]' : 'h-screen'
+          } w-full overflow-hidden flex flex-col items-center justify-center`}
           style={{ perspective: '2000px' }}
         >
           {/* Subtle Ambient Radial Glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,37,69,0.08)_0%,transparent_65%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(214,37,69,0.07)_0%,transparent_65%)] pointer-events-none" />
 
-          {/* 3D Tilted Plane containing 3 Parallax Columns */}
+          {/* 3D Tilted Plane containing 3 Parallax Columns (settles into flat 2D grid) */}
           <motion.div
             style={{
               rotateX,
@@ -134,7 +187,7 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject, onNavigateWork }) 
               transformStyle: 'preserve-3d',
             }}
             className={`flex gap-3 sm:gap-6 md:gap-8 ${
-              isMobile ? 'w-[95vw]' : 'w-[125vw] md:w-[120vw]'
+              isMobile ? 'w-[96vw]' : 'w-[125vw] md:w-[120vw]'
             } max-w-[2000px] mx-auto px-2 sm:px-4 transform-gpu`}
           >
             {/* Column 1 */}
@@ -158,22 +211,20 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject, onNavigateWork }) 
               ))}
             </motion.div>
           </motion.div>
-        </div>
-      </div>
 
-      {/* Floating Exploration Hint & Archive Route */}
-      <div className="py-8 sm:py-12 flex flex-col sm:flex-row items-center justify-center gap-4 relative z-20">
-        <button
-          type="button"
-          onClick={() => {
-            sound.playClick();
-            onNavigateWork?.();
-          }}
-          className="inline-flex items-center gap-3 px-10 py-4 bg-white/10 hover:bg-white text-white hover:text-[#0c0c0f] backdrop-blur-md border border-white/20 rounded-full font-bold uppercase tracking-[0.2em] text-xs transition-all duration-500 shadow-xl cursor-pointer group"
-        >
-          <span>View More Works ({items.length})</span>
-          <span className="group-hover:translate-x-2 transition-transform">→</span>
-        </button>
+          {/* Floating Pill: Fades in when 2D view is reached */}
+          <motion.div
+            style={{ opacity: settledPillOpacity, y: settledPillY }}
+            className="absolute bottom-6 sm:bottom-8 inset-x-0 flex justify-center pointer-events-none z-30 px-4"
+          >
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/15 text-white shadow-2xl text-xs font-mono">
+              <span className="w-2 h-2 rounded-full bg-crimson animate-pulse" />
+              <span className="font-semibold text-white/95">6 FEATURED CASE STUDIES // 2D VIEW</span>
+              <span className="text-white/30 hidden sm:inline">|</span>
+              <span className="text-white/70 hidden sm:inline">CLICK ANY TO EXPLORE</span>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

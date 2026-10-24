@@ -1,42 +1,21 @@
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { PORTFOLIO_ITEMS, FILTER_BUTTONS } from '../data/portfolioData';
+import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
 import BrandsCarousel from './BrandsCarousel';
-import PortfolioGrid from './PortfolioGrid';
-import PortfolioListView from './PortfolioListView';
 import Parallax3DShowcase from './Parallax3DShowcase';
 import ProjectDetailModal from './ProjectDetailModal';
 import { fadeInUp, scaleIn, TRANSITIONS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
-const INITIAL_PROJECTS_COUNT = 6;
-
 const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const [filter, setFilter] = useState('all');
-  const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGridProject, setSelectedGridProject] = useState(null);
-  const [layoutMode, setLayoutMode] = useState('3d');
 
   const cms = useCMS();
   const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
-
-  // Filtered projects memoized for performance
-  const filteredProjects = useMemo(() => {
-    if (filter === 'all') return projects;
-    return projects.filter((item) => item.category === filter);
-  }, [filter, projects]);
-
-  // Displayed projects: only 4 initially when viewing all, or all if expanded
-  const displayedProjects = useMemo(() => {
-    if (filter === 'all' && !isExpanded) {
-      return filteredProjects.slice(0, INITIAL_PROJECTS_COUNT);
-    }
-    return filteredProjects;
-  }, [filter, isExpanded, filteredProjects]);
 
   return (
     <section id="portfolio" className="relative pt-14 pb-8 md:pt-20 md:pb-10 bg-transparent text-[#1d1d1f]" ref={ref}>
@@ -75,8 +54,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
           <BrandsCarousel isInView={isInView} />
         </div>
 
-        {/* ==================== MAIN PORTFOLIO SHOWCASE ==================== */}
-        {/* Section Header & Layout Switcher */}
+        {/* ==================== MAIN PORTFOLIO SHOWCASE HEADER ==================== */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-6 border-b border-black/[0.06]">
             <div className="space-y-3">
@@ -93,213 +71,54 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
               <p className="max-w-xs text-xs sm:text-sm text-[#86868b] leading-relaxed">
                 Identity systems, packaging architecture, and visual worlds designed for commercial impact.
               </p>
-
-              {/* Layout Mode Pill Switcher */}
-              <div className="inline-flex items-center p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-xs">
-                <button
-                  type="button"
-                  onClick={() => {
-                    sound.playSwitch();
-                    setLayoutMode('3d');
-                  }}
-                  className={`px-3.5 py-1.5 rounded-full font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-                    layoutMode === '3d'
-                      ? 'bg-crimson text-white shadow-xs font-semibold'
-                      : 'text-[#86868b] hover:text-[#1d1d1f]'
-                  }`}
-                >
-                  <span>◈</span>
-                  <span>3D Showcase</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    sound.playSwitch();
-                    setLayoutMode('grid');
-                  }}
-                  className={`px-3.5 py-1.5 rounded-full font-medium transition-all cursor-pointer ${
-                    layoutMode === 'grid'
-                      ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
-                      : 'text-[#86868b] hover:text-[#1d1d1f]'
-                  }`}
-                >
-                  ⊞ 2D Grid
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    sound.playSwitch();
-                    setLayoutMode('index');
-                  }}
-                  className={`px-3.5 py-1.5 rounded-full font-medium transition-all cursor-pointer ${
-                    layoutMode === 'index'
-                      ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
-                      : 'text-[#86868b] hover:text-[#1d1d1f]'
-                  }`}
-                >
-                  ☰ Index
-                </button>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* 1. PRIMARY: FULL-WIDTH 3D PARALLAX SHOWCASE (ADWANTS.IN STYLE) */}
-        {layoutMode === '3d' ? (
-          <div className="w-full overflow-hidden">
-            <Parallax3DShowcase
-              projects={projects}
-              onSelectProject={(item) =>
-                onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
-              }
-              onNavigateWork={onNavigateWork}
-            />
-          </div>
-        ) : (
-          /* 2. SECONDARY: FLAT 2D GRID OR INDEX LIST WITH FILTER PILLS */
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-1 p-1 mb-8 rounded-full bg-black/[0.04] border border-black/[0.05] overflow-x-auto no-scrollbar w-fit">
-              {FILTER_BUTTONS.map((btn) => {
-                const count =
-                  btn.value === 'all'
-                    ? projects.length
-                    : projects.filter((item) => item.category === btn.value).length;
-                const isActive = filter === btn.value;
+        {/* ==================== PERMANENT 3D PARALLAX SHOWCASE (ADWANTS.IN STYLE) ==================== */}
+        {/* Note: Rendered directly without overflow-hidden wrapper so position:sticky pins smoothly */}
+        <Parallax3DShowcase
+          projects={projects}
+          onSelectProject={(item) =>
+            onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
+          }
+          onNavigateWork={onNavigateWork}
+        />
 
-                return (
-                  <button
-                    key={btn.value}
-                    type="button"
-                    onClick={() => {
-                      sound.playClick();
-                      setFilter(btn.value);
-                    }}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-                      isActive
-                        ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
-                        : 'text-[#86868b] hover:text-[#1d1d1f]'
-                    }`}
-                  >
-                    <span>{btn.label}</span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                        isActive ? 'bg-black/[0.08] text-[#1d1d1f]' : 'bg-black/[0.04] text-[#86868b]'
-                      }`}
-                    >
-                      {count}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {displayedProjects.length === 0 ? (
-              <div className="py-20 text-center apple-card p-10 mb-20">
-                <p className="text-sm font-mono text-[#86868b]">No projects found in this category.</p>
-                <button
-                  type="button"
-                  onClick={() => setFilter('all')}
-                  className="mt-3 px-4 py-1.5 rounded-full bg-crimson text-white text-xs font-medium cursor-pointer"
-                >
-                  Reset to All Work
-                </button>
-              </div>
-            ) : layoutMode === 'index' ? (
-              <div className="mb-12">
-                <PortfolioListView
-                  items={displayedProjects}
-                  onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
-                />
-              </div>
-            ) : (
-              <div className="mb-12">
-                <PortfolioGrid
-                  items={displayedProjects}
-                  onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
-                  density="grid"
-                />
-              </div>
-            )}
-
-            {/* Load More Button for 2D Grid */}
-            {filter === 'all' && filteredProjects.length > INITIAL_PROJECTS_COUNT && (
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 mb-12">
-                <button
-                  type="button"
-                  onClick={() => {
-                    sound.playPop();
-                    setIsExpanded(!isExpanded);
-                  }}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-crimson hover:bg-crimson-dark text-white text-xs sm:text-sm font-medium tracking-wide uppercase transition-all shadow-md hover:shadow-lg cursor-pointer"
-                >
-                  {isExpanded ? (
-                    <>
-                      <span>Show Curated Selection (6)</span>
-                      <span className="text-sm">↑</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Load More Selected Projects ({filteredProjects.length - INITIAL_PROJECTS_COUNT} More)</span>
-                      <span className="text-sm">↓</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ==================== COMMON ARCHIVE & MANIFESTO FOOTER ==================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-
-          {/* ==================== DZINR-INSPIRED STUDIO MANIFESTO BANNER ==================== */}
+        {/* ==================== COMPLETE CASE ARCHIVE & MANIFESTO FOOTER ==================== */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
           <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
               <span>●</span> COMPLETE CASE ARCHIVE
             </div>
-            <h4 className="font-display text-2xl sm:text-4xl font-medium text-[#1d1d1f] tracking-tight max-w-3xl mx-auto leading-tight">
-              These are not just projects. They are stories of our clients, packaging systems, and the commercial impact we made.
+            <h4 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-[#1d1d1f]">
+              Form meets <span className="text-crimson italic font-serif">commercial velocity.</span>
             </h4>
-            <p className="text-xs sm:text-sm text-[#86868b] max-w-xl mx-auto leading-relaxed">
-              Explore the full {projects.length}-project catalog featuring retail pouch dielines, CAD specifications, bilingual identities, and press-ready master files.
+            <p className="text-sm text-[#86868b] max-w-xl mx-auto leading-relaxed">
+              Every system is engineered from raw brand strategy to tactile dieline execution. Explore all 12 commercial and cultural case studies in the complete archive.
             </p>
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <div className="pt-2">
               <button
                 type="button"
                 onClick={() => {
-                  sound.playClick();
+                  sound.playPop();
                   onNavigateWork?.();
                 }}
-                className="px-6 py-2.5 rounded-full bg-crimson text-white font-medium text-xs tracking-wider uppercase hover:bg-crimson-dark transition-all cursor-pointer shadow-md hover:shadow-lg inline-flex items-center gap-2"
+                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-medium tracking-wide uppercase transition-all shadow-md hover:shadow-lg cursor-pointer group"
               >
-                <span>Explore Full Portfolio Archive</span>
-                <span>↗</span>
+                <span>Explore Full 12-Project Archive</span>
+                <span className="text-sm group-hover:translate-x-1 transition-transform">↗</span>
               </button>
-              <a
-                href="/work"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => sound.playPop()}
-                className="px-5 py-2.5 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-[#1d1d1f] font-medium text-xs tracking-wider uppercase border border-black/[0.04] transition-all cursor-pointer inline-flex items-center gap-2"
-              >
-                <span>Open Archive in New Tab</span>
-                <span>⧉</span>
-              </a>
             </div>
           </div>
-
-          {/* Project Detail Modal (Fallback if onSelectProject not passed) */}
-          {!onSelectProject && (
-            <ProjectDetailModal
-              item={selectedGridProject}
-              items={filteredProjects}
-              onSelectProject={setSelectedGridProject}
-              onClose={() => setSelectedGridProject(null)}
-            />
-          )}
         </div>
       </div>
+
+      {/* Modal for project quick preview if opened via internal state */}
+      <ProjectDetailModal
+        project={selectedGridProject}
+        onClose={() => setSelectedGridProject(null)}
+      />
     </section>
   );
 };
