@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { useCMS } from '@/features/cms';
-import { PORTFOLIO_ITEMS, getProcessBehindProcess } from '../data/portfolioData';
+import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import PackagingAnatomy from '@/components/PackagingAnatomy';
 import SystemSpecs from '@/components/SystemSpecs';
 import DesignProcessNarrative from '@/components/DesignProcessNarrative';
-import ProcessBehindProcess from '@/components/ProcessBehindProcess';
 import { sound } from '@/utils/audio';
 
 const CaseStudyScreen = ({
@@ -100,7 +99,6 @@ const CaseStudyScreen = ({
     const sectionIds = [
       'screen-hero',
       'screen-process',
-      'screen-studio-process',
       'screen-specs',
       'screen-impact',
     ];
@@ -138,9 +136,6 @@ const CaseStudyScreen = ({
       });
     }
   };
-
-  const processBehindProcessData =
-    currentProject?.processBehindProcess || getProcessBehindProcess?.(currentProject);
 
   return (
     <div
@@ -242,17 +237,6 @@ const CaseStudyScreen = ({
                 }`}
               >
                 <span>Design Process</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollToSection('screen-studio-process')}
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
-                  activeTab === 'screen-studio-process'
-                    ? 'bg-white text-[#1d1d1f] shadow-xs'
-                    : 'text-[#86868b] hover:text-[#1d1d1f]'
-                }`}
-              >
-                Studio Rigor
               </button>
               <button
                 type="button"
@@ -567,16 +551,7 @@ const CaseStudyScreen = ({
           />
         </section>
 
-        {/* -------------------- SECTION 03: PROCESS BEHIND THE PROCESS (STUDIO RIGOR) -------------------- */}
-        <section id="screen-studio-process" className="scroll-mt-20 pt-10 sm:pt-12 border-t border-black/[0.08]">
-          <ProcessBehindProcess
-            data={processBehindProcessData}
-            client={currentProject.client}
-            category={currentProject.category}
-          />
-        </section>
-
-        {/* -------------------- SECTION 04: TECHNICAL SPECS & DIELINE -------------------- */}
+        {/* -------------------- SECTION 03: TECHNICAL SPECS & DIELINE -------------------- */}
         <section id="screen-specs" className="scroll-mt-20 pt-10 sm:pt-12 border-t border-black/[0.08]">
           {currentProject.category === 'packaging' ? (
             <PackagingAnatomy

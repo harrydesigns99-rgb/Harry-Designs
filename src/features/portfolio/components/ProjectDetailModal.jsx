@@ -4,8 +4,6 @@ import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import PackagingAnatomy from '@/components/PackagingAnatomy';
 import SystemSpecs from '@/components/SystemSpecs';
 import DesignProcessNarrative from '@/components/DesignProcessNarrative';
-import ProcessBehindProcess from '@/components/ProcessBehindProcess';
-import { getProcessBehindProcess } from '../data/portfolioData';
 import { sound } from '@/utils/audio';
 
 const ProjectDetailModal = ({
@@ -191,20 +189,11 @@ const ProjectDetailModal = ({
 
               <button
                 type="button"
-                onClick={() => scrollToSection('modal-studio-process')}
-                className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
-              >
-                <span>⚙</span>
-                <span>03 The Process Behind The Process</span>
-              </button>
-
-              <button
-                type="button"
                 onClick={() => scrollToSection('modal-specs')}
                 className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
               >
                 <span>◫</span>
-                <span>04 {item.category === 'packaging' ? 'Print Anatomy & Dieline' : 'System Specs'}</span>
+                <span>03 {item.category === 'packaging' ? 'Print Anatomy & Dieline' : 'System Specs'}</span>
               </button>
 
               <button
@@ -213,7 +202,7 @@ const ProjectDetailModal = ({
                 className="flex-shrink-0 px-2.5 py-1 bg-cloud-white border border-eerie/15 text-eerie/80 hover:text-crimson hover:border-crimson transition-all cursor-pointer flex items-center gap-1"
               >
                 <span>★</span>
-                <span>05 Commercial Impact</span>
+                <span>04 Commercial Impact</span>
               </button>
             </div>
           </div>
@@ -364,16 +353,7 @@ const ProjectDetailModal = ({
               />
             </section>
 
-            {/* -------------------- SECTION 03: PROCESS BEHIND THE PROCESS -------------------- */}
-            <section id="modal-studio-process" className="pt-6 sm:pt-8 border-t border-eerie/15">
-              <ProcessBehindProcess
-                data={item.processBehindProcess || getProcessBehindProcess(item)}
-                client={item.client}
-                category={item.category}
-              />
-            </section>
-
-            {/* -------------------- SECTION 04: TECHNICAL ANATOMY / SYSTEM SPECS -------------------- */}
+            {/* -------------------- SECTION 03: TECHNICAL ANATOMY / SYSTEM SPECS -------------------- */}
             <section id="modal-specs" className="pt-6 sm:pt-8 border-t border-eerie/15">
               {item.category === 'packaging' ? (
                 <PackagingAnatomy
