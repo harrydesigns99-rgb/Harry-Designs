@@ -7,11 +7,13 @@ import DesignProcessNarrative from '@/components/DesignProcessNarrative';
 import { sound } from '@/utils/audio';
 
 const ProjectDetailModal = ({
-  item,
+  item: itemProp,
+  project,
   items = [],
   onSelectProject,
   onClose,
 }) => {
+  const item = itemProp || project;
   const [viewModeOverride, setViewModeOverride] = useState(null);
   const [lastItemId, setLastItemId] = useState(item?.id);
   const modalContainerRef = useRef(null);

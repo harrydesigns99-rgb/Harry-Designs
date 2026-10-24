@@ -24,7 +24,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
 
       <div className="relative z-10">
         {/* ==================== BRANDS SECTION ==================== */}
-        <div className="mb-14 md:mb-18 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 sm:mb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
@@ -116,6 +116,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
 
       {/* Modal for project quick preview if opened via internal state */}
       <ProjectDetailModal
+        item={selectedGridProject}
         project={selectedGridProject}
         onClose={() => setSelectedGridProject(null)}
       />

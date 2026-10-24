@@ -28,6 +28,9 @@ const ShowcaseCard = memo(({ project, onSelect }) => {
       {/* Dark Cinematic Vignette Gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15 opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
 
+      {/* Subtle Light Reflection Sheen on Hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-tr from-transparent via-white/[0.08] to-transparent" />
+
       {/* Top Floating Badges */}
       <div className="absolute top-2.5 sm:top-3 inset-x-2.5 sm:inset-x-3 flex items-center justify-between pointer-events-none z-10">
         <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider font-semibold bg-black/60 backdrop-blur-md text-white border border-white/15 shadow-sm">
@@ -144,9 +147,14 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
     [isMobile ? 50 : 150, 0, 0]
   );
 
-  // 6. Settled 2D View Pill Indicator (fades in when 2D view is reached)
-  const settledPillOpacity = useTransform(scrollYProgress, [0, 0.6, 0.68, 1], [0, 0, 1, 1]);
-  const settledPillY = useTransform(scrollYProgress, [0, 0.6, 0.68, 1], [12, 12, 0, 0]);
+  // 6. Two-Phase HUD Guidance Indicator
+  // Phase A: Active during initial 3D scroll runway to guide the visitor
+  const explore3DPillOpacity = useTransform(scrollYProgress, [0, 0.04, 0.52, 0.62], [0, 1, 1, 0]);
+  const explore3DPillY = useTransform(scrollYProgress, [0, 0.04, 0.52, 0.62], [10, 0, 0, -8]);
+
+  // Phase B: Smoothly takes over once cards settle into the flat 2D grid
+  const settledPillOpacity = useTransform(scrollYProgress, [0.64, 0.72, 0.98, 1], [0, 1, 1, 1]);
+  const settledPillY = useTransform(scrollYProgress, [0.64, 0.72, 0.98, 1], [10, 0, 0, 0]);
 
   // Take exactly 6 projects for the permanent curated showcase (2 rows of 3 columns)
   const items = useMemo(() => {
@@ -216,7 +224,21 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
             </motion.div>
           </motion.div>
 
-          {/* Floating Pill: Fades in when 2D view is reached with clear breathing room below cards */}
+          {/* HUD Phase A: 3D Scroll Guidance */}
+          <motion.div
+            style={{ opacity: explore3DPillOpacity, y: explore3DPillY }}
+            className="absolute bottom-4 sm:bottom-6 inset-x-0 flex justify-center pointer-events-none z-30 px-4"
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/15 text-white/90 shadow-2xl text-[10px] sm:text-xs font-mono">
+              <span className="text-crimson font-bold">◈</span>
+              <span>3D PERSPECTIVE CANVASES</span>
+              <span className="text-white/30 hidden sm:inline">|</span>
+              <span className="text-white/70 hidden sm:inline">SCROLL TO UNWIND TO 2D</span>
+              <span className="text-crimson animate-bounce">↓</span>
+            </div>
+          </motion.div>
+
+          {/* HUD Phase B: Flat 2D View Reached */}
           <motion.div
             style={{ opacity: settledPillOpacity, y: settledPillY }}
             className="absolute bottom-4 sm:bottom-6 inset-x-0 flex justify-center pointer-events-none z-30 px-4"
