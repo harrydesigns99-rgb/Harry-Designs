@@ -23,6 +23,9 @@ export function useCMS() {
     reorderGalleryImages: cmsStore.reorderGalleryImages.bind(cmsStore),
     moveGalleryImage: cmsStore.moveGalleryImage.bind(cmsStore),
     addBrand: cmsStore.addBrand.bind(cmsStore),
+    updateBrand: cmsStore.updateBrand.bind(cmsStore),
+    moveBrand: cmsStore.moveBrand.bind(cmsStore),
+    reorderBrands: cmsStore.reorderBrands.bind(cmsStore),
     removeBrand: cmsStore.removeBrand.bind(cmsStore),
     updateSettings: cmsStore.updateSettings.bind(cmsStore),
     updateProfile: cmsStore.updateProfile.bind(cmsStore),
@@ -30,6 +33,7 @@ export function useCMS() {
     importBackupJSON: cmsStore.importBackupJSON.bind(cmsStore),
     generatePortfolioDataCode: cmsStore.generatePortfolioDataCode.bind(cmsStore),
     generateGalleryImagesCode: cmsStore.generateGalleryImagesCode.bind(cmsStore),
+    generateBrandsCode: cmsStore.generateBrandsCode.bind(cmsStore),
     generateProfileDataCode: cmsStore.generateProfileDataCode.bind(cmsStore),
     resetToDefaults: cmsStore.resetToDefaults.bind(cmsStore),
   };

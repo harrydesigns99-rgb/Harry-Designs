@@ -20,6 +20,21 @@ const PRESET_ARTBOARDS = [
   '/image/Image Gallery/Artboard 12.webp',
 ];
 
+const PRESET_LOGOS = [
+  { name: 'Anjarai Petti', logo: '/image/Logos/2@4x.webp' },
+  { name: 'Miniacres', logo: '/image/Logos/Artboard 5.webp' },
+  { name: 'Do Well Living', logo: '/image/Logos/Artboard 6.webp' },
+  { name: 'Thomas Bakers', logo: '/image/Logos/Colored.webp' },
+  { name: 'CSIR India', logo: '/image/Logos/CSIR-Logo-With-Tagline-Seleceted-Bilingual.webp' },
+  { name: 'The Siragugal Groups', logo: '/image/Logos/Logo.webp' },
+  { name: 'Lani', logo: '/image/Logos/logo hm.webp' },
+  { name: 'Mo Elixir', logo: '/image/Logos/Mo Elixir.webp' },
+  { name: 'EBS', logo: '/image/Logos/edwin bs logo.webp' },
+  { name: 'Neeri', logo: '/image/Logos/neeri_logo.webp' },
+  { name: 'Quill', logo: '/image/Logos/quill main logo.webp' },
+  { name: 'Unique', logo: '/image/Logos/unique.webp' },
+];
+
 const AdminDashboard = ({ onNavigateHome }) => {
   const cms = useCMS();
   const [activeTab, setActiveTab] = useState('projects'); // 'projects' | 'gallery' | 'brands' | 'sync'
@@ -33,9 +48,15 @@ const AdminDashboard = ({ onNavigateHome }) => {
   const [newGalleryUrl, setNewGalleryUrl] = useState('');
   const galleryFileRef = useRef(null);
 
-  // Brand inputs
+  // Brand inputs & editing states
   const [newBrandName, setNewBrandName] = useState('');
   const [newBrandLogo, setNewBrandLogo] = useState('');
+  const [editingBrandIndex, setEditingBrandIndex] = useState(null);
+  const [editBrandName, setEditBrandName] = useState('');
+  const [editBrandLogo, setEditBrandLogo] = useState('');
+  const [brandSavedToast, setBrandSavedToast] = useState(false);
+  const brandLogoFileRef = useRef(null);
+  const editBrandLogoFileRef = useRef(null);
 
   // Profile inputs & state
   const profileFileRef = useRef(null);
@@ -76,6 +97,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
     let code = '';
     if (type === 'portfolio') code = cms.generatePortfolioDataCode();
     else if (type === 'gallery') code = cms.generateGalleryImagesCode();
+    else if (type === 'brands') code = cms.generateBrandsCode();
     else if (type === 'profile') code = cms.generateProfileDataCode();
     navigator.clipboard.writeText(code);
     setCopiedSection(type);
@@ -121,6 +143,49 @@ const AdminDashboard = ({ onNavigateHome }) => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleBrandLogoUpload = async (file, isEditing = false) => {
+    if (!file) return;
+    try {
+      const optimized = await optimizeImageFile(file, 800, 400, 0.9);
+      if (isEditing) {
+        setEditBrandLogo(optimized);
+      } else {
+        setNewBrandLogo(optimized);
+      }
+    } catch {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (isEditing) {
+          setEditBrandLogo(event.target.result);
+        } else {
+          setNewBrandLogo(event.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleStartEditBrand = (brand, index) => {
+    setEditingBrandIndex(index);
+    setEditBrandName(brand.name);
+    setEditBrandLogo(brand.logo);
+  };
+
+  const handleSaveBrandEdit = (e) => {
+    e?.preventDefault();
+    if (!editBrandName.trim() || !editBrandLogo.trim()) {
+      alert('Brand name and logo image are both required.');
+      return;
+    }
+    cms.updateBrand(editingBrandIndex, {
+      name: editBrandName.trim(),
+      logo: editBrandLogo.trim(),
+    });
+    setEditingBrandIndex(null);
+    setBrandSavedToast(true);
+    setTimeout(() => setBrandSavedToast(false), 2500);
   };
 
   const handleProfileImageUpload = async (e) => {
@@ -560,75 +625,335 @@ const AdminDashboard = ({ onNavigateHome }) => {
         {/* ========================================================= */}
         {activeTab === 'brands' && (
           <div className="space-y-8">
-            <div className="bg-white border border-eerie/15 p-6">
-              <h3 className="font-display font-bold text-xl text-eerie mb-2">
-                Client Brand Logos
-              </h3>
-              <p className="text-xs text-eerie/60 mb-6 leading-relaxed max-w-2xl">
-                These logos stream in the infinite ticker marquee in the Selected Clients section.
-              </p>
+            {/* Success toast */}
+            {brandSavedToast && (
+              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-xs flex items-center justify-between animate-fadeIn">
+                <span>✓ Client brand logo updated successfully! Changes reflect live across the marquee.</span>
+                <span className="font-mono text-[10px]">Saved</span>
+              </div>
+            )}
 
-              <div className="flex flex-col sm:flex-row gap-3 max-w-xl">
-                <input
-                  type="text"
-                  placeholder="Client / Brand Name"
-                  value={newBrandName}
-                  onChange={(e) => setNewBrandName(e.target.value)}
-                  className="px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none flex-1"
-                />
-                <input
-                  type="text"
-                  placeholder="Logo URL or /image/Logos/..."
-                  value={newBrandLogo}
-                  onChange={(e) => setNewBrandLogo(e.target.value)}
-                  className="px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none flex-1"
-                />
-                <button
-                  onClick={() => {
-                    if (newBrandName && newBrandLogo) {
-                      cms.addBrand(newBrandName, newBrandLogo);
-                      setNewBrandName('');
-                      setNewBrandLogo('');
-                    } else {
-                      alert('Please enter both Brand Name and Logo URL');
-                    }
-                  }}
-                  className="px-6 py-2.5 bg-crimson text-white text-xs font-semibold uppercase tracking-wider hover:bg-crimson-dark transition-colors cursor-pointer"
-                >
-                  Add Brand
-                </button>
+            {/* Add New Brand Panel */}
+            <div className="bg-white border border-eerie/15 p-6 md:p-8 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-eerie/10 pb-4">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
+                    Infinite Client Marquee
+                  </span>
+                  <h3 className="font-display font-bold text-xl text-eerie mt-0.5">
+                    Client Brand Logos ({cms.brands.length})
+                  </h3>
+                  <p className="text-xs text-eerie/60 mt-1 leading-relaxed max-w-2xl">
+                    These logos stream in the infinite ticker marquee under Selected Clients. You can edit brand names, upload custom logos, or reorder them.
+                  </p>
+                </div>
+              </div>
+
+              {/* Add Brand Form */}
+              <div className="space-y-4 pt-1">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                  <div className="md:col-span-4">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
+                      Client / Brand Name *
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Diyaa Pure, Sendra Gold..."
+                      value={newBrandName}
+                      onChange={(e) => setNewBrandName(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none focus:border-eerie"
+                    />
+                  </div>
+
+                  <div className="md:col-span-5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
+                      Logo Source (URL or File) *
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        placeholder="Logo URL or /image/Logos/..."
+                        value={newBrandLogo}
+                        onChange={(e) => setNewBrandLogo(e.target.value)}
+                        className="px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none focus:border-eerie flex-1 font-mono text-[11px]"
+                      />
+                      <input
+                        type="file"
+                        ref={brandLogoFileRef}
+                        accept="image/*"
+                        onChange={(e) => handleBrandLogoUpload(e.target.files?.[0], false)}
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => brandLogoFileRef.current?.click()}
+                        className="px-3 py-2.5 bg-white border border-eerie/20 hover:border-eerie text-xs font-mono text-eerie flex items-center gap-1.5 cursor-pointer whitespace-nowrap transition-colors"
+                        title="Upload logo file from computer"
+                      >
+                        <span>📁</span>
+                        <span>Upload File</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (newBrandName.trim() && newBrandLogo.trim()) {
+                          cms.addBrand(newBrandName.trim(), newBrandLogo.trim());
+                          setNewBrandName('');
+                          setNewBrandLogo('');
+                          setBrandSavedToast(true);
+                          setTimeout(() => setBrandSavedToast(false), 2200);
+                        } else {
+                          alert('Please enter both Client Brand Name and Logo.');
+                        }
+                      }}
+                      className="w-full py-2.5 px-5 bg-crimson text-white text-xs font-semibold uppercase tracking-wider hover:bg-crimson-dark transition-colors cursor-pointer shadow-sm text-center"
+                    >
+                      + Add Client Brand
+                    </button>
+                  </div>
+                </div>
+
+                {/* Quick Presets Picker */}
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-eerie/50 block mb-1.5">
+                    Quick Insert Official Studio Logos:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {PRESET_LOGOS.map((preset) => (
+                      <button
+                        key={preset.name}
+                        type="button"
+                        onClick={() => {
+                          setNewBrandName(preset.name);
+                          setNewBrandLogo(preset.logo);
+                        }}
+                        className="px-2.5 py-1 text-[11px] font-mono bg-black/[0.03] hover:bg-black/[0.08] text-eerie/75 border border-black/[0.06] rounded-full transition-colors cursor-pointer"
+                      >
+                        + {preset.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* Existing Brands Grid with Reorder, Edit, and Delete */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {cms.brands.map((brand, index) => (
                 <div
                   key={`${brand.name}-${index}`}
-                  className="bg-white border border-eerie/15 p-4 flex flex-col items-center justify-between gap-3 text-center"
+                  className="bg-white border border-eerie/15 p-4 flex flex-col justify-between gap-3 text-center shadow-xs hover:border-eerie/40 transition-all rounded-lg group"
                 >
-                  <div className="h-16 w-full flex items-center justify-center p-2 bg-cloud-dancer">
+                  {/* Top Order Badges & Reorder Controls */}
+                  <div className="flex items-center justify-between text-[10px] font-mono text-eerie/50 w-full border-b border-eerie/10 pb-2">
+                    <span className="font-semibold text-crimson">#{index + 1}</span>
+                    <div className="flex items-center gap-1">
+                      <button
+                        disabled={index === 0}
+                        onClick={() => cms.moveBrand(index, -1)}
+                        className="p-1 border border-eerie/10 hover:border-eerie disabled:opacity-20 cursor-pointer rounded"
+                        title="Move left in marquee"
+                      >
+                        ◀
+                      </button>
+                      <button
+                        disabled={index === cms.brands.length - 1}
+                        onClick={() => cms.moveBrand(index, 1)}
+                        className="p-1 border border-eerie/10 hover:border-eerie disabled:opacity-20 cursor-pointer rounded"
+                        title="Move right in marquee"
+                      >
+                        ▶
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Logo Display */}
+                  <div className="h-16 w-full flex items-center justify-center p-2 bg-cloud-dancer rounded overflow-hidden">
                     <img
                       src={brand.logo}
                       alt={brand.name}
-                      className="max-h-12 max-w-full object-contain filter grayscale"
+                      className="max-h-12 max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                     />
                   </div>
-                  <span className="text-xs font-semibold text-eerie truncate w-full">
-                    {brand.name}
-                  </span>
-                  <button
-                    onClick={() => {
-                      if (confirm(`Remove brand "${brand.name}"?`)) {
-                        cms.removeBrand(index);
-                      }
-                    }}
-                    className="text-[10px] text-crimson uppercase font-mono tracking-wider hover:underline cursor-pointer"
-                  >
-                    Delete
-                  </button>
+
+                  {/* Brand Name */}
+                  <div className="w-full">
+                    <span
+                      className="text-xs font-semibold text-eerie truncate block w-full"
+                      title={brand.name}
+                    >
+                      {brand.name}
+                    </span>
+                  </div>
+
+                  {/* Action Buttons: Edit and Delete */}
+                  <div className="w-full pt-2 border-t border-eerie/10 flex flex-col gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => handleStartEditBrand(brand, index)}
+                      className="w-full py-1.5 px-2 bg-eerie hover:bg-crimson text-white text-[11px] font-mono uppercase tracking-wider rounded transition-colors cursor-pointer flex items-center justify-center gap-1"
+                    >
+                      <span>✎</span>
+                      <span>Edit Name</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm(`Remove brand "${brand.name}" from ticker?`)) {
+                          cms.removeBrand(index);
+                        }
+                      }}
+                      className="text-[10px] text-crimson/70 hover:text-crimson uppercase font-mono tracking-wider hover:underline cursor-pointer py-0.5"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
+
+            {/* ==================== EDIT BRAND MODAL ==================== */}
+            {editingBrandIndex !== null && (
+              <div
+                role="dialog"
+                aria-modal="true"
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
+                onClick={() => setEditingBrandIndex(null)}
+              >
+                <div
+                  className="bg-white border border-eerie/20 shadow-2xl p-6 sm:p-8 max-w-lg w-full rounded-2xl space-y-6"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between border-b border-eerie/10 pb-4">
+                    <div>
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
+                        Client Marquee Editor
+                      </span>
+                      <h3 className="font-display font-bold text-xl text-eerie mt-0.5">
+                        Edit Client Brand #{editingBrandIndex + 1}
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setEditingBrandIndex(null)}
+                      className="text-xs uppercase font-mono tracking-wider text-eerie/60 hover:text-eerie px-2.5 py-1 border border-eerie/20 rounded cursor-pointer"
+                    >
+                      ✕ Close
+                    </button>
+                  </div>
+
+                  {/* Edit Form */}
+                  <form onSubmit={handleSaveBrandEdit} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
+                        Client / Brand Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={editBrandName}
+                        onChange={(e) => setEditBrandName(e.target.value)}
+                        placeholder="e.g. CSIR India"
+                        className="w-full px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-sm outline-none focus:border-crimson rounded"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
+                        Brand Logo Image (URL or Upload) *
+                      </label>
+                      <div className="flex items-center gap-2 mb-2">
+                        <input
+                          type="text"
+                          required
+                          value={editBrandLogo}
+                          onChange={(e) => setEditBrandLogo(e.target.value)}
+                          placeholder="/image/Logos/... or https://..."
+                          className="px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none focus:border-crimson flex-1 rounded font-mono"
+                        />
+                        <input
+                          type="file"
+                          ref={editBrandLogoFileRef}
+                          accept="image/*"
+                          onChange={(e) => handleBrandLogoUpload(e.target.files?.[0], true)}
+                          className="hidden"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => editBrandLogoFileRef.current?.click()}
+                          className="px-3.5 py-2.5 bg-eerie hover:bg-crimson text-white text-xs font-mono uppercase tracking-wider rounded transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
+                        >
+                          <span>📁</span>
+                          <span>Upload File</span>
+                        </button>
+                      </div>
+
+                      {/* Quick Presets for editing */}
+                      <div className="pt-1">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-eerie/50 block mb-1">
+                          Or select preset:
+                        </span>
+                        <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto no-scrollbar border border-eerie/10 p-2 rounded bg-black/[0.01]">
+                          {PRESET_LOGOS.map((preset) => (
+                            <button
+                              key={preset.name}
+                              type="button"
+                              onClick={() => {
+                                setEditBrandName(preset.name);
+                                setEditBrandLogo(preset.logo);
+                              }}
+                              className="px-2 py-0.5 text-[10px] font-mono bg-white hover:bg-crimson hover:text-white text-eerie border border-eerie/15 rounded transition-colors cursor-pointer"
+                            >
+                              {preset.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Live Preview Stage */}
+                    {editBrandLogo && (
+                      <div className="p-3 bg-cloud-dancer rounded-xl border border-eerie/15 space-y-1.5">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-eerie/60 block">
+                          Logo Preview ({editBrandName || 'Unnamed Brand'})
+                        </span>
+                        <div className="h-20 w-full flex items-center justify-center p-2 bg-white rounded border border-eerie/10">
+                          <img
+                            src={editBrandLogo}
+                            alt={editBrandName}
+                            className="max-h-16 max-w-full object-contain"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex items-center justify-between pt-4 border-t border-eerie/10">
+                      <button
+                        type="button"
+                        onClick={() => setEditingBrandIndex(null)}
+                        className="px-5 py-2.5 border border-eerie/20 text-xs font-semibold uppercase tracking-wider text-eerie/70 hover:text-eerie cursor-pointer rounded"
+                      >
+                        Cancel
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="px-6 py-2.5 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer rounded flex items-center gap-1.5"
+                      >
+                        <span>✓</span>
+                        <span>Save Brand Changes ↗</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -942,6 +1267,15 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   {copiedSection === 'gallery'
                     ? '✓ Copied galleryImages.js!'
                     : 'Copy galleryImages.js Code'}
+                </button>
+
+                <button
+                  onClick={() => handleCopyCode('brands')}
+                  className="px-6 py-3 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                >
+                  {copiedSection === 'brands'
+                    ? '✓ Copied Brands Code!'
+                    : 'Copy Brands Code'}
                 </button>
 
                 <button
