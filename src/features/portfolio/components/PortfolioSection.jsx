@@ -6,6 +6,7 @@ import { sound } from '@/utils/audio';
 import BrandsCarousel from './BrandsCarousel';
 import PortfolioGrid from './PortfolioGrid';
 import PortfolioListView from './PortfolioListView';
+import Parallax3DShowcase from './Parallax3DShowcase';
 import ProjectDetailModal from './ProjectDetailModal';
 import { fadeInUp, scaleIn, TRANSITIONS } from '@/animations';
 import AnimatedBackdrop from '@/components/AnimatedBackdrop';
@@ -22,14 +23,14 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('harry_portfolio_layout');
-        if (saved && ['loose', 'grid', 'index'].includes(saved)) {
+        if (saved && ['3d', 'grid', 'index'].includes(saved)) {
           return saved;
         }
       } catch {
         // ignore
       }
     }
-    return 'grid';
+    return '3d';
   });
 
   const cms = useCMS();
@@ -142,27 +143,28 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
               })}
             </div>
 
-            {/* Apple 3-Way Layout Switcher: Loose (2-Col), Grid (3-Col), Index (List) */}
+            {/* Apple Layout Switcher: 3D Parallax Showcase (◈), Grid (⊞), Index (☰) */}
             <div className="inline-flex items-center p-1 rounded-full bg-black/[0.04] border border-black/[0.05] text-xs ml-auto sm:ml-0">
               <button
                 type="button"
                 onClick={() => {
                   sound.playSwitch();
-                  setLayoutMode('loose');
+                  setLayoutMode('3d');
                   try {
-                    localStorage.setItem('harry_portfolio_layout', 'loose');
+                    localStorage.setItem('harry_portfolio_layout', '3d');
                   } catch {
                     // ignore
                   }
                 }}
-                title="Spacious 2-column editorial view"
-                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
-                  layoutMode === 'loose'
-                    ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
+                title="Interactive 3D Parallax Perspective Showcase"
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                  layoutMode === '3d'
+                    ? 'bg-crimson text-white shadow-xs font-semibold'
                     : 'text-[#86868b] hover:text-[#1d1d1f]'
                 }`}
               >
-                ◫ Loose
+                <span>◈</span>
+                <span>3D Showcase</span>
               </button>
               <button
                 type="button"
@@ -175,7 +177,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                     // ignore
                   }
                 }}
-                title="Standard 3-column grid view"
+                title="Curated 3-column grid view"
                 className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
                   layoutMode === 'grid'
                     ? 'bg-white text-[#1d1d1f] shadow-xs font-semibold'
@@ -207,8 +209,18 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
             </div>
           </div>
 
-          {/* ==================== WORK DISPLAY: LOOSE / GRID / INDEX ==================== */}
-          {displayedProjects.length === 0 ? (
+          {/* ==================== WORK DISPLAY: 3D SHOWCASE / GRID / INDEX ==================== */}
+          {layoutMode === '3d' ? (
+            <div className="mb-8">
+              <Parallax3DShowcase
+                projects={filteredProjects}
+                onSelectProject={(item) =>
+                  onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
+                }
+                onNavigateWork={onNavigateWork}
+              />
+            </div>
+          ) : displayedProjects.length === 0 ? (
             <div className="py-20 text-center apple-card p-10 mb-20">
               <p className="text-sm font-mono text-[#86868b]">No projects found in this category.</p>
               <button
@@ -231,13 +243,13 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
               <PortfolioGrid
                 items={displayedProjects}
                 onSelect={(item) => (onSelectProject ? onSelectProject(item) : setSelectedGridProject(item))}
-                density={layoutMode}
+                density="grid"
               />
             </div>
           )}
 
           {/* ==================== LOAD MORE / FULL ARCHIVE CONTROLS ==================== */}
-          {filter === 'all' && filteredProjects.length > INITIAL_PROJECTS_COUNT && (
+          {layoutMode !== '3d' && filter === 'all' && filteredProjects.length > INITIAL_PROJECTS_COUNT && (
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 mb-12">
               {/* Load More Button */}
               <button
