@@ -18,13 +18,13 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
 
   return (
-    <section id="portfolio" className="relative pt-14 pb-8 md:pt-20 md:pb-10 bg-transparent text-[#1d1d1f]" ref={ref}>
+    <section id="portfolio" className="relative pt-14 pb-0 bg-transparent text-[#1d1d1f]" ref={ref}>
       <AnimatedBackdrop tone="light" />
       <div className="absolute inset-x-0 top-0 h-px bg-black/[0.06] pointer-events-none" />
 
       <div className="relative z-10">
         {/* ==================== BRANDS SECTION ==================== */}
-        <div className="mb-8 sm:mb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-14 sm:mb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
@@ -54,62 +54,51 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
           <BrandsCarousel isInView={isInView} />
         </div>
 
-        {/* ==================== MAIN PORTFOLIO SHOWCASE HEADER ==================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-6 border-b border-black/[0.06]">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
-                <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
-                <span>SELECTED WORK // 3D PARALLAX SHOWCASE</span>
-              </div>
-              <h3 className="font-display text-4xl sm:text-5xl md:text-7xl font-medium tracking-tight text-[#1d1d1f] leading-[0.95]">
-                Work that <span className="text-crimson italic font-serif font-light">delivered.</span>
-              </h3>
-            </div>
+        {/* ==================== CINEMATIC DARK STAGE (AUTHENTIC ADWANTS STYLE) ==================== */}
+        <div className="w-full bg-[#0a0a0e] text-white pt-20 sm:pt-28 relative overflow-hidden border-t border-black/10">
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(186,32,38,0.12)_0%,transparent_60%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.02)_0%,transparent_70%)] pointer-events-none" />
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <p className="max-w-xs text-xs sm:text-sm text-[#86868b] leading-relaxed">
-                Identity systems, packaging architecture, and visual worlds designed for commercial impact.
-              </p>
+          {/* Dark Stage Header */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16 relative z-10 text-center space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.05] border border-white/10 text-white/70 text-xs font-mono font-semibold shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
+              <span>SELECTED WORK // 3D PARALLAX SHOWCASE</span>
             </div>
-          </div>
-        </div>
-
-        {/* ==================== PERMANENT 3D PARALLAX SHOWCASE (ADWANTS.IN STYLE) ==================== */}
-        {/* Note: Rendered directly without overflow-hidden wrapper so position:sticky pins smoothly */}
-        <Parallax3DShowcase
-          projects={projects}
-          onSelectProject={(item) =>
-            onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
-          }
-          onNavigateWork={onNavigateWork}
-        />
-
-        {/* ==================== COMPLETE CASE ARCHIVE & MANIFESTO FOOTER ==================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 sm:mt-32 md:mt-40">
-          <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
-              <span>●</span> COMPLETE CASE ARCHIVE
-            </div>
-            <h4 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-[#1d1d1f]">
-              Form meets <span className="text-crimson italic font-serif">commercial velocity.</span>
-            </h4>
-            <p className="text-sm text-[#86868b] max-w-xl mx-auto leading-relaxed">
-              Every system is engineered from raw brand strategy to tactile dieline execution. Explore all 12 commercial and cultural case studies in the complete archive.
+            <h3 className="font-display text-4xl sm:text-6xl md:text-7xl font-medium tracking-tight text-white leading-[0.95]">
+              Work that <span className="text-crimson italic font-serif font-light">delivered.</span>
+            </h3>
+            <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/60 leading-relaxed font-light">
+              Not just design systems that look good in presentations, but brand identities, packaging architectures, and visual worlds engineered for commercial velocity.
             </p>
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playPop();
-                  onNavigateWork?.();
-                }}
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-medium tracking-wide uppercase transition-all shadow-md hover:shadow-lg cursor-pointer group"
-              >
-                <span>Explore Full 12-Project Archive</span>
-                <span className="text-sm group-hover:translate-x-1 transition-transform">↗</span>
-              </button>
-            </div>
+          </div>
+
+          {/* Permanent 3D Parallax Showcase Runway */}
+          <Parallax3DShowcase
+            projects={projects}
+            onSelectProject={(item) =>
+              onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
+            }
+            onNavigateWork={onNavigateWork}
+          />
+
+          {/* Sleek Adwants-Style Archive CTA Pill Button */}
+          <div className="pb-20 sm:pb-28 pt-8 sm:pt-12 flex flex-col items-center justify-center text-center relative z-20 px-4">
+            <p className="text-white/40 font-mono text-xs uppercase tracking-[0.25em] mb-4">
+              Curated commercial systems • Explore all 12 case studies
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                sound.playPop();
+                onNavigateWork?.();
+              }}
+              className="flex items-center gap-3 px-8 sm:px-10 py-4 bg-white/10 hover:bg-white text-white hover:text-[#0a0a0e] border border-white/20 rounded-full font-mono text-xs sm:text-sm uppercase tracking-[0.2em] transition-all duration-300 shadow-2xl group cursor-pointer"
+            >
+              <span>Explore Full 12-Project Archive</span>
+              <span className="text-crimson group-hover:text-[#0a0a0e] group-hover:translate-x-1.5 transition-transform font-bold">↗</span>
+            </button>
           </div>
         </div>
       </div>
