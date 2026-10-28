@@ -89,16 +89,23 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
     return 'desktop';
   });
 
+  const [isShortViewport, setIsShortViewport] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerHeight < 780;
+  });
+
   useEffect(() => {
-    const checkDevice = () => {
+    const handleResize = () => {
       const w = window.innerWidth;
+      const h = window.innerHeight;
       if (w < 640) setDeviceTier('mobile');
       else if (w < 1024) setDeviceTier('tablet');
       else setDeviceTier('desktop');
+      setIsShortViewport(h < 780);
     };
-    checkDevice();
-    window.addEventListener('resize', checkDevice);
-    return () => window.removeEventListener('resize', checkDevice);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const isMobile = deviceTier === 'mobile';
@@ -125,14 +132,13 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
 
   // 2. Perspective Scale:
   // Starts zoomed in, scales down to fit all 6 cards in safe viewport area at 0.65 and stays locked flat until 1.0
+  const settledScale = isMobile ? 0.92 : isTablet ? 0.76 : isShortViewport ? 0.60 : 0.66;
+  const initialScale = isMobile ? 1.25 : isTablet ? 1.45 : isShortViewport ? 1.35 : 1.52;
+
   const scale = useTransform(
     scrollYProgress,
     [0, 0.65, 1],
-    [
-      isMobile ? 1.25 : isTablet ? 1.45 : 1.65,
-      isMobile ? 0.95 : isTablet ? 0.78 : 0.70,
-      isMobile ? 0.95 : isTablet ? 0.78 : 0.70,
-    ]
+    [initialScale, settledScale, settledScale]
   );
 
   // 3. Subtle vertical center adjustment
@@ -142,11 +148,11 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
     ['2%', '0%', '0%']
   );
 
-  // 4. Subtle fade in
+  // 4. Subtle fade in and smooth exit fade
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.08, 0.92, 1],
-    [0.75, 1, 1, 1]
+    [0, 0.08, 0.93, 1],
+    [0.75, 1, 1, 0.4]
   );
 
   // 5. Parallax Column Shifts:
@@ -173,9 +179,9 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
   const explore3DPillOpacity = useTransform(scrollYProgress, [0, 0.04, 0.52, 0.62], [0, 1, 1, 0]);
   const explore3DPillY = useTransform(scrollYProgress, [0, 0.04, 0.52, 0.62], [10, 0, 0, -8]);
 
-  // Phase B: Smoothly takes over once cards settle into the flat 2D grid
-  const settledPillOpacity = useTransform(scrollYProgress, [0.64, 0.72, 0.98, 1], [0, 1, 1, 1]);
-  const settledPillY = useTransform(scrollYProgress, [0.64, 0.72, 0.98, 1], [10, 0, 0, 0]);
+  // Phase B: Smoothly takes over once cards settle into the flat 2D grid and fades out before runway unpins
+  const settledPillOpacity = useTransform(scrollYProgress, [0.64, 0.72, 0.88, 0.95], [0, 1, 1, 0]);
+  const settledPillY = useTransform(scrollYProgress, [0.64, 0.72, 0.88, 0.95], [10, 0, 0, 8]);
 
   // Take exactly 6 projects for the permanent curated showcase (2 rows of 3 columns)
   const items = useMemo(() => {
@@ -221,26 +227,26 @@ const Parallax3DShowcase = ({ projects = [], onSelectProject }) => {
               opacity,
               transformStyle: 'preserve-3d',
             }}
-            className={`flex gap-2.5 sm:gap-4 md:gap-5 ${
-              isMobile ? 'w-[96vw]' : isTablet ? 'w-[112vw]' : 'w-[108vw]'
-            } max-w-[1550px] mx-auto px-2 sm:px-4 transform-gpu`}
+            className={`flex gap-2.5 sm:gap-3.5 md:gap-4 ${
+              isMobile ? 'w-[96vw]' : isTablet ? 'w-[94vw] max-w-[1080px]' : 'w-[90vw] max-w-[1220px]'
+            } mx-auto px-2 sm:px-4 transform-gpu`}
           >
             {/* Column 1 */}
-            <motion.div style={{ y: col1Y }} className="flex flex-col gap-2.5 sm:gap-4 md:gap-5 w-1/3">
+            <motion.div style={{ y: col1Y }} className="flex flex-col gap-2.5 sm:gap-3.5 md:gap-4 w-1/3">
               {col1.map((p) => (
                 <ShowcaseCard key={`col1-${p.id}`} project={p} onSelect={onSelectProject} />
               ))}
             </motion.div>
 
             {/* Column 2 (Counter-direction parallax glide) */}
-            <motion.div style={{ y: col2Y }} className="flex flex-col gap-2.5 sm:gap-4 md:gap-5 w-1/3">
+            <motion.div style={{ y: col2Y }} className="flex flex-col gap-2.5 sm:gap-3.5 md:gap-4 w-1/3">
               {col2.map((p) => (
                 <ShowcaseCard key={`col2-${p.id}`} project={p} onSelect={onSelectProject} />
               ))}
             </motion.div>
 
             {/* Column 3 */}
-            <motion.div style={{ y: col3Y }} className="flex flex-col gap-2.5 sm:gap-4 md:gap-5 w-1/3">
+            <motion.div style={{ y: col3Y }} className="flex flex-col gap-2.5 sm:gap-3.5 md:gap-4 w-1/3">
               {col3.map((p) => (
                 <ShowcaseCard key={`col3-${p.id}`} project={p} onSelect={onSelectProject} />
               ))}

@@ -86,7 +86,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
         />
 
         {/* ==================== COMPLETE CASE ARCHIVE & MANIFESTO FOOTER ==================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 sm:mt-32 md:mt-40">
           <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
               <span>●</span> COMPLETE CASE ARCHIVE
