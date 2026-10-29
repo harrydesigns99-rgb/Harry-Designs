@@ -16,9 +16,8 @@ const DEFAULT_ANATOMY = {
   ],
 };
 
-const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) => {
+const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, client, title }) => {
   const [copiedHex, setCopiedHex] = useState(null);
-  const [shelfDistance, setShelfDistance] = useState(0); // 0 to 10
   const [showBleed, setShowBleed] = useState(true);
   const [showCrease, setShowCrease] = useState(true);
   const [showCut, setShowCut] = useState(true);
@@ -33,9 +32,6 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
     setCopiedHex(code);
     setTimeout(() => setCopiedHex(null), 1800);
   };
-
-  // Blur computation for 10-foot retail shelf standout simulator
-  const blurPx = (shelfDistance * 0.85).toFixed(1);
 
   return (
     <div className="w-full space-y-6 sm:space-y-8 text-[#1d1d1f]">
@@ -261,70 +257,6 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, image, client, title }) =
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f]">{data.dielineType}</div>
         </div>
       </div>
-
-      {/* 4. 10-Foot Retail Shelf Standout Simulator */}
-      {image && (
-        <div className="apple-card p-4 sm:p-7 space-y-4 sm:space-y-5 rounded-2xl sm:rounded-3xl bg-white border border-black/[0.08]">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span className="text-xs font-mono uppercase tracking-wider text-crimson font-semibold flex items-center gap-2">
-                <span>🛒</span> 10-FOOT RETAIL SHELF STANDOUT SIMULATOR
-              </span>
-              <p className="text-xs sm:text-sm text-[#86868b] mt-1 max-w-xl">
-                Simulates shopper distance and aisle optical noise to verify brand silhouette pop and shelf hierarchy.
-              </p>
-            </div>
-            <div className="px-3 py-1 rounded-full bg-crimson/10 font-mono text-xs font-semibold text-crimson">
-              Distance: {shelfDistance} ft ({blurPx}px blur)
-            </div>
-          </div>
-
-          {/* Slider */}
-          <div className="py-2">
-            <input
-              type="range"
-              min="0"
-              max="10"
-              step="0.5"
-              value={shelfDistance}
-              onChange={(e) => {
-                setShelfDistance(parseFloat(e.target.value));
-              }}
-              className="w-full accent-crimson cursor-pointer"
-            />
-            <div className="flex justify-between text-[11px] font-mono text-[#86868b] mt-1.5">
-              <span>1 ft (Close Inspect)</span>
-              <span>5 ft (Shopper Scan)</span>
-              <span>10 ft (Aisle Pop)</span>
-            </div>
-          </div>
-
-          {/* Simulated Shelf Preview */}
-          <div className="relative w-full h-48 sm:h-64 bg-neutral-950 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center p-3 sm:p-4 border border-neutral-800">
-            {/* Shelf line */}
-            <div className="absolute bottom-5 inset-x-0 h-2 bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-t border-amber-500/30" />
-
-            <motion.div
-              style={{ filter: `blur(${blurPx}px)` }}
-              className="relative z-10 max-h-full flex items-center justify-center transition-all duration-150"
-            >
-              <img
-                src={image}
-                alt={`${client} Retail Simulation`}
-                className="max-h-44 sm:max-h-52 object-contain drop-shadow-2xl"
-              />
-            </motion.div>
-
-            {/* Standout Rating Badge */}
-            <div className="absolute top-3 right-3 z-20 rounded-full bg-black/80 backdrop-blur-md px-3 py-1 border border-white/10 font-mono text-[11px] text-white">
-              Silhouette Pop:{' '}
-              <span className="text-emerald-400 font-semibold">
-                {shelfDistance > 6 ? '96% High Impact' : '100% Crisp'}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
