@@ -191,41 +191,45 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 bg-eerie/80 backdrop-blur-md overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 bg-[#1e1e20]/80 backdrop-blur-md overflow-y-auto">
       <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.96 }}
-        className="w-full max-w-5xl bg-cloud-dancer border border-eerie/20 shadow-2xl p-5 sm:p-8 md:p-10 my-6 max-h-[92vh] overflow-y-auto"
+        initial={{ opacity: 0, scale: 0.96, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 16 }}
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-5xl bg-[#f5f4f0] rounded-3xl border border-black/10 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.35)] p-5 sm:p-8 md:p-10 my-6 max-h-[92vh] overflow-y-auto bg-dot-grid text-[#1e1e20]"
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-5 border-b border-eerie/15">
+        <div className="flex items-center justify-between pb-5 border-b border-black/[0.08]">
           <div>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-crimson font-mono font-bold">
-              {isEditing ? 'Editing Project Case Study' : 'New Project Case Study'}
-            </span>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-1 text-eerie">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#8b151b] animate-pulse" />
+              <span className="text-[10px] tracking-[0.2em] uppercase text-[#8b151b] font-mono font-bold">
+                {isEditing ? 'Editing Project Case Study' : 'New Project Case Study'}
+              </span>
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold mt-1 text-[#1e1e20] tracking-tight">
               {formData.client ? `${formData.client} — ${formData.title || 'Untitled'}` : 'Case Study Details'}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-xs uppercase tracking-wider text-eerie/60 hover:text-eerie transition-colors px-3 py-1.5 border border-eerie/20 cursor-pointer"
+            className="px-4 py-2 rounded-full border border-black/15 bg-white/70 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all cursor-pointer shadow-2xs hover:scale-105"
           >
             ✕ Close
           </button>
         </div>
 
         {/* Section Tabs inside Editor */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-4 pb-2 border-b border-eerie/15 text-xs font-mono">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-5 pb-3 border-b border-black/[0.08] text-xs font-sans">
           <button
             type="button"
             onClick={() => setActiveTab('overview')}
-            className={`px-3.5 py-1.5 uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium ${
               activeTab === 'overview'
-                ? 'bg-crimson text-white font-bold'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
+                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
             }`}
           >
             ✦ Overview &amp; Artwork
@@ -234,23 +238,23 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           <button
             type="button"
             onClick={() => setActiveTab('making-process')}
-            className={`px-3.5 py-1.5 uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium flex items-center gap-1.5 ${
               activeTab === 'making-process'
-                ? 'bg-crimson text-white font-bold'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
+                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
             }`}
           >
             <span>✎ 5-Stage Making Process</span>
-            <span className="text-[9px] px-1 bg-white/20 rounded-xs">5 STAGES</span>
+            <span className="text-[9px] px-1.5 py-0.5 bg-[#8b151b] text-white rounded-full">5 STAGES</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('studio-process')}
-            className={`px-3.5 py-1.5 uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium ${
               activeTab === 'studio-process'
-                ? 'bg-crimson text-white font-bold'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
+                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
             }`}
           >
             ⚙ Process Behind The Process
@@ -259,10 +263,10 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           <button
             type="button"
             onClick={() => setActiveTab('specs')}
-            className={`px-3.5 py-1.5 uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium ${
               activeTab === 'specs'
-                ? 'bg-crimson text-white font-bold'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
+                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
             }`}
           >
             ◫ Specs &amp; Pantones
@@ -279,7 +283,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
               <div className="lg:col-span-7 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                       Client / Brand Name *
                     </label>
                     <input
@@ -288,12 +292,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       placeholder="e.g. Gokul Oils"
                       value={formData.client}
                       onChange={(e) => setFormData({ ...formData, client: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] focus:ring-1 focus:ring-[#8b151b] outline-none transition-all font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                       Project Title *
                     </label>
                     <input
@@ -302,20 +306,20 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       placeholder="e.g. Packaging Architecture"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] focus:ring-1 focus:ring-[#8b151b] outline-none transition-all font-sans"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                       Category
                     </label>
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none cursor-pointer"
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none cursor-pointer transition-all font-sans"
                     >
                       {CATEGORIES.map((cat) => (
                         <option key={cat.value} value={cat.value}>
@@ -326,7 +330,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                       Year
                     </label>
                     <input
@@ -334,12 +338,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       placeholder="2024"
                       value={formData.year}
                       onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-mono"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                       Impact Pill / Metric
                     </label>
                     <input
@@ -347,13 +351,13 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       placeholder="+40% Sales Increase"
                       value={formData.metric}
                       onChange={(e) => setFormData({ ...formData, metric: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-sans"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                     Summary / Card Description
                   </label>
                   <textarea
@@ -361,13 +365,13 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                     placeholder="A concise 1-2 sentence description shown on the portfolio card..."
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                    className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                       The Brief / Challenge
                     </label>
                     <textarea
@@ -375,12 +379,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       placeholder="What was the problem the client needed solved?"
                       value={formData.brief}
                       onChange={(e) => setFormData({ ...formData, brief: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                       Strategy &amp; Approach
                     </label>
                     <textarea
@@ -388,13 +392,13 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       placeholder="How did you solve it through design?"
                       value={formData.approach}
                       onChange={(e) => setFormData({ ...formData, approach: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                     Deliverables List
                   </label>
                   <input
@@ -402,7 +406,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                     placeholder="Brand Identity • Packaging Architecture • 3D Renders"
                     value={formData.deliverables}
                     onChange={(e) => setFormData({ ...formData, deliverables: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-sm focus:border-eerie outline-none"
+                    className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-sans"
                   />
                 </div>
 
@@ -412,9 +416,9 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                     id="isFeatured"
                     checked={formData.isFeatured}
                     onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
-                    className="h-4 w-4 text-crimson accent-crimson cursor-pointer"
+                    className="h-4 w-4 accent-[#8b151b] cursor-pointer"
                   />
-                  <label htmlFor="isFeatured" className="text-xs font-mono uppercase tracking-wider text-eerie/80 cursor-pointer">
+                  <label htmlFor="isFeatured" className="text-xs font-sans text-[#1e1e20]/80 cursor-pointer font-medium">
                     Feature on Home Portfolio Grid
                   </label>
                 </div>
@@ -422,12 +426,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
 
               {/* Right Column: Main Artwork Media Selector */}
               <div className="lg:col-span-5 space-y-4">
-                <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70">
+                <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 font-medium">
                   Primary Final Artwork *
                 </label>
 
                 {/* Preview Box */}
-                <div className="relative aspect-[4/3] bg-neutral-900 border border-eerie/20 overflow-hidden flex items-center justify-center">
+                <div className="relative aspect-[4/3] bg-neutral-900 rounded-3xl border border-black/10 overflow-hidden flex items-center justify-center shadow-md">
                   {formData.image ? (
                     <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
                   ) : (
@@ -441,25 +445,25 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                 </div>
 
                 {/* Image Tabs */}
-                <div className="flex items-center gap-1 border-b border-eerie/15 pb-2 text-xs font-mono">
+                <div className="flex items-center gap-1.5 border-b border-black/[0.08] pb-2 text-xs font-sans">
                   <button
                     type="button"
                     onClick={() => setImageTab('upload')}
-                    className={`px-3 py-1 cursor-pointer ${imageTab === 'upload' ? 'bg-eerie text-white font-bold' : 'text-eerie/60'}`}
+                    className={`px-4 py-1.5 rounded-full cursor-pointer transition-all ${imageTab === 'upload' ? 'bg-[#1e1e20] text-white font-medium' : 'text-[#1e1e20]/60 hover:text-[#1e1e20]'}`}
                   >
                     Upload
                   </button>
                   <button
                     type="button"
                     onClick={() => setImageTab('preset')}
-                    className={`px-3 py-1 cursor-pointer ${imageTab === 'preset' ? 'bg-eerie text-white font-bold' : 'text-eerie/60'}`}
+                    className={`px-4 py-1.5 rounded-full cursor-pointer transition-all ${imageTab === 'preset' ? 'bg-[#1e1e20] text-white font-medium' : 'text-[#1e1e20]/60 hover:text-[#1e1e20]'}`}
                   >
                     Presets
                   </button>
                   <button
                     type="button"
                     onClick={() => setImageTab('url')}
-                    className={`px-3 py-1 cursor-pointer ${imageTab === 'url' ? 'bg-eerie text-white font-bold' : 'text-eerie/60'}`}
+                    className={`px-4 py-1.5 rounded-full cursor-pointer transition-all ${imageTab === 'url' ? 'bg-[#1e1e20] text-white font-medium' : 'text-[#1e1e20]/60 hover:text-[#1e1e20]'}`}
                   >
                     URL
                   </button>
@@ -477,22 +481,23 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full py-2.5 border border-dashed border-eerie/30 hover:border-crimson text-xs font-mono uppercase tracking-wider text-eerie/80 hover:text-crimson transition-colors cursor-pointer"
+                      className="w-full py-3.5 rounded-2xl border-2 border-dashed border-black/15 hover:border-[#8b151b] text-xs font-sans font-medium text-[#1e1e20]/80 hover:text-[#8b151b] bg-white transition-all cursor-pointer flex items-center justify-center gap-2"
                     >
-                      📁 Browse &amp; Upload Local File
+                      <span>📁</span>
+                      <span>Browse &amp; Upload Local File</span>
                     </button>
                   </div>
                 )}
 
                 {imageTab === 'preset' && (
-                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto p-1 bg-white border border-eerie/15">
+                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto p-2 bg-white rounded-2xl border border-black/10">
                     {PRESET_IMAGES.map((preset) => (
                       <button
                         key={preset.url}
                         type="button"
                         onClick={() => setFormData({ ...formData, image: preset.url })}
-                        className={`text-left p-2 border text-[11px] truncate cursor-pointer ${
-                          formData.image === preset.url ? 'border-crimson bg-crimson/5 font-bold text-crimson' : 'border-eerie/10 text-eerie/70'
+                        className={`text-left p-2.5 rounded-xl border text-[11px] truncate cursor-pointer transition-all ${
+                          formData.image === preset.url ? 'border-[#8b151b] bg-[#8b151b]/10 font-bold text-[#8b151b]' : 'border-black/5 hover:border-black/15 text-[#1e1e20]/70'
                         }`}
                       >
                         {preset.label}
@@ -507,7 +512,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                     placeholder="https://..."
                     value={formData.image}
                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs font-mono outline-none"
+                    className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs font-mono outline-none focus:border-[#8b151b]"
                   />
                 )}
               </div>
@@ -520,8 +525,8 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           {activeTab === 'making-process' && (
             <div className="space-y-6">
               {/* Process Behind Design Summary Paragraph */}
-              <div className="p-4 bg-cloud-white border border-eerie/15 space-y-2">
-                <label className="block text-[10px] font-mono uppercase tracking-wider text-crimson font-bold">
+              <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-2">
+                <label className="block text-[10px] font-mono uppercase tracking-wider text-[#8b151b] font-bold">
                   Process Behind the Design (Summary Paragraph)
                 </label>
                 <textarea
@@ -534,21 +539,21 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       process: { ...formData.process, summary: e.target.value },
                     })
                   }
-                  className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs outline-none focus:border-eerie resize-none"
+                  className="w-full px-4 py-3 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] resize-none font-sans"
                 />
-                <p className="text-[10px] font-mono text-eerie/50">
+                <p className="text-[10px] font-mono text-[#1e1e20]/50">
                   This paragraph is displayed prominently in &ldquo;The Process Behind the Design&rdquo; section on the case study screen.
                 </p>
               </div>
 
               {/* Early Concept / Exploration Image for Before-After Comparison */}
-              <div className="p-4 bg-cloud-white border border-eerie/15 space-y-4">
+              <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <h4 className="text-xs font-mono uppercase tracking-wider text-crimson font-bold">
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold">
                       Early Concept / Exploration Asset
                     </h4>
-                    <p className="text-xs text-eerie/60">
+                    <p className="text-xs text-[#1e1e20]/65 font-sans">
                       Showcased in the interactive &ldquo;Concept vs. Final System&rdquo; slider.
                     </p>
                   </div>
@@ -563,7 +568,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                     <button
                       type="button"
                       onClick={() => conceptFileInputRef.current?.click()}
-                      className="px-3 py-1 bg-white border border-eerie/20 text-xs font-mono hover:border-crimson cursor-pointer"
+                      className="px-4 py-2 rounded-full bg-[#f5f4f0] hover:bg-white border border-black/15 text-xs font-sans font-medium text-[#1e1e20] hover:border-[#8b151b] cursor-pointer shadow-2xs"
                     >
                       Upload Concept Image
                     </button>
@@ -572,7 +577,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-mono uppercase tracking-wider text-eerie/60 mb-1">
+                    <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
                       Concept Image Path / URL
                     </label>
                     <input
@@ -585,12 +590,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           process: { ...formData.process, conceptImage: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs font-mono outline-none"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs font-mono outline-none focus:border-[#8b151b]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-mono uppercase tracking-wider text-eerie/60 mb-1">
+                    <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
                       Pick From Available Sample Assets
                     </label>
                     <select
@@ -601,7 +606,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           process: { ...formData.process, conceptImage: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs outline-none cursor-pointer"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none cursor-pointer focus:border-[#8b151b] font-sans"
                     >
                       <option value="">-- No Concept Comparison --</option>
                       {PRESET_SAMPLES.map((s) => (
@@ -615,7 +620,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-mono uppercase tracking-wider text-eerie/60 mb-1">
+                    <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
                       Concept Label
                     </label>
                     <input
@@ -628,12 +633,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           process: { ...formData.process, conceptLabel: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs outline-none"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-mono uppercase tracking-wider text-eerie/60 mb-1">
+                    <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
                       Final Production Label
                     </label>
                     <input
@@ -646,26 +651,26 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           process: { ...formData.process, finalLabel: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs outline-none"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Stage Navigation Pills */}
-              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 border-b border-eerie/10">
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
                 {formData.process.stages.map((stage, idx) => (
                   <button
                     key={stage.step}
                     type="button"
                     onClick={() => setActiveStageEditIndex(idx)}
-                    className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                    className={`px-4 py-2 rounded-full text-xs font-sans uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
                       activeStageEditIndex === idx
-                        ? 'bg-crimson text-white font-bold'
-                        : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                        ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md font-semibold'
+                        : 'bg-white border border-black/[0.08] text-[#1e1e20]/75 hover:text-[#1e1e20]'
                     }`}
                   >
-                    <span>{stage.step}</span>
+                    <span className="font-mono text-[#8b151b] font-bold">{stage.step}</span>
                     <span className="truncate max-w-[120px]">{stage.phase}</span>
                   </button>
                 ))}
@@ -673,19 +678,19 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
 
               {/* Active Stage Form Fields */}
               {formData.process.stages[activeStageEditIndex] && (
-                <div className="p-5 bg-white border border-eerie/15 space-y-4">
-                  <div className="flex items-center justify-between pb-2 border-b border-eerie/10">
-                    <span className="text-xs font-mono font-bold text-crimson uppercase tracking-wider">
+                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-black/[0.06]">
+                    <span className="text-xs font-mono font-bold text-[#8b151b] uppercase tracking-wider">
                       Editing Phase {formData.process.stages[activeStageEditIndex].step}
                     </span>
-                    <span className="text-[10px] font-mono text-eerie/50">
+                    <span className="text-[10px] font-mono text-[#1e1e20]/50">
                       Phase {activeStageEditIndex + 1} of 5
                     </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Phase Name
                       </label>
                       <input
@@ -694,12 +699,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                         onChange={(e) =>
                           updateStageField(activeStageEditIndex, 'phase', e.target.value)
                         }
-                        className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs font-semibold outline-none"
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs font-semibold outline-none focus:border-[#8b151b] font-sans"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Stage Title / Headline
                       </label>
                       <input
@@ -708,13 +713,13 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                         onChange={(e) =>
                           updateStageField(activeStageEditIndex, 'title', e.target.value)
                         }
-                        className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs font-semibold outline-none"
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs font-semibold outline-none focus:border-[#8b151b] font-sans"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                       Narrative Paragraph
                     </label>
                     <textarea
@@ -723,12 +728,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       onChange={(e) =>
                         updateStageField(activeStageEditIndex, 'narrative', e.target.value)
                       }
-                      className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none leading-relaxed"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] leading-relaxed font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-crimson font-bold mb-1">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold mb-1">
                       Strategic Design Decision Rationale (Callout Quote)
                     </label>
                     <textarea
@@ -737,12 +742,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       onChange={(e) =>
                         updateStageField(activeStageEditIndex, 'decision', e.target.value)
                       }
-                      className="w-full px-3 py-2 bg-cloud-white border border-crimson/30 text-xs outline-none leading-relaxed"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-[#8b151b]/30 text-xs outline-none leading-relaxed font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                       Deliverable / Tangible Artifact Badge
                     </label>
                     <input
@@ -751,7 +756,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       onChange={(e) =>
                         updateStageField(activeStageEditIndex, 'artifact', e.target.value)
                       }
-                      className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                     />
                   </div>
                 </div>
@@ -764,13 +769,13 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           {/* ========================================================= */}
           {activeTab === 'studio-process' && (
             <div className="space-y-6">
-              <div className="p-4 bg-cloud-white border border-eerie/15 space-y-4">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-crimson font-bold">
+              <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold">
                   Studio Principle &amp; Guiding Quote
                 </h4>
 
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-wider text-eerie/60 mb-1">
+                  <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
                     Studio Truth / Quote
                   </label>
                   <textarea
@@ -785,12 +790,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                         },
                       })
                     }
-                    className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs outline-none"
+                    className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-wider text-eerie/60 mb-1">
+                  <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
                     Subtitle Description
                   </label>
                   <input
@@ -805,20 +810,20 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                         },
                       })
                     }
-                    className="w-full px-3 py-2 bg-white border border-eerie/20 text-xs outline-none"
+                    className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                   />
                 </div>
               </div>
 
               {/* 4 Protocol Pillars */}
               <div className="space-y-3">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-eerie/70 font-bold">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 font-bold">
                   The 4 Studio Protocol Pillars
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {formData.processBehindProcess.pillars?.map((pillar, idx) => (
-                    <div key={idx} className="p-4 bg-white border border-eerie/15 space-y-2">
-                      <div className="flex items-center justify-between text-[10px] font-mono text-eerie/40">
+                    <div key={idx} className="p-5 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-2">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-[#1e1e20]/40">
                         <span>PILLAR 0{idx + 1}</span>
                       </div>
                       <input
@@ -826,21 +831,21 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                         placeholder="Pillar Label"
                         value={pillar.label}
                         onChange={(e) => updatePillar(idx, 'label', e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-cloud-white border border-eerie/20 text-xs font-bold outline-none"
+                        className="w-full px-3 py-2 bg-[#f5f4f0] focus:bg-white rounded-xl border border-black/15 text-xs font-bold outline-none font-sans"
                       />
                       <input
                         type="text"
                         placeholder="Metric / Badge"
                         value={pillar.metric}
                         onChange={(e) => updatePillar(idx, 'metric', e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-cloud-white border border-crimson/20 text-xs font-mono text-crimson outline-none"
+                        className="w-full px-3 py-2 bg-[#f5f4f0] focus:bg-white rounded-xl border border-[#8b151b]/20 text-xs font-mono text-[#8b151b] outline-none"
                       />
                       <textarea
                         rows={2}
                         placeholder="Detail explanation..."
                         value={pillar.detail}
                         onChange={(e) => updatePillar(idx, 'detail', e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                        className="w-full px-3 py-2 bg-[#f5f4f0] focus:bg-white rounded-xl border border-black/15 text-xs outline-none resize-none font-sans"
                       />
                     </div>
                   ))}
@@ -848,8 +853,8 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
               </div>
 
               {/* Deep-Dive Narrative */}
-              <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+              <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs">
+                <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-2 font-medium">
                   The Adversarial Standard: Deep-Dive Philosophy
                 </label>
                 <textarea
@@ -864,7 +869,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       },
                     })
                   }
-                  className="w-full px-3.5 py-2.5 bg-white border border-eerie/20 text-xs outline-none leading-relaxed"
+                  className="w-full px-4 py-3 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] leading-relaxed font-sans"
                 />
               </div>
             </div>
@@ -876,14 +881,14 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           {activeTab === 'specs' && (
             <div className="space-y-6">
               {formData.category === 'packaging' ? (
-                <div className="p-5 bg-white border border-eerie/15 space-y-4">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-crimson font-bold">
+                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold">
                     Packaging Anatomy &amp; Print Specifications
                   </h4>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Substrate Material
                       </label>
                       <input
@@ -895,12 +900,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                             anatomy: { ...formData.anatomy, substrate: e.target.value },
                           })
                         }
-                        className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Finish &amp; Embellishments
                       </label>
                       <input
@@ -912,14 +917,14 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                             anatomy: { ...formData.anatomy, finish: e.target.value },
                           })
                         }
-                        className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Dieline Geometry Type
                       </label>
                       <input
@@ -931,12 +936,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                             anatomy: { ...formData.anatomy, dielineType: e.target.value },
                           })
                         }
-                        className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Dimensions
                       </label>
                       <input
@@ -948,19 +953,19 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                             anatomy: { ...formData.anatomy, dimensions: e.target.value },
                           })
                         }
-                        className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-mono"
                       />
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="p-5 bg-white border border-eerie/15 space-y-4">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-crimson font-bold">
+                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold">
                     Design System Architecture &amp; Specifications
                   </h4>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                       Typography Hierarchy &amp; Pairing
                     </label>
                     <input
@@ -972,12 +977,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           systemSpecs: { ...formData.systemSpecs, typography: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                       Grid &amp; Spatial Hierarchy
                     </label>
                     <input
@@ -989,12 +994,12 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           systemSpecs: { ...formData.systemSpecs, grid: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                       Compliance Standard
                     </label>
                     <input
@@ -1006,7 +1011,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           systemSpecs: { ...formData.systemSpecs, standard: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-cloud-white border border-eerie/20 text-xs outline-none"
+                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
                     />
                   </div>
                 </div>
@@ -1015,18 +1020,18 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           )}
 
           {/* Form Actions Footer */}
-          <div className="flex items-center justify-between pt-6 border-t border-eerie/15">
+          <div className="flex items-center justify-between pt-6 border-t border-black/[0.08]">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 border border-eerie/20 text-xs font-semibold uppercase tracking-wider text-eerie/70 hover:text-eerie cursor-pointer"
+              className="px-6 py-2.5 rounded-full border border-black/15 bg-white hover:bg-[#f5f4f0] text-xs font-sans font-medium text-[#1e1e20]/70 hover:text-[#1e1e20] cursor-pointer transition-all shadow-2xs"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-7 py-2.5 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+              className="px-8 py-3 rounded-full bg-[#8b151b] hover:bg-[#7a161c] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-105"
             >
               Save Project &amp; Publish Case Study ↗
             </button>

@@ -36,7 +36,7 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative w-full bg-[#3f9157] text-[#f5f4f0] bg-dot-grid-cream py-24 sm:py-32 md:py-40 px-4 sm:px-6 lg:px-8 overflow-hidden select-none"
+      className="relative w-full bg-[#7a161c] text-[#f5f4f0] bg-dot-grid-cream py-24 sm:py-32 md:py-40 px-4 sm:px-6 lg:px-8 overflow-hidden select-none"
     >
       <div className="max-w-6xl mx-auto">
         {/* Editorial Manifesto Statement */}

@@ -64,3 +64,4 @@ const WordReveal = ({
 };
 
 export default WordReveal;
+

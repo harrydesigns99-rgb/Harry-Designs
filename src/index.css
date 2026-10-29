@@ -15,17 +15,27 @@
   --color-cloud-white: var(--theme-surface);
   --color-cloud-dancer: var(--theme-bg);
 
-  /* Shriya Editorial Palette */
+  /* Atelier Crimson & Editorial Palette */
+  --color-atelier-crimson: #8b151b;
+  --color-atelier-wine: #7a161c;
+  --color-atelier-deep: #5e0e13;
+  --color-atelier-accent: #FC7A69;
+  --color-atelier-cream: #f5f4f0;
+  --color-atelier-dark: #1e1e20;
+  --color-atelier-charcoal: #2b2d33;
+
+  /* Legacy tokens mapped to Atelier Crimson */
   --color-shriya-cream: #f5f4f0;
-  --color-shriya-green: #3f9157;
-  --color-shriya-green-deep: #2f7344;
+  --color-shriya-green: #7a161c;
+  --color-shriya-green-deep: #5e0e13;
   --color-shriya-dark: #1e1e20;
   --color-shriya-charcoal: #2b2d33;
   --color-shriya-spacefire: #FC7A69;
 
-  --font-sans: 'Geist', 'DM Sans', sans-serif;
-  --font-display: 'Clash Display', 'Space Grotesk', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 :root,
@@ -232,18 +242,18 @@
   body {
     background-color: var(--color-cloud-dancer);
     color: var(--color-eerie);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-rendering: optimizeLegibility;
     transition: background-color 300ms ease, color 300ms ease;
   }
 
   ::selection {
-    background: var(--color-crimson);
-    color: white;
+    background: #8b151b;
+    color: #f5f4f0;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-crimson-light);
+    outline: 2px solid #ba2026;
     outline-offset: 4px;
   }
 

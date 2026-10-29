@@ -37,7 +37,7 @@ const PRESET_LOGOS = [
 
 const AdminDashboard = ({ onNavigateHome }) => {
   const cms = useCMS();
-  const [activeTab, setActiveTab] = useState('projects'); // 'projects' | 'gallery' | 'brands' | 'sync'
+  const [activeTab, setActiveTab] = useState('projects'); // 'projects' | 'gallery' | 'brands' | 'profile' | 'sync'
   const [editingProject, setEditingProject] = useState(null);
   const [isCreatingProject, setIsCreatingProject] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -145,11 +145,11 @@ const AdminDashboard = ({ onNavigateHome }) => {
     }
   };
 
-  const handleBrandLogoUpload = async (file, isEditing = false) => {
+  const handleBrandLogoUpload = async (file, isEdit = false) => {
     if (!file) return;
     try {
-      const optimized = await optimizeImageFile(file, 800, 400, 0.9);
-      if (isEditing) {
+      const optimized = await optimizeImageFile(file, 800, 800, 0.9);
+      if (isEdit) {
         setEditBrandLogo(optimized);
       } else {
         setNewBrandLogo(optimized);
@@ -157,7 +157,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
     } catch {
       const reader = new FileReader();
       reader.onload = (event) => {
-        if (isEditing) {
+        if (isEdit) {
           setEditBrandLogo(event.target.result);
         } else {
           setNewBrandLogo(event.target.result);
@@ -169,8 +169,8 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
   const handleStartEditBrand = (brand, index) => {
     setEditingBrandIndex(index);
-    setEditBrandName(brand.name);
-    setEditBrandLogo(brand.logo);
+    setEditBrandName(brand.name || '');
+    setEditBrandLogo(brand.logo || '');
   };
 
   const handleSaveBrandEdit = (e) => {
@@ -218,32 +218,32 @@ const AdminDashboard = ({ onNavigateHome }) => {
   };
 
   return (
-    <div className="min-h-screen bg-cloud-dancer text-eerie font-sans">
+    <div className="min-h-screen bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid font-sans">
       {/* Top Studio Bar */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-eerie/15 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-30 bg-[#f5f4f0]/92 backdrop-blur-md border-b border-black/[0.08] px-4 sm:px-8 py-3.5 flex items-center justify-between">
+        <div className="flex items-center gap-3 sm:gap-4">
           <button
             onClick={onNavigateHome}
-            className="font-display font-bold text-lg text-eerie hover:text-crimson transition-colors flex items-center gap-2"
+            className="font-display font-bold text-base sm:text-lg text-[#1e1e20] hover:text-[#8b151b] transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <span className="h-2 w-2 rounded-full bg-crimson animate-ping" />
-            Harry Designs
-            <span className="text-xs font-mono font-normal uppercase tracking-widest text-eerie/50 border border-eerie/20 px-2 py-0.5">
+            <span className="h-2 w-2 rounded-full bg-[#8b151b] animate-pulse" />
+            <span>Harry Designs</span>
+            <span className="text-[10px] font-mono font-medium uppercase tracking-widest text-[#1e1e20]/60 bg-white/80 border border-black/[0.08] px-2.5 py-0.5 rounded-full shadow-2xs">
               Studio CMS
             </span>
           </button>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onNavigateHome}
-            className="px-4 py-2 border border-eerie/20 text-xs font-semibold uppercase tracking-wider text-eerie/70 hover:text-eerie hover:bg-cloud-dancer transition-colors"
+            className="px-4 py-2 rounded-full border border-black/15 bg-white/70 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all shadow-2xs hover:scale-105 cursor-pointer"
           >
             View Live Site ↗
           </button>
           <button
             onClick={() => cms.logout()}
-            className="px-4 py-2 bg-eerie text-white text-xs font-semibold uppercase tracking-wider hover:bg-crimson transition-colors"
+            className="px-4 sm:px-5 py-2 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-[#f5f4f0] text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer"
           >
             Lock Studio
           </button>
@@ -251,62 +251,87 @@ const AdminDashboard = ({ onNavigateHome }) => {
       </header>
 
       {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-eerie/15 pb-4 mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
+        {/* Navigation Tabs - Modern curved pill switcher */}
+        <div className="flex flex-wrap items-center gap-2 pb-6 mb-8 border-b border-black/[0.08]">
           <button
             onClick={() => setActiveTab('projects')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-5 py-2.5 rounded-full text-xs font-sans tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'projects'
-                ? 'bg-eerie text-white font-bold shadow-sm'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105 font-semibold'
+                : 'bg-white/80 hover:bg-white text-[#1e1e20]/75 border border-black/[0.08] shadow-2xs font-medium'
             }`}
           >
-            Selected Work ({cms.projects.length})
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                activeTab === 'projects' ? 'bg-[#FC7A69]' : 'bg-black/20'
+              }`}
+            />
+            <span>Selected Work ({cms.projects.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('gallery')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-5 py-2.5 rounded-full text-xs font-sans tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'gallery'
-                ? 'bg-eerie text-white font-bold shadow-sm'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105 font-semibold'
+                : 'bg-white/80 hover:bg-white text-[#1e1e20]/75 border border-black/[0.08] shadow-2xs font-medium'
             }`}
           >
-            Hero Carousel ({cms.galleryImages.length})
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                activeTab === 'gallery' ? 'bg-[#FC7A69]' : 'bg-black/20'
+              }`}
+            />
+            <span>Hero Carousel ({cms.galleryImages.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('brands')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-5 py-2.5 rounded-full text-xs font-sans tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'brands'
-                ? 'bg-eerie text-white font-bold shadow-sm'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105 font-semibold'
+                : 'bg-white/80 hover:bg-white text-[#1e1e20]/75 border border-black/[0.08] shadow-2xs font-medium'
             }`}
           >
-            Client Logos ({cms.brands.length})
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                activeTab === 'brands' ? 'bg-[#FC7A69]' : 'bg-black/20'
+              }`}
+            />
+            <span>Client Logos ({cms.brands.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('profile')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-5 py-2.5 rounded-full text-xs font-sans tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'profile'
-                ? 'bg-eerie text-white font-bold shadow-sm'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105 font-semibold'
+                : 'bg-white/80 hover:bg-white text-[#1e1e20]/75 border border-black/[0.08] shadow-2xs font-medium'
             }`}
           >
-            Founder Profile &amp; Photo
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                activeTab === 'profile' ? 'bg-[#FC7A69]' : 'bg-black/20'
+              }`}
+            />
+            <span>Founder Profile &amp; Photo</span>
           </button>
 
           <button
             onClick={() => setActiveTab('sync')}
-            className={`px-5 py-2.5 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-5 py-2.5 rounded-full text-xs font-sans tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'sync'
-                ? 'bg-eerie text-white font-bold shadow-sm'
-                : 'bg-white border border-eerie/15 text-eerie/70 hover:text-eerie'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105 font-semibold'
+                : 'bg-white/80 hover:bg-white text-[#1e1e20]/75 border border-black/[0.08] shadow-2xs font-medium'
             }`}
           >
-            Export & Permanent Sync
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                activeTab === 'sync' ? 'bg-[#FC7A69]' : 'bg-black/20'
+              }`}
+            />
+            <span>Export &amp; Git Sync</span>
           </button>
         </div>
 
@@ -314,22 +339,22 @@ const AdminDashboard = ({ onNavigateHome }) => {
         {/* TAB 1: SELECTED WORK (PROJECTS) */}
         {/* ========================================================= */}
         {activeTab === 'projects' && (
-          <div>
+          <div className="space-y-6">
             {/* Action & Filter Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 bg-white rounded-3xl border border-black/[0.08] shadow-xs">
+              <div className="flex flex-wrap items-center gap-3">
                 <input
                   type="text"
-                  placeholder="Search projects by client or title..."
+                  placeholder="Search by client or title..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="px-4 py-2.5 bg-white border border-eerie/20 text-xs w-64 md:w-80 outline-none focus:border-eerie"
+                  className="px-4 py-2.5 bg-[#f5f4f0] rounded-full border border-black/10 text-xs w-60 sm:w-72 outline-none focus:border-[#8b151b] focus:bg-white transition-all font-sans"
                 />
 
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="px-3 py-2.5 bg-white border border-eerie/20 text-xs outline-none cursor-pointer"
+                  className="px-4 py-2.5 bg-[#f5f4f0] rounded-full border border-black/10 text-xs outline-none cursor-pointer focus:border-[#8b151b] focus:bg-white transition-all font-sans"
                 >
                   <option value="all">All Categories</option>
                   <option value="packaging">Packaging</option>
@@ -342,32 +367,32 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
               <button
                 onClick={() => setIsCreatingProject(true)}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#8b151b] hover:bg-[#7a161c] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-md hover:shadow-lg cursor-pointer hover:scale-105"
               >
                 <span>+ Add New Project</span>
               </button>
             </div>
 
-            {/* Projects List */}
-            <div className="bg-white border border-eerie/15 divide-y divide-eerie/10">
+            {/* Projects Cards List */}
+            <div className="space-y-3">
               {filteredProjects.length === 0 ? (
-                <div className="p-12 text-center text-eerie/50 text-xs font-mono">
+                <div className="p-16 text-center text-[#1e1e20]/50 text-xs font-mono bg-white rounded-3xl border border-black/[0.08]">
                   No projects match your filter.
                 </div>
               ) : (
                 filteredProjects.map((project, index) => (
                   <div
                     key={project.id}
-                    className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-cloud-dancer/30 transition-colors"
+                    className="p-5 sm:p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5 group"
                   >
                     {/* Left: Thumbnail & Info */}
-                    <div className="flex items-center gap-4">
-                      {/* Order Controls */}
+                    <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0">
+                      {/* Reorder Buttons */}
                       <div className="flex flex-col gap-1">
                         <button
                           disabled={index === 0}
                           onClick={() => cms.moveProject(index, -1)}
-                          className="p-1 border border-eerie/15 hover:border-eerie text-[10px] disabled:opacity-20 cursor-pointer"
+                          className="w-7 h-7 rounded-full bg-[#f5f4f0] hover:bg-black/10 border border-black/10 flex items-center justify-center text-[10px] text-[#1e1e20] disabled:opacity-20 cursor-pointer transition-colors"
                           title="Move up"
                         >
                           ▲
@@ -375,7 +400,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         <button
                           disabled={index === cms.projects.length - 1}
                           onClick={() => cms.moveProject(index, 1)}
-                          className="p-1 border border-eerie/15 hover:border-eerie text-[10px] disabled:opacity-20 cursor-pointer"
+                          className="w-7 h-7 rounded-full bg-[#f5f4f0] hover:bg-black/10 border border-black/10 flex items-center justify-center text-[10px] text-[#1e1e20] disabled:opacity-20 cursor-pointer transition-colors"
                           title="Move down"
                         >
                           ▼
@@ -383,63 +408,66 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       </div>
 
                       {/* Image Thumbnail */}
-                      <div className="h-16 w-16 bg-eerie overflow-hidden border border-eerie/15 flex-shrink-0">
+                      <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-[#1e1e20] overflow-hidden border border-black/10 flex-shrink-0 relative shadow-2xs">
                         {project.image ? (
                           <img
                             src={project.image}
                             alt={project.client}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover group-hover:scale-106 transition-transform duration-500"
                           />
                         ) : (
-                          <div className="h-full w-full flex items-center justify-center text-[10px] text-white/30">
+                          <div className="h-full w-full flex items-center justify-center text-[10px] text-white/40 font-mono">
                             No Img
                           </div>
                         )}
                       </div>
 
                       {/* Text */}
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-display font-bold text-base text-eerie">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                          <span className="font-display font-bold text-base sm:text-lg text-[#1e1e20]">
                             {project.client}
                           </span>
-                          <span className="text-[10px] uppercase font-mono px-2 py-0.5 bg-cloud-dancer border border-eerie/10 text-eerie/60">
+                          <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-[#f5f4f0] border border-black/10 text-[#1e1e20]/70 font-medium">
                             {project.category}
                           </span>
                           {project.metric && (
-                            <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 bg-crimson text-white">
+                            <span className="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-[#8b151b] text-white">
                               {project.metric}
                             </span>
                           )}
                           {project.isFeatured !== false && (
-                            <span className="text-[9px] uppercase font-mono text-crimson font-bold">
-                              ★ Featured
+                            <span className="text-[10px] uppercase font-mono text-[#8b151b] font-bold flex items-center gap-1">
+                              <span>★</span>
+                              <span>Featured</span>
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-eerie/70 font-medium">{project.title}</p>
-                        <p className="text-[11px] text-eerie/50 line-clamp-1 mt-0.5">
+                        <p className="text-xs sm:text-sm text-[#1e1e20]/80 font-medium line-clamp-1">
+                          {project.title}
+                        </p>
+                        <p className="text-xs text-[#1e1e20]/55 line-clamp-1 mt-0.5 font-sans">
                           {project.description}
                         </p>
                       </div>
                     </div>
 
-                    {/* Right: Actions */}
-                    <div className="flex items-center gap-2 self-end sm:self-center">
+                    {/* Right: Action Pills */}
+                    <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-black/[0.06]">
                       <button
                         onClick={() => cms.toggleFeatured(project.id)}
-                        className={`px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider border transition-colors cursor-pointer ${
+                        className={`px-3.5 py-1.5 rounded-full text-[11px] font-sans font-medium uppercase tracking-wider border transition-all cursor-pointer ${
                           project.isFeatured !== false
-                            ? 'bg-amber-500/10 border-amber-500 text-amber-800'
-                            : 'border-eerie/20 text-eerie/50 hover:text-eerie'
+                            ? 'bg-[#8b151b]/10 border-[#8b151b] text-[#8b151b]'
+                            : 'border-black/15 bg-white text-[#1e1e20]/60 hover:text-[#1e1e20]'
                         }`}
                       >
-                        {project.isFeatured !== false ? 'Featured' : 'Make Featured'}
+                        {project.isFeatured !== false ? '★ Featured' : 'Make Featured'}
                       </button>
 
                       <button
                         onClick={() => setEditingProject(project)}
-                        className="px-4 py-1.5 border border-eerie/20 hover:border-eerie text-xs font-semibold uppercase tracking-wider text-eerie transition-colors cursor-pointer"
+                        className="px-4 py-1.5 rounded-full border border-black/15 hover:border-black/30 bg-[#f5f4f0] hover:bg-white text-xs font-sans font-semibold uppercase tracking-wider text-[#1e1e20] transition-all cursor-pointer shadow-2xs hover:scale-105"
                       >
                         Edit
                       </button>
@@ -451,7 +479,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                           window.history.pushState({}, '', `/project/${project.id}`);
                           window.dispatchEvent(new PopStateEvent('popstate'));
                         }}
-                        className="px-3 py-1.5 border border-eerie/20 hover:border-crimson hover:text-crimson text-xs font-semibold uppercase tracking-wider text-eerie/70 transition-colors cursor-pointer flex items-center gap-1"
+                        className="px-4 py-1.5 rounded-full border border-black/15 hover:border-[#8b151b] hover:text-[#8b151b] bg-[#f5f4f0] hover:bg-white text-xs font-sans font-medium uppercase tracking-wider text-[#1e1e20]/75 transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
                         title="Open dedicated case study screen"
                       >
                         View Screen ↗
@@ -463,7 +491,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                             cms.deleteProject(project.id);
                           }
                         }}
-                        className="px-3 py-1.5 border border-red-200 hover:bg-red-50 text-xs font-semibold uppercase tracking-wider text-crimson transition-colors cursor-pointer"
+                        className="px-3.5 py-1.5 rounded-full border border-red-200 hover:bg-red-50 text-xs font-sans font-medium uppercase tracking-wider text-red-600 transition-colors cursor-pointer"
                       >
                         Delete
                       </button>
@@ -479,21 +507,22 @@ const AdminDashboard = ({ onNavigateHome }) => {
         {/* TAB 2: HERO CAROUSEL & PARALLAX GALLERY */}
         {/* ========================================================= */}
         {activeTab === 'gallery' && (
-          <div className="space-y-8">
-            <div className="bg-white border border-eerie/15 p-6">
-              <h3 className="font-display font-bold text-xl text-eerie mb-2">
-                Parallax Gallery & Carousel Artwork
+          <div className="space-y-6">
+            <div className="bg-white rounded-3xl border border-black/[0.08] shadow-xs p-6 sm:p-8">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold block mb-1">
+                Visual Curation
+              </span>
+              <h3 className="font-display font-bold text-2xl text-[#1e1e20] mb-2">
+                Parallax Gallery &amp; Carousel Artwork
               </h3>
-              <p className="text-xs text-eerie/60 mb-6 leading-relaxed max-w-2xl">
-                These images rotate smoothly inside the 3 hero parallax columns and the mobile
-                carousel. Upload new artwork from your computer, choose from preloaded artboards, or
-                paste an image link.
+              <p className="text-xs sm:text-sm text-[#1e1e20]/70 mb-6 leading-relaxed max-w-2xl font-sans">
+                These images rotate smoothly across the hero parallax stage and full case archive. Upload high-res imagery, paste direct CDN URLs, or pick from pre-rendered studio artboards.
               </p>
 
               {/* Add image controls */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-eerie/15">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-black/[0.08]">
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-2 font-medium">
                     Upload New Image from Computer
                   </label>
                   <input
@@ -505,14 +534,15 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   />
                   <button
                     onClick={() => galleryFileRef.current?.click()}
-                    className="w-full py-3 border-2 border-dashed border-eerie/20 hover:border-crimson text-xs font-semibold text-eerie transition-colors bg-cloud-dancer/40 cursor-pointer"
+                    className="w-full py-4 rounded-2xl border-2 border-dashed border-black/15 hover:border-[#8b151b] text-xs font-sans font-semibold text-[#1e1e20] transition-all bg-[#f5f4f0]/60 hover:bg-white cursor-pointer flex items-center justify-center gap-2"
                   >
-                    + Choose Image File to Add
+                    <span>📁</span>
+                    <span>Choose Image File to Add</span>
                   </button>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-2 font-medium">
                     Or Paste Image URL
                   </label>
                   <div className="flex gap-2">
@@ -521,7 +551,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       placeholder="https://..."
                       value={newGalleryUrl}
                       onChange={(e) => setNewGalleryUrl(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-cloud-dancer border border-eerie/20 text-xs outline-none"
+                      className="flex-1 px-4 py-3 bg-[#f5f4f0] rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] focus:bg-white font-mono"
                     />
                     <button
                       onClick={() => {
@@ -530,7 +560,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                           setNewGalleryUrl('');
                         }
                       }}
-                      className="px-4 py-2 bg-eerie text-white text-xs uppercase font-semibold hover:bg-crimson transition-colors cursor-pointer"
+                      className="px-6 py-3 rounded-2xl bg-[#1e1e20] text-white text-xs uppercase font-sans font-semibold hover:bg-[#8b151b] transition-all cursor-pointer shadow-sm"
                     >
                       Add
                     </button>
@@ -541,10 +571,10 @@ const AdminDashboard = ({ onNavigateHome }) => {
               {/* Speed slider */}
               <div className="pt-6">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono uppercase tracking-wider text-eerie/70">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 font-medium">
                     Parallax Drift Velocity
                   </span>
-                  <span className="text-xs font-mono font-bold text-crimson">
+                  <span className="text-xs font-mono font-bold text-[#8b151b]">
                     {cms.settings.parallaxSpeed || 0.038}
                   </span>
                 </div>
@@ -557,10 +587,10 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   onChange={(e) =>
                     cms.updateSettings({ parallaxSpeed: parseFloat(e.target.value) })
                   }
-                  className="w-full accent-crimson cursor-pointer"
+                  className="w-full accent-[#8b151b] cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-eerie/40 font-mono mt-1">
-                  <span>Slow & Subtle (0.01)</span>
+                <div className="flex justify-between text-[10px] text-[#1e1e20]/50 font-mono mt-1">
+                  <span>Slow &amp; Subtle (0.01)</span>
                   <span>Cinematic Default (0.038)</span>
                   <span>Fast Drift (0.08)</span>
                 </div>
@@ -572,171 +602,190 @@ const AdminDashboard = ({ onNavigateHome }) => {
               {cms.galleryImages.map((imgUrl, index) => (
                 <div
                   key={`${imgUrl}-${index}`}
-                  className="group relative bg-white border border-eerie/15 p-2 shadow-sm"
+                  className="group relative bg-white rounded-2xl border border-black/[0.08] p-2.5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                 >
-                  <div className="aspect-[4/5] bg-eerie overflow-hidden mb-2">
+                  <div className="aspect-[4/5] rounded-xl bg-[#1e1e20] overflow-hidden mb-2 relative">
                     <img
                       src={imgUrl}
                       alt={`Gallery artboard ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover group-hover:scale-106 transition-transform duration-500"
                     />
+                    <div className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-[9px] font-mono text-white">
+                      #{index + 1}
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono text-eerie/60">
-                    <span>#{index + 1}</span>
-                    <div className="flex gap-1">
+                  <div className="flex items-center justify-between pt-1">
+                    <div className="flex items-center gap-1">
                       <button
                         disabled={index === 0}
                         onClick={() => cms.moveGalleryImage(index, -1)}
-                        className="p-1 border border-eerie/10 hover:border-eerie disabled:opacity-20 cursor-pointer"
-                        title="Move left"
+                        className="w-6 h-6 rounded-full bg-[#f5f4f0] hover:bg-black/10 border border-black/10 flex items-center justify-center text-[10px] disabled:opacity-20 cursor-pointer"
+                        title="Move earlier"
                       >
                         ◀
                       </button>
                       <button
                         disabled={index === cms.galleryImages.length - 1}
                         onClick={() => cms.moveGalleryImage(index, 1)}
-                        className="p-1 border border-eerie/10 hover:border-eerie disabled:opacity-20 cursor-pointer"
-                        title="Move right"
+                        className="w-6 h-6 rounded-full bg-[#f5f4f0] hover:bg-black/10 border border-black/10 flex items-center justify-center text-[10px] disabled:opacity-20 cursor-pointer"
+                        title="Move later"
                       >
                         ▶
                       </button>
-                      <button
-                        onClick={() => {
-                          if (confirm(`Remove image #${index + 1}?`)) {
-                            cms.removeGalleryImage(index);
-                          }
-                        }}
-                        className="p-1 border border-red-200 text-crimson hover:bg-red-50 cursor-pointer"
-                        title="Delete"
-                      >
-                        ✕
-                      </button>
                     </div>
+
+                    <button
+                      onClick={() => cms.removeGalleryImage(index)}
+                      className="text-[10px] font-mono text-red-600 hover:text-red-700 uppercase cursor-pointer"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Preset Artboards Picker */}
+            <div className="bg-white rounded-3xl border border-black/[0.08] shadow-xs p-6">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60 block mb-3 font-semibold">
+                + Add Preloaded Artboards:
+              </span>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                {PRESET_ARTBOARDS.map((artboard, idx) => (
+                  <button
+                    key={artboard}
+                    type="button"
+                    onClick={() => cms.addGalleryImage(artboard)}
+                    className="p-2 rounded-xl bg-[#f5f4f0] hover:bg-white border border-black/10 hover:border-[#8b151b] transition-all text-left flex flex-col items-center gap-1.5 cursor-pointer hover:scale-105"
+                  >
+                    <div className="w-full aspect-[4/5] rounded-lg bg-neutral-200 overflow-hidden">
+                      <img
+                        src={artboard}
+                        alt={`Artboard ${idx + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <span className="text-[10px] font-mono font-medium text-[#1e1e20]/75">
+                      + Artboard {idx + 1}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
 
         {/* ========================================================= */}
-        {/* TAB 3: CLIENT BRANDS MARQUEE */}
+        {/* TAB 3: CLIENT LOGOS & MARQUEE */}
         {/* ========================================================= */}
         {activeTab === 'brands' && (
-          <div className="space-y-8">
-            {/* Success toast */}
+          <div className="space-y-6">
             {brandSavedToast && (
-              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-xs flex items-center justify-between animate-fadeIn">
-                <span>✓ Client brand logo updated successfully! Changes reflect live across the marquee.</span>
+              <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-xs flex items-center justify-between">
+                <span>✓ Client brand changes saved successfully! Ticker reflects live updates.</span>
                 <span className="font-mono text-[10px]">Saved</span>
               </div>
             )}
 
-            {/* Add New Brand Panel */}
-            <div className="bg-white border border-eerie/15 p-6 md:p-8 space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-eerie/10 pb-4">
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
-                    Infinite Client Marquee
-                  </span>
-                  <h3 className="font-display font-bold text-xl text-eerie mt-0.5">
-                    Client Brand Logos ({cms.brands.length})
-                  </h3>
-                  <p className="text-xs text-eerie/60 mt-1 leading-relaxed max-w-2xl">
-                    These logos stream in the infinite ticker marquee under Selected Clients. You can edit brand names, upload custom logos, or reorder them.
-                  </p>
-                </div>
+            {/* Add Brand Form Card */}
+            <div className="bg-white rounded-3xl border border-black/[0.08] shadow-xs p-6 sm:p-8 space-y-6">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold block mb-1">
+                  Commercial Credibility
+                </span>
+                <h3 className="font-display font-bold text-2xl text-[#1e1e20]">
+                  Client Brands &amp; Marquee Logos
+                </h3>
+                <p className="text-xs sm:text-sm text-[#1e1e20]/70 mt-1 font-sans">
+                  Manage client brand names and vectorized transparent logos that appear in the infinite ticker and credentials fold.
+                </p>
               </div>
 
-              {/* Add Brand Form */}
-              <div className="space-y-4 pt-1">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                  <div className="md:col-span-4">
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
-                      Client / Brand Name *
-                    </label>
+              {/* Input Row */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b border-black/[0.08]">
+                <div className="md:col-span-4">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                    Client Brand Name *
+                  </label>
+                  <input
+                    type="text"
+                    value={newBrandName}
+                    onChange={(e) => setNewBrandName(e.target.value)}
+                    placeholder="e.g. Sendra Gold"
+                    className="w-full px-4 py-3 bg-[#f5f4f0] rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] focus:bg-white font-sans"
+                  />
+                </div>
+
+                <div className="md:col-span-5">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                    Logo Image (URL or Upload) *
+                  </label>
+                  <div className="flex items-center gap-2">
                     <input
                       type="text"
-                      placeholder="e.g. Diyaa Pure, Sendra Gold..."
-                      value={newBrandName}
-                      onChange={(e) => setNewBrandName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none focus:border-eerie"
+                      value={newBrandLogo}
+                      onChange={(e) => setNewBrandLogo(e.target.value)}
+                      placeholder="/image/Logos/... or https://..."
+                      className="w-full px-4 py-3 bg-[#f5f4f0] rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] focus:bg-white font-mono"
                     />
-                  </div>
-
-                  <div className="md:col-span-5">
-                    <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
-                      Logo Source (URL or File) *
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        placeholder="Logo URL or /image/Logos/..."
-                        value={newBrandLogo}
-                        onChange={(e) => setNewBrandLogo(e.target.value)}
-                        className="px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none focus:border-eerie flex-1 font-mono text-[11px]"
-                      />
-                      <input
-                        type="file"
-                        ref={brandLogoFileRef}
-                        accept="image/*"
-                        onChange={(e) => handleBrandLogoUpload(e.target.files?.[0], false)}
-                        className="hidden"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => brandLogoFileRef.current?.click()}
-                        className="px-3 py-2.5 bg-white border border-eerie/20 hover:border-eerie text-xs font-mono text-eerie flex items-center gap-1.5 cursor-pointer whitespace-nowrap transition-colors"
-                        title="Upload logo file from computer"
-                      >
-                        <span>📁</span>
-                        <span>Upload File</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="md:col-span-3">
+                    <input
+                      type="file"
+                      ref={brandLogoFileRef}
+                      accept="image/*"
+                      onChange={(e) => handleBrandLogoUpload(e.target.files?.[0], false)}
+                      className="hidden"
+                    />
                     <button
                       type="button"
-                      onClick={() => {
-                        if (newBrandName.trim() && newBrandLogo.trim()) {
-                          cms.addBrand(newBrandName.trim(), newBrandLogo.trim());
-                          setNewBrandName('');
-                          setNewBrandLogo('');
-                          setBrandSavedToast(true);
-                          setTimeout(() => setBrandSavedToast(false), 2200);
-                        } else {
-                          alert('Please enter both Client Brand Name and Logo.');
-                        }
-                      }}
-                      className="w-full py-2.5 px-5 bg-crimson text-white text-xs font-semibold uppercase tracking-wider hover:bg-crimson-dark transition-colors cursor-pointer shadow-sm text-center"
+                      onClick={() => brandLogoFileRef.current?.click()}
+                      className="px-4 py-3 rounded-2xl bg-[#f5f4f0] hover:bg-white border border-black/15 text-[#1e1e20] text-xs font-sans font-semibold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap shadow-2xs"
                     >
-                      + Add Client Brand
+                      📁 Upload
                     </button>
                   </div>
                 </div>
 
-                {/* Quick Presets Picker */}
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-eerie/50 block mb-1.5">
-                    Quick Insert Official Studio Logos:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {PRESET_LOGOS.map((preset) => (
-                      <button
-                        key={preset.name}
-                        type="button"
-                        onClick={() => {
-                          setNewBrandName(preset.name);
-                          setNewBrandLogo(preset.logo);
-                        }}
-                        className="px-2.5 py-1 text-[11px] font-mono bg-black/[0.03] hover:bg-black/[0.08] text-eerie/75 border border-black/[0.06] rounded-full transition-colors cursor-pointer"
-                      >
-                        + {preset.name}
-                      </button>
-                    ))}
-                  </div>
+                <div className="md:col-span-3 flex items-end">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (newBrandName.trim() && newBrandLogo.trim()) {
+                        cms.addBrand(newBrandName.trim(), newBrandLogo.trim());
+                        setNewBrandName('');
+                        setNewBrandLogo('');
+                        setBrandSavedToast(true);
+                        setTimeout(() => setBrandSavedToast(false), 2200);
+                      } else {
+                        alert('Please enter both Client Brand Name and Logo.');
+                      }
+                    }}
+                    className="w-full py-3 px-5 rounded-2xl bg-[#8b151b] hover:bg-[#7a161c] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all cursor-pointer shadow-md text-center hover:scale-102"
+                  >
+                    + Add Client Brand
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Presets Picker */}
+              <div>
+                <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60 block mb-2 font-medium">
+                  Quick Insert Official Studio Logos:
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {PRESET_LOGOS.map((preset) => (
+                    <button
+                      key={preset.name}
+                      type="button"
+                      onClick={() => {
+                        setNewBrandName(preset.name);
+                        setNewBrandLogo(preset.logo);
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-sans font-medium bg-[#f5f4f0] hover:bg-white text-[#1e1e20]/80 border border-black/[0.08] rounded-full transition-all cursor-pointer hover:border-[#8b151b] hover:scale-105 shadow-2xs"
+                    >
+                      + {preset.name}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -746,16 +795,16 @@ const AdminDashboard = ({ onNavigateHome }) => {
               {cms.brands.map((brand, index) => (
                 <div
                   key={`${brand.name}-${index}`}
-                  className="bg-white border border-eerie/15 p-4 flex flex-col justify-between gap-3 text-center shadow-xs hover:border-eerie/40 transition-all rounded-lg group"
+                  className="bg-white rounded-3xl border border-black/[0.08] p-4 flex flex-col justify-between gap-3 text-center shadow-xs hover:shadow-md transition-all group"
                 >
                   {/* Top Order Badges & Reorder Controls */}
-                  <div className="flex items-center justify-between text-[10px] font-mono text-eerie/50 w-full border-b border-eerie/10 pb-2">
-                    <span className="font-semibold text-crimson">#{index + 1}</span>
+                  <div className="flex items-center justify-between text-[10px] font-mono text-[#1e1e20]/50 w-full border-b border-black/[0.06] pb-2">
+                    <span className="font-semibold text-[#8b151b]">#{index + 1}</span>
                     <div className="flex items-center gap-1">
                       <button
                         disabled={index === 0}
                         onClick={() => cms.moveBrand(index, -1)}
-                        className="p-1 border border-eerie/10 hover:border-eerie disabled:opacity-20 cursor-pointer rounded"
+                        className="w-5 h-5 rounded-full bg-[#f5f4f0] hover:bg-black/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
                         title="Move left in marquee"
                       >
                         ◀
@@ -763,7 +812,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       <button
                         disabled={index === cms.brands.length - 1}
                         onClick={() => cms.moveBrand(index, 1)}
-                        className="p-1 border border-eerie/10 hover:border-eerie disabled:opacity-20 cursor-pointer rounded"
+                        className="w-5 h-5 rounded-full bg-[#f5f4f0] hover:bg-black/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
                         title="Move right in marquee"
                       >
                         ▶
@@ -772,7 +821,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   </div>
 
                   {/* Logo Display */}
-                  <div className="h-16 w-full flex items-center justify-center p-2 bg-cloud-dancer rounded overflow-hidden">
+                  <div className="h-16 w-full flex items-center justify-center p-2 bg-[#f5f4f0] rounded-2xl overflow-hidden">
                     <img
                       src={brand.logo}
                       alt={brand.name}
@@ -783,7 +832,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   {/* Brand Name */}
                   <div className="w-full">
                     <span
-                      className="text-xs font-semibold text-eerie truncate block w-full"
+                      className="text-xs font-sans font-bold text-[#1e1e20] truncate block w-full"
                       title={brand.name}
                     >
                       {brand.name}
@@ -791,11 +840,11 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   </div>
 
                   {/* Action Buttons: Edit and Delete */}
-                  <div className="w-full pt-2 border-t border-eerie/10 flex flex-col gap-1.5">
+                  <div className="w-full pt-2 border-t border-black/[0.06] flex flex-col gap-1.5">
                     <button
                       type="button"
                       onClick={() => handleStartEditBrand(brand, index)}
-                      className="w-full py-1.5 px-2 bg-eerie hover:bg-crimson text-white text-[11px] font-mono uppercase tracking-wider rounded transition-colors cursor-pointer flex items-center justify-center gap-1"
+                      className="w-full py-1.5 px-3 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-white text-[11px] font-sans font-medium uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs hover:scale-102"
                     >
                       <span>✎</span>
                       <span>Edit Name</span>
@@ -808,7 +857,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                           cms.removeBrand(index);
                         }
                       }}
-                      className="text-[10px] text-crimson/70 hover:text-crimson uppercase font-mono tracking-wider hover:underline cursor-pointer py-0.5"
+                      className="text-[10px] text-red-600 hover:text-red-700 uppercase font-sans tracking-wider hover:underline cursor-pointer py-0.5"
                     >
                       Delete
                     </button>
@@ -822,35 +871,35 @@ const AdminDashboard = ({ onNavigateHome }) => {
               <div
                 role="dialog"
                 aria-modal="true"
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1e1e20]/80 backdrop-blur-md"
                 onClick={() => setEditingBrandIndex(null)}
               >
                 <div
-                  className="bg-white border border-eerie/20 shadow-2xl p-6 sm:p-8 max-w-lg w-full rounded-2xl space-y-6"
+                  className="bg-[#f5f4f0] rounded-3xl border border-black/10 shadow-2xl p-6 sm:p-8 max-w-lg w-full space-y-6 bg-dot-grid"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-between border-b border-eerie/10 pb-4">
+                  <div className="flex items-center justify-between border-b border-black/[0.08] pb-4">
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold">
                         Client Marquee Editor
                       </span>
-                      <h3 className="font-display font-bold text-xl text-eerie mt-0.5">
+                      <h3 className="font-display font-bold text-xl text-[#1e1e20] mt-0.5">
                         Edit Client Brand #{editingBrandIndex + 1}
                       </h3>
                     </div>
                     <button
                       type="button"
                       onClick={() => setEditingBrandIndex(null)}
-                      className="text-xs uppercase font-mono tracking-wider text-eerie/60 hover:text-eerie px-2.5 py-1 border border-eerie/20 rounded cursor-pointer"
+                      className="w-8 h-8 rounded-full bg-white hover:bg-black/5 flex items-center justify-center text-xs text-[#1e1e20]/60 hover:text-[#1e1e20] border border-black/10 cursor-pointer"
                     >
-                      ✕ Close
+                      ✕
                     </button>
                   </div>
 
                   {/* Edit Form */}
                   <form onSubmit={handleSaveBrandEdit} className="space-y-4">
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                         Client / Brand Name *
                       </label>
                       <input
@@ -859,12 +908,12 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={editBrandName}
                         onChange={(e) => setEditBrandName(e.target.value)}
                         placeholder="e.g. CSIR India"
-                        className="w-full px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-sm outline-none focus:border-crimson rounded"
+                        className="w-full px-4 py-3 bg-white rounded-2xl border border-black/15 text-sm outline-none focus:border-[#8b151b] focus:ring-1 focus:ring-[#8b151b] font-sans"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-eerie/70 mb-1.5 font-medium">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
                         Brand Logo Image (URL or Upload) *
                       </label>
                       <div className="flex items-center gap-2 mb-2">
@@ -874,7 +923,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                           value={editBrandLogo}
                           onChange={(e) => setEditBrandLogo(e.target.value)}
                           placeholder="/image/Logos/... or https://..."
-                          className="px-3.5 py-2.5 bg-cloud-dancer border border-eerie/20 text-xs outline-none focus:border-crimson flex-1 rounded font-mono"
+                          className="px-4 py-3 bg-white border border-black/15 text-xs outline-none focus:border-[#8b151b] flex-1 rounded-2xl font-mono"
                         />
                         <input
                           type="file"
@@ -886,19 +935,19 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         <button
                           type="button"
                           onClick={() => editBrandLogoFileRef.current?.click()}
-                          className="px-3.5 py-2.5 bg-eerie hover:bg-crimson text-white text-xs font-mono uppercase tracking-wider rounded transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap"
+                          className="px-4 py-3 bg-[#1e1e20] hover:bg-[#8b151b] text-white text-xs font-sans uppercase tracking-wider rounded-2xl transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shadow-2xs"
                         >
                           <span>📁</span>
-                          <span>Upload File</span>
+                          <span>Upload</span>
                         </button>
                       </div>
 
                       {/* Quick Presets for editing */}
                       <div className="pt-1">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-eerie/50 block mb-1">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
                           Or select preset:
                         </span>
-                        <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto no-scrollbar border border-eerie/10 p-2 rounded bg-black/[0.01]">
+                        <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto no-scrollbar border border-black/10 p-2.5 rounded-2xl bg-white/70">
                           {PRESET_LOGOS.map((preset) => (
                             <button
                               key={preset.name}
@@ -907,7 +956,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                                 setEditBrandName(preset.name);
                                 setEditBrandLogo(preset.logo);
                               }}
-                              className="px-2 py-0.5 text-[10px] font-mono bg-white hover:bg-crimson hover:text-white text-eerie border border-eerie/15 rounded transition-colors cursor-pointer"
+                              className="px-2.5 py-1 text-[11px] font-sans bg-white hover:bg-[#8b151b] hover:text-white text-[#1e1e20] border border-black/10 rounded-full transition-colors cursor-pointer"
                             >
                               {preset.name}
                             </button>
@@ -918,11 +967,11 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
                     {/* Live Preview Stage */}
                     {editBrandLogo && (
-                      <div className="p-3 bg-cloud-dancer rounded-xl border border-eerie/15 space-y-1.5">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-eerie/60 block">
+                      <div className="p-3 bg-white rounded-2xl border border-black/10 space-y-1.5">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 block font-medium">
                           Logo Preview ({editBrandName || 'Unnamed Brand'})
                         </span>
-                        <div className="h-20 w-full flex items-center justify-center p-2 bg-white rounded border border-eerie/10">
+                        <div className="h-20 w-full flex items-center justify-center p-2 bg-[#f5f4f0] rounded-xl border border-black/5">
                           <img
                             src={editBrandLogo}
                             alt={editBrandName}
@@ -933,18 +982,18 @@ const AdminDashboard = ({ onNavigateHome }) => {
                     )}
 
                     {/* Actions */}
-                    <div className="flex items-center justify-between pt-4 border-t border-eerie/10">
+                    <div className="flex items-center justify-between pt-4 border-t border-black/[0.08]">
                       <button
                         type="button"
                         onClick={() => setEditingBrandIndex(null)}
-                        className="px-5 py-2.5 border border-eerie/20 text-xs font-semibold uppercase tracking-wider text-eerie/70 hover:text-eerie cursor-pointer rounded"
+                        className="px-5 py-2.5 rounded-full border border-black/15 text-xs font-sans font-medium text-[#1e1e20]/70 hover:text-[#1e1e20] cursor-pointer"
                       >
                         Cancel
                       </button>
 
                       <button
                         type="submit"
-                        className="px-6 py-2.5 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer rounded flex items-center gap-1.5"
+                        className="px-6 py-2.5 rounded-full bg-[#8b151b] hover:bg-[#7a161c] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-md cursor-pointer flex items-center gap-1.5 hover:scale-105"
                       >
                         <span>✓</span>
                         <span>Save Brand Changes ↗</span>
@@ -958,28 +1007,28 @@ const AdminDashboard = ({ onNavigateHome }) => {
         )}
 
         {/* ========================================================= */}
-        {/* TAB: FOUNDER PROFILE & PHOTO */}
+        {/* TAB 4: FOUNDER PROFILE & PHOTO */}
         {/* ========================================================= */}
         {activeTab === 'profile' && (
           <div className="space-y-6">
             {profileSavedToast && (
-              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-xs flex items-center justify-between animate-fadeIn">
+              <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-xs flex items-center justify-between">
                 <span>✓ Founder profile and portrait updated successfully! Changes reflect live across the site.</span>
                 <span className="font-mono text-[10px]">Saved</span>
               </div>
             )}
 
-            <div className="bg-white border border-eerie/15 p-6 md:p-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-eerie/10 pb-5 mb-6">
+            <div className="bg-white rounded-3xl border border-black/[0.08] shadow-xs p-6 sm:p-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/[0.08] pb-5 mb-6">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold">
                     Founder Atelier Identity
                   </span>
-                  <h3 className="font-display font-bold text-2xl text-eerie mt-1">
+                  <h3 className="font-display font-bold text-2xl text-[#1e1e20] mt-1">
                     Founder Profile &amp; Photo
                   </h3>
-                  <p className="text-xs text-eerie/60 mt-1">
-                    Update your founder photo, title, credentials, and quote displayed in the Leadership card.
+                  <p className="text-xs sm:text-sm text-[#1e1e20]/65 mt-1 font-sans">
+                    Update your founder portrait, credentials, and studio manifesto statement displayed across the site.
                   </p>
                 </div>
 
@@ -992,14 +1041,14 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         cms.updateProfile(DEFAULT_PROFILE);
                       }
                     }}
-                    className="px-3.5 py-2 text-xs font-mono uppercase tracking-wider text-eerie/60 hover:text-crimson border border-eerie/20 hover:border-crimson transition-colors cursor-pointer"
+                    className="px-4 py-2 rounded-full text-xs font-sans uppercase tracking-wider text-[#1e1e20]/60 hover:text-[#8b151b] border border-black/15 hover:border-[#8b151b] transition-all cursor-pointer"
                   >
                     Reset Defaults
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveProfile}
-                    className="px-5 py-2 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                    className="px-6 py-2 rounded-full bg-[#8b151b] hover:bg-[#7a161c] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-md cursor-pointer hover:scale-105"
                   >
                     Save Changes →
                   </button>
@@ -1009,11 +1058,11 @@ const AdminDashboard = ({ onNavigateHome }) => {
               <form onSubmit={handleSaveProfile} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Left Column: Portrait Stage & Upload */}
                 <div className="lg:col-span-5 space-y-4">
-                  <div className="text-xs font-mono font-semibold uppercase tracking-wider text-eerie/80">
+                  <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#1e1e20]/80">
                     Portrait Preview
                   </div>
 
-                  <div className="relative w-full aspect-[4/5] max-h-[380px] rounded-2xl overflow-hidden bg-neutral-100 border border-black/[0.08] shadow-sm group">
+                  <div className="relative w-full aspect-[4/5] max-h-[380px] rounded-3xl overflow-hidden bg-neutral-100 border border-black/[0.08] shadow-md group">
                     <img
                       src={profileForm.image || '/image/hariharan.jpg'}
                       alt={profileForm.name}
@@ -1021,13 +1070,13 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = '/image/hariharan.jpg';
                       }}
-                      className="w-full h-full object-cover object-[center_18%]"
+                      className="w-full h-full object-cover object-[center_18%] group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex flex-col justify-end p-4 text-white">
-                      <div className="font-display text-lg font-medium">
+                    <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/90 via-black/45 to-transparent flex flex-col justify-end p-5 text-white">
+                      <div className="font-display text-xl font-bold">
                         {profileForm.name}
                       </div>
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-white/80">
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-[#FC7A69] font-medium">
                         {profileForm.role}
                       </div>
                     </div>
@@ -1046,14 +1095,14 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       type="button"
                       disabled={isUploadingPhoto}
                       onClick={() => profileFileRef.current?.click()}
-                      className={`w-full py-2.5 px-4 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm ${
-                        isUploadingPhoto ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
+                      className={`w-full py-3 px-5 rounded-2xl bg-[#1e1e20] hover:bg-[#8b151b] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm ${
+                        isUploadingPhoto ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:scale-102'
                       }`}
                     >
                       {isUploadingPhoto ? (
                         <>
                           <span className="h-3 w-3 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                          <span>Optimizing &amp; Saving Photo...</span>
+                          <span>Optimizing &amp; Saving Portrait...</span>
                         </>
                       ) : (
                         <>
@@ -1064,7 +1113,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                     </button>
 
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Or Image URL / Path:
                       </label>
                       <input
@@ -1072,7 +1121,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.image}
                         onChange={(e) => setProfileForm({ ...profileForm, image: e.target.value })}
                         placeholder="/image/hariharan.jpg"
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs font-mono outline-none focus:border-eerie bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs font-mono outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white transition-all"
                       />
                     </div>
                   </div>
@@ -1082,7 +1131,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                 <div className="lg:col-span-7 space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Full Name *
                       </label>
                       <input
@@ -1090,12 +1139,12 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.name}
                         onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
                         required
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-medium"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white font-medium"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Role Title *
                       </label>
                       <input
@@ -1103,14 +1152,14 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.role}
                         onChange={(e) => setProfileForm({ ...profileForm, role: e.target.value })}
                         required
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white font-medium"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Experience Badge
                       </label>
                       <input
@@ -1118,12 +1167,12 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.experience}
                         onChange={(e) => setProfileForm({ ...profileForm, experience: e.target.value })}
                         placeholder="6+ Years Practice"
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white font-mono"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Specialization
                       </label>
                       <input
@@ -1131,14 +1180,14 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.specialization}
                         onChange={(e) => setProfileForm({ ...profileForm, specialization: e.target.value })}
                         placeholder="Packaging & Identity"
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Production Rigor
                       </label>
                       <input
@@ -1146,12 +1195,12 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.rigor}
                         onChange={(e) => setProfileForm({ ...profileForm, rigor: e.target.value })}
                         placeholder="ISO 12647-2 Ready"
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white font-mono"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Studio Location
                       </label>
                       <input
@@ -1159,14 +1208,14 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.location}
                         onChange={(e) => setProfileForm({ ...profileForm, location: e.target.value })}
                         placeholder="Chennai • Global Remote"
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Studio Email
                       </label>
                       <input
@@ -1174,12 +1223,12 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.email}
                         onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
                         placeholder="harrydesigns99@gmail.com"
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white font-mono"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                         Phone / WhatsApp
                       </label>
                       <input
@@ -1187,13 +1236,13 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         value={profileForm.phone}
                         onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
                         placeholder="+91 86101 74188"
-                        className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white font-mono"
+                        className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white font-mono"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                       Availability Status Text
                     </label>
                     <input
@@ -1201,26 +1250,26 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       value={profileForm.statusText}
                       onChange={(e) => setProfileForm({ ...profileForm, statusText: e.target.value })}
                       placeholder="Available for Commissions"
-                      className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white"
+                      className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-mono uppercase tracking-wider text-eerie/70 mb-1">
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
                       Philosophy Quote
                     </label>
                     <textarea
                       value={profileForm.philosophy}
                       onChange={(e) => setProfileForm({ ...profileForm, philosophy: e.target.value })}
                       rows="3"
-                      className="w-full px-3 py-2 border border-eerie/20 text-xs outline-none focus:border-eerie bg-white resize-none"
+                      className="w-full px-4 py-2.5 rounded-xl border border-black/15 text-xs outline-none focus:border-[#8b151b] bg-[#f5f4f0] focus:bg-white resize-none"
                     />
                   </div>
 
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full py-3 bg-crimson hover:bg-crimson-dark text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                      className="w-full py-3.5 rounded-full bg-[#8b151b] hover:bg-[#7a161c] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-md cursor-pointer hover:shadow-lg"
                     >
                       Save Profile Changes
                     </button>
@@ -1232,28 +1281,26 @@ const AdminDashboard = ({ onNavigateHome }) => {
         )}
 
         {/* ========================================================= */}
-        {/* TAB 4: EXPORT & CODE SYNC */}
+        {/* TAB 5: EXPORT & CODE SYNC */}
         {/* ========================================================= */}
         {activeTab === 'sync' && (
-          <div className="space-y-8">
-            <div className="bg-white border border-eerie/15 p-6 md:p-8">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
-                Persistence & Git Sync
+          <div className="space-y-6">
+            <div className="bg-white rounded-3xl border border-black/[0.08] shadow-xs p-6 sm:p-8">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold block mb-1">
+                Persistence &amp; Git Sync
               </span>
-              <h3 className="font-display font-bold text-2xl text-eerie mt-1 mb-3">
+              <h3 className="font-display font-bold text-2xl text-[#1e1e20] mb-2">
                 Export Changes to Codebase
               </h3>
-              <p className="text-sm text-eerie/70 leading-relaxed max-w-3xl mb-6">
-                All changes you make in this CMS are saved immediately to your browser and reflect
-                live across the entire site right now. To synchronize your updates into Git and
-                production deployments, copy the generated code below or download a JSON backup.
+              <p className="text-xs sm:text-sm text-[#1e1e20]/70 leading-relaxed max-w-3xl mb-6 font-sans">
+                All changes you make in this Studio CMS are saved immediately to browser storage and reflect live right now. To synchronize your updates into Git and production deployments, copy the generated code below or download a JSON backup.
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-eerie/15">
+              <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-black/[0.08]">
                 <button
                   onClick={() => handleCopyCode('portfolio')}
-                  className="px-6 py-3 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                  className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-sm cursor-pointer hover:scale-105"
                 >
                   {copiedSection === 'portfolio'
                     ? '✓ Copied portfolioData.js!'
@@ -1262,7 +1309,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
                 <button
                   onClick={() => handleCopyCode('gallery')}
-                  className="px-6 py-3 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                  className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-sm cursor-pointer hover:scale-105"
                 >
                   {copiedSection === 'gallery'
                     ? '✓ Copied galleryImages.js!'
@@ -1271,7 +1318,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
                 <button
                   onClick={() => handleCopyCode('brands')}
-                  className="px-6 py-3 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                  className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-sm cursor-pointer hover:scale-105"
                 >
                   {copiedSection === 'brands'
                     ? '✓ Copied Brands Code!'
@@ -1280,7 +1327,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
                 <button
                   onClick={() => handleCopyCode('profile')}
-                  className="px-6 py-3 bg-eerie hover:bg-crimson text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+                  className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-sm cursor-pointer hover:scale-105"
                 >
                   {copiedSection === 'profile'
                     ? '✓ Copied Profile Code!'
@@ -1289,7 +1336,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
                 <button
                   onClick={handleDownloadBackup}
-                  className="px-6 py-3 border border-eerie/30 hover:border-eerie bg-white text-eerie text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                  className="px-5 py-2.5 rounded-full border border-black/15 hover:border-black/30 bg-[#f5f4f0] hover:bg-white text-[#1e1e20] text-xs font-sans font-semibold uppercase tracking-wider transition-all cursor-pointer shadow-2xs"
                 >
                   Download JSON Backup
                 </button>
@@ -1303,7 +1350,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                 />
                 <button
                   onClick={() => importFileRef.current?.click()}
-                  className="px-6 py-3 border border-eerie/30 hover:border-eerie bg-white text-eerie text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                  className="px-5 py-2.5 rounded-full border border-black/15 hover:border-black/30 bg-[#f5f4f0] hover:bg-white text-[#1e1e20] text-xs font-sans font-semibold uppercase tracking-wider transition-all cursor-pointer shadow-2xs"
                 >
                   Restore from JSON
                 </button>
@@ -1318,7 +1365,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       cms.resetToDefaults();
                     }
                   }}
-                  className="ml-auto px-4 py-3 text-crimson text-xs font-mono uppercase tracking-wider hover:underline cursor-pointer"
+                  className="ml-auto px-4 py-2 rounded-full text-[#8b151b] text-xs font-mono uppercase tracking-wider hover:bg-red-50 transition-colors cursor-pointer"
                 >
                   Reset to Factory Defaults
                 </button>
@@ -1352,4 +1399,3 @@ const AdminDashboard = ({ onNavigateHome }) => {
 };
 
 export default AdminDashboard;
-

@@ -61,7 +61,7 @@ const Navbar = () => {
           <a
             href="#contact"
             onClick={() => sound.playClick()}
-            className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] font-sans text-xs sm:text-sm font-medium tracking-wide transition-all shadow-xs hover:shadow-md hover:scale-105 cursor-pointer"
+            className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-[#f5f4f0] font-sans text-xs sm:text-sm font-medium tracking-wide transition-all shadow-xs hover:shadow-md hover:scale-105 cursor-pointer"
           >
             Get in touch ↗
           </a>
