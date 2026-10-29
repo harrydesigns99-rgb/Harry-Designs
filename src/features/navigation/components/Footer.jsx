@@ -1,83 +1,45 @@
-import { motion } from 'framer-motion';
-import { SITE_INFO, FOOTER_LINKS } from '../data/navData';
-import { TRANSITIONS, DELAYS } from '@/animations';
-import AnimatedBackdrop from '@/components/AnimatedBackdrop';
+import { memo } from 'react';
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden bg-eerie text-white py-10 border-t border-white/10">
-      <AnimatedBackdrop tone="dark" />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
-          <motion.a
-            href="#home"
-            whileHover={{ scale: 1.05 }}
-            data-cursor="Home"
-            className="inline-block text-2xl font-display font-semibold text-white tracking-[-0.04em] mb-4"
-          >
-            {SITE_INFO.name}
-          </motion.a>
-
-          <p className="text-stone-500 mb-6 max-w-xs">{SITE_INFO.tagline}</p>
-
-          {/* Quick Links */}
-          <motion.div
-            className="flex flex-wrap md:justify-end gap-x-8 gap-y-3 mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            {FOOTER_LINKS.map((link, index) => {
-              const href =
-                link === 'Resume'
-                  ? '/resume'
-                  : link === 'Archive'
-                  ? '/work'
-                  : link === 'Work'
-                  ? '#portfolio'
-                  : `#${link.toLowerCase()}`;
-              return (
-                <motion.a
-                  key={link}
-                  href={href}
-                  onClick={(e) => {
-                    if (href.startsWith('/')) {
-                      if (!e.metaKey && !e.ctrlKey) {
-                        e.preventDefault();
-                        window.history.pushState({}, '', href);
-                        window.dispatchEvent(new PopStateEvent('popstate'));
-                        window.scrollTo(0, 0);
-                      }
-                    }
-                  }}
-                  whileHover={{ y: -2 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * DELAYS.tiny, ...TRANSITIONS.fast }}
-                  data-cursor="Navigate"
-                  className="text-stone-400 hover:text-white transition-colors text-sm font-medium"
-                >
-                  {link}
-                </motion.a>
-              );
-            })}
-          </motion.div>
+    <footer className="w-full bg-[#1e1e20] text-[#f5f4f0] py-12 px-4 sm:px-6 lg:px-8 border-t border-black/20 select-none">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FC7A69] animate-pulse" />
+          <span className="font-display text-lg font-bold tracking-tight text-white">
+            Hariharan S
+          </span>
+          <span className="text-white/40 text-xs">•</span>
+          <span className="font-sans text-xs text-white/60">
+            Principal Brand &amp; Packaging Architect
+          </span>
         </div>
 
-        <div className="border-t border-white/10 pt-8 mt-8 w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
-          <p>© {SITE_INFO.currentYear} {SITE_INFO.fullName}. All rights reserved.</p>
-          <p>
-            Designed &amp; Crafted by{' '}
-            <span className="text-white font-medium">Hariharan S</span> • Independent Designer
-          </p>
+        <div className="flex items-center gap-6 font-sans text-xs text-white/60">
+          <a
+            href="#introduction"
+            className="hover:text-white transition-colors"
+          >
+            Back to Top ↑
+          </a>
+          <span>•</span>
+          <a
+            href="/resume"
+            className="hover:text-white transition-colors"
+          >
+            Resume
+          </a>
+          <span>•</span>
+          <a
+            href="/work"
+            className="hover:text-white transition-colors"
+          >
+            12-Project Archive
+          </a>
         </div>
       </div>
-
-      {/* Decorative gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-crimson" />
     </footer>
   );
 };
 
-export default Footer;
+export default memo(Footer);

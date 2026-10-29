@@ -4,9 +4,8 @@ import { HeroSection } from '@/features/hero';
 import { AboutSection } from '@/features/about';
 import { PortfolioSection } from '@/features/portfolio';
 import { ContactSection } from '@/features/contact';
-import StudioApproach from '@/features/studio/StudioApproach';
+import TestimonialsSection from '@/features/testimonials/TestimonialsSection';
 import KineticTicker from '@/components/KineticTicker';
-import LivingBackground from '@/components/LivingBackground';
 import WandPreloader from '@/components/WandPreloader';
 import { ThemeProvider } from '@/context/ThemeContext';
 
@@ -72,9 +71,8 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-[#fbfbfd] relative selection:bg-crimson selection:text-white overflow-x-clip">
+      <div className="min-h-screen bg-[#f5f4f0] relative selection:bg-[#FC7A69] selection:text-white overflow-x-clip">
         {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
-        <LivingBackground />
 
         <Suspense
           fallback={
@@ -111,16 +109,16 @@ function App() {
               <ResumePage onNavigateHome={() => navigateHome()} />
             </div>
           ) : (
-            <div className="relative z-10">
+            <div className="relative z-10 bg-[#f5f4f0]">
               <Navbar />
               <HeroSection />
-              <KineticTicker />
+              <AboutSection />
               <PortfolioSection
                 onSelectProject={(project) => navigateToProject(project.id)}
                 onNavigateWork={navigateToWork}
               />
-              <StudioApproach />
-              <AboutSection />
+              <KineticTicker />
+              <TestimonialsSection />
               <ContactSection />
               <Footer />
             </div>

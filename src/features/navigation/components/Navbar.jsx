@@ -1,87 +1,143 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { SITE_INFO } from '../data/navData';
-import NavLinks from './NavLinks';
-import MobileMenu from './MobileMenu';
-import { slideInFromTop, scaleIn, hoverScale, TRANSITIONS, DELAYS } from '@/animations';
 import { sound } from '@/utils/audio';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <motion.nav
-      initial="hidden"
-      animate="visible"
-      variants={slideInFromTop}
-      transition={{ ...TRANSITIONS.medium, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-0 inset-x-0 z-50 pointer-events-none flex flex-col items-center"
-    >
-      {/* Floating Apple Frosted Glass Pill Navbar */}
-      <div className="w-full max-w-5xl px-4 sm:px-6 pt-4 sm:pt-5 pointer-events-auto">
-        <div className="apple-glass rounded-full px-4 sm:px-6 py-2 sm:py-2.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-black/[0.08] flex items-center justify-between">
-          {/* Logo Mark */}
-          <motion.a
-            href="#home"
-            whileHover={hoverScale}
+    <header className="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+      <div
+        className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex items-center justify-between transition-all duration-300 ${
+          isScrolled
+            ? 'bg-[#f5f4f0]/85 backdrop-blur-md shadow-xs border-b border-black/[0.05]'
+            : 'bg-transparent'
+        }`}
+      >
+        {/* Left: Brand Wordmark in Clash Display */}
+        <a
+          href="#introduction"
+          onClick={() => sound.playClick()}
+          className="font-display text-lg sm:text-xl font-bold tracking-tight text-[#1e1e20] hover:opacity-80 transition-opacity"
+        >
+          Hariharan S
+        </a>
+
+        {/* Desktop Nav Links */}
+        <nav className="hidden md:flex items-center gap-8">
+          <a
+            href="#work"
             onClick={() => sound.playClick()}
-            aria-label={`${SITE_INFO.fullName} - Home`}
-            data-cursor="Home"
-            className="inline-flex items-center gap-2.5 text-base font-display font-medium text-[#1d1d1f] tracking-tight"
+            className="font-sans text-sm font-medium text-[#1e1e20]/80 hover:text-[#1e1e20] transition-colors"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-crimson text-xs font-bold text-white shadow-xs">
-              H
-            </span>
-            <span className="font-semibold">{SITE_INFO.name}</span>
-          </motion.a>
+            Work
+          </a>
+          <a
+            href="#about"
+            onClick={() => sound.playClick()}
+            className="font-sans text-sm font-medium text-[#1e1e20]/80 hover:text-[#1e1e20] transition-colors"
+          >
+            About me
+          </a>
+          <a
+            href="/resume"
+            onClick={() => sound.playClick()}
+            className="font-sans text-sm font-medium text-[#1e1e20]/80 hover:text-[#1e1e20] transition-colors"
+          >
+            Resume
+          </a>
 
-          {/* Desktop Navigation Links */}
-          <NavLinks />
+          {/* Pill CTA Button */}
+          <a
+            href="#contact"
+            onClick={() => sound.playClick()}
+            className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] font-sans text-xs sm:text-sm font-medium tracking-wide transition-all shadow-xs hover:shadow-md hover:scale-105 cursor-pointer"
+          >
+            Get in touch ↗
+          </a>
+        </nav>
 
-          {/* Right Action: Availability & Let's Talk CTA */}
-          <div className="flex items-center gap-3">
-            <span className="hidden xl:inline-flex items-center gap-1.5 text-[11px] font-mono text-[#86868b]">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Available for Q3/Q4
-            </span>
+        {/* Mobile Menu Trigger */}
+        <div className="md:hidden">
+          <button
+            onClick={() => {
+              sound.playClick();
+              setIsOpen(!isOpen);
+            }}
+            className="p-2 rounded-full text-[#1e1e20] hover:bg-black/[0.05] transition-colors cursor-pointer"
+            aria-label="Toggle navigation menu"
+          >
+            {isOpen ? <HiX size={22} /> : <HiMenu size={22} />}
+          </button>
+        </div>
+      </div>
 
-            <motion.a
-              href="#contact"
-              onClick={() => sound.playClick()}
-              initial="hidden"
-              animate="visible"
-              variants={scaleIn}
-              transition={{ delay: DELAYS.xl, ...TRANSITIONS.normal }}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              data-cursor="Contact"
-              className="hidden sm:inline-flex items-center px-4 py-1.5 rounded-full bg-crimson text-white text-xs font-medium tracking-wide hover:bg-crimson-dark transition-all shadow-xs cursor-pointer"
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-[#f5f4f0] border-b border-black/[0.08] px-6 py-6 shadow-xl space-y-4"
+          >
+            <a
+              href="#work"
+              onClick={() => {
+                sound.playClick();
+                setIsOpen(false);
+              }}
+              className="block font-display text-xl font-bold text-[#1e1e20]"
             >
-              Let&apos;s Talk ↗
-            </motion.a>
-
-            {/* Mobile Menu Trigger */}
-            <div className="md:hidden">
-              <motion.button
+              Work
+            </a>
+            <a
+              href="#about"
+              onClick={() => {
+                sound.playClick();
+                setIsOpen(false);
+              }}
+              className="block font-display text-xl font-bold text-[#1e1e20]"
+            >
+              About me
+            </a>
+            <a
+              href="/resume"
+              onClick={() => {
+                sound.playClick();
+                setIsOpen(false);
+              }}
+              className="block font-display text-xl font-bold text-[#1e1e20]"
+            >
+              Resume
+            </a>
+            <div className="pt-2">
+              <a
+                href="#contact"
                 onClick={() => {
                   sound.playClick();
-                  setIsOpen(!isOpen);
+                  setIsOpen(false);
                 }}
-                whileTap={{ scale: 0.9 }}
-                className="text-[#1d1d1f] p-1.5 rounded-full hover:bg-black/[0.05] transition-colors focus:outline-none"
-                aria-label="Toggle menu"
+                className="inline-block px-6 py-3 rounded-full bg-[#1e1e20] text-[#f5f4f0] text-sm font-medium tracking-wide shadow-md"
               >
-                {isOpen ? <HiX size={22} /> : <HiMenu size={22} />}
-              </motion.button>
+                Get in touch ↗
+              </a>
             </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Dropdown Sheet */}
-        <MobileMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      </div>
-    </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 };
 

@@ -15,8 +15,17 @@
   --color-cloud-white: var(--theme-surface);
   --color-cloud-dancer: var(--theme-bg);
 
-  --font-sans: 'DM Sans', sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
+  /* Shriya Editorial Palette */
+  --color-shriya-cream: #f5f4f0;
+  --color-shriya-green: #3f9157;
+  --color-shriya-green-deep: #2f7344;
+  --color-shriya-dark: #1e1e20;
+  --color-shriya-charcoal: #2b2d33;
+  --color-shriya-spacefire: #FC7A69;
+
+  --font-sans: 'Geist', 'DM Sans', sans-serif;
+  --font-display: 'Clash Display', 'Space Grotesk', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
 }
 
 :root,
@@ -73,6 +82,17 @@
 }
 
 @layer utilities {
+  /* Dot grid patterns matching shriyap.com */
+  .bg-dot-grid {
+    background-image: radial-gradient(circle, rgba(30, 30, 32, 0.12) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  .bg-dot-grid-cream {
+    background-image: radial-gradient(circle, rgba(245, 244, 240, 0.22) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
   .text-gradient {
     background: linear-gradient(135deg, var(--color-crimson-light) 0%, var(--color-clay) 100%);
     background-clip: text;

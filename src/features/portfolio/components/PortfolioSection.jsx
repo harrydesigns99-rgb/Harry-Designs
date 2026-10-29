@@ -1,108 +1,168 @@
-import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
-import BrandsCarousel from './BrandsCarousel';
-import Parallax3DShowcase from './Parallax3DShowcase';
-import ProjectDetailModal from './ProjectDetailModal';
-import { fadeInUp, scaleIn, TRANSITIONS } from '@/animations';
-import AnimatedBackdrop from '@/components/AnimatedBackdrop';
+
+const CATEGORIES = [
+  { id: 'all', label: 'All Projects' },
+  { id: 'packaging', label: 'Packaging' },
+  { id: 'branding', label: 'Brand Identity' },
+];
 
 const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const [selectedGridProject, setSelectedGridProject] = useState(null);
-
   const cms = useCMS();
-  const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
+  const allProjects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
+
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  const filteredProjects = useMemo(() => {
+    if (activeCategory === 'all') return allProjects;
+    return allProjects.filter((p) => p.category === activeCategory);
+  }, [allProjects, activeCategory]);
 
   return (
-    <section id="portfolio" className="relative pt-14 pb-8 md:pt-20 md:pb-12 bg-transparent text-[#1d1d1f]" ref={ref}>
-      <AnimatedBackdrop tone="light" />
-      <div className="absolute inset-x-0 top-0 h-px bg-black/[0.06] pointer-events-none" />
-
-      <div className="relative z-10">
-        {/* ==================== BRANDS SECTION ==================== */}
-        <div className="mb-14 sm:mb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            variants={fadeInUp}
-            transition={{ ...TRANSITIONS.slow, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-12 space-y-3"
-          >
-            <motion.div
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={scaleIn}
-              transition={TRANSITIONS.medium}
-              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b]"
-            >
-              <span>●</span>
-              <span>SELECTED CLIENTS &amp; PARTNERS</span>
-            </motion.div>
-            <h2 className="text-4xl md:text-6xl font-display font-medium tracking-tight text-[#1d1d1f]">
-              Built with <span className="text-gradient">good people.</span>
+    <section
+      id="work"
+      className="relative w-full bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid py-24 sm:py-32 md:py-36 px-4 sm:px-6 lg:px-8 select-none"
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header matching shriyap.com */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16 pb-6 border-b border-black/[0.08]">
+          <div>
+            <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
+              Selected Portfolio
+            </span>
+            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#1e1e20]">
+              Work I&apos;m proud of
             </h2>
-            <p className="text-base md:text-lg text-[#86868b] max-w-2xl mx-auto leading-relaxed">
-              A curated selection of brands and forward-looking teams shaped through identity systems, packaging, and design architecture.
-            </p>
-          </motion.div>
+          </div>
 
-          {/* Infinite Scrolling Brands Carousel */}
-          <BrandsCarousel isInView={isInView} />
-        </div>
+          {/* Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            {CATEGORIES.map((cat) => {
+              const isActive = activeCategory === cat.id;
+              const count =
+                cat.id === 'all'
+                  ? allProjects.length
+                  : allProjects.filter((p) => p.category === cat.id).length;
 
-        {/* ==================== SELECTED WORK HEADER ==================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-6 border-b border-black/[0.06]">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-medium mb-2">
-                <span>●</span>
-                <span>SELECTED WORK</span>
-              </div>
-              <h3 className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-[#1d1d1f]">
-                Work that <span className="text-crimson italic font-serif font-light">worked.</span>
-              </h3>
-            </div>
-            <p className="text-xs sm:text-sm text-[#86868b] max-w-xs">
-              Commercial packaging and identity systems engineered for shelf standout.
-            </p>
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    sound.playPop();
+                    setActiveCategory(cat.id);
+                  }}
+                  className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-sans transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-sm font-medium'
+                      : 'bg-white/80 hover:bg-white text-[#1e1e20]/70 hover:text-[#1e1e20] border border-black/[0.08]'
+                  }`}
+                >
+                  <span>{cat.label}</span>
+                  <span className="ml-1.5 opacity-60 text-xs">({count})</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* ==================== PERMANENT 3D PARALLAX SHOWCASE ==================== */}
-        <Parallax3DShowcase
-          projects={projects}
-          onSelectProject={(item) =>
-            onSelectProject ? onSelectProject(item) : setSelectedGridProject(item)
-          }
-          onNavigateWork={onNavigateWork}
-        />
+        {/* Two-Column Project Grid matching shriyap.com */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
+              <motion.article
+                layout
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                onClick={() => {
+                  sound.playClick();
+                  onSelectProject?.(project);
+                }}
+                className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-black/[0.08] shadow-[0_12px_32px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.16)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer"
+              >
+                {/* Media Container */}
+                <div className="relative w-full aspect-[16/10] bg-[#1e1e20] overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/image/Image Gallery/Artboard 1.webp';
+                    }}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 pointer-events-none" />
+                </div>
 
-        {/* ==================== SIMPLE & MINIMAL ARCHIVE CTA ==================== */}
-        <div className="py-12 sm:py-16 flex justify-center items-center">
+                {/* Card Content Footer */}
+                <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
+                  <div>
+                    {/* Eyebrow */}
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#FC7A69] font-semibold">
+                        {project.category}
+                      </span>
+                      {project.client && (
+                        <>
+                          <span className="text-black/30">•</span>
+                          <span className="text-[11px] font-mono uppercase tracking-wider text-black/60 font-medium">
+                            {project.client}
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Card Title */}
+                    <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[#1e1e20] group-hover:text-black transition-colors">
+                      {project.title}
+                    </h3>
+
+                    {/* Summary */}
+                    <p className="font-sans text-sm sm:text-base text-[#1e1e20]/70 mt-2.5 line-clamp-2 leading-relaxed">
+                      {project.description || project.brief || project.approach}
+                    </p>
+                  </div>
+
+                  {/* CTA Bar */}
+                  <div className="mt-6 pt-4 border-t border-black/[0.06] flex items-center justify-between">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/50 group-hover:text-[#1e1e20] transition-colors">
+                      {project.metric || 'Case Study Available'}
+                    </span>
+
+                    {/* Icon CTA Button */}
+                    <div className="w-10 h-10 rounded-full bg-[#1e1e20] group-hover:bg-[#FC7A69] text-white flex items-center justify-center transition-all duration-300 shadow-sm group-hover:scale-110">
+                      <span className="text-sm font-bold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                        ↗
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {/* Bottom Full Archive Button */}
+        <div className="mt-16 sm:mt-20 flex justify-center">
           <button
             type="button"
             onClick={() => {
               sound.playPop();
               onNavigateWork?.();
             }}
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-medium tracking-wider uppercase transition-all shadow-md hover:shadow-xl cursor-pointer group"
+            className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] font-sans text-sm sm:text-base font-medium tracking-wide transition-all shadow-md hover:shadow-xl cursor-pointer group"
           >
-            <span>Explore Full Archive</span>
+            <span>Explore Full 12-Project Archive</span>
             <span className="text-sm group-hover:translate-x-1 transition-transform">↗</span>
           </button>
         </div>
       </div>
-
-      {/* Modal for project quick preview if opened via internal state */}
-      <ProjectDetailModal
-        item={selectedGridProject}
-        project={selectedGridProject}
-        onClose={() => setSelectedGridProject(null)}
-      />
     </section>
   );
 };
