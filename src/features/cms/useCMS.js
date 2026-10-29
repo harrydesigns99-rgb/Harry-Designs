@@ -29,6 +29,8 @@ export function useCMS() {
     removeBrand: cmsStore.removeBrand.bind(cmsStore),
     updateSettings: cmsStore.updateSettings.bind(cmsStore),
     updateProfile: cmsStore.updateProfile.bind(cmsStore),
+    updateUIArchive: cmsStore.updateUIArchive.bind(cmsStore),
+    updateUIArchiveItem: cmsStore.updateUIArchiveItem.bind(cmsStore),
     exportBackupJSON: cmsStore.exportBackupJSON.bind(cmsStore),
     importBackupJSON: cmsStore.importBackupJSON.bind(cmsStore),
     generatePortfolioDataCode: cmsStore.generatePortfolioDataCode.bind(cmsStore),

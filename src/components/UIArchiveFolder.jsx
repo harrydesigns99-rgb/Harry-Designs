@@ -1,89 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
-
-const ARCHIVE_ITEMS = [
-  {
-    id: 'aurora',
-    title: 'Aurora Finance Mobile',
-    category: 'Fintech UI',
-    tag: 'iOS / Swift',
-    year: '2025',
-    color: '#0f172a',
-    accent: '#38bdf8',
-    description: 'Neomorphic dark-mode wealth management app with haptic ledger controls and real-time biometric authorization.',
-    previewType: 'ui-dark',
-    metrics: '+34% D1 Retention',
-    image: '/image/samples/1.webp',
-  },
-  {
-    id: 'cloudpass',
-    title: 'Cloudpass Identity Chip',
-    category: 'Design System',
-    tag: 'Web / React',
-    year: '2024',
-    color: '#1e3a8a',
-    accent: '#60a5fa',
-    description: 'Floating contextual credential badge with dynamic blur and encrypted SSO token verification.',
-    previewType: 'ui-sky',
-    metrics: '99.98% Auth Flow',
-    image: '/image/samples/3.webp',
-  },
-  {
-    id: 'chat-flow',
-    title: 'Atelier Direct Messenger',
-    category: 'Mobile Messaging',
-    tag: 'Product Design',
-    year: '2024',
-    color: '#18181b',
-    accent: '#f43f5e',
-    description: 'Ultra-minimal tactile conversation interface with thread nesting, audio waveform scrubbers, and live press updates.',
-    previewType: 'ui-chat',
-    metrics: '0.4s Send Latency',
-    image: '/image/samples/5.webp',
-  },
-  {
-    id: 'diyaa-pure',
-    title: 'Diyaa Pure Clean Cartons',
-    category: 'Botanical Packaging',
-    tag: 'CAD Dielines',
-    year: '2024',
-    color: '#3f2b4c',
-    accent: '#c084fc',
-    description: 'FSC-certified cotton paperboard unit cartons with blind debossing and plastic-free water-based barrier coatings.',
-    previewType: 'ui-packaging',
-    metrics: '100% Plastic-Free',
-    image: '/image/Image Gallery/Artboard 4.webp',
-  },
-  {
-    id: 'gokul-velocity',
-    title: 'Aisle Standout Dashboard',
-    category: 'Retail Analytics',
-    tag: 'Telemetry UI',
-    year: '2024',
-    color: '#1c1917',
-    accent: '#f59e0b',
-    description: 'Grocery shelf velocity radar calculating contrast coefficients, scan zones, and 2-second shopper conversion ratios.',
-    previewType: 'ui-analytics',
-    metrics: '+40% Verified Lift',
-    image: '/image/Image Gallery/Artboard 2.webp',
-  },
-  {
-    id: 'neeri-bilingual',
-    title: 'CSIR Bilingual Type System',
-    category: 'Design Engineering',
-    tag: 'Typography',
-    year: '2024',
-    color: '#14213d',
-    accent: '#e63946',
-    description: 'Uncompromising dual-script optical hierarchy unifying Devanagari Hindi and Latin letterforms across national research publications.',
-    previewType: 'ui-type',
-    metrics: 'ISO 12647 Calibrated',
-    image: '/image/Image Gallery/Artboard 3.webp',
-  },
-];
+import { useCMS } from '@/features/cms';
+import { DEFAULT_UI_ARCHIVE } from '@/features/cms/cmsStore';
 
 const UIArchiveFolder = ({ onSelectProject: _onSelectProject }) => {
+  const cms = useCMS();
+  const archiveItems = cms?.uiArchive && cms.uiArchive.length > 0 ? cms.uiArchive : DEFAULT_UI_ARCHIVE;
+
   const [isOpen, setIsOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -132,9 +56,9 @@ const UIArchiveFolder = ({ onSelectProject: _onSelectProject }) => {
         {/* The Folder Wrapper (280px wide on mobile, 320px wide on desktop) */}
         <div className="relative w-[280px] sm:w-[320px] h-[200px] sm:h-[220px] flex items-end justify-center">
           {/* Back Folder Flap with Tab */}
-          <div className="absolute inset-x-0 bottom-0 top-3 bg-gradient-to-br from-[#2f7344] to-[#245934] rounded-3xl shadow-[0_16px_36px_-10px_rgba(36,89,52,0.35)] transition-all duration-500 group-hover:shadow-[0_22px_45px_-10px_rgba(36,89,52,0.45)]">
+          <div className="absolute inset-x-0 bottom-0 top-3 bg-gradient-to-br from-[#8b151b] to-[#651015] rounded-3xl shadow-[0_16px_36px_-10px_rgba(122,22,28,0.4)] transition-all duration-500 group-hover:shadow-[0_22px_45px_-10px_rgba(122,22,28,0.55)]">
             {/* Folder Tab at Top Left */}
-            <div className="absolute -top-3.5 left-4 w-28 h-6 bg-[#2f7344] rounded-t-xl" />
+            <div className="absolute -top-3.5 left-4 w-28 h-6 bg-[#7a161c] rounded-t-xl" />
           </div>
 
           {/* ======================================================== */}
@@ -225,7 +149,7 @@ const UIArchiveFolder = ({ onSelectProject: _onSelectProject }) => {
           {/* ======================================================== */}
           {/* FROSTED GLASS FRONT POCKET */}
           {/* ======================================================== */}
-          <div className="relative w-full h-[140px] sm:h-[150px] rounded-3xl bg-gradient-to-b from-white/45 via-[#2f7344]/35 to-[#245934]/60 backdrop-blur-xl border border-white/60 shadow-[0_20px_45px_-12px_rgba(0,0,0,0.22)] overflow-hidden z-20 flex flex-col justify-between p-4 sm:p-5">
+          <div className="relative w-full h-[140px] sm:h-[150px] rounded-3xl bg-gradient-to-b from-white/45 via-[#8b151b]/30 to-[#651015]/55 backdrop-blur-xl border border-white/60 shadow-[0_20px_45px_-12px_rgba(0,0,0,0.22)] overflow-hidden z-20 flex flex-col justify-between p-4 sm:p-5">
             {/* Top Gloss Highlight Line */}
             <div className="absolute top-0 inset-x-6 h-[1px] bg-gradient-to-r from-transparent via-white/80 to-transparent" />
 
@@ -258,7 +182,7 @@ const UIArchiveFolder = ({ onSelectProject: _onSelectProject }) => {
             UI archive
           </h3>
           <p className="font-sans text-xs sm:text-sm text-[#1e1e20]/60 font-medium">
-            {ARCHIVE_ITEMS.length} items
+            {archiveItems.length} items
           </p>
         </div>
       </motion.div>
@@ -283,13 +207,13 @@ const UIArchiveFolder = ({ onSelectProject: _onSelectProject }) => {
               {/* Modal Top Bar */}
               <div className="px-6 sm:px-8 py-5 border-b border-black/[0.08] flex items-center justify-between bg-white/70 backdrop-blur-md z-30">
                 <div className="flex items-center gap-3">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#2f7344] animate-pulse" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#8b151b] animate-pulse" />
                   <div>
                     <h2 className="font-display text-xl sm:text-2xl font-bold text-[#1e1e20] tracking-tight">
                       UI &amp; Design Archive
                     </h2>
                     <p className="text-xs text-[#1e1e20]/60 font-sans">
-                      {ARCHIVE_ITEMS.length} curated design artifacts. Drag items around or tap to inspect.
+                      {archiveItems.length} curated design artifacts. Drag items around or tap to inspect.
                     </p>
                   </div>
                 </div>
@@ -311,7 +235,7 @@ const UIArchiveFolder = ({ onSelectProject: _onSelectProject }) => {
                 className="relative flex-1 p-4 sm:p-8 overflow-y-auto overflow-x-hidden"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-                  {ARCHIVE_ITEMS.map((item, index) => (
+                  {archiveItems.map((item, index) => (
                     <motion.div
                       key={item.id}
                       drag
@@ -457,7 +381,7 @@ const UIArchiveFolder = ({ onSelectProject: _onSelectProject }) => {
                   >
                     <div className="flex items-center justify-between border-b border-black/[0.08] pb-4">
                       <div>
-                        <span className="text-[10px] font-mono uppercase tracking-widest text-[#2f7344] font-bold">
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold">
                           {activeItem.category} &bull; {activeItem.year}
                         </span>
                         <h3 className="font-display text-2xl font-bold text-[#1e1e20] mt-0.5">

@@ -8,6 +8,7 @@ const STORAGE_KEYS = {
   SETTINGS: 'harry_designs_cms_settings_v1',
   AUTH: 'harry_designs_cms_auth_v1',
   PROFILE: 'harry_designs_cms_profile_v1',
+  UI_ARCHIVE: 'harry_designs_cms_ui_archive_v1',
 };
 
 // Clean legacy corrupted storage caches on init
@@ -35,6 +36,87 @@ export const DEFAULT_PROFILE = {
   philosophy: 'Translating founder ambition into shelf standout, tactile substrate finishes, and durable commercial equity.',
   statusText: 'Available for Commissions',
 };
+
+export const DEFAULT_UI_ARCHIVE = [
+  {
+    id: 'aurora',
+    title: 'Aurora Finance Mobile',
+    category: 'Fintech UI',
+    tag: 'iOS / Swift',
+    year: '2025',
+    color: '#0f172a',
+    accent: '#38bdf8',
+    description: 'Neomorphic dark-mode wealth management app with haptic ledger controls and real-time biometric authorization.',
+    previewType: 'ui-dark',
+    metrics: '+34% D1 Retention',
+    image: '/image/samples/1.webp',
+  },
+  {
+    id: 'cloudpass',
+    title: 'Cloudpass Identity Chip',
+    category: 'Design System',
+    tag: 'Web / React',
+    year: '2024',
+    color: '#1e3a8a',
+    accent: '#60a5fa',
+    description: 'Floating contextual credential badge with dynamic blur and encrypted SSO token verification.',
+    previewType: 'ui-sky',
+    metrics: '99.98% Auth Flow',
+    image: '/image/samples/3.webp',
+  },
+  {
+    id: 'chat-flow',
+    title: 'Atelier Direct Messenger',
+    category: 'Mobile Messaging',
+    tag: 'Product Design',
+    year: '2024',
+    color: '#18181b',
+    accent: '#f43f5e',
+    description: 'Ultra-minimal tactile conversation interface with thread nesting, audio waveform scrubbers, and live press updates.',
+    previewType: 'ui-chat',
+    metrics: '0.4s Send Latency',
+    image: '/image/samples/5.webp',
+  },
+  {
+    id: 'diyaa-pure',
+    title: 'Diyaa Pure Clean Cartons',
+    category: 'Botanical Packaging',
+    tag: 'CAD Dielines',
+    year: '2024',
+    color: '#3f2b4c',
+    accent: '#c084fc',
+    description: 'FSC-certified cotton paperboard unit cartons with blind debossing and plastic-free water-based barrier coatings.',
+    previewType: 'ui-packaging',
+    metrics: '100% Plastic-Free',
+    image: '/image/Image Gallery/Artboard 4.webp',
+  },
+  {
+    id: 'gokul-velocity',
+    title: 'Aisle Standout Dashboard',
+    category: 'Retail Analytics',
+    tag: 'Telemetry UI',
+    year: '2024',
+    color: '#1c1917',
+    accent: '#f59e0b',
+    description: 'Grocery shelf velocity radar calculating contrast coefficients, scan zones, and 2-second shopper conversion ratios.',
+    previewType: 'ui-analytics',
+    metrics: '+40% Verified Lift',
+    image: '/image/Image Gallery/Artboard 2.webp',
+  },
+  {
+    id: 'neeri-bilingual',
+    title: 'CSIR Bilingual Type System',
+    category: 'Design Engineering',
+    tag: 'Typography',
+    year: '2024',
+    color: '#14213d',
+    accent: '#e63946',
+    description: 'Uncompromising dual-script optical hierarchy unifying Devanagari Hindi and Latin letterforms across national research publications.',
+    previewType: 'ui-type',
+    metrics: 'ISO 12647 Calibrated',
+    image: '/image/Image Gallery/Artboard 3.webp',
+  },
+];
 
 const DEFAULT_SETTINGS = {
   parallaxSpeed: 0.038,
@@ -127,6 +209,7 @@ let currentData = {
   brands: safeRead(STORAGE_KEYS.BRANDS, BRANDS),
   settings: safeRead(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS),
   profile: getInitialProfile(),
+  uiArchive: safeRead(STORAGE_KEYS.UI_ARCHIVE, DEFAULT_UI_ARCHIVE),
   isAuthenticated: safeRead(STORAGE_KEYS.AUTH, false),
 };
 
@@ -347,6 +430,23 @@ export const cmsStore = {
     const updated = { ...currentData.profile, ...patch };
     currentData = { ...currentData, profile: updated };
     safeWrite(STORAGE_KEYS.PROFILE, updated);
+    emitChange();
+  },
+
+  // UI Archive operations
+  updateUIArchive(items) {
+    if (!Array.isArray(items)) return;
+    currentData = { ...currentData, uiArchive: items };
+    safeWrite(STORAGE_KEYS.UI_ARCHIVE, items);
+    emitChange();
+  },
+
+  updateUIArchiveItem(index, patch) {
+    if (index < 0 || index >= currentData.uiArchive.length) return;
+    const updated = [...currentData.uiArchive];
+    updated[index] = { ...updated[index], ...patch };
+    currentData = { ...currentData, uiArchive: updated };
+    safeWrite(STORAGE_KEYS.UI_ARCHIVE, updated);
     emitChange();
   },
 

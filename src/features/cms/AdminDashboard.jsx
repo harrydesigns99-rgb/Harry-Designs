@@ -58,6 +58,11 @@ const AdminDashboard = ({ onNavigateHome }) => {
   const brandLogoFileRef = useRef(null);
   const editBrandLogoFileRef = useRef(null);
 
+  // UI Archive editing states
+  const [editingArchiveIndex, setEditingArchiveIndex] = useState(null);
+  const [archiveItemForm, setArchiveItemForm] = useState(null);
+  const [archiveSavedToast, setArchiveSavedToast] = useState(false);
+
   // Profile inputs & state
   const profileFileRef = useRef(null);
   const [profileSavedToast, setProfileSavedToast] = useState(false);
@@ -188,6 +193,24 @@ const AdminDashboard = ({ onNavigateHome }) => {
     setTimeout(() => setBrandSavedToast(false), 2500);
   };
 
+  const handleStartEditArchive = (item, index) => {
+    setEditingArchiveIndex(index);
+    setArchiveItemForm({ ...item });
+  };
+
+  const handleSaveArchiveEdit = (e) => {
+    e?.preventDefault();
+    if (!archiveItemForm?.title) {
+      alert('Please enter an Artifact Title.');
+      return;
+    }
+    cms.updateUIArchiveItem(editingArchiveIndex, archiveItemForm);
+    setEditingArchiveIndex(null);
+    setArchiveItemForm(null);
+    setArchiveSavedToast(true);
+    setTimeout(() => setArchiveSavedToast(false), 2500);
+  };
+
   const handleProfileImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -300,6 +323,22 @@ const AdminDashboard = ({ onNavigateHome }) => {
               }`}
             />
             <span>Client Logos ({cms.brands.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('ui-archive')}
+            className={`px-5 py-2.5 rounded-full text-xs font-sans tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
+              activeTab === 'ui-archive'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105 font-semibold'
+                : 'bg-white/80 hover:bg-white text-[#1e1e20]/75 border border-black/[0.08] shadow-2xs font-medium'
+            }`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                activeTab === 'ui-archive' ? 'bg-[#FC7A69]' : 'bg-black/20'
+              }`}
+            />
+            <span>UI Archive ({cms.uiArchive?.length || 6})</span>
           </button>
 
           <button
@@ -997,6 +1036,225 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       >
                         <span>✓</span>
                         <span>Save Brand Changes ↗</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: UI ARCHIVE FOLDER ITEMS */}
+        {/* ========================================================= */}
+        {activeTab === 'ui-archive' && (
+          <div className="space-y-6">
+            {archiveSavedToast && (
+              <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 font-medium text-xs flex items-center justify-between">
+                <span>✓ UI Archive artifact updated successfully! Reflects live inside the tactile folder.</span>
+                <span className="font-mono text-[10px]">Saved</span>
+              </div>
+            )}
+
+            <div className="bg-white rounded-3xl border border-black/[0.08] shadow-xs p-6 sm:p-8">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold block mb-1">
+                Tactile Experience Folder
+              </span>
+              <h3 className="font-display font-bold text-2xl text-[#1e1e20]">
+                UI &amp; Design Archive Items
+              </h3>
+              <p className="text-xs sm:text-sm text-[#1e1e20]/70 mt-1 font-sans">
+                Manage the artifacts revealed when visitors click the frosted glass folder on the home page.
+              </p>
+            </div>
+
+            {/* Grid of UI Archive Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {(cms.uiArchive || []).map((item, index) => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-3xl border border-black/[0.08] shadow-xs p-6 flex flex-col justify-between space-y-4 hover:shadow-md transition-all"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-[#f5f4f0] border border-black/10 text-[#1e1e20]/70">
+                        {item.category}
+                      </span>
+                      <span className="text-[10px] font-mono text-[#8b151b] font-bold">
+                        #{index + 1}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-display font-bold text-lg text-[#1e1e20]">
+                          {item.title}
+                        </h4>
+                        <span className="text-[10px] font-mono text-[#FC7A69] font-bold">
+                          {item.metrics}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#1e1e20]/65 mt-1 font-sans line-clamp-2">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-2 text-[11px] font-mono text-[#1e1e20]/50 flex items-center justify-between">
+                      <span>Stack: {item.tag}</span>
+                      <span>Year: {item.year}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-black/[0.06]">
+                    <button
+                      type="button"
+                      onClick={() => handleStartEditArchive(item, index)}
+                      className="w-full py-2 px-4 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs hover:scale-102"
+                    >
+                      <span>✎</span>
+                      <span>Edit Artifact</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Edit UI Archive Modal */}
+            {editingArchiveIndex !== null && archiveItemForm && (
+              <div
+                role="dialog"
+                aria-modal="true"
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1e1e20]/80 backdrop-blur-md"
+                onClick={() => setEditingArchiveIndex(null)}
+              >
+                <div
+                  className="bg-[#f5f4f0] rounded-3xl border border-black/10 shadow-2xl p-6 sm:p-8 max-w-lg w-full space-y-6 bg-dot-grid"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between border-b border-black/[0.08] pb-4">
+                    <div>
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold">
+                        Archive Artifact Editor
+                      </span>
+                      <h3 className="font-display font-bold text-xl text-[#1e1e20] mt-0.5">
+                        Edit Item #{editingArchiveIndex + 1}
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setEditingArchiveIndex(null)}
+                      className="w-8 h-8 rounded-full bg-white hover:bg-black/5 flex items-center justify-center text-xs text-[#1e1e20]/60 hover:text-[#1e1e20] border border-black/10 cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveArchiveEdit} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Artifact Title *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={archiveItemForm.title}
+                        onChange={(e) =>
+                          setArchiveItemForm({ ...archiveItemForm, title: e.target.value })
+                        }
+                        className="w-full px-4 py-3 bg-white rounded-2xl border border-black/15 text-sm outline-none focus:border-[#8b151b] font-sans"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                          Category
+                        </label>
+                        <input
+                          type="text"
+                          value={archiveItemForm.category}
+                          onChange={(e) =>
+                            setArchiveItemForm({ ...archiveItemForm, category: e.target.value })
+                          }
+                          className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                          Metric / Badge
+                        </label>
+                        <input
+                          type="text"
+                          value={archiveItemForm.metrics}
+                          onChange={(e) =>
+                            setArchiveItemForm({ ...archiveItemForm, metrics: e.target.value })
+                          }
+                          className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-mono text-[#8b151b] font-bold"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                          Tech Tag / Stack
+                        </label>
+                        <input
+                          type="text"
+                          value={archiveItemForm.tag}
+                          onChange={(e) =>
+                            setArchiveItemForm({ ...archiveItemForm, tag: e.target.value })
+                          }
+                          className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-mono"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                          Year
+                        </label>
+                        <input
+                          type="text"
+                          value={archiveItemForm.year}
+                          onChange={(e) =>
+                            setArchiveItemForm({ ...archiveItemForm, year: e.target.value })
+                          }
+                          className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Description
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={archiveItemForm.description}
+                        onChange={(e) =>
+                          setArchiveItemForm({ ...archiveItemForm, description: e.target.value })
+                        }
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] resize-none font-sans"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between pt-4 border-t border-black/[0.08]">
+                      <button
+                        type="button"
+                        onClick={() => setEditingArchiveIndex(null)}
+                        className="px-5 py-2.5 rounded-full border border-black/15 text-xs font-sans font-medium text-[#1e1e20]/70 hover:text-[#1e1e20] cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="px-6 py-2.5 rounded-full bg-[#8b151b] hover:bg-[#7a161c] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-md cursor-pointer flex items-center gap-1.5 hover:scale-105"
+                      >
+                        <span>✓</span>
+                        <span>Save Artifact Changes ↗</span>
                       </button>
                     </div>
                   </form>
