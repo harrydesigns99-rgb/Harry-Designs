@@ -8,6 +8,7 @@ import TestimonialsSection from '@/features/testimonials/TestimonialsSection';
 import KineticTicker from '@/components/KineticTicker';
 import CustomCursor from '@/components/CustomCursor';
 import WandPreloader from '@/components/WandPreloader';
+import LivingBackground from '@/components/LivingBackground';
 import { ThemeProvider } from '@/context/ThemeContext';
 
 const AdminDashboard = lazy(() => import('@/features/cms').then((m) => ({ default: m.AdminDashboard })));
@@ -73,6 +74,7 @@ function App() {
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-[#f5f4f0] relative selection:bg-[#FC7A69] selection:text-white overflow-x-clip">
+        <LivingBackground />
         <CustomCursor />
         {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
 
@@ -111,7 +113,7 @@ function App() {
               <ResumePage onNavigateHome={() => navigateHome()} />
             </div>
           ) : (
-            <div className="relative z-10 bg-[#f5f4f0]">
+            <div className="relative z-10 bg-transparent">
               <Navbar />
               <HeroSection />
               <AboutSection />

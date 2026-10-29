@@ -1,27 +1,25 @@
 import { motion } from 'framer-motion';
 
 const TICKER_ITEMS = [
-  'Brand Identity Systems',
+  'Brand Identity',
   '✦',
-  'Packaging Architecture',
+  'Packaging Systems',
   '✦',
-  'CAD Structural Dielines',
+  'Art Direction',
   '✦',
-  '8-Color CI-Flexo Supervision',
+  'Retail Standout',
   '✦',
-  'ISO 12647-2 Ready Standard',
+  '3D Visualization',
   '✦',
-  'Tactile Brass Hot-Foil Stamping',
+  'Print & Production',
   '✦',
-  'Supermarket Aisle Standout',
-  '✦',
-  'FMCG & Luxury Bullion',
+  'Founder-Led Studio',
   '✦',
 ];
 
 const KineticTicker = () => {
   return (
-    <div className="relative w-full overflow-hidden border-y border-black/[0.08] bg-[#f5f4f0] py-4 sm:py-5 z-10 select-none">
+    <div className="relative w-full overflow-hidden border-y border-black/[0.08] bg-white/40 backdrop-blur-md py-4 sm:py-5 z-10 select-none">
       <div className="flex w-max">
         {/* Set 1 */}
         <motion.div

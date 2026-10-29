@@ -5,23 +5,23 @@ import { sound } from '@/utils/audio';
 const CAPABILITIES = [
   {
     step: '01',
-    title: 'Brand Identity Architecture',
-    desc: 'Bespoke insignia, typographic systems, brand tokens, and comprehensive master brand guidelines built for enduring commercial authority.',
+    title: 'Brand Identity',
+    desc: 'Memorable logos, cohesive typography, and comprehensive design systems built for long-term recognition.',
   },
   {
     step: '02',
-    title: 'Packaging & Dieline Engineering',
-    desc: 'CAD dielines, structural folding geometry, pouch margins, and 8-color CI-Flexo press supervision calibrated for high-velocity grocery aisles.',
+    title: 'Packaging Design',
+    desc: 'Distinctive box, label, and pouch packaging designed for shelf appeal, structural integrity, and clean unboxing.',
   },
   {
     step: '03',
-    title: 'Tactile Finishes & Materiality',
-    desc: 'Multi-level brass die debossing, Kurz hot-foil stamping, selective UV gloss curing, and FSC-certified cotton paperboard curation.',
+    title: 'Materials & Finishes',
+    desc: 'Carefully selected papers, foils, embossing, and coatings that give your physical product a premium tactile feel.',
   },
   {
     step: '04',
-    title: 'Retail Standout & Velocity',
-    desc: 'Supermarket aisle standout diagnostics that eliminate visual noise and convert shoppers in under two seconds.',
+    title: 'Retail Impact',
+    desc: 'Focused, uncluttered visual hierarchy that commands attention and makes purchasing an easy decision.',
   },
 ];
 
@@ -95,13 +95,13 @@ const AboutSection = () => {
                     Studio Philosophy
                   </span>
                   <h3 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                    Translating founder ambition into tangible shelf velocity.
+                    Design engineered to convert.
                   </h3>
                   <p className="font-sans text-sm sm:text-base text-white/80 leading-relaxed font-normal">
-                    Based in Chennai and partnering with forward-looking brands across India and globally, Hariharan S operates as an independent brand and packaging architect.
+                    Based in Chennai and partnering with founders globally, Harry Designs creates distinctive brand identities and standout retail packaging.
                   </p>
                   <p className="font-sans text-sm sm:text-base text-white/80 leading-relaxed font-normal">
-                    Every project bridges raw brand strategy with tactile industrial printing — mastering CAD dielines, barrier substrates, and Pantone spot formulations so your identity dominates competitive aisles.
+                    From early concept to print-ready delivery, every design is built to be simple, memorable, and commercially effective.
                   </p>
                 </div>
 

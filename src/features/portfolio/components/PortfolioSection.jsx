@@ -26,7 +26,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   return (
     <section
       id="work"
-      className="relative w-full bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid py-24 sm:py-32 md:py-36 px-4 sm:px-6 lg:px-8 select-none"
+      className="relative w-full bg-transparent text-[#1e1e20] py-24 sm:py-32 md:py-36 px-4 sm:px-6 lg:px-8 select-none"
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header matching shriyap.com */}
