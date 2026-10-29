@@ -6,6 +6,7 @@ import { PortfolioSection } from '@/features/portfolio';
 import { ContactSection } from '@/features/contact';
 import TestimonialsSection from '@/features/testimonials/TestimonialsSection';
 import KineticTicker from '@/components/KineticTicker';
+import CustomCursor from '@/components/CustomCursor';
 import WandPreloader from '@/components/WandPreloader';
 import { ThemeProvider } from '@/context/ThemeContext';
 
@@ -72,6 +73,7 @@ function App() {
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-[#f5f4f0] relative selection:bg-[#FC7A69] selection:text-white overflow-x-clip">
+        <CustomCursor />
         {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
 
         <Suspense

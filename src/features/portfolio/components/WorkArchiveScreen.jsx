@@ -58,11 +58,9 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
   }, [projects, filter, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[var(--theme-bg)] text-[#1d1d1f] relative selection:bg-crimson selection:text-white pb-24">
-      <AnimatedBackdrop tone="light" />
-
-      {/* ==================== STICKY APPLE FROSTED GLASS SUB-NAV ==================== */}
-      <header className="sticky top-0 z-50 w-full apple-glass border-b border-black/[0.08] backdrop-blur-2xl">
+    <div className="min-h-screen bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid relative selection:bg-[#FC7A69] selection:text-white pb-24">
+      {/* ==================== STICKY SUB-NAV ==================== */}
+      <header className="sticky top-0 z-50 w-full bg-[#f5f4f0]/90 backdrop-blur-md border-b border-black/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-4">
           {/* Back Pill Button */}
           <button
@@ -71,76 +69,66 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
               sound.playClick();
               onNavigateHome?.();
             }}
-            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-black/[0.05] hover:bg-black/[0.1] text-xs font-mono font-medium text-[#1d1d1f] transition-all cursor-pointer border border-black/[0.05]"
+            data-cursor="HOME"
+            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all cursor-pointer border border-black/[0.08] shadow-2xs group"
             title="Return to Studio Home [Esc]"
           >
-            <span>←</span>
-            <span className="hidden sm:inline">Studio Overview</span>
-            <span className="sm:hidden">Home</span>
-            <span className="hidden md:inline-block text-[10px] text-[#86868b] bg-black/[0.06] px-1.5 py-0.5 rounded">
-              Esc
-            </span>
+            <span className="group-hover:-translate-x-1 transition-transform">←</span>
+            <span>Back to work</span>
           </button>
 
           {/* Center Monogram / Breadcrumb */}
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-crimson text-[11px] font-bold text-white shadow-xs">
-              H
-            </span>
-            <span className="text-xs sm:text-sm font-mono tracking-tight text-[#1d1d1f] font-semibold">
-              HARRY DESIGNS // ARCHIVE
+            <span className="font-display text-sm font-bold tracking-tight text-[#1e1e20]">
+              Hariharan S // Complete Archive
             </span>
           </div>
 
           {/* Right Action: Inquire CTA */}
           <div className="flex items-center gap-3">
-            <span className="hidden lg:inline-flex items-center gap-1.5 text-[11px] font-mono text-[#86868b]">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Available for Q3/Q4
-            </span>
-
             <button
               type="button"
               onClick={() => {
                 sound.playClick();
                 onNavigateHome?.('contact');
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-crimson text-white text-xs font-medium tracking-wide hover:bg-crimson-dark transition-all cursor-pointer shadow-xs"
+              data-cursor="CONTACT ↗"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#1e1e20] text-[#f5f4f0] hover:bg-black text-xs font-sans font-medium tracking-wide transition-all cursor-pointer shadow-xs"
             >
-              <span>Let&apos;s Talk</span>
+              <span>Get in touch</span>
               <span>↗</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* ==================== HERO SECTION (DZINR-INSPIRED BOLD KEYNOTE) ==================== */}
+      {/* ==================== HERO SECTION ==================== */}
       <section className="pt-12 sm:pt-20 pb-8 sm:pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 border-b border-black/[0.06] pb-10">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 border-b border-black/[0.08] pb-10">
           <div className="space-y-4 max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/[0.04] border border-black/[0.06] text-xs font-mono text-[#86868b]"
+              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-black/[0.08] text-xs font-mono text-[#FC7A69] font-medium"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-crimson" />
-              <span>COMPLETE PORTFOLIO CATALOG // 2022 — 2025</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#FC7A69]" />
+              <span>COMPLETE PORTFOLIO CATALOG // 12 CASE STUDIES</span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="font-display text-5xl sm:text-7xl lg:text-8xl font-medium tracking-tight text-[#1d1d1f] leading-[0.95]"
+              className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-[#1e1e20] leading-[0.95]"
             >
-              Our <span className="text-gradient">Work.</span>
+              Full Archive<span className="text-[#FC7A69]">.</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className="text-base sm:text-xl text-[#86868b] leading-relaxed max-w-2xl"
+              className="text-base sm:text-xl text-[#1e1e20]/75 leading-relaxed max-w-2xl font-sans"
             >
               Where strategic positioning turns into packaging architecture, iconic brand identities, and shelf velocity. Complete catalog of client commissions.
             </motion.p>

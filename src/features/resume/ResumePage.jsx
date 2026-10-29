@@ -25,7 +25,7 @@ const ResumePage = ({ onNavigateHome }) => {
   const profile = { ...DEFAULT_PROFILE, ...(cms?.profile || {}) };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[var(--theme-bg)] text-[var(--theme-text)]">
+    <main className="relative min-h-screen overflow-hidden bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid">
       <AnimatedBackdrop tone="light" />
       <header className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-8 flex flex-wrap items-center justify-between gap-4 border-b border-eerie/15">
         <button

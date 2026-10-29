@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
+import WordReveal from '@/components/WordReveal';
 
 const CATEGORIES = [
   { id: 'all', label: 'All Projects' },
@@ -34,7 +35,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
               Selected Portfolio
             </span>
             <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#1e1e20]">
-              Work I&apos;m proud of
+              <WordReveal text="Work I'm proud of" />
             </h2>
           </div>
 
@@ -83,6 +84,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                   sound.playClick();
                   onSelectProject?.(project);
                 }}
+                data-cursor="VIEW CASE ↗"
                 className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-black/[0.08] shadow-[0_12px_32px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.16)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer"
               >
                 {/* Media Container */}

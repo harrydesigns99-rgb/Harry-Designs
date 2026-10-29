@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
+import WordReveal from '@/components/WordReveal';
 
 const ContactSection = () => {
   const [toastMessage, setToastMessage] = useState(null);
@@ -40,7 +41,7 @@ const ContactSection = () => {
             Get In Touch
           </span>
           <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#f5f4f0]">
-            Let&apos;s build something durable.
+            <WordReveal text="Let's build something durable." />
           </h2>
         </div>
 
@@ -49,6 +50,7 @@ const ContactSection = () => {
           {/* Row 1: Email */}
           <div
             onClick={handleCopyEmail}
+            data-cursor="COPY EMAIL 📋"
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
             <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
@@ -76,6 +78,7 @@ const ContactSection = () => {
           {/* Row 2: WhatsApp / Call */}
           <div
             onClick={handleWhatsApp}
+            data-cursor="CHAT ON WHATSAPP ↗"
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
             <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
@@ -103,6 +106,7 @@ const ContactSection = () => {
           {/* Row 3: LinkedIn */}
           <div
             onClick={handleLinkedIn}
+            data-cursor="OPEN LINKEDIN ↗"
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
             <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">

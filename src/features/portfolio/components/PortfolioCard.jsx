@@ -54,7 +54,7 @@ const PortfolioCard = ({ item, index, onSelect }) => {
             }
           : {}
       }
-      data-cursor="View"
+      data-cursor="VIEW CASE ↗"
       onClick={() => {
         sound.playClick();
         onSelect?.(item);
