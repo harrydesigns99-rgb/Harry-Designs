@@ -2,7 +2,7 @@ import { PORTFOLIO_ITEMS, BRANDS } from '@/features/portfolio/data/portfolioData
 import { GALLERY_IMAGES } from '@/features/parallax-gallery/data/galleryImages';
 
 const STORAGE_KEYS = {
-  PROJECTS: 'harry_designs_cms_projects_v4',
+  PROJECTS: 'harry_designs_cms_projects_v3',
   GALLERY: 'harry_designs_cms_gallery_v1',
   BRANDS: 'harry_designs_cms_brands_v1',
   SETTINGS: 'harry_designs_cms_settings_v1',
@@ -15,7 +15,6 @@ if (typeof window !== 'undefined') {
   try {
     localStorage.removeItem('harry_designs_cms_projects_v1');
     localStorage.removeItem('harry_designs_cms_projects_v2');
-    localStorage.removeItem('harry_designs_cms_projects_v3');
     localStorage.removeItem('harry_portfolio_layout');
   } catch {
     // ignore
@@ -79,14 +78,14 @@ function getInitialProjects() {
     (item) => item && typeof item === 'object' && typeof item.id === 'number' && typeof item.title === 'string'
   );
 
-  // Check if standard IDs have mismatched images or swapped titles from legacy test edits
+  // Check if standard IDs have mismatched images from legacy test edits
   const hasMismatchedImages = stored.some((item) => {
-    if (item.id === 1 && (item.title !== 'Packaging & Label Architecture' || item.client !== 'Gokul Oils')) return true;
-    if (item.id === 2 && (item.title !== 'Luxury Gold & Bullion Identity' || item.client !== 'Sendra Gold')) return true;
-    if (item.id === 3 && (item.title !== 'Organic Botanical Skincare' || item.client !== 'Diyaa Pure')) return true;
-    if (item.id === 4 && (item.title !== 'Bilingual Scientific Identity' || item.client !== 'CSIR India')) return true;
-    if (item.id === 5 && (item.title !== 'Handcrafted Bakery Packaging' || item.client !== 'Thomas Bakers')) return true;
-    if (item.id === 6 && (item.title !== 'Botanical Elixir Beverage' || item.client !== 'Mo Elixir')) return true;
+    // If id is 4 (CSIR India) but image is Artboard 2 (Gokul Oils)
+    if (item.id === 4 && item.image && item.image.includes('Artboard 2')) return true;
+    // If id is 5 (Thomas Bakers) but image is Artboard 7 (Anjarai Petti)
+    if (item.id === 5 && item.image && item.image.includes('Artboard 7')) return true;
+    // If id is 6 (Mo Elixir) but image is Artboard 11 (Quill)
+    if (item.id === 6 && item.image && item.image.includes('Artboard 11')) return true;
     return false;
   });
 
