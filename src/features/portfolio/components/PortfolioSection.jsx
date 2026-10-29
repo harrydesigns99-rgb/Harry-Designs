@@ -18,13 +18,13 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
 
   return (
-    <section id="portfolio" className="relative pt-14 pb-8 md:pt-20 md:pb-10 bg-transparent text-[#1d1d1f]" ref={ref}>
+    <section id="portfolio" className="relative pt-14 pb-8 md:pt-20 md:pb-12 bg-transparent text-[#1d1d1f]" ref={ref}>
       <AnimatedBackdrop tone="light" />
       <div className="absolute inset-x-0 top-0 h-px bg-black/[0.06] pointer-events-none" />
 
       <div className="relative z-10">
         {/* ==================== BRANDS SECTION ==================== */}
-        <div className="mb-8 sm:mb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-14 sm:mb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
@@ -54,29 +54,25 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
           <BrandsCarousel isInView={isInView} />
         </div>
 
-        {/* ==================== MAIN PORTFOLIO SHOWCASE HEADER ==================== */}
+        {/* ==================== SELECTED WORK HEADER ==================== */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-6 border-b border-black/[0.06]">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
-                <span className="h-1.5 w-1.5 rounded-full bg-crimson animate-pulse" />
-                <span>SELECTED WORK // 3D PARALLAX SHOWCASE</span>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-6 border-b border-black/[0.06]">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-medium mb-2">
+                <span>●</span>
+                <span>SELECTED WORK</span>
               </div>
-              <h3 className="font-display text-4xl sm:text-5xl md:text-7xl font-medium tracking-tight text-[#1d1d1f] leading-[0.95]">
-                Work that <span className="text-crimson italic font-serif font-light">delivered.</span>
+              <h3 className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-[#1d1d1f]">
+                Work that <span className="text-crimson italic font-serif font-light">worked.</span>
               </h3>
             </div>
-
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <p className="max-w-xs text-xs sm:text-sm text-[#86868b] leading-relaxed">
-                Identity systems, packaging architecture, and visual worlds designed for commercial impact.
-              </p>
-            </div>
+            <p className="text-xs sm:text-sm text-[#86868b] max-w-xs">
+              Commercial packaging and identity systems engineered for shelf standout.
+            </p>
           </div>
         </div>
 
-        {/* ==================== PERMANENT 3D PARALLAX SHOWCASE (ADWANTS.IN STYLE) ==================== */}
-        {/* Note: Rendered directly without overflow-hidden wrapper so position:sticky pins smoothly */}
+        {/* ==================== PERMANENT 3D PARALLAX SHOWCASE ==================== */}
         <Parallax3DShowcase
           projects={projects}
           onSelectProject={(item) =>
@@ -85,32 +81,19 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
           onNavigateWork={onNavigateWork}
         />
 
-        {/* ==================== COMPLETE CASE ARCHIVE & MANIFESTO FOOTER ==================== */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 sm:mt-32 md:mt-40">
-          <div className="p-8 sm:p-12 rounded-3xl apple-card bg-gradient-to-br from-white via-white to-black/[0.02] border border-black/[0.08] text-center space-y-4 mb-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
-              <span>●</span> COMPLETE CASE ARCHIVE
-            </div>
-            <h4 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-[#1d1d1f]">
-              Form meets <span className="text-crimson italic font-serif">commercial velocity.</span>
-            </h4>
-            <p className="text-sm text-[#86868b] max-w-xl mx-auto leading-relaxed">
-              Every system is engineered from raw brand strategy to tactile dieline execution. Explore all 12 commercial and cultural case studies in the complete archive.
-            </p>
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  sound.playPop();
-                  onNavigateWork?.();
-                }}
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-medium tracking-wide uppercase transition-all shadow-md hover:shadow-lg cursor-pointer group"
-              >
-                <span>Explore Full 12-Project Archive</span>
-                <span className="text-sm group-hover:translate-x-1 transition-transform">↗</span>
-              </button>
-            </div>
-          </div>
+        {/* ==================== SIMPLE & MINIMAL ARCHIVE CTA ==================== */}
+        <div className="py-12 sm:py-16 flex justify-center items-center">
+          <button
+            type="button"
+            onClick={() => {
+              sound.playPop();
+              onNavigateWork?.();
+            }}
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1d1d1f] hover:bg-black text-white text-xs font-medium tracking-wider uppercase transition-all shadow-md hover:shadow-xl cursor-pointer group"
+          >
+            <span>Explore Full Archive</span>
+            <span className="text-sm group-hover:translate-x-1 transition-transform">↗</span>
+          </button>
         </div>
       </div>
 
