@@ -148,10 +148,11 @@ const CaseStudyScreen = ({
               onNavigateHome?.();
             }}
             data-cursor="HOME"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all cursor-pointer border border-black/[0.08] shadow-2xs group"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all cursor-pointer border border-black/[0.08] shadow-2xs group flex-shrink-0"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>
-            <span>Back to work</span>
+            <span className="hidden xs:inline">Back to work</span>
+            <span className="xs:hidden">Back</span>
           </button>
 
           {/* Project Title Center & Section Navigation */}
@@ -191,14 +192,14 @@ const CaseStudyScreen = ({
           </div>
 
           {/* Right Controls: Prev / Next / Share */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <button
               type="button"
               onClick={handleShare}
               data-cursor="SHARE ↗"
-              className="px-3 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-mono text-[#1e1e20] border border-black/[0.08] transition-all cursor-pointer shadow-2xs"
+              className="px-2.5 sm:px-3 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-mono text-[#1e1e20] border border-black/[0.08] transition-all cursor-pointer shadow-2xs"
             >
-              {sharedToast ? '✓ Copied URL' : 'Share ↗'}
+              {sharedToast ? '✓' : 'Share ↗'}
             </button>
 
             <div className="inline-flex items-center p-0.5 rounded-full bg-white/80 border border-black/[0.08] shadow-2xs">
@@ -210,9 +211,9 @@ const CaseStudyScreen = ({
                 }}
                 data-cursor="PREV"
                 title={`Previous: ${prevProject.client}`}
-                className="px-3 py-1 rounded-full text-xs font-sans font-medium text-[#1e1e20]/70 hover:text-[#1e1e20] transition-all cursor-pointer"
+                className="px-2 sm:px-3 py-1 rounded-full text-xs font-sans font-medium text-[#1e1e20]/70 hover:text-[#1e1e20] transition-all cursor-pointer"
               >
-                ← Prev
+                ← <span className="hidden xs:inline">Prev</span>
               </button>
               <span className="text-black/15 text-xs">|</span>
               <button
@@ -223,9 +224,9 @@ const CaseStudyScreen = ({
                 }}
                 data-cursor="NEXT"
                 title={`Next: ${nextProject.client}`}
-                className="px-3 py-1 rounded-full text-xs font-sans font-medium text-[#1e1e20]/70 hover:text-[#1e1e20] transition-all cursor-pointer"
+                className="px-2 sm:px-3 py-1 rounded-full text-xs font-sans font-medium text-[#1e1e20]/70 hover:text-[#1e1e20] transition-all cursor-pointer"
               >
-                Next →
+                <span className="hidden xs:inline">Next</span> →
               </button>
             </div>
           </div>
@@ -252,7 +253,7 @@ const CaseStudyScreen = ({
           </div>
 
           {/* Grand Headline matching shriyap.com */}
-          <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-bold tracking-tight text-[#1e1e20] leading-[1.06]">
+          <h1 className="font-display text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-bold tracking-tight text-[#1e1e20] leading-[1.12] sm:leading-[1.06]">
             <WordReveal
               text={`${currentProject.title} for ${currentProject.client}`}
               highlightWords={[currentProject.client]}

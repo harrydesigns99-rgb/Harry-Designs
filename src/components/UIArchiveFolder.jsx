@@ -8,23 +8,23 @@ const UIArchiveFolder = () => {
   const [activeCard, setActiveCard] = useState(null);
   const containerRef = useRef(null);
 
-  // Responsive scale factor for mobile vs desktop scatter
-  const [scatterScale, setScatterScale] = useState(1);
+  // Screen width breakpoint for mobile vs tablet vs desktop scatter
+  const [deviceTier, setDeviceTier] = useState('desktop');
 
   useEffect(() => {
-    const updateScale = () => {
+    const updateTier = () => {
       const width = typeof window !== 'undefined' ? window.innerWidth : 1200;
       if (width < 640) {
-        setScatterScale(0.48); // Compact mobile scatter
+        setDeviceTier('mobile');
       } else if (width < 1024) {
-        setScatterScale(0.72); // Tablet scatter
+        setDeviceTier('tablet');
       } else {
-        setScatterScale(1); // Full desktop scatter matching screenshot
+        setDeviceTier('desktop');
       }
     };
-    updateScale();
-    window.addEventListener('resize', updateScale);
-    return () => window.removeEventListener('resize', updateScale);
+    updateTier();
+    window.addEventListener('resize', updateTier);
+    return () => window.removeEventListener('resize', updateTier);
   }, []);
 
   useEffect(() => {
@@ -53,21 +53,41 @@ const UIArchiveFolder = () => {
     }
   };
 
-  // Base scatter coordinates directly from screenshot
+  // Carefully calibrated coordinates per device tier to avoid horizontal overflow on mobile
   const cardCoordinates = {
-    cloudpass: { x: Math.round(-240 * scatterScale), y: Math.round(-220 * scatterScale) },
-    dualPhone: { x: Math.round(-420 * scatterScale), y: Math.round(20 * scatterScale) },
-    orbPhone: { x: Math.round(-170 * scatterScale), y: Math.round(250 * scatterScale) },
-    aurora: { x: Math.round(230 * scatterScale), y: Math.round(-220 * scatterScale) },
-    healthIos: { x: Math.round(430 * scatterScale), y: Math.round(20 * scatterScale) },
-    tokensBar: { x: Math.round(210 * scatterScale), y: Math.round(260 * scatterScale) },
-  };
+    mobile: {
+      cloudpass: { x: -75, y: -160 },
+      aurora: { x: 75, y: -160 },
+      dualPhone: { x: -85, y: -10 },
+      healthIos: { x: 85, y: -10 },
+      orbPhone: { x: -75, y: 140 },
+      tokensBar: { x: 0, y: 240 },
+    },
+    tablet: {
+      cloudpass: { x: -170, y: -180 },
+      aurora: { x: 170, y: -180 },
+      dualPhone: { x: -280, y: 15 },
+      healthIos: { x: 280, y: 15 },
+      orbPhone: { x: -120, y: 200 },
+      tokensBar: { x: 140, y: 210 },
+    },
+    desktop: {
+      cloudpass: { x: -240, y: -220 },
+      aurora: { x: 230, y: -220 },
+      dualPhone: { x: -420, y: 20 },
+      healthIos: { x: 430, y: 20 },
+      orbPhone: { x: -170, y: 250 },
+      tokensBar: { x: 210, y: 260 },
+    },
+  }[deviceTier];
 
   return (
     <div
       ref={containerRef}
       className={`relative w-full flex flex-col items-center justify-center select-none transition-all duration-700 ${
-        isOpen ? 'min-h-[740px] sm:min-h-[840px] lg:min-h-[920px] py-16' : 'min-h-[300px] py-12'
+        isOpen
+          ? 'min-h-[680px] sm:min-h-[840px] lg:min-h-[920px] py-12 sm:py-16'
+          : 'min-h-[260px] sm:min-h-[300px] py-8 sm:py-12'
       }`}
     >
       {/* Background hint / instruction banner when open */}
@@ -108,7 +128,7 @@ const UIArchiveFolder = () => {
               exit={{ opacity: 0, scale: 0.2, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 280, damping: 24, delay: 0.05 }}
               onClick={() => setActiveCard('cloudpass')}
-              className="absolute z-20 w-[145px] sm:w-[170px] aspect-[4/5] rounded-3xl bg-gradient-to-b from-[#70b2f5] via-[#5ca0ec] to-[#458de0] p-3.5 sm:p-4 text-white shadow-[0_20px_40px_-10px_rgba(69,141,224,0.4)] border border-white/50 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden group"
+              className="absolute z-20 w-[125px] sm:w-[150px] lg:w-[170px] aspect-[4/5] rounded-3xl bg-gradient-to-b from-[#70b2f5] via-[#5ca0ec] to-[#458de0] p-3 sm:p-4 text-white shadow-[0_20px_40px_-10px_rgba(69,141,224,0.4)] border border-white/50 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden group touch-none"
             >
               {/* Top Hanger Punch Hole */}
               <div className="flex flex-col items-center">
@@ -160,7 +180,7 @@ const UIArchiveFolder = () => {
               exit={{ opacity: 0, scale: 0.2, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 280, damping: 24, delay: 0.1 }}
               onClick={() => setActiveCard('dual-phone')}
-              className="absolute z-20 w-[150px] sm:w-[175px] aspect-[9/18] rounded-[36px] bg-[#121214] p-3 text-white shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] border border-white/15 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden"
+              className="absolute z-20 w-[130px] sm:w-[155px] lg:w-[175px] aspect-[9/18] rounded-[30px] sm:rounded-[36px] bg-[#121214] p-2.5 sm:p-3 text-white shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] border border-white/15 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden touch-none"
             >
               {/* Top Chat Screen */}
               <div className="flex-1 flex flex-col justify-between p-2 rounded-2xl bg-gradient-to-b from-white/[0.04] to-transparent">
@@ -215,7 +235,7 @@ const UIArchiveFolder = () => {
               exit={{ opacity: 0, scale: 0.2, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 280, damping: 24, delay: 0.14 }}
               onClick={() => setActiveCard('orb-phone')}
-              className="absolute z-20 w-[140px] sm:w-[160px] aspect-[9/18] rounded-[34px] bg-gradient-to-b from-[#1b1528] via-[#3a203f] to-[#5a2e46] p-3 text-white shadow-[0_24px_50px_-12px_rgba(0,0,0,0.45)] border border-white/20 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden"
+              className="absolute z-20 w-[120px] sm:w-[145px] lg:w-[160px] aspect-[9/18] rounded-[28px] sm:rounded-[34px] bg-gradient-to-b from-[#1b1528] via-[#3a203f] to-[#5a2e46] p-2.5 sm:p-3 text-white shadow-[0_24px_50px_-12px_rgba(0,0,0,0.45)] border border-white/20 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden touch-none"
             >
               {/* Top Text Header */}
               <div className="text-center pt-2 space-y-0.5">
@@ -275,7 +295,7 @@ const UIArchiveFolder = () => {
               exit={{ opacity: 0, scale: 0.2, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 280, damping: 24, delay: 0.08 }}
               onClick={() => setActiveCard('aurora')}
-              className="absolute z-20 w-[145px] sm:w-[170px] aspect-[4/5] rounded-3xl bg-black p-4 text-white shadow-[0_20px_45px_-10px_rgba(0,0,0,0.6)] border border-white/20 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden"
+              className="absolute z-20 w-[125px] sm:w-[150px] lg:w-[170px] aspect-[4/5] rounded-3xl bg-black p-3 sm:p-4 text-white shadow-[0_20px_45px_-10px_rgba(0,0,0,0.6)] border border-white/20 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden touch-none"
             >
               {/* Top Text Header */}
               <div className="space-y-0.5">
@@ -329,7 +349,7 @@ const UIArchiveFolder = () => {
               exit={{ opacity: 0, scale: 0.2, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 280, damping: 24, delay: 0.12 }}
               onClick={() => setActiveCard('health-ios')}
-              className="absolute z-20 w-[150px] sm:w-[175px] aspect-[9/19] rounded-[36px] bg-white p-3 text-black shadow-[0_24px_50px_-12px_rgba(0,0,0,0.22)] border border-black/10 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden"
+              className="absolute z-20 w-[130px] sm:w-[155px] lg:w-[175px] aspect-[9/19] rounded-[30px] sm:rounded-[36px] bg-white p-2.5 sm:p-3 text-black shadow-[0_24px_50px_-12px_rgba(0,0,0,0.22)] border border-black/10 cursor-grab active:cursor-grabbing flex flex-col justify-between overflow-hidden touch-none"
             >
               {/* iOS Top Status */}
               <div className="flex justify-between items-center text-[7px] font-mono text-black/50">
@@ -418,7 +438,7 @@ const UIArchiveFolder = () => {
               exit={{ opacity: 0, scale: 0.2, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 280, damping: 24, delay: 0.18 }}
               onClick={() => setActiveCard('3d-tokens')}
-              className="absolute z-20 w-[260px] sm:w-[340px] h-[75px] sm:h-[85px] rounded-3xl bg-black p-3 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.55)] border border-white/20 cursor-grab active:cursor-grabbing flex items-center justify-between overflow-hidden"
+              className="absolute z-20 w-[240px] sm:w-[320px] lg:w-[340px] h-[66px] sm:h-[85px] rounded-3xl bg-black p-2.5 sm:p-3 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.55)] border border-white/20 cursor-grab active:cursor-grabbing flex items-center justify-between overflow-hidden touch-none"
             >
               {/* 7 Glowing 3D Tokens */}
               <div className="w-full flex items-center justify-around px-2">
@@ -459,7 +479,7 @@ const UIArchiveFolder = () => {
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       >
         {/* The Folder Wrapper */}
-        <div className="relative w-[280px] sm:w-[320px] h-[190px] sm:h-[210px] flex items-end justify-center">
+        <div className="relative w-[260px] sm:w-[320px] h-[175px] sm:h-[210px] flex items-end justify-center">
           {/* Back Folder Flap with Tab in Studio Lush Green (#35804d) */}
           <div className="absolute inset-x-0 bottom-0 top-3 bg-gradient-to-br from-[#35804d] via-[#2d6f42] to-[#205531] rounded-3xl shadow-[0_16px_36px_-10px_rgba(47,125,73,0.4)] transition-all duration-500 group-hover:shadow-[0_22px_45px_-10px_rgba(47,125,73,0.55)]">
             {/* Folder Tab at Top Left */}

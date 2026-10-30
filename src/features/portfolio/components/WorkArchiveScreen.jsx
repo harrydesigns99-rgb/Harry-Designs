@@ -70,22 +70,23 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
               onNavigateHome?.();
             }}
             data-cursor="HOME"
-            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all cursor-pointer border border-black/[0.08] shadow-2xs group"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all cursor-pointer border border-black/[0.08] shadow-2xs group flex-shrink-0"
             title="Return to Studio Home [Esc]"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>
-            <span>Back to work</span>
+            <span className="hidden xs:inline">Back to work</span>
+            <span className="xs:hidden">Back</span>
           </button>
 
           {/* Center Monogram / Breadcrumb */}
-          <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2">
             <span className="font-display text-sm font-bold tracking-tight text-[#1e1e20]">
               Hariharan S // Complete Archive
             </span>
           </div>
 
           {/* Right Action: Inquire CTA */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <button
               type="button"
               onClick={() => {
@@ -93,7 +94,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
                 onNavigateHome?.('contact');
               }}
               data-cursor="CONTACT ↗"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#1e1e20] text-[#f5f4f0] hover:bg-black text-xs font-sans font-medium tracking-wide transition-all cursor-pointer shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#1e1e20] text-[#f5f4f0] hover:bg-black text-xs font-sans font-medium tracking-wide transition-all cursor-pointer shadow-xs"
             >
               <span>Get in touch</span>
               <span>↗</span>
@@ -119,7 +120,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-[#1e1e20] leading-[0.95]"
+              className="font-display text-3xl xs:text-4xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-[#1e1e20] leading-[1.02] sm:leading-[0.95]"
             >
               Full Archive<span className="text-[#FC7A69]">.</span>
             </motion.h1>

@@ -51,6 +51,7 @@ const HeroSection = () => {
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
@@ -72,7 +73,7 @@ const HeroSection = () => {
   return (
     <section
       id="introduction"
-      className="relative min-h-[100svh] w-full bg-transparent text-[#1e1e20] flex flex-col items-center justify-center pt-28 sm:pt-32 pb-20 px-4 sm:px-6 overflow-hidden select-none"
+      className="relative min-h-[100svh] w-full bg-transparent text-[#1e1e20] flex flex-col items-center justify-center pt-24 sm:pt-32 pb-16 sm:pb-20 px-3.5 sm:px-6 overflow-hidden select-none"
     >
       {/* Floating Studio Telemetry Shuttle (Draggable HUD Capsule in Viewport) */}
       <StudioShuttle />
@@ -89,9 +90,9 @@ const HeroSection = () => {
 
       {/* Main 3-line Headline with High-End Kinetic Text Reveal */}
       <div className="w-full max-w-5xl lg:max-w-6xl mx-auto text-center mb-8 sm:mb-12 px-2">
-        <h1 className="font-display text-3xl sm:text-5xl md:text-[3.5rem] lg:text-[4.2rem] xl:text-[4.6rem] font-bold tracking-tight text-[#1e1e20] leading-[1.08] sm:leading-[1.06]">
+        <h1 className="font-display text-[1.85rem] xs:text-3xl sm:text-5xl md:text-[3.5rem] lg:text-[4.2rem] xl:text-[4.6rem] font-bold tracking-tight text-[#1e1e20] leading-[1.12] sm:leading-[1.06]">
           {/* Line 1: A sharp brand strategy. */}
-          <span className="block overflow-hidden py-1">
+          <span className="block overflow-hidden py-0.5 sm:py-1">
             <motion.span
               initial={{ y: '110%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -103,7 +104,7 @@ const HeroSection = () => {
           </span>
 
           {/* Line 2: A stubborn shelf. */}
-          <span className="block overflow-hidden py-1">
+          <span className="block overflow-hidden py-0.5 sm:py-1">
             <motion.span
               initial={{ y: '110%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -115,7 +116,7 @@ const HeroSection = () => {
           </span>
 
           {/* Line 3: A little room to disrupt the aisle. */}
-          <span className="block overflow-hidden py-1">
+          <span className="block overflow-hidden py-0.5 sm:py-1">
             <motion.span
               initial={{ y: '110%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -138,7 +139,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.45 }}
-        className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mb-10 sm:mb-14 z-20"
+        className="flex flex-wrap items-center justify-center gap-2 sm:gap-3.5 mb-8 sm:mb-14 z-20 px-2"
       >
         {HERO_PILLS.map((pill, idx) => {
           const isActive = activeTab === idx;
@@ -149,14 +150,14 @@ const HeroSection = () => {
                 sound.playPop();
                 setActiveTab(idx);
               }}
-              className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-sans transition-all duration-300 cursor-pointer ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-full text-xs sm:text-sm font-sans transition-all duration-300 cursor-pointer ${
                 isActive
                   ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105'
                   : 'bg-white/85 hover:bg-white text-[#1e1e20]/75 hover:text-[#1e1e20] border border-black/[0.08] shadow-xs'
               }`}
             >
               <span
-                className={`w-2 h-2 rounded-full ${
+                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
                   isActive ? 'bg-[#FC7A69] animate-pulse' : 'bg-black/20'
                 }`}
               />
@@ -171,7 +172,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        className="relative perspective-[1200px] z-10 mb-10 sm:mb-12"
+        className="relative perspective-[1200px] z-10 mb-8 sm:mb-12"
       >
         <div
           ref={cardRef}
@@ -182,7 +183,7 @@ const HeroSection = () => {
             transition: 'transform 0.15s ease-out',
             transformStyle: 'preserve-3d',
           }}
-          className="relative w-[280px] sm:w-[320px] aspect-[280/408] rounded-3xl overflow-hidden bg-[#2b2d33] border border-black/10 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.35)] cursor-pointer group select-none"
+          className="relative w-[260px] sm:w-[320px] aspect-[280/408] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#2b2d33] border border-black/10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.35)] cursor-pointer group select-none"
         >
           {/* Card Image */}
           <motion.img
@@ -226,12 +227,12 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.65 }}
-        className="w-full max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 z-10 mb-12 px-2"
+        className="w-full max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 z-10 mb-8 sm:mb-12 px-2"
       >
         {DISCIPLINE_TAGS.map((tag) => (
           <span
             key={tag}
-            className="px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-sans font-medium bg-white/75 hover:bg-white text-[#1e1e20]/80 border border-black/[0.06] shadow-2xs transition-all hover:scale-105"
+            className="px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-sans font-medium bg-white/75 hover:bg-white text-[#1e1e20]/80 border border-black/[0.06] shadow-2xs transition-all hover:scale-105"
           >
             {tag}
           </span>

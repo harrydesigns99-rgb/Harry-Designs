@@ -56,7 +56,7 @@ const StudioShuttle = ({ className = '' }) => {
       dragElastic={0.15}
       whileDrag={{ scale: 1.04, cursor: 'grabbing' }}
       aria-label="Studio telemetry"
-      className={`fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40 select-none ${className}`}
+      className={`fixed bottom-4 right-4 sm:bottom-7 sm:right-7 z-40 select-none ${className}`}
     >
       {/* Floating Levitation Wrapper */}
       <motion.div
@@ -78,7 +78,7 @@ const StudioShuttle = ({ className = '' }) => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 12 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-3 w-[300px] sm:w-[350px] p-4 rounded-3xl bg-white/95 backdrop-blur-2xl border border-black/10 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.22)] text-[#1e1e20]"
+              className="mb-3 w-[calc(100vw-2rem)] max-w-[340px] p-3.5 sm:p-4 rounded-3xl bg-white/95 backdrop-blur-2xl border border-black/10 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.22)] text-[#1e1e20]"
             >
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-black/[0.06]">
                 <div className="flex items-center gap-2">
@@ -150,7 +150,7 @@ const StudioShuttle = ({ className = '' }) => {
         ) : (
           <div
             onClick={toggleExpand}
-            className="group relative flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-white/95 hover:bg-white backdrop-blur-xl border border-black/10 hover:border-black/20 shadow-[0_14px_36px_-8px_rgba(0,0,0,0.15)] hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)] transition-all duration-300 cursor-pointer"
+            className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-full bg-white/95 hover:bg-white backdrop-blur-xl border border-black/10 hover:border-black/20 shadow-[0_14px_36px_-8px_rgba(0,0,0,0.15)] hover:shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)] transition-all duration-300 cursor-pointer"
           >
             {/* Pulsing Studio Beacon */}
             <div className="flex items-center gap-1.5 pl-0.5">

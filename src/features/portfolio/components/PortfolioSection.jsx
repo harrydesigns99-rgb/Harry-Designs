@@ -35,13 +35,13 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
             <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
               Selected Portfolio
             </span>
-            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#1e1e20]">
+            <h2 className="font-display text-3xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#1e1e20]">
               <WordReveal text="Work I'm proud of" />
             </h2>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat.id;
               const count =
@@ -56,7 +56,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                     sound.playPop();
                     setActiveCategory(cat.id);
                   }}
-                  className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-sans transition-all duration-300 cursor-pointer ${
+                  className={`px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-sans transition-all duration-300 cursor-pointer ${
                     isActive
                       ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-sm font-medium'
                       : 'bg-white/80 hover:bg-white text-[#1e1e20]/70 hover:text-[#1e1e20] border border-black/[0.08]'
@@ -71,7 +71,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
         </div>
 
         {/* Two-Column Project Grid matching shriyap.com */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-12">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
               <motion.article
@@ -86,7 +86,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                   onSelectProject?.(project);
                 }}
                 data-cursor="VIEW CASE ↗"
-                className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-black/[0.08] shadow-[0_12px_32px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.16)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer"
+                className="group flex flex-col bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-black/[0.08] shadow-[0_12px_32px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.16)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer"
               >
                 {/* Media Container */}
                 <div className="relative w-full aspect-[16/10] bg-[#1e1e20] overflow-hidden">
@@ -104,7 +104,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                 </div>
 
                 {/* Card Content Footer */}
-                <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
+                <div className="p-5 sm:p-8 flex flex-col justify-between flex-1">
                   <div>
                     {/* Eyebrow */}
                     <div className="flex items-center gap-2 mb-2">
@@ -157,14 +157,14 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
         </div>
 
         {/* Bottom Full Archive Button */}
-        <div className="mt-8 sm:mt-12 flex justify-center">
+        <div className="mt-8 sm:mt-12 flex justify-center px-4">
           <button
             type="button"
             onClick={() => {
               sound.playPop();
               onNavigateWork?.();
             }}
-            className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] font-sans text-sm sm:text-base font-medium tracking-wide transition-all shadow-md hover:shadow-xl cursor-pointer group"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] font-sans text-xs sm:text-base font-medium tracking-wide transition-all shadow-md hover:shadow-xl cursor-pointer group"
           >
             <span>Explore Full 12-Project Archive</span>
             <span className="text-sm group-hover:translate-x-1 transition-transform">↗</span>

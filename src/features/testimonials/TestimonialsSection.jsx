@@ -39,23 +39,23 @@ const TestimonialsSection = () => {
   return (
     <section
       id="testimonials"
-      className="relative w-full bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-black/[0.08] select-none"
+      className="relative w-full bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid py-16 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-black/[0.08] select-none"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="mb-12 sm:mb-16">
+        <div className="mb-10 sm:mb-16">
           <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
             Endorsements &amp; Impact
           </span>
-          <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#1e1e20]">
+          <h2 className="font-display text-2xl xs:text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#1e1e20]">
             What partners say
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
           {TESTIMONIALS.map((item) => (
             <div
               key={item.name}
-              className="p-8 sm:p-10 rounded-3xl bg-white border border-black/[0.08] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.06)] flex flex-col justify-between"
+              className="p-5 sm:p-10 rounded-2xl sm:rounded-3xl bg-white border border-black/[0.08] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.06)] flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <span className="inline-block px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-[#1e1e20]/[0.05] text-[#1e1e20]/70">

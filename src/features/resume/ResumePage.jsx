@@ -27,20 +27,20 @@ const ResumePage = ({ onNavigateHome }) => {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid">
       <AnimatedBackdrop tone="light" />
-      <header className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-8 flex flex-wrap items-center justify-between gap-4 border-b border-eerie/15">
+      <header className="relative z-10 max-w-6xl mx-auto px-4 sm:px-10 py-6 sm:py-8 flex flex-wrap items-center justify-between gap-4 border-b border-eerie/15">
         <button
           type="button"
           onClick={onNavigateHome || (() => { window.location.href = '/'; })}
-          className="font-display text-xl font-semibold tracking-[-0.04em] cursor-pointer hover:text-crimson transition-colors"
+          className="font-display text-lg sm:text-xl font-semibold tracking-[-0.04em] cursor-pointer hover:text-crimson transition-colors"
         >
           Harry Designs
         </button>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           <a
             href="/Hariharan_Design_Resume.pdf"
             download="Hariharan_Design_Resume.pdf"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-crimson text-white text-xs font-semibold uppercase tracking-wider hover:bg-crimson-dark transition-colors"
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-crimson text-white text-[11px] sm:text-xs font-semibold uppercase tracking-wider hover:bg-crimson-dark transition-colors rounded-sm"
           >
             <span>Download PDF</span>
             <span aria-hidden="true">↓</span>
@@ -49,16 +49,16 @@ const ResumePage = ({ onNavigateHome }) => {
           <button
             type="button"
             onClick={onNavigateHome || (() => { window.location.href = '/'; })}
-            className="editorial-link text-sm font-semibold cursor-pointer"
+            className="editorial-link text-xs sm:text-sm font-semibold cursor-pointer"
           >
-            Back to portfolio <span aria-hidden="true">↗</span>
+            Back <span aria-hidden="true">↗</span>
           </button>
         </div>
       </header>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 py-16 md:py-24">
-        <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 pb-16 border-b border-black/[0.08] items-center">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-24">
+        <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 sm:gap-12 pb-12 sm:pb-16 border-b border-black/[0.08] items-center">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <img
               src={profile.image || '/image/hariharan.jpg'}
               onError={(e) => {
@@ -66,14 +66,14 @@ const ResumePage = ({ onNavigateHome }) => {
                 e.currentTarget.src = '/image/hariharan.jpg';
               }}
               alt={profile.name || 'Hariharan S'}
-              className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover object-[center_18%] border border-black/[0.08] shadow-md flex-shrink-0"
+              className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl object-cover object-[center_18%] border border-black/[0.08] shadow-md flex-shrink-0"
             />
             <div>
               <span className="section-kicker mb-2">Resume / profile</span>
-              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.06em] leading-[0.9]">
+              <h1 className="font-display text-3xl xs:text-4xl sm:text-7xl md:text-8xl font-medium tracking-[-0.06em] leading-[0.95] sm:leading-[0.9]">
                 {profile.name}
               </h1>
-              <p className="mt-3 text-lg sm:text-xl text-[#1d1d1f]/65">
+              <p className="mt-2 sm:mt-3 text-base sm:text-xl text-[#1d1d1f]/65">
                 {profile.role} <span className="text-crimson">•</span> Creative Direction
               </p>
             </div>
