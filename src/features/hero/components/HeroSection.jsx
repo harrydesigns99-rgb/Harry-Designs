@@ -14,11 +14,11 @@ const HERO_PILLS = [
     meta: 'Chennai, India • Global Remote',
   },
   {
-    id: 'experience',
-    label: '6+ yrs practice',
-    tag: 'STUDIO RIGOR',
+    id: 'designs',
+    label: '50+ Designs Completed',
+    tag: 'PRODUCTION RIGOR',
     photo: '/image/Image Gallery/Artboard 2.webp',
-    badge: '6+ YEARS PRACTICE',
+    badge: '50+ DESIGNS COMPLETED',
     subtitle: 'Print-Ready Packaging Systems',
     meta: '12+ Retail Lines • Press Supervised',
   },
@@ -27,9 +27,9 @@ const HERO_PILLS = [
     label: '12+ Client Brands',
     tag: 'COMMERCIAL REACH',
     photo: '/image/Image Gallery/Artboard 1.webp',
-    badge: 'COMMERCIAL BRANDS',
+    badge: '12+ CLIENT BRANDS',
     subtitle: 'Gokul Oils • Sendra • CSIR',
-    meta: 'FMCG • Luxury • D2C Brands',
+    meta: 'Commercial Velocity & Shelf Dominance',
   },
 ];
 
@@ -39,24 +39,6 @@ const DISCIPLINE_TAGS = [
   'Print & Production',
   'Art Direction',
   '3D Visualization',
-];
-
-const HEADLINE_LINES = [
-  {
-    id: 'l1',
-    words: ['A', 'sharp', 'brand', 'strategy.'],
-    highlight: null,
-  },
-  {
-    id: 'l2',
-    words: ['A', 'stubborn', 'shelf.'],
-    highlight: null,
-  },
-  {
-    id: 'l3',
-    words: ['A', 'little', 'room', 'to', 'disrupt', 'the', 'aisle.'],
-    highlight: ['disrupt', 'the', 'aisle.'],
-  },
 ];
 
 const HeroSection = () => {
@@ -92,6 +74,9 @@ const HeroSection = () => {
       id="introduction"
       className="relative min-h-[100svh] w-full bg-transparent text-[#1e1e20] flex flex-col items-center justify-center pt-28 sm:pt-32 pb-20 px-4 sm:px-6 overflow-hidden select-none"
     >
+      {/* Floating Studio Telemetry Shuttle (Draggable HUD Capsule in Viewport) */}
+      <StudioShuttle />
+
       {/* Eyebrow matching shriyap.com */}
       <motion.p
         initial={{ opacity: 0, y: -10 }}
@@ -103,55 +88,57 @@ const HeroSection = () => {
       </motion.p>
 
       {/* Main 3-line Headline with High-End Kinetic Text Reveal */}
-      <div className="max-w-4xl mx-auto text-center mb-8 sm:mb-10">
-        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[5.2rem] font-bold tracking-tight text-[#1e1e20] leading-[1.04]">
-          {HEADLINE_LINES.map((line, lineIdx) => (
-            <span key={line.id} className="block overflow-hidden py-0.5">
-              {line.words.map((word, wordIdx) => {
-                const isHighlight = line.highlight && line.highlight.includes(word);
-                return (
-                  <span
-                    key={`${line.id}-${wordIdx}`}
-                    className="inline-block overflow-hidden mr-[0.24em] last:mr-0 align-top"
-                  >
-                    <motion.span
-                      initial={{ y: '115%', opacity: 0, rotateZ: 3 }}
-                      animate={{ y: 0, opacity: 1, rotateZ: 0 }}
-                      transition={{
-                        duration: 0.75,
-                        delay: 0.12 + lineIdx * 0.16 + wordIdx * 0.04,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                      whileHover={{ y: -3, scale: 1.04 }}
-                      className={`inline-block transition-transform duration-200 ${
-                        isHighlight
-                          ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#8b151b] via-[#FC7A69] to-[#8b151b] bg-[length:200%_auto] animate-gradient-x font-serif italic font-light'
-                          : lineIdx === 1
-                          ? 'text-[#1e1e20]/85'
-                          : lineIdx === 2
-                          ? 'text-[#1e1e20]/75'
-                          : 'text-[#1e1e20]'
-                      }`}
-                    >
-                      {word}
-                    </motion.span>
-                  </span>
-                );
-              })}
-            </span>
-          ))}
+      <div className="w-full max-w-5xl lg:max-w-6xl mx-auto text-center mb-8 sm:mb-12 px-2">
+        <h1 className="font-display text-3xl sm:text-5xl md:text-[3.5rem] lg:text-[4.2rem] xl:text-[4.6rem] font-bold tracking-tight text-[#1e1e20] leading-[1.08] sm:leading-[1.06]">
+          {/* Line 1: A sharp brand strategy. */}
+          <span className="block overflow-hidden py-1">
+            <motion.span
+              initial={{ y: '110%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block sm:whitespace-nowrap"
+            >
+              A sharp brand strategy.
+            </motion.span>
+          </span>
+
+          {/* Line 2: A stubborn shelf. */}
+          <span className="block overflow-hidden py-1">
+            <motion.span
+              initial={{ y: '110%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.75, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block sm:whitespace-nowrap text-[#1e1e20]/85"
+            >
+              A stubborn shelf.
+            </motion.span>
+          </span>
+
+          {/* Line 3: A little room to disrupt the aisle. */}
+          <span className="block overflow-hidden py-1">
+            <motion.span
+              initial={{ y: '110%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.75, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block"
+            >
+              <span className="text-[#1e1e20]/75">
+                A little room to&nbsp;
+              </span>
+              <span className="whitespace-nowrap font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#8b151b] via-[#FC7A69] to-[#8b151b] hover:from-[#FC7A69] hover:to-[#8b151b] transition-all duration-300">
+                disrupt the aisle.
+              </span>
+            </motion.span>
+          </span>
         </h1>
       </div>
 
-      {/* Floating Studio Shuttle (HUD capsule for completed designs & clients) */}
-      <StudioShuttle className="mb-8 sm:mb-10" />
-
-      {/* Interactive Switcher Pills (matching shriyap.com's curved pills) */}
+      {/* Clean Interactive Switcher Pills (Single Uncluttered Row) */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 z-20"
+        transition={{ duration: 0.6, delay: 0.45 }}
+        className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mb-10 sm:mb-14 z-20"
       >
         {HERO_PILLS.map((pill, idx) => {
           const isActive = activeTab === idx;
@@ -165,7 +152,7 @@ const HeroSection = () => {
               className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-sans transition-all duration-300 cursor-pointer ${
                 isActive
                   ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-105'
-                  : 'bg-white/80 hover:bg-white text-[#1e1e20]/75 hover:text-[#1e1e20] border border-black/[0.08] shadow-xs'
+                  : 'bg-white/85 hover:bg-white text-[#1e1e20]/75 hover:text-[#1e1e20] border border-black/[0.08] shadow-xs'
               }`}
             >
               <span
