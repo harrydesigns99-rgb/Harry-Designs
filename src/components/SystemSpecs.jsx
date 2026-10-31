@@ -46,7 +46,7 @@ const SystemSpecs = ({ specs = DEFAULT_SPECS, client, title, category }) => {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-mono uppercase tracking-wider text-[#86868b] font-medium">
-            Color Palette &amp; Token Architecture (Tap to Copy HEX)
+            COLOR PALETTE &amp; TOKEN ARCHITECTURE (TAP TO COPY HEX)
           </span>
           <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#86868b]">
             WCAG COMPLIANT TOKENS
@@ -85,7 +85,7 @@ const SystemSpecs = ({ specs = DEFAULT_SPECS, client, title, category }) => {
                     exit={{ opacity: 0 }}
                     className="absolute inset-0 rounded-2xl bg-crimson text-white flex items-center justify-center text-xs font-mono font-bold tracking-wider uppercase z-20"
                   >
-                    ✓ Copied Hex
+                    ✓ COPIED HEX
                   </motion.div>
                 )}
               </button>
@@ -98,7 +98,7 @@ const SystemSpecs = ({ specs = DEFAULT_SPECS, client, title, category }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="apple-card p-6 bg-white border border-black/[0.08] space-y-2">
           <div className="text-[11px] font-mono uppercase tracking-wider text-[#86868b] font-medium">
-            Typographic Hierarchy
+            TYPOGRAPHIC HIERARCHY
           </div>
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f] leading-snug">
             {data.typography}
@@ -110,7 +110,7 @@ const SystemSpecs = ({ specs = DEFAULT_SPECS, client, title, category }) => {
 
         <div className="apple-card p-6 bg-white border border-black/[0.08] space-y-2">
           <div className="text-[11px] font-mono uppercase tracking-wider text-[#86868b] font-medium">
-            Spatial Baseline Rhythm
+            SPATIAL BASELINE RHYTHM
           </div>
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f] leading-snug">
             {data.grid}
@@ -122,7 +122,7 @@ const SystemSpecs = ({ specs = DEFAULT_SPECS, client, title, category }) => {
 
         <div className="apple-card p-6 bg-white border border-black/[0.08] space-y-2">
           <div className="text-[11px] font-mono uppercase tracking-wider text-[#86868b] font-medium">
-            Production Standard
+            PRODUCTION STANDARD
           </div>
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f] leading-snug">
             {data.standard}

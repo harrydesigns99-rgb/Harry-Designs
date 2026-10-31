@@ -33,7 +33,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16 pb-6 border-b border-black/[0.08]">
           <div>
             <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
-              Selected Portfolio
+              SELECTED PORTFOLIO
             </span>
             <h2 className="font-display text-3xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#1e1e20]">
               <WordReveal text="Work I'm proud of" />

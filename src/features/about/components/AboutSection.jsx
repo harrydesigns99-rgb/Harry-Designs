@@ -56,7 +56,7 @@ const AboutSection = () => {
               onClick={toggleExpanded}
               className="inline-flex items-center gap-3 px-6 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] font-sans text-xs sm:text-base font-medium tracking-wide transition-all shadow-xl hover:shadow-2xl cursor-pointer group"
             >
-              <span>{isExpanded ? 'close studio details' : 'more about me'}</span>
+              <span>{isExpanded ? 'Close Studio Details' : 'More About Me'}</span>
               <svg
                 width="18"
                 height="18"
@@ -92,7 +92,7 @@ const AboutSection = () => {
                 {/* Left: Bio & Practice */}
                 <div className="lg:col-span-5 space-y-4 sm:space-y-5">
                   <span className="text-xs font-mono uppercase tracking-[0.2em] text-[#FC7A69] font-semibold">
-                    Studio Philosophy
+                    STUDIO PHILOSOPHY
                   </span>
                   <h3 className="font-display text-xl sm:text-3xl font-bold tracking-tight text-white">
                     Design engineered to convert.

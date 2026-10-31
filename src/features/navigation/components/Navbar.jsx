@@ -47,7 +47,7 @@ const Navbar = () => {
             onClick={() => sound.playClick()}
             className="font-sans text-sm font-medium text-[#1e1e20]/80 hover:text-[#1e1e20] transition-colors"
           >
-            About me
+            About Me
           </a>
           <a
             href="/resume"
@@ -63,7 +63,7 @@ const Navbar = () => {
             onClick={() => sound.playClick()}
             className="px-5 py-2.5 rounded-full bg-[#1e1e20] hover:bg-[#8b151b] text-[#f5f4f0] font-sans text-xs sm:text-sm font-medium tracking-wide transition-all shadow-xs hover:shadow-md hover:scale-105 cursor-pointer"
           >
-            Get in touch ↗
+            Get in Touch ↗
           </a>
         </nav>
 
@@ -110,7 +110,7 @@ const Navbar = () => {
               }}
               className="block font-display text-xl font-bold text-[#1e1e20]"
             >
-              About me
+              About Me
             </a>
             <a
               href="/resume"
@@ -131,7 +131,7 @@ const Navbar = () => {
                 }}
                 className="inline-block px-6 py-3 rounded-full bg-[#1e1e20] text-[#f5f4f0] text-sm font-medium tracking-wide shadow-md"
               >
-                Get in touch ↗
+                Get in Touch ↗
               </a>
             </div>
           </motion.div>

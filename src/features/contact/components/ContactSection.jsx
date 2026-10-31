@@ -14,7 +14,7 @@ const ContactSection = () => {
   const handleCopyEmail = () => {
     sound.playPop();
     navigator.clipboard.writeText('harrydesigns99@gmail.com');
-    showToast('copied to clipboard: harrydesigns99@gmail.com');
+    showToast('Copied to clipboard: harrydesigns99@gmail.com');
     setTimeout(() => {
       window.location.href = 'mailto:harrydesigns99@gmail.com';
     }, 600);
@@ -38,7 +38,7 @@ const ContactSection = () => {
       <div className="max-w-5xl mx-auto">
         <div className="mb-12 sm:mb-16">
           <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#f5f4f0]/75 font-semibold block mb-2">
-            Get In Touch
+            GET IN TOUCH
           </span>
           <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#f5f4f0]">
             <WordReveal text="Let's build something durable." />
@@ -54,10 +54,10 @@ const ContactSection = () => {
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
             <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
-              drop me a direct <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">email</strong>
+              Drop me a direct <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">email</strong>
             </span>
             <span className="flex items-center gap-2 text-sm sm:text-base font-mono uppercase tracking-wider text-[#f5f4f0]/75 group-hover:text-white">
-              <span className="hidden sm:inline">copy &amp; write</span>
+              <span className="hidden sm:inline">Copy &amp; write</span>
               <svg
                 width="24"
                 height="24"
@@ -82,7 +82,7 @@ const ContactSection = () => {
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
             <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
-              direct <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">WhatsApp / call</strong>
+              Direct <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">WhatsApp / call</strong>
             </span>
             <span className="flex items-center gap-2 text-sm sm:text-base font-mono uppercase tracking-wider text-[#f5f4f0]/75 group-hover:text-white">
               <span className="hidden sm:inline">+91 86101 74188</span>
@@ -110,10 +110,10 @@ const ContactSection = () => {
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
             <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
-              connect on <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">LinkedIn</strong>
+              Connect on <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">LinkedIn</strong>
             </span>
             <span className="flex items-center gap-2 text-sm sm:text-base font-mono uppercase tracking-wider text-[#f5f4f0]/75 group-hover:text-white">
-              <span className="hidden sm:inline">professional profile</span>
+              <span className="hidden sm:inline">Professional profile</span>
               <svg
                 width="24"
                 height="24"

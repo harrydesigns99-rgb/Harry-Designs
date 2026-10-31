@@ -555,7 +555,7 @@ const UIArchiveFolder = () => {
             {/* Bottom Indicator */}
             <div className="flex items-center justify-between z-10 text-[#1e1e20]/80">
               <span className="text-[10px] font-mono uppercase tracking-wider font-semibold">
-                {isOpen ? 'Click to pack inside ✕' : 'Click to reveal works ↗'}
+                {isOpen ? 'Click to Pack Inside ✕' : 'Click to Reveal Works ↗'}
               </span>
               <span className="text-sm font-bold transition-transform">
                 {isOpen ? '✕' : '↗'}
@@ -567,7 +567,7 @@ const UIArchiveFolder = () => {
         {/* Text Details Beneath Folder matching screenshot exactly */}
         <div className="text-center mt-5 space-y-1">
           <h3 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#1e1e20] group-hover:text-black transition-colors">
-            UI archive
+            UI Archive
           </h3>
           <p className="font-sans text-xs sm:text-sm text-[#1e1e20]/60 font-medium">
             {isOpen ? '6 works scattered • Click folder to close' : '6 items'}

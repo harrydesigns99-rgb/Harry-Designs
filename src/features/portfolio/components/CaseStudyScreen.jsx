@@ -151,7 +151,7 @@ const CaseStudyScreen = ({
             className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-full bg-white/80 hover:bg-white text-xs font-sans font-medium text-[#1e1e20] transition-all cursor-pointer border border-black/[0.08] shadow-2xs group flex-shrink-0"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>
-            <span className="hidden xs:inline">Back to work</span>
+            <span className="hidden xs:inline">Back to Work</span>
             <span className="xs:hidden">Back</span>
           </button>
 
@@ -163,7 +163,7 @@ const CaseStudyScreen = ({
               </span>
               <span className="text-black/30">•</span>
               <span className="text-xs font-mono uppercase tracking-wider text-[#FC7A69] font-medium">
-                {currentProject.category}
+                {currentProject.category.toUpperCase()}
               </span>
             </div>
 
@@ -240,10 +240,10 @@ const CaseStudyScreen = ({
           {/* Eyebrow */}
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
             <span className="px-3.5 py-1 rounded-full bg-[#1e1e20] text-[#f5f4f0] text-xs font-mono font-medium uppercase tracking-wider">
-              Case Study #{currentProject.id.toString().padStart(2, '0')}
+              CASE STUDY #{currentProject.id.toString().padStart(2, '0')}
             </span>
             <span className="px-3 py-1 rounded-full bg-[#FC7A69]/15 text-[#FC7A69] text-xs font-mono uppercase tracking-wider font-semibold">
-              {currentProject.category}
+              {currentProject.category.toUpperCase()}
             </span>
             {currentProject.metric && (
               <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-800 text-xs font-mono font-medium">
@@ -269,7 +269,7 @@ const CaseStudyScreen = ({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 sm:p-8 rounded-3xl bg-white border border-black/[0.08] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.06)] text-left">
             <div>
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
-                My Role
+                MY ROLE
               </span>
               <p className="font-display text-sm sm:text-base font-bold text-[#1e1e20]">
                 Brand &amp; Packaging Architect
@@ -277,7 +277,7 @@ const CaseStudyScreen = ({
             </div>
             <div>
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
-                Client / Sector
+                CLIENT / SECTOR
               </span>
               <p className="font-display text-sm sm:text-base font-bold text-[#1e1e20]">
                 {currentProject.client}
@@ -285,7 +285,7 @@ const CaseStudyScreen = ({
             </div>
             <div>
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
-                Year / Duration
+                YEAR / DURATION
               </span>
               <p className="font-display text-sm sm:text-base font-bold text-[#1e1e20]">
                 {currentProject.year || '2024'} • Complete System
@@ -293,7 +293,7 @@ const CaseStudyScreen = ({
             </div>
             <div>
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
-                Production Rigor
+                PRODUCTION RIGOR
               </span>
               <p className="font-display text-sm sm:text-base font-bold text-emerald-700">
                 ISO 12647-2 Ready
@@ -304,7 +304,7 @@ const CaseStudyScreen = ({
           {/* -------------------- "WHAT DID I DO?" SCOPE PILL STRIP -------------------- */}
           <div className="space-y-3 pt-2">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block text-center sm:text-left">
-              Scope of Architectural Craft
+              SCOPE OF ARCHITECTURAL CRAFT
             </span>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
               {[
@@ -433,7 +433,7 @@ const CaseStudyScreen = ({
         <section id="screen-impact" className="scroll-mt-24 pt-10 border-t border-black/[0.08] space-y-6">
           <div className="space-y-2">
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block">
-              Market Velocity &amp; Outcomes
+              MARKET VELOCITY &amp; OUTCOMES
             </span>
             <h3 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-[#1e1e20]">
               Measurable Commercial Impact
@@ -443,7 +443,7 @@ const CaseStudyScreen = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="p-6 rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-2">
               <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60">
-                Velocity Benchmark
+                VELOCITY BENCHMARK
               </span>
               <div className="font-display text-2xl sm:text-3xl font-bold text-[#FC7A69]">
                 {currentProject.metric || '+40% Sales Lift'}
@@ -455,7 +455,7 @@ const CaseStudyScreen = ({
 
             <div className="p-6 rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-2">
               <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60">
-                Aisle Retention
+                AISLE RETENTION
               </span>
               <div className="font-display text-2xl sm:text-3xl font-bold text-[#1e1e20]">
                 Top-of-Mind
@@ -467,7 +467,7 @@ const CaseStudyScreen = ({
 
             <div className="p-6 rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-2">
               <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60">
-                Press Compliance
+                PRESS COMPLIANCE
               </span>
               <div className="font-display text-2xl sm:text-3xl font-bold text-emerald-700">
                 Zero Press Halos
@@ -491,7 +491,7 @@ const CaseStudyScreen = ({
           >
             <div>
               <span className="text-xs font-mono uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
-                Next Case Study ↗
+                NEXT CASE STUDY ↗
               </span>
               <h3 className="font-display text-2xl sm:text-4xl font-bold tracking-tight">
                 {nextProject.client}

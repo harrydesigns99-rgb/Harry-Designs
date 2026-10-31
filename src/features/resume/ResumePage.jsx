@@ -51,7 +51,7 @@ const ResumePage = ({ onNavigateHome }) => {
             onClick={onNavigateHome || (() => { window.location.href = '/'; })}
             className="editorial-link text-xs sm:text-sm font-semibold cursor-pointer"
           >
-            Back <span aria-hidden="true">↗</span>
+            Back to Portfolio <span aria-hidden="true">↗</span>
           </button>
         </div>
       </header>
@@ -69,7 +69,7 @@ const ResumePage = ({ onNavigateHome }) => {
               className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl object-cover object-[center_18%] border border-black/[0.08] shadow-md flex-shrink-0"
             />
             <div>
-              <span className="section-kicker mb-2">Resume / profile</span>
+              <span className="section-kicker mb-2">RESUME // PROFILE</span>
               <h1 className="font-display text-3xl xs:text-4xl sm:text-7xl md:text-8xl font-medium tracking-[-0.06em] leading-[0.95] sm:leading-[0.9]">
                 {profile.name}
               </h1>
@@ -102,19 +102,19 @@ const ResumePage = ({ onNavigateHome }) => {
         </section>
 
         <section className="grid lg:grid-cols-[0.35fr_0.65fr] gap-10 py-16 border-b border-eerie/20">
-          <h2 className="section-kicker self-start">Summary</h2>
+          <h2 className="section-kicker self-start">SUMMARY</h2>
           <p className="text-xl md:text-2xl leading-relaxed max-w-3xl">Graphic designer with 6+ years of experience producing high-volume, on-brand creative across digital ads, social content, web assets, packaging, and print/event materials. Delivered 35+ complete brand identity systems for 60+ clients through an independent design practice, working independently against tight, concurrent deadlines.</p>
         </section>
 
         <section className="grid lg:grid-cols-[0.35fr_0.65fr] gap-10 py-16 border-b border-eerie/20">
-          <h2 className="section-kicker self-start">Core skills</h2>
+          <h2 className="section-kicker self-start">CORE SKILLS</h2>
           <div className="flex flex-wrap gap-2">
             {skills.map((skill) => <span key={skill} className="border border-eerie/20 px-3 py-2 text-sm">{skill}</span>)}
           </div>
         </section>
 
         <section className="grid lg:grid-cols-[0.35fr_0.65fr] gap-10 py-16 border-b border-eerie/20">
-          <h2 className="section-kicker self-start">Experience</h2>
+          <h2 className="section-kicker self-start">EXPERIENCE</h2>
           <div className="space-y-12">
             <article>
               <div className="flex flex-wrap justify-between gap-3"><h3 className="font-display text-3xl">Freelance Graphic &amp; Digital Designer</h3><span className="text-sm text-eerie/50">Jan 2020 – Present</span></div>

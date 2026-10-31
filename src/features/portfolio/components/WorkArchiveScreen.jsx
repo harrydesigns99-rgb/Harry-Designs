@@ -74,7 +74,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
             title="Return to Studio Home [Esc]"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>
-            <span className="hidden xs:inline">Back to work</span>
+            <span className="hidden xs:inline">Back to Work</span>
             <span className="xs:hidden">Back</span>
           </button>
 
@@ -96,7 +96,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
               data-cursor="CONTACT ↗"
               className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#1e1e20] text-[#f5f4f0] hover:bg-black text-xs font-sans font-medium tracking-wide transition-all cursor-pointer shadow-xs"
             >
-              <span>Get in touch</span>
+              <span>Get in Touch</span>
               <span>↗</span>
             </button>
           </div>

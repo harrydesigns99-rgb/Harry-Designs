@@ -44,7 +44,7 @@ const TestimonialsSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-10 sm:mb-16">
           <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
-            Endorsements &amp; Impact
+            ENDORSEMENTS &amp; IMPACT
           </span>
           <h2 className="font-display text-2xl xs:text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#1e1e20]">
             What partners say

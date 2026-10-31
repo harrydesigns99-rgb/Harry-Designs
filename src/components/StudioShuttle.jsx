@@ -84,7 +84,7 @@ const StudioShuttle = ({ className = '' }) => {
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-[10px] font-mono uppercase tracking-widest text-black/55 font-semibold">
-                    Studio Telemetry // Verified
+                    STUDIO TELEMETRY // VERIFIED
                   </span>
                 </div>
                 <button
@@ -159,7 +159,7 @@ const StudioShuttle = ({ className = '' }) => {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
               <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest font-semibold text-black/45 group-hover:text-black/70 transition-colors">
-                Studio
+                STUDIO
               </span>
             </div>
 

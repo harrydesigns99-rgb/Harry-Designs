@@ -85,7 +85,7 @@ const HeroSection = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="font-sans text-xs sm:text-sm uppercase tracking-[0.2em] text-[#FC7A69] font-semibold mb-4 sm:mb-6 text-center"
       >
-        My formula for great work
+        MY FORMULA FOR GREAT WORK
       </motion.p>
 
       {/* Main 3-line Headline with High-End Kinetic Text Reveal */}
@@ -254,7 +254,7 @@ const HeroSection = () => {
           />
         </div>
         <span className="font-mono text-[9px] uppercase tracking-widest text-[#1e1e20]/50 group-hover:text-[#1e1e20] transition-colors">
-          scroll
+          SCROLL
         </span>
       </button>
     </section>

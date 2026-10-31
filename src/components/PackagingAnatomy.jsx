@@ -52,7 +52,7 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, client, title }) => {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-mono uppercase tracking-wider text-[#86868b] font-medium">
-            Color Separation &amp; Spot Inks (Tap to Copy HEX)
+            COLOR SEPARATION &amp; SPOT INKS (TAP TO COPY HEX)
           </span>
           <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#86868b]">
             100% OPACITY MATCH
@@ -91,7 +91,7 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, client, title }) => {
                     exit={{ opacity: 0 }}
                     className="absolute inset-0 rounded-2xl bg-crimson text-white flex items-center justify-center text-xs font-mono font-bold tracking-wider uppercase z-20"
                   >
-                    ✓ Copied Hex
+                    ✓ COPIED HEX
                   </motion.div>
                 )}
               </button>
@@ -231,28 +231,28 @@ const PackagingAnatomy = ({ anatomy = DEFAULT_ANATOMY, client, title }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="apple-card p-5 sm:p-6 bg-white border border-black/[0.08] space-y-1">
           <div className="text-[11px] font-mono uppercase text-[#86868b] font-medium">
-            Substrate &amp; Grammage
+            SUBSTRATE &amp; GRAMMAGE
           </div>
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f]">{data.substrate}</div>
         </div>
 
         <div className="apple-card p-5 sm:p-6 bg-white border border-black/[0.08] space-y-1">
           <div className="text-[11px] font-mono uppercase text-[#86868b] font-medium">
-            Tactile Finishes &amp; Foils
+            TACTILE FINISHES &amp; FOILS
           </div>
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f]">{data.finish}</div>
         </div>
 
         <div className="apple-card p-5 sm:p-6 bg-white border border-black/[0.08] space-y-1">
           <div className="text-[11px] font-mono uppercase text-[#86868b] font-medium">
-            Press Printing Process
+            PRESS PRINTING PROCESS
           </div>
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f]">{data.printProcess}</div>
         </div>
 
         <div className="apple-card p-5 sm:p-6 bg-white border border-black/[0.08] space-y-1">
           <div className="text-[11px] font-mono uppercase text-[#86868b] font-medium">
-            Carton Geometry / Die Type
+            CARTON GEOMETRY / DIE TYPE
           </div>
           <div className="text-sm sm:text-base font-semibold text-[#1d1d1f]">{data.dielineType}</div>
         </div>
