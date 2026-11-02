@@ -2,8 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import { useCMS } from '@/features/cms';
 import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
-import PackagingAnatomy from '@/components/PackagingAnatomy';
-import SystemSpecs from '@/components/SystemSpecs';
 import ProjectStorySection from '@/components/ProjectStorySection';
 import OverallImpactSection from '@/components/OverallImpactSection';
 import WordReveal from '@/components/WordReveal';
@@ -95,7 +93,6 @@ const CaseStudyScreen = ({
     const sectionIds = [
       'screen-hero',
       'screen-story',
-      'screen-specs',
       'screen-impact',
     ];
 
@@ -173,7 +170,6 @@ const CaseStudyScreen = ({
               {[
                 { id: 'screen-hero', label: 'Overview' },
                 { id: 'screen-story', label: 'The Story' },
-                { id: 'screen-specs', label: currentProject.category === 'packaging' ? 'Print Specs' : 'System Specs' },
                 { id: 'screen-impact', label: 'Impact' },
               ].map((tab) => (
                 <button
@@ -406,26 +402,7 @@ const CaseStudyScreen = ({
           />
         </section>
 
-        {/* -------------------- SECTION 03: TECHNICAL SPECS & DIELINE -------------------- */}
-        <section id="screen-specs" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
-          {currentProject.category === 'packaging' ? (
-            <PackagingAnatomy
-              anatomy={currentProject.anatomy}
-              image={currentProject.image}
-              client={currentProject.client}
-              title={currentProject.title}
-            />
-          ) : (
-            <SystemSpecs
-              specs={currentProject.systemSpecs}
-              client={currentProject.client}
-              title={currentProject.title}
-              category={currentProject.category}
-            />
-          )}
-        </section>
-
-        {/* -------------------- SECTION 04: OVERALL IMPACT (DARK METRIC SHEET) -------------------- */}
+        {/* -------------------- SECTION 03: OVERALL IMPACT (DARK METRIC SHEET) -------------------- */}
         <section id="screen-impact" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
           <OverallImpactSection
             impact={currentProject.impact}
