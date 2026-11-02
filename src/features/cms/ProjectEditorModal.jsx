@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { getProcessBehindProcess } from '@/features/portfolio/data/portfolioData';
 import { getStoryForProject, getImpactForProject } from '@/features/portfolio/data/portfolioStories';
 import { HighlightedText } from '@/components/ProjectStorySection';
+import { optimizeImageFile } from '@/utils/imageOptimizer';
 
 const CATEGORIES = [
   { value: 'packaging', label: 'Packaging' },
@@ -118,9 +119,11 @@ const DEFAULT_STORY_CHAPTERS = [
 const ProjectEditorModal = ({ project, onSave, onClose }) => {
   const isEditing = Boolean(project?.id);
   const fileInputRef = useRef(null);
+  const beforeFileInputRef = useRef(null);
+  const afterFileInputRef = useRef(null);
   const conceptFileInputRef = useRef(null);
 
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'story' | 'making-process' | 'studio-process' | 'specs'
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'story' | 'impact' | 'making-process' | 'studio-process' | 'specs'
   const [activeStageEditIndex, setActiveStageEditIndex] = useState(0);
   const [activeStoryChapterIndex, setActiveStoryChapterIndex] = useState(0);
 
@@ -164,13 +167,30 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
     category: project?.category || 'packaging',
     metric: project?.metric || '',
     year: project?.year || new Date().getFullYear().toString(),
+    role:
+      project?.role ||
+      (project?.category === 'uiux' || project?.category === 'digital'
+        ? 'Creative UI/UX & Digital Architect'
+        : 'Brand & Packaging Architect'),
+    productionRigor:
+      project?.productionRigor ||
+      (project?.category === 'uiux'
+        ? 'Design System & React Tokens'
+        : 'ISO 12647-2 Ready'),
     description: project?.description || '',
     brief: project?.brief || '',
     approach: project?.approach || '',
     deliverables: project?.deliverables || '',
     image: project?.image || '/image/Image Gallery/Artboard 1.webp',
+    published: project?.published !== false,
+    showStory: project?.showStory !== false,
+    showImpact: project?.showImpact !== false,
     isFeatured: project?.isFeatured !== false,
     hasBeforeAfter: project?.hasBeforeAfter || false,
+    beforeImage: project?.beforeImage || project?.process?.conceptImage || '',
+    afterImage: project?.afterImage || project?.image || '',
+    beforeLabel: project?.beforeLabel || project?.process?.conceptLabel || 'Initial Concept Exploration',
+    afterLabel: project?.afterLabel || project?.process?.finalLabel || 'Final Production System',
     process: {
       summary: project?.process?.summary || '',
       conceptImage: project?.process?.conceptImage || project?.beforeImage || '',
@@ -211,46 +231,48 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
   const [compressing, setCompressing] = useState(false);
 
   // Compress and handle image uploads
-  const handleImageFile = (e, targetField) => {
+  const handleImageFile = async (e, targetField) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setCompressing(true);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const maxDimension = 1400;
-        let { width, height } = img;
-
-        if (width > height && width > maxDimension) {
-          height = Math.round((height * maxDimension) / width);
-          width = maxDimension;
-        } else if (height > maxDimension) {
-          width = Math.round((width * maxDimension) / height);
-          height = maxDimension;
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        const webpData = canvas.toDataURL('image/webp', 0.85);
-        if (targetField === 'conceptImage') {
+    try {
+      const optimized = await optimizeImageFile(file, 1000, 1000, 0.8);
+      if (targetField === 'beforeImage' || targetField === 'conceptImage') {
+        setFormData((prev) => ({
+          ...prev,
+          beforeImage: optimized,
+          process: { ...prev.process, conceptImage: optimized },
+        }));
+      } else if (targetField === 'afterImage') {
+        setFormData((prev) => ({
+          ...prev,
+          afterImage: optimized,
+        }));
+      } else {
+        setFormData((prev) => ({ ...prev, image: optimized }));
+      }
+    } catch (err) {
+      console.warn('[CMS] Image optimize fallback:', err);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const val = event.target.result;
+        if (targetField === 'beforeImage' || targetField === 'conceptImage') {
           setFormData((prev) => ({
             ...prev,
-            process: { ...prev.process, conceptImage: webpData },
+            beforeImage: val,
+            process: { ...prev.process, conceptImage: val },
           }));
+        } else if (targetField === 'afterImage') {
+          setFormData((prev) => ({ ...prev, afterImage: val }));
         } else {
-          setFormData((prev) => ({ ...prev, image: webpData }));
+          setFormData((prev) => ({ ...prev, image: val }));
         }
-        setCompressing(false);
       };
-      img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    } finally {
+      setCompressing(false);
+    }
   };
 
   // Helper to update a stage in making-process
@@ -405,7 +427,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                 : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
             }`}
           >
-            ✦ Overview &amp; Artwork
+            ✦ Overview &amp; Media
           </button>
 
           <button
@@ -417,15 +439,32 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                 : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
             }`}
           >
-            <span>• The Story</span>
+            <span>📖 The Story</span>
             <span
-              className="text-[9px] px-1.5 py-0.5 rounded-full font-bold"
-              style={{
-                backgroundColor: formData.story?.accentColor || '#f5a623',
-                color: '#1e1e20',
-              }}
+              className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${
+                formData.showStory !== false ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-200 text-neutral-600'
+              }`}
             >
-              3 CHAPTERS
+              {formData.showStory !== false ? 'LIVE' : 'HIDDEN'}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('impact')}
+            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium flex items-center gap-1.5 ${
+              activeTab === 'impact'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
+                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
+            }`}
+          >
+            <span>📊 Overall Impact</span>
+            <span
+              className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${
+                formData.showImpact !== false ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-200 text-neutral-600'
+              }`}
+            >
+              {formData.showImpact !== false ? 'LIVE' : 'HIDDEN'}
             </span>
           </button>
 
@@ -438,32 +477,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                 : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
             }`}
           >
-            <span>✎ 5-Stage Making Process</span>
-            <span className="text-[9px] px-1.5 py-0.5 bg-[#8b151b] text-white rounded-full">5 STAGES</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('studio-process')}
-            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium ${
-              activeTab === 'studio-process'
-                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
-                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
-            }`}
-          >
-            ⚙ Process Behind The Process
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('specs')}
-            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium ${
-              activeTab === 'specs'
-                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
-                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
-            }`}
-          >
-            ◫ Specs &amp; Pantones
+            <span>⚙ Process Stages</span>
           </button>
         </div>
 
@@ -472,151 +486,298 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           {/* TAB 1: OVERVIEW & ARTWORK */}
           {/* ========================================================= */}
           {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              {/* Left Column: Form Fields */}
-              <div className="lg:col-span-7 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                      Client / Brand Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Gokul Oils"
-                      value={formData.client}
-                      onChange={(e) => setFormData({ ...formData, client: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] focus:ring-1 focus:ring-[#8b151b] outline-none transition-all font-sans"
-                    />
+            <div className="space-y-6">
+              {/* ==================== LIVE PAGE DISPLAY & SECTION CONTROLS ==================== */}
+              <div className="p-5 sm:p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/[0.06] pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-xs font-mono uppercase tracking-[0.2em] font-bold text-[#1e1e20]">
+                      Live Page Display &amp; Section Controls
+                    </span>
                   </div>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                      Project Title *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Packaging Architecture"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] focus:ring-1 focus:ring-[#8b151b] outline-none transition-all font-sans"
-                    />
-                  </div>
+                  <span className="text-[11px] font-mono text-[#1e1e20]/60">
+                    Control which sections are visible on the live website
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                      Category
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                  {/* 1. Live Website Visibility */}
+                  <div
+                    className={`p-3.5 rounded-2xl border transition-all ${
+                      formData.published !== false
+                        ? 'bg-emerald-50/70 border-emerald-300'
+                        : 'bg-neutral-50 border-neutral-200 opacity-60'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider font-bold text-[#1e1e20]">
+                        Live Website
+                      </span>
+                      <input
+                        type="checkbox"
+                        id="published"
+                        checked={formData.published !== false}
+                        onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                        className="h-4 w-4 accent-emerald-600 cursor-pointer"
+                      />
+                    </div>
+                    <label htmlFor="published" className="text-[11px] text-[#1e1e20]/75 block cursor-pointer">
+                      {formData.published !== false ? '● Visible on site' : '○ Hidden draft'}
                     </label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none cursor-pointer transition-all font-sans"
-                    >
-                      {CATEGORIES.map((cat) => (
-                        <option key={cat.value} value={cat.value}>
-                          {cat.label}
-                        </option>
-                      ))}
-                    </select>
+                  </div>
+
+                  {/* 2. Transformation Slider */}
+                  <div
+                    className={`p-3.5 rounded-2xl border transition-all ${
+                      formData.hasBeforeAfter
+                        ? 'bg-amber-50/70 border-amber-300'
+                        : 'bg-neutral-50 border-neutral-200 opacity-60'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider font-bold text-[#1e1e20]">
+                        Compare Slider
+                      </span>
+                      <input
+                        type="checkbox"
+                        id="hasBeforeAfter"
+                        checked={formData.hasBeforeAfter}
+                        onChange={(e) => setFormData({ ...formData, hasBeforeAfter: e.target.checked })}
+                        className="h-4 w-4 accent-amber-600 cursor-pointer"
+                      />
+                    </div>
+                    <label htmlFor="hasBeforeAfter" className="text-[11px] text-[#1e1e20]/75 block cursor-pointer">
+                      {formData.hasBeforeAfter ? '↔ Before/After enabled' : '○ Artwork only'}
+                    </label>
+                  </div>
+
+                  {/* 3. The Story Section */}
+                  <div
+                    className={`p-3.5 rounded-2xl border transition-all ${
+                      formData.showStory !== false
+                        ? 'bg-indigo-50/70 border-indigo-300'
+                        : 'bg-neutral-50 border-neutral-200 opacity-60'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider font-bold text-[#1e1e20]">
+                        The Story
+                      </span>
+                      <input
+                        type="checkbox"
+                        id="showStory"
+                        checked={formData.showStory !== false}
+                        onChange={(e) => setFormData({ ...formData, showStory: e.target.checked })}
+                        className="h-4 w-4 accent-indigo-600 cursor-pointer"
+                      />
+                    </div>
+                    <label htmlFor="showStory" className="text-[11px] text-[#1e1e20]/75 block cursor-pointer">
+                      {formData.showStory !== false ? '📖 3 chapters on' : '○ Story hidden'}
+                    </label>
+                  </div>
+
+                  {/* 4. Overall Impact Section */}
+                  <div
+                    className={`p-3.5 rounded-2xl border transition-all ${
+                      formData.showImpact !== false
+                        ? 'bg-purple-50/70 border-purple-300'
+                        : 'bg-neutral-50 border-neutral-200 opacity-60'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider font-bold text-[#1e1e20]">
+                        Overall Impact
+                      </span>
+                      <input
+                        type="checkbox"
+                        id="showImpact"
+                        checked={formData.showImpact !== false}
+                        onChange={(e) => setFormData({ ...formData, showImpact: e.target.checked })}
+                        className="h-4 w-4 accent-purple-600 cursor-pointer"
+                      />
+                    </div>
+                    <label htmlFor="showImpact" className="text-[11px] text-[#1e1e20]/75 block cursor-pointer">
+                      {formData.showImpact !== false ? '📊 Dark sheet on' : '○ Impact hidden'}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Metadata & Media Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Left Column: Form Fields */}
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Client / Brand Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Gokul Oils"
+                        value={formData.client}
+                        onChange={(e) => setFormData({ ...formData, client: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] focus:ring-1 focus:ring-[#8b151b] outline-none transition-all font-sans"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Project Title *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Packaging Architecture"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] focus:ring-1 focus:ring-[#8b151b] outline-none transition-all font-sans"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Category
+                      </label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none cursor-pointer transition-all font-sans"
+                      >
+                        {CATEGORIES.map((cat) => (
+                          <option key={cat.value} value={cat.value}>
+                            {cat.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Year
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="2024"
+                        value={formData.year}
+                        onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Impact Pill / Metric
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="+40% Sales Increase"
+                        value={formData.metric}
+                        onChange={(e) => setFormData({ ...formData, metric: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-sans"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        My Role
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Creative UI/UX & Brand Architect"
+                        value={formData.role || ''}
+                        onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none transition-all font-sans"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Production Rigor / Standard
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. ISO 12647-2 Ready or Design Tokens"
+                        value={formData.productionRigor || ''}
+                        onChange={(e) => setFormData({ ...formData, productionRigor: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none transition-all font-sans"
+                      />
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                      Year
+                      Summary / Card Description
                     </label>
-                    <input
-                      type="text"
-                      placeholder="2024"
-                      value={formData.year}
-                      onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-mono"
+                    <textarea
+                      rows={2}
+                      placeholder="A concise 1-2 sentence description shown on the portfolio card..."
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
                     />
                   </div>
 
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        The Brief / Challenge
+                      </label>
+                      <textarea
+                        rows={3}
+                        placeholder="What was the problem the client needed solved?"
+                        value={formData.brief}
+                        onChange={(e) => setFormData({ ...formData, brief: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Strategy &amp; Approach
+                      </label>
+                      <textarea
+                        rows={3}
+                        placeholder="How did you solve it through design?"
+                        value={formData.approach}
+                        onChange={(e) => setFormData({ ...formData, approach: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                      Impact Pill / Metric
+                      Deliverables List
                     </label>
                     <input
                       type="text"
-                      placeholder="+40% Sales Increase"
-                      value={formData.metric}
-                      onChange={(e) => setFormData({ ...formData, metric: e.target.value })}
+                      placeholder="Brand Identity • Packaging Architecture • 3D Renders"
+                      value={formData.deliverables}
+                      onChange={(e) => setFormData({ ...formData, deliverables: e.target.value })}
                       className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-sans"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                    Summary / Card Description
-                  </label>
-                  <textarea
-                    rows={2}
-                    placeholder="A concise 1-2 sentence description shown on the portfolio card..."
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                      The Brief / Challenge
-                    </label>
-                    <textarea
-                      rows={3}
-                      placeholder="What was the problem the client needed solved?"
-                      value={formData.brief}
-                      onChange={(e) => setFormData({ ...formData, brief: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
+                  <div className="flex items-center gap-3 pt-2">
+                    <input
+                      type="checkbox"
+                      id="isFeatured"
+                      checked={formData.isFeatured}
+                      onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
+                      className="h-4 w-4 accent-[#8b151b] cursor-pointer"
                     />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                      Strategy &amp; Approach
+                    <label htmlFor="isFeatured" className="text-xs font-sans text-[#1e1e20]/80 cursor-pointer font-medium">
+                      Feature on Home Portfolio Grid
                     </label>
-                    <textarea
-                      rows={3}
-                      placeholder="How did you solve it through design?"
-                      value={formData.approach}
-                      onChange={(e) => setFormData({ ...formData, approach: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none resize-none font-sans"
-                    />
                   </div>
                 </div>
-
-                <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
-                    Deliverables List
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Brand Identity • Packaging Architecture • 3D Renders"
-                    value={formData.deliverables}
-                    onChange={(e) => setFormData({ ...formData, deliverables: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs focus:border-[#8b151b] outline-none font-sans"
-                  />
-                </div>
-
-                <div className="flex items-center gap-3 pt-2">
-                  <input
-                    type="checkbox"
-                    id="isFeatured"
-                    checked={formData.isFeatured}
-                    onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
-                    className="h-4 w-4 accent-[#8b151b] cursor-pointer"
-                  />
-                  <label htmlFor="isFeatured" className="text-xs font-sans text-[#1e1e20]/80 cursor-pointer font-medium">
-                    Feature on Home Portfolio Grid
-                  </label>
-                </div>
-              </div>
 
               {/* Right Column: Main Artwork Media Selector */}
               <div className="lg:col-span-5 space-y-4">
@@ -711,7 +872,154 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                 )}
               </div>
             </div>
-          )}
+
+            {/* Transformation Comparison Slider Assets Setup (Before & After) */}
+            {formData.hasBeforeAfter && (
+              <div className="p-5 sm:p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/[0.06] pb-3">
+                  <span className="text-xs font-mono uppercase tracking-wider font-bold text-[#8b151b]">
+                    ↔ Transformation Comparison Assets (Before &amp; After)
+                  </span>
+                  <span className="text-[11px] font-mono text-[#1e1e20]/50">
+                    Interactive split slider rendered at the top of the case study
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Before Image */}
+                  <div className="space-y-3 p-4 bg-[#f5f4f0]/60 rounded-2xl border border-black/10">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono uppercase font-bold text-[#1e1e20]/80">
+                        Before / Initial Concept Asset
+                      </span>
+                      {formData.beforeImage && (
+                        <span className="text-[10px] font-mono text-emerald-600 font-bold">✓ Loaded</span>
+                      )}
+                    </div>
+
+                    <div className="aspect-[16/10] bg-neutral-900 rounded-xl overflow-hidden border border-black/10 flex items-center justify-center">
+                      {formData.beforeImage ? (
+                        <img src={formData.beforeImage} alt="Before" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs text-white/40 font-mono">No Before Image</span>
+                      )}
+                    </div>
+
+                    <input
+                      ref={beforeFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageFile(e, 'beforeImage')}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => beforeFileInputRef.current?.click()}
+                      className="w-full py-2.5 rounded-xl border border-black/15 bg-white hover:bg-neutral-50 text-xs font-sans font-medium text-[#1e1e20] cursor-pointer shadow-2xs flex items-center justify-center gap-1.5"
+                    >
+                      <span>📁</span>
+                      <span>Upload Before File</span>
+                    </button>
+
+                    <div>
+                      <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
+                        Before Label
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Initial Concept Exploration"
+                        value={formData.beforeLabel}
+                        onChange={(e) => setFormData({ ...formData, beforeLabel: e.target.value })}
+                        className="w-full px-3 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-sans outline-none focus:border-[#8b151b]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
+                        Or URL / Preset
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Image URL or path..."
+                        value={formData.beforeImage}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            beforeImage: e.target.value,
+                            process: { ...formData.process, conceptImage: e.target.value },
+                          })
+                        }
+                        className="w-full px-3 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-mono outline-none focus:border-[#8b151b]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* After Image */}
+                  <div className="space-y-3 p-4 bg-[#f5f4f0]/60 rounded-2xl border border-black/10">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono uppercase font-bold text-[#1e1e20]/80">
+                        After / Final Production Asset
+                      </span>
+                      {formData.afterImage && (
+                        <span className="text-[10px] font-mono text-emerald-600 font-bold">✓ Loaded</span>
+                      )}
+                    </div>
+
+                    <div className="aspect-[16/10] bg-neutral-900 rounded-xl overflow-hidden border border-black/10 flex items-center justify-center">
+                      {formData.afterImage ? (
+                        <img src={formData.afterImage} alt="After" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs text-white/40 font-mono">No After Image</span>
+                      )}
+                    </div>
+
+                    <input
+                      ref={afterFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageFile(e, 'afterImage')}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => afterFileInputRef.current?.click()}
+                      className="w-full py-2.5 rounded-xl border border-black/15 bg-white hover:bg-neutral-50 text-xs font-sans font-medium text-[#1e1e20] cursor-pointer shadow-2xs flex items-center justify-center gap-1.5"
+                    >
+                      <span>📁</span>
+                      <span>Upload After File</span>
+                    </button>
+
+                    <div>
+                      <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
+                        After Label
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Final Production System"
+                        value={formData.afterLabel}
+                        onChange={(e) => setFormData({ ...formData, afterLabel: e.target.value })}
+                        className="w-full px-3 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-sans outline-none focus:border-[#8b151b]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
+                        Or URL / Preset
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Image URL or path..."
+                        value={formData.afterImage}
+                        onChange={(e) => setFormData({ ...formData, afterImage: e.target.value })}
+                        className="w-full px-3 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-mono outline-none focus:border-[#8b151b]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
           {/* ========================================================= */}
           {/* TAB: THE STORY (EDITORIAL CHAPTERS & QUOTE HIGHLIGHTS) */}
@@ -750,14 +1058,32 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                 <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[#f5a623]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#f5a623]" />
                       <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-semibold text-[#1e1e20]">
                         • THE STORY ARCHITECTURE
                       </span>
                     </div>
-                    <span className="text-xs font-mono text-[#1e1e20]/60">
-                      Matches Shriya P editorial case study layout
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <label htmlFor="toggle-story-section" className="text-xs font-mono text-[#1e1e20]/70 cursor-pointer">
+                        Show on Case Study:
+                      </label>
+                      <input
+                        id="toggle-story-section"
+                        type="checkbox"
+                        checked={formData.showStory !== false}
+                        onChange={(e) => setFormData({ ...formData, showStory: e.target.checked })}
+                        className="h-4 w-4 accent-amber-600 cursor-pointer"
+                      />
+                      <span
+                        className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                          formData.showStory !== false
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-neutral-200 text-neutral-600'
+                        }`}
+                      >
+                        {formData.showStory !== false ? 'LIVE' : 'HIDDEN'}
+                      </span>
+                    </div>
                   </div>
 
                   <p className="text-xs text-[#1e1e20]/75 leading-relaxed">
@@ -1083,101 +1409,126 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                   </div>
                 </div>
 
-                {/* ==================== OVERALL IMPACT METRICS (DARK SHEET) ==================== */}
-                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-5">
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-black" />
-                      <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-semibold text-[#1e1e20]">
-                        • OVERALL IMPACT SHEET (3 GIANT STATS)
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-[#1e1e20]/60">
-                      Renders the dark cinema sheet at the bottom of the case study
+              </div>
+            );
+          })()}
+
+          {/* ========================================================= */}
+          {/* TAB 3: OVERALL IMPACT (DARK METRIC SHEET) */}
+          {/* ========================================================= */}
+          {activeTab === 'impact' && (
+            <div className="space-y-6">
+              <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-5">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-purple-600" />
+                    <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-semibold text-[#1e1e20]">
+                      • OVERALL IMPACT SHEET (3 GIANT STATS)
                     </span>
                   </div>
-
-                  <p className="text-xs text-[#1e1e20]/75 leading-relaxed">
-                    Configure the 3 giant numerical outcomes and descriptive achievements shown at the bottom of the case study.
-                  </p>
-
-                  <div className="space-y-4">
-                    {(formData.impact || initialImpact).map((stat, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className="p-4 bg-[#f5f4f0]/60 rounded-2xl border border-black/10 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
-                      >
-                        <div className="sm:col-span-4">
-                          <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
-                            Stat #{sIdx + 1} Big Value
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="e.g. 14% or 10K or $2.4M"
-                            value={stat.value || ''}
-                            onChange={(e) => updateImpactItem(sIdx, 'value', e.target.value)}
-                            className="w-full px-4 py-2 bg-white rounded-xl border border-black/15 text-lg font-display font-bold text-[#1e1e20] focus:border-black outline-none"
-                          />
-                        </div>
-                        <div className="sm:col-span-8">
-                          <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
-                            Narrative Description
-                          </label>
-                          <textarea
-                            rows="2"
-                            placeholder="e.g. improvement in overall funnel conversion, from 54% to 68%"
-                            value={stat.description || ''}
-                            onChange={(e) => updateImpactItem(sIdx, 'description', e.target.value)}
-                            className="w-full px-3.5 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-sans leading-relaxed focus:border-black outline-none"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Dark Theme Live Preview for Overall Impact */}
-                  <div className="pt-2">
-                    <span className="block font-mono text-[10px] uppercase tracking-wider text-[#1e1e20]/60 mb-2">
-                      Live Dark Metric Sheet Preview (Matches attached reference):
-                    </span>
-                    <div
-                      className="w-full rounded-2xl bg-[#18191c] p-6 sm:p-8 border border-white/[0.08] shadow-lg text-white"
-                      style={{
-                        backgroundImage:
-                          'radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)',
-                        backgroundSize: '20px 20px',
-                      }}
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="toggle-impact-tab" className="text-xs font-mono text-[#1e1e20]/70 cursor-pointer">
+                      Show on Case Study:
+                    </label>
+                    <input
+                      id="toggle-impact-tab"
+                      type="checkbox"
+                      checked={formData.showImpact !== false}
+                      onChange={(e) => setFormData({ ...formData, showImpact: e.target.checked })}
+                      className="h-4 w-4 accent-purple-600 cursor-pointer"
+                    />
+                    <span
+                      className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                        formData.showImpact !== false
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-neutral-200 text-neutral-600'
+                      }`}
                     >
-                      <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/50 mb-6 font-medium">
-                        OVERALL IMPACT
+                      {formData.showImpact !== false ? 'LIVE' : 'HIDDEN'}
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-xs text-[#1e1e20]/75 leading-relaxed">
+                  Configure the 3 giant numerical outcomes and descriptive achievements shown at the bottom of the case study. Renders the cinema-grade dark slate metric sheet matching your reference.
+                </p>
+
+                <div className="space-y-4">
+                  {(formData.impact || initialImpact).map((stat, sIdx) => (
+                    <div
+                      key={sIdx}
+                      className="p-4 bg-[#f5f4f0]/60 rounded-2xl border border-black/10 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
+                    >
+                      <div className="sm:col-span-4">
+                        <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
+                          Stat #{sIdx + 1} Big Value
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 14% or 10K or $2.4M"
+                          value={stat.value || ''}
+                          onChange={(e) => updateImpactItem(sIdx, 'value', e.target.value)}
+                          className="w-full px-4 py-2 bg-white rounded-xl border border-black/15 text-lg font-display font-bold text-[#1e1e20] focus:border-black outline-none font-mono"
+                        />
                       </div>
-                      <div className="space-y-6">
-                        {(formData.impact || initialImpact).map((item, idx) => (
-                          <div
-                            key={idx}
-                            className={`${
-                              idx > 0 ? 'pt-6 border-t border-white/[0.1]' : ''
-                            } grid grid-cols-1 md:grid-cols-12 gap-3 items-center`}
-                          >
-                            <div className="md:col-span-5">
-                              <span className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight block">
-                                {item.value || '0'}
-                              </span>
-                            </div>
-                            <div className="md:col-span-7">
-                              <p className="font-sans text-xs sm:text-sm text-neutral-400 font-normal leading-relaxed">
-                                {item.description || 'Description will appear here.'}
-                              </p>
-                            </div>
+                      <div className="sm:col-span-8">
+                        <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1 font-medium">
+                          Narrative Description
+                        </label>
+                        <textarea
+                          rows="2"
+                          placeholder="e.g. improvement in overall funnel conversion, from 54% to 68%"
+                          value={stat.description || ''}
+                          onChange={(e) => updateImpactItem(sIdx, 'description', e.target.value)}
+                          className="w-full px-3.5 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-sans leading-relaxed focus:border-black outline-none"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Dark Theme Live Preview for Overall Impact */}
+                <div className="pt-2">
+                  <span className="block font-mono text-[10px] uppercase tracking-wider text-[#1e1e20]/60 mb-2 font-medium">
+                    Live Dark Metric Sheet Preview (Matches attached reference):
+                  </span>
+                  <div
+                    className="w-full rounded-2xl bg-[#18191c] p-6 sm:p-8 border border-white/[0.08] shadow-lg text-white"
+                    style={{
+                      backgroundImage:
+                        'radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)',
+                      backgroundSize: '20px 20px',
+                    }}
+                  >
+                    <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/50 mb-6 font-medium">
+                      OVERALL IMPACT
+                    </div>
+                    <div className="space-y-6">
+                      {(formData.impact || initialImpact).map((item, idx) => (
+                        <div
+                          key={idx}
+                          className={`${
+                            idx > 0 ? 'pt-6 border-t border-white/[0.1]' : ''
+                          } grid grid-cols-1 md:grid-cols-12 gap-3 items-center`}
+                        >
+                          <div className="md:col-span-5">
+                            <span className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight block">
+                              {item.value || '0'}
+                            </span>
                           </div>
-                        ))}
-                      </div>
+                          <div className="md:col-span-7">
+                            <p className="font-sans text-xs sm:text-sm text-neutral-400 font-normal leading-relaxed">
+                              {item.description || 'Description will appear here.'}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
               </div>
-            );
-          })()}
+            </div>
+          )}
           {activeTab === 'making-process' && (
             <div className="space-y-6">
               {/* Process Behind Design Summary Paragraph */}
@@ -1528,150 +1879,6 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                   className="w-full px-4 py-3 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] leading-relaxed font-sans"
                 />
               </div>
-            </div>
-          )}
-
-          {/* ========================================================= */}
-          {/* TAB 4: SPECS & PANTONES */}
-          {/* ========================================================= */}
-          {activeTab === 'specs' && (
-            <div className="space-y-6">
-              {formData.category === 'packaging' ? (
-                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold">
-                    Packaging Anatomy &amp; Print Specifications
-                  </h4>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
-                        Substrate Material
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.anatomy?.substrate || ''}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            anatomy: { ...formData.anatomy, substrate: e.target.value },
-                          })
-                        }
-                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
-                        Finish &amp; Embellishments
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.anatomy?.finish || ''}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            anatomy: { ...formData.anatomy, finish: e.target.value },
-                          })
-                        }
-                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
-                        Dieline Geometry Type
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.anatomy?.dielineType || ''}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            anatomy: { ...formData.anatomy, dielineType: e.target.value },
-                          })
-                        }
-                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
-                        Dimensions
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.anatomy?.dimensions || ''}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            anatomy: { ...formData.anatomy, dimensions: e.target.value },
-                          })
-                        }
-                        className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-mono"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold">
-                    Design System Architecture &amp; Specifications
-                  </h4>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
-                      Typography Hierarchy &amp; Pairing
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.systemSpecs?.typography || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          systemSpecs: { ...formData.systemSpecs, typography: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
-                      Grid &amp; Spatial Hierarchy
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.systemSpecs?.grid || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          systemSpecs: { ...formData.systemSpecs, grid: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
-                      Compliance Standard
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.systemSpecs?.standard || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          systemSpecs: { ...formData.systemSpecs, standard: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-2.5 bg-[#f5f4f0] focus:bg-white rounded-2xl border border-black/15 text-xs outline-none focus:border-[#8b151b] font-sans"
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           )}
 

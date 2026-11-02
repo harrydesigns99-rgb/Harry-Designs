@@ -470,6 +470,16 @@ const AdminDashboard = ({ onNavigateHome }) => {
                           <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-[#f5f4f0] border border-black/10 text-[#1e1e20]/70 font-medium">
                             {project.category}
                           </span>
+                          {project.published !== false ? (
+                            <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 font-bold flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                              Live on Site
+                            </span>
+                          ) : (
+                            <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-neutral-200 border border-neutral-300 text-neutral-600 font-bold">
+                              Hidden Draft
+                            </span>
+                          )}
                           {project.metric && (
                             <span className="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-[#8b151b] text-white">
                               {project.metric}
@@ -488,11 +498,36 @@ const AdminDashboard = ({ onNavigateHome }) => {
                         <p className="text-xs text-[#1e1e20]/55 line-clamp-1 mt-0.5 font-sans">
                           {project.description}
                         </p>
+                        <div className="flex flex-wrap items-center gap-2 mt-2 text-[10px] font-mono text-[#1e1e20]/60">
+                          <span className={project.showStory !== false ? 'text-indigo-700 font-medium' : 'text-neutral-400 line-through'}>
+                            Story {project.showStory !== false ? '✓' : '✗'}
+                          </span>
+                          <span>•</span>
+                          <span className={project.showImpact !== false ? 'text-purple-700 font-medium' : 'text-neutral-400 line-through'}>
+                            Impact {project.showImpact !== false ? '✓' : '✗'}
+                          </span>
+                          <span>•</span>
+                          <span className={project.hasBeforeAfter ? 'text-amber-700 font-medium' : 'text-neutral-400 line-through'}>
+                            Slider {project.hasBeforeAfter ? '✓' : '✗'}
+                          </span>
+                        </div>
                       </div>
                     </div>
 
                     {/* Right: Action Pills */}
                     <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-black/[0.06]">
+                      <button
+                        onClick={() => cms.updateProject(project.id, { published: project.published === false })}
+                        className={`px-3.5 py-1.5 rounded-full text-[11px] font-sans font-medium uppercase tracking-wider border transition-all cursor-pointer ${
+                          project.published !== false
+                            ? 'bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100'
+                            : 'bg-neutral-100 border-neutral-300 text-neutral-600 hover:bg-neutral-200'
+                        }`}
+                        title="Toggle visibility on live website"
+                      >
+                        {project.published !== false ? '● Live on Site' : '○ Hidden Draft'}
+                      </button>
+
                       <button
                         onClick={() => cms.toggleFeatured(project.id)}
                         className={`px-3.5 py-1.5 rounded-full text-[11px] font-sans font-medium uppercase tracking-wider border transition-all cursor-pointer ${

@@ -147,6 +147,12 @@ function safeWrite(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (err) {
     console.warn(`[CMS] Error writing ${key} to storage:`, err);
+    if (err && (err.name === 'QuotaExceededError' || err.code === 22 || err.number === -2147024882)) {
+      console.error('[CMS] Storage quota exceeded. Storing in memory and notifying user.');
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('harry_cms_quota_exceeded', { detail: { key } }));
+      }
+    }
   }
 }
 
@@ -173,14 +179,16 @@ function getInitialProjects() {
     return {
       ...defaultItem,
       ...item,
+      published: item.published !== undefined ? item.published : true,
+      showStory: item.showStory !== undefined ? item.showStory : true,
+      showImpact: item.showImpact !== undefined ? item.showImpact : true,
+      hasBeforeAfter: item.hasBeforeAfter !== undefined ? item.hasBeforeAfter : (defaultItem.hasBeforeAfter || false),
       process: {
         ...(defaultItem.process || {}),
         ...(item.process || {}),
       },
-      story: item.story || defaultItem.story,
-      impact: item.impact || defaultItem.impact,
-      anatomy: item.anatomy || defaultItem.anatomy,
-      systemSpecs: item.systemSpecs || defaultItem.systemSpecs,
+      story: item.story ? { ...(defaultItem.story || {}), ...item.story } : defaultItem.story,
+      impact: item.impact && item.impact.length > 0 ? item.impact : defaultItem.impact,
     };
   });
 }
@@ -207,7 +215,16 @@ let currentData = {
 const listeners = new Set();
 
 function emitChange() {
-  listeners.forEach((listener) => listener());
+  listeners.forEach((listener) => {
+    try {
+      listener();
+    } catch (e) {
+      console.warn('[CMS] Listener notification error:', e);
+    }
+  });
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('harry_cms_data_changed'));
+  }
 }
 
 // Cross-tab sync via storage events

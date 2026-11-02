@@ -9,7 +9,10 @@ import BrandsCarousel from './BrandsCarousel';
 
 const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const cms = useCMS();
-  const allProjects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
+  const allProjects = useMemo(() => {
+    const raw = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
+    return raw.filter((p) => p.published !== false && p.showInLivePage !== false);
+  }, [cms.projects]);
 
   const [activeCategory, setActiveCategory] = useState('all');
 

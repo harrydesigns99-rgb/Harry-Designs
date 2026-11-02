@@ -39,10 +39,11 @@ const CaseStudyScreen = ({
   }
 
   const hasEarlyConcept = Boolean(
-    currentProject?.hasBeforeAfter || currentProject?.process?.conceptImage
+    currentProject?.hasBeforeAfter &&
+    (currentProject?.beforeImage || currentProject?.process?.conceptImage)
   );
   const viewMode =
-    viewModeOverride ?? (currentProject?.hasBeforeAfter ? 'compare' : 'artwork');
+    viewModeOverride ?? (hasEarlyConcept ? 'compare' : 'artwork');
 
   const handleShare = async () => {
     sound.playClick();
@@ -88,12 +89,15 @@ const CaseStudyScreen = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isLightboxOpen, onNavigateHome, onNavigateProject, prevProject, nextProject]);
 
+  const showStory = currentProject.showStory !== false;
+  const showImpact = currentProject.showImpact !== false;
+
   // Section observer to update sub-nav indicator
   useEffect(() => {
     const sectionIds = [
       'screen-hero',
-      'screen-story',
-      'screen-impact',
+      ...(showStory ? ['screen-story'] : []),
+      ...(showImpact ? ['screen-impact'] : []),
     ];
 
     const observer = new IntersectionObserver(
@@ -113,7 +117,7 @@ const CaseStudyScreen = ({
     });
 
     return () => observer.disconnect();
-  }, [projectId]);
+  }, [projectId, showStory, showImpact]);
 
   const scrollToSection = (id) => {
     sound.playClick();
@@ -169,8 +173,8 @@ const CaseStudyScreen = ({
             <div className="hidden lg:flex items-center gap-1 p-0.5 rounded-full bg-white/70 border border-black/[0.06] text-xs font-sans">
               {[
                 { id: 'screen-hero', label: 'Overview' },
-                { id: 'screen-story', label: 'The Story' },
-                { id: 'screen-impact', label: 'Impact' },
+                ...(showStory ? [{ id: 'screen-story', label: 'The Story' }] : []),
+                ...(showImpact ? [{ id: 'screen-impact', label: 'Impact' }] : []),
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -269,7 +273,10 @@ const CaseStudyScreen = ({
                 MY ROLE
               </span>
               <p className="font-display text-sm sm:text-base font-bold text-[#1e1e20]">
-                Brand &amp; Packaging Architect
+                {currentProject.role ||
+                  (currentProject.category === 'uiux' || currentProject.category === 'digital'
+                    ? 'Creative UI/UX & Digital Architect'
+                    : 'Brand & Packaging Architect')}
               </p>
             </div>
             <div>
@@ -293,33 +300,11 @@ const CaseStudyScreen = ({
                 PRODUCTION RIGOR
               </span>
               <p className="font-display text-sm sm:text-base font-bold text-emerald-700">
-                ISO 12647-2 Ready
+                {currentProject.productionRigor ||
+                  (currentProject.category === 'uiux'
+                    ? 'Design System & React Tokens'
+                    : 'ISO 12647-2 Ready')}
               </p>
-            </div>
-          </div>
-
-          {/* -------------------- "WHAT DID I DO?" SCOPE PILL STRIP -------------------- */}
-          <div className="space-y-3 pt-2">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block text-center sm:text-left">
-              SCOPE OF ARCHITECTURAL CRAFT
-            </span>
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-              {[
-                'Category Shelf Audit',
-                'CAD Dieline Engineering',
-                'Custom Botanical / Emblem Vector Suite',
-                'Pantone Spot Color Formulation',
-                'Selective UV Gloss Proofing',
-                'CI-Flexo Micro-Registration Checks',
-                'Nutritional Hierarchy Compliance',
-              ].map((pill) => (
-                <span
-                  key={pill}
-                  className="px-4 py-1.5 rounded-full text-xs font-sans font-medium bg-white text-[#1e1e20]/80 border border-black/[0.08] shadow-2xs hover:scale-105 transition-transform"
-                >
-                  {pill}
-                </span>
-              ))}
             </div>
           </div>
 
@@ -395,20 +380,24 @@ const CaseStudyScreen = ({
         </section>
 
         {/* -------------------- SECTION 02: THE STORY (CHAPTER NARRATIVE) -------------------- */}
-        <section id="screen-story" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
-          <ProjectStorySection
-            project={currentProject}
-            story={currentProject.story}
-          />
-        </section>
+        {showStory && (
+          <section id="screen-story" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
+            <ProjectStorySection
+              project={currentProject}
+              story={currentProject.story}
+            />
+          </section>
+        )}
 
         {/* -------------------- SECTION 03: OVERALL IMPACT (DARK METRIC SHEET) -------------------- */}
-        <section id="screen-impact" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
-          <OverallImpactSection
-            impact={currentProject.impact}
-            project={currentProject}
-          />
-        </section>
+        {showImpact && (
+          <section id="screen-impact" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
+            <OverallImpactSection
+              impact={currentProject.impact}
+              project={currentProject}
+            />
+          </section>
+        )}
 
         {/* -------------------- SECTION 05: NEXT CASE STUDY -------------------- */}
         <section className="pt-10 border-t border-black/[0.08]">

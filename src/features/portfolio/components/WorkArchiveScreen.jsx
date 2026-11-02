@@ -24,7 +24,10 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
   });
 
   const cms = useCMS();
-  const projects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
+  const projects = useMemo(() => {
+    const raw = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
+    return raw.filter((p) => p.published !== false && p.showInLivePage !== false);
+  }, [cms.projects]);
 
   // Keyboard navigation: Escape to go back to studio home
   useEffect(() => {
