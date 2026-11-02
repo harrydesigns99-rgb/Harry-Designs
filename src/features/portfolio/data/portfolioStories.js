@@ -862,3 +862,197 @@ export const PORTFOLIO_STORIES = {
 export const getStoryForProject = (projectId) => {
   return PORTFOLIO_STORIES[projectId] || null;
 };
+
+/**
+ * Editorial Overall Impact Metrics for Harry Designs Case Studies
+ * Directly inspired by shriyap.com / user reference:
+ * - 3 giant numbers with horizontal divider rules
+ * - Clean descriptive explanations
+ */
+export const OVERALL_IMPACT_DATA = {
+  1: [
+    // Gokul Oils
+    {
+      value: '+40%',
+      description: 'improvement in overall retail shelf conversion and velocity across 350+ supermarket stores within 90 days.',
+    },
+    {
+      value: '2.3s',
+      description: 'average shopper shelf glance recognition time, down from 8.5s across audited modern trade aisles.',
+    },
+    {
+      value: '100%',
+      description: 'compliance with 8-color CI-Flexo micro-registration with zero color bleeding under harsh fluorescent supermarket fixtures.',
+    },
+  ],
+  2: [
+    // Sendra Gold
+    {
+      value: '2.4x',
+      description: 'surge in institutional corporate bullion procurement within the first fiscal quarter of flagship launch.',
+    },
+    {
+      value: '0',
+      description: 'counterfeit or tampering attempts recorded with cryptographic micro-text bullion assay certicards.',
+    },
+    {
+      value: '₹38Cr',
+      description: 'first month bullion trading turnover achieved during the Trichy flagship showroom opening.',
+    },
+  ],
+  3: [
+    // Diyaa Pure
+    {
+      value: '68%',
+      description: 'D2C repeat checkout conversion rate, significantly outperforming the industry category benchmark of 22%.',
+    },
+    {
+      value: '18',
+      description: 'luxury boutique dermatology clinics onboarded as permanent retail skincare stockists.',
+    },
+    {
+      value: '100%',
+      description: 'plastic-free packaging architecture utilizing FSC-certified Tintoretto cotton paperboard and blind debossed seals.',
+    },
+  ],
+  4: [
+    // CSIR India
+    {
+      value: '37',
+      description: 'national research laboratories unified under one cohesive bilingual identity architecture across India.',
+    },
+    {
+      value: '100%',
+      description: 'ISO 12647-2 optical print compliance across thousands of sovereign research publications and patent registries.',
+    },
+    {
+      value: '120pg',
+      description: 'authoritative master identity standard governing digital state portals and physical international delegations.',
+    },
+  ],
+  5: [
+    // Thomas Bakers
+    {
+      value: '185%',
+      description: 'surge in morning takeaway bread orders driven by viral branded micro-perforated kraft paperboard sleeves.',
+    },
+    {
+      value: '14h',
+      description: 'crust crackle preservation verified via breathable unbleached paperboard moisture regulation.',
+    },
+    {
+      value: '3.2x',
+      description: 'increase in organic customer unboxing photos and cafe social media tagged stories.',
+    },
+  ],
+  6: [
+    // Mo Elixir
+    {
+      value: '14',
+      description: 'five-star resort wellness spas adopting Mo Elixir as their exclusive flagship treatment formulation.',
+    },
+    {
+      value: '0%',
+      description: 'label peeling or oleic oil-stain degradation across 10,000 unit stone-paper production run.',
+    },
+    {
+      value: '₹2,400',
+      description: 'verified luxury retail price point sustained with zero promotional discounting.',
+    },
+  ],
+  7: [
+    // Anjarai Petti
+    {
+      value: '3x',
+      description: 'consecutive sold-out festival production runs within 48 hours of seasonal release.',
+    },
+    {
+      value: '99.4%',
+      description: 'essential aroma and volatile terpene retention verified over six-month laboratory shelf testing.',
+    },
+    {
+      value: '4.8x',
+      description: 'gift box sales volume surge during wedding and South Indian festive holiday seasons.',
+    },
+  ],
+  8: [
+    // Miniacres
+    {
+      value: '42',
+      description: 'farm plots completely sold out in Phase 1 within 45 days of public launch.',
+    },
+    {
+      value: '₹0',
+      description: 'paid social advertising spend required—achieved 100% organic buyer referral velocity.',
+    },
+    {
+      value: '100%',
+      description: 'plantable seed-paper investor portfolios embedded with heirloom wild basil seeds.',
+    },
+  ],
+  9: [
+    // Do Well Living (Matches user screenshot: 14%, 10K, $2.4M)
+    {
+      value: '14%',
+      description: 'improvement in overall funnel conversion, from 54% to 68%.',
+    },
+    {
+      value: '10K',
+      description: 'new accounts created monthly, at ₹0 additional CAC.',
+    },
+    {
+      value: '$2.4M',
+      description: 'additional annualised deposits tracked within the wellness ledger platform.',
+    },
+  ],
+  10: [
+    // CSIR - NEERI
+    {
+      value: '8',
+      description: 'state pollution control boards adopted the publication as their benchmark briefing standard.',
+    },
+    {
+      value: '8 days',
+      description: 'editorial layout turnaround time, down from previous 6-week manual production cycles.',
+    },
+    {
+      value: '100%',
+      description: 'accessible environmental data infographics cited directly on national prime-time news.',
+    },
+  ],
+  11: [
+    // Quill Studio
+    {
+      value: '500',
+      description: 'limited-edition archival poster box sets completely sold out within 72 hours of gallery release.',
+    },
+    {
+      value: '3',
+      description: 'international poster biennales in Zurich, Tokyo, and London exhibiting the specimen suite.',
+    },
+    {
+      value: '14',
+      description: 'global typography commissions secured from premier international publishing houses.',
+    },
+  ],
+  12: [
+    // Edwin BS (EBS)
+    {
+      value: '65%',
+      description: 'reduction in enterprise month-end closing hours across corporate accounting teams.',
+    },
+    {
+      value: '74%',
+      description: 'decrease in manual GST invoice reconciliation discrepancies and audit friction.',
+    },
+    {
+      value: '$40M+',
+      description: 'in monthly enterprise transactions reconciled with zero data integrity incidents.',
+    },
+  ],
+};
+
+export const getImpactForProject = (projectId) => {
+  return OVERALL_IMPACT_DATA[projectId] || null;
+};
+

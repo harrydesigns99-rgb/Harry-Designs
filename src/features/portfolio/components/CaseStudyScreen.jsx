@@ -5,6 +5,7 @@ import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import PackagingAnatomy from '@/components/PackagingAnatomy';
 import SystemSpecs from '@/components/SystemSpecs';
 import ProjectStorySection from '@/components/ProjectStorySection';
+import OverallImpactSection from '@/components/OverallImpactSection';
 import WordReveal from '@/components/WordReveal';
 import { sound } from '@/utils/audio';
 
@@ -424,54 +425,12 @@ const CaseStudyScreen = ({
           )}
         </section>
 
-        {/* -------------------- SECTION 04: MARKET OUTCOMES -------------------- */}
-        <section id="screen-impact" className="scroll-mt-24 pt-10 border-t border-black/[0.08] space-y-6">
-          <div className="space-y-2">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block">
-              MARKET VELOCITY &amp; OUTCOMES
-            </span>
-            <h3 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-[#1e1e20]">
-              Measurable Commercial Impact
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="p-6 rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60">
-                VELOCITY BENCHMARK
-              </span>
-              <div className="font-display text-2xl sm:text-3xl font-bold text-[#FC7A69]">
-                {currentProject.metric || '+40% Sales Lift'}
-              </div>
-              <p className="font-sans text-xs sm:text-sm text-[#1e1e20]/75 leading-relaxed">
-                Clear shelf recognition and distinctive graphic form driving repeat retail pickup.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60">
-                AISLE RETENTION
-              </span>
-              <div className="font-display text-2xl sm:text-3xl font-bold text-[#1e1e20]">
-                Top-of-Mind
-              </div>
-              <p className="font-sans text-xs sm:text-sm text-[#1e1e20]/75 leading-relaxed">
-                Unmistakable silhouette standing out across crowded retail supermarket aisles.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/60">
-                PRESS COMPLIANCE
-              </span>
-              <div className="font-display text-2xl sm:text-3xl font-bold text-emerald-700">
-                Zero Press Halos
-              </div>
-              <p className="font-sans text-xs sm:text-sm text-[#1e1e20]/75 leading-relaxed">
-                Precision trapping and ink viscosity calibration ensuring flawless high-volume press runs.
-              </p>
-            </div>
-          </div>
+        {/* -------------------- SECTION 04: OVERALL IMPACT (DARK METRIC SHEET) -------------------- */}
+        <section id="screen-impact" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
+          <OverallImpactSection
+            impact={currentProject.impact}
+            project={currentProject}
+          />
         </section>
 
         {/* -------------------- SECTION 05: NEXT CASE STUDY -------------------- */}

@@ -10,7 +10,7 @@ import {
   FaShoppingBag,
 } from 'react-icons/fa';
 import { SiFigma } from 'react-icons/si';
-import { PORTFOLIO_STORIES } from './portfolioStories';
+import { PORTFOLIO_STORIES, OVERALL_IMPACT_DATA } from './portfolioStories';
 
 /**
  * Portfolio data - verified client brands, real showcase items,
@@ -967,6 +967,7 @@ const BASE_PORTFOLIO_ITEMS = [
 export const PORTFOLIO_ITEMS = BASE_PORTFOLIO_ITEMS.map((item) => ({
   ...item,
   story: PORTFOLIO_STORIES[item.id] || null,
+  impact: OVERALL_IMPACT_DATA[item.id] || null,
 }));
 
 export const FILTER_BUTTONS = [

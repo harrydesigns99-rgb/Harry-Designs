@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { getProcessBehindProcess } from '@/features/portfolio/data/portfolioData';
-import { getStoryForProject } from '@/features/portfolio/data/portfolioStories';
+import { getStoryForProject, getImpactForProject } from '@/features/portfolio/data/portfolioStories';
 import { HighlightedText } from '@/components/ProjectStorySection';
 
 const CATEGORIES = [
@@ -141,6 +141,23 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
       chapters: DEFAULT_STORY_CHAPTERS,
     };
 
+  const initialImpact =
+    project?.impact ||
+    (project?.id ? getImpactForProject(project.id) : null) || [
+      {
+        value: project?.metric || '+40%',
+        description: 'improvement in overall retail shelf conversion and velocity across 350+ supermarket stores within 90 days.',
+      },
+      {
+        value: '350+',
+        description: 'supermarket retail locations deploying the redesigned visual system with zero misregistration.',
+      },
+      {
+        value: '100%',
+        description: 'compliance with ISO 12647-2 certified flexographic print standards and barrier specifications.',
+      },
+    ];
+
   const [formData, setFormData] = useState({
     title: project?.title || '',
     client: project?.client || '',
@@ -187,6 +204,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
       standard: 'Design System & Master Brand Architecture Standard',
     },
     story: initialStory,
+    impact: initialImpact,
   });
 
   const [imageTab, setImageTab] = useState('upload');
@@ -317,6 +335,21 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           ...currentStory,
           chapters: updatedChapters,
         },
+      };
+    });
+  };
+
+  // Helper to update an impact item (value, description)
+  const updateImpactItem = (index, field, value) => {
+    setFormData((prev) => {
+      const currentImpact = [...(prev.impact || initialImpact)];
+      currentImpact[index] = {
+        ...currentImpact[index],
+        [field]: value,
+      };
+      return {
+        ...prev,
+        impact: currentImpact,
       };
     });
   };
@@ -1043,6 +1076,99 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                                 — {q.author}
                               </span>
                             )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ==================== OVERALL IMPACT METRICS (DARK SHEET) ==================== */}
+                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-5">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-black" />
+                      <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-semibold text-[#1e1e20]">
+                        • OVERALL IMPACT SHEET (3 GIANT STATS)
+                      </span>
+                    </div>
+                    <span className="text-xs font-mono text-[#1e1e20]/60">
+                      Renders the dark cinema sheet at the bottom of the case study
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-[#1e1e20]/75 leading-relaxed">
+                    Configure the 3 giant numerical outcomes and descriptive achievements shown at the bottom of the case study.
+                  </p>
+
+                  <div className="space-y-4">
+                    {(formData.impact || initialImpact).map((stat, sIdx) => (
+                      <div
+                        key={sIdx}
+                        className="p-4 bg-[#f5f4f0]/60 rounded-2xl border border-black/10 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
+                      >
+                        <div className="sm:col-span-4">
+                          <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
+                            Stat #{sIdx + 1} Big Value
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. 14% or 10K or $2.4M"
+                            value={stat.value || ''}
+                            onChange={(e) => updateImpactItem(sIdx, 'value', e.target.value)}
+                            className="w-full px-4 py-2 bg-white rounded-xl border border-black/15 text-lg font-display font-bold text-[#1e1e20] focus:border-black outline-none"
+                          />
+                        </div>
+                        <div className="sm:col-span-8">
+                          <label className="block text-[10px] font-mono uppercase tracking-wider text-[#1e1e20]/60 mb-1">
+                            Narrative Description
+                          </label>
+                          <textarea
+                            rows="2"
+                            placeholder="e.g. improvement in overall funnel conversion, from 54% to 68%"
+                            value={stat.description || ''}
+                            onChange={(e) => updateImpactItem(sIdx, 'description', e.target.value)}
+                            className="w-full px-3.5 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-sans leading-relaxed focus:border-black outline-none"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Dark Theme Live Preview for Overall Impact */}
+                  <div className="pt-2">
+                    <span className="block font-mono text-[10px] uppercase tracking-wider text-[#1e1e20]/60 mb-2">
+                      Live Dark Metric Sheet Preview (Matches attached reference):
+                    </span>
+                    <div
+                      className="w-full rounded-2xl bg-[#18191c] p-6 sm:p-8 border border-white/[0.08] shadow-lg text-white"
+                      style={{
+                        backgroundImage:
+                          'radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)',
+                        backgroundSize: '20px 20px',
+                      }}
+                    >
+                      <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/50 mb-6 font-medium">
+                        OVERALL IMPACT
+                      </div>
+                      <div className="space-y-6">
+                        {(formData.impact || initialImpact).map((item, idx) => (
+                          <div
+                            key={idx}
+                            className={`${
+                              idx > 0 ? 'pt-6 border-t border-white/[0.1]' : ''
+                            } grid grid-cols-1 md:grid-cols-12 gap-3 items-center`}
+                          >
+                            <div className="md:col-span-5">
+                              <span className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight block">
+                                {item.value || '0'}
+                              </span>
+                            </div>
+                            <div className="md:col-span-7">
+                              <p className="font-sans text-xs sm:text-sm text-neutral-400 font-normal leading-relaxed">
+                                {item.description || 'Description will appear here.'}
+                              </p>
+                            </div>
                           </div>
                         ))}
                       </div>

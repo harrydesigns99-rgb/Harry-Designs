@@ -178,6 +178,7 @@ function getInitialProjects() {
         ...(item.process || {}),
       },
       story: item.story || defaultItem.story,
+      impact: item.impact || defaultItem.impact,
       anatomy: item.anatomy || defaultItem.anatomy,
       systemSpecs: item.systemSpecs || defaultItem.systemSpecs,
     };
