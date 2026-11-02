@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
+import { useCMS } from '@/features/cms';
 
 const CAPABILITIES = [
   {
@@ -27,6 +28,8 @@ const CAPABILITIES = [
 
 const AboutSection = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const cms = useCMS();
+  const profile = cms.profile || {};
 
   const toggleExpanded = () => {
     sound.playPop();
@@ -95,13 +98,13 @@ const AboutSection = () => {
                     STUDIO PHILOSOPHY
                   </span>
                   <h3 className="font-display text-xl sm:text-3xl font-bold tracking-tight text-white">
-                    Design engineered to convert.
+                    {profile.specialization ? `${profile.specialization}.` : 'Design engineered to convert.'}
                   </h3>
                   <p className="font-sans text-xs sm:text-base text-white/80 leading-relaxed font-normal">
-                    Based in Chennai and partnering with founders globally, Harry Designs creates distinctive brand identities and standout retail packaging.
+                    Based in {profile.location ? profile.location.split('•')[0].trim() : 'Chennai'} and partnering with founders globally, {profile.name ? `${profile.name} (Harry Designs)` : 'Harry Designs'} creates distinctive brand identities and standout retail packaging.
                   </p>
                   <p className="font-sans text-xs sm:text-base text-white/80 leading-relaxed font-normal">
-                    From early concept to print-ready delivery, every design is built to be simple, memorable, and commercially effective.
+                    {profile.philosophy || 'From early concept to print-ready delivery, every design is built to be simple, memorable, and commercially effective.'}
                   </p>
                 </div>
 

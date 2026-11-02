@@ -2,8 +2,17 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
 import WordReveal from '@/components/WordReveal';
+import { useCMS } from '@/features/cms';
 
 const ContactSection = () => {
+  const cms = useCMS();
+  const profile = cms.profile || {};
+  const email = profile.email || 'harrydesigns99@gmail.com';
+  const phone = profile.phone || '+91 86101 74188';
+  const cleanPhone = phone.replace(/[^0-9]/g, '') || '918610174188';
+  const name = profile.name || 'Hariharan S';
+  const location = profile.location || 'Chennai, India • Practicing Globally';
+
   const [toastMessage, setToastMessage] = useState(null);
 
   const showToast = (msg) => {
@@ -13,16 +22,16 @@ const ContactSection = () => {
 
   const handleCopyEmail = () => {
     sound.playPop();
-    navigator.clipboard.writeText('harrydesigns99@gmail.com');
-    showToast('Copied to clipboard: harrydesigns99@gmail.com');
+    navigator.clipboard.writeText(email);
+    showToast(`Copied to clipboard: ${email}`);
     setTimeout(() => {
-      window.location.href = 'mailto:harrydesigns99@gmail.com';
+      window.location.href = `mailto:${email}`;
     }, 600);
   };
 
   const handleWhatsApp = () => {
     sound.playClick();
-    window.open('https://wa.me/918610174188?text=Hi%20Hariharan,%20I%20would%20like%20to%20discuss%20a%20design%20project.', '_blank');
+    window.open(`https://wa.me/${cleanPhone}?text=Hi%20${encodeURIComponent(name.split(' ')[0])},%20I%20would%20like%20to%20discuss%20a%20design%20project.`, '_blank');
   };
 
   const handleLinkedIn = () => {
@@ -85,7 +94,7 @@ const ContactSection = () => {
               Direct <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">WhatsApp / call</strong>
             </span>
             <span className="flex items-center gap-2 text-sm sm:text-base font-mono uppercase tracking-wider text-[#f5f4f0]/75 group-hover:text-white">
-              <span className="hidden sm:inline">+91 86101 74188</span>
+              <span className="hidden sm:inline">{phone}</span>
               <svg
                 width="24"
                 height="24"
@@ -134,8 +143,8 @@ const ContactSection = () => {
 
         {/* Studio Location & Availability Footer */}
         <div className="mt-14 sm:mt-16 pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono text-[#f5f4f0]/70">
-          <p>© {new Date().getFullYear()} Hariharan S • Harry Designs. All rights reserved.</p>
-          <p>Based in Chennai, India • Practicing Globally</p>
+          <p>© {new Date().getFullYear()} {name} • Harry Designs. All rights reserved.</p>
+          <p>Based in {location}</p>
         </div>
       </div>
 

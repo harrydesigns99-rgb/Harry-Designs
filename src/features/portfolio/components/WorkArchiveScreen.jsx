@@ -113,7 +113,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
               className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-black/[0.08] text-xs font-mono text-[#FC7A69] font-medium"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#FC7A69]" />
-              <span>COMPLETE PORTFOLIO CATALOG // 12 CASE STUDIES</span>
+              <span>COMPLETE PORTFOLIO CATALOG // {projects.length} CASE STUDIES</span>
             </motion.div>
 
             <motion.h1

@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
 import { sound } from '@/utils/audio';
+import { useCMS } from '@/features/cms';
 
 const Navbar = () => {
+  const cms = useCMS();
+  const brandName = cms.profile?.name || 'Hariharan S';
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -30,7 +33,7 @@ const Navbar = () => {
           onClick={() => sound.playClick()}
           className="font-display text-lg sm:text-xl font-bold tracking-tight text-[#1e1e20] hover:opacity-80 transition-opacity"
         >
-          Hariharan S
+          {brandName}
         </a>
 
         {/* Desktop Nav Links */}

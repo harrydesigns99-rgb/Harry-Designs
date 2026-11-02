@@ -1,12 +1,40 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
+import { useCMS } from '@/features/cms';
+import { DEFAULT_UI_ARCHIVE } from '@/features/cms/cmsStore';
 
 const UIArchiveFolder = () => {
+  const cms = useCMS();
+  const uiItems = cms.uiArchive && cms.uiArchive.length > 0 ? cms.uiArchive : DEFAULT_UI_ARCHIVE;
+  const aurora = uiItems[0] || DEFAULT_UI_ARCHIVE[0];
+  const cloudpass = uiItems[1] || DEFAULT_UI_ARCHIVE[1];
+  const chatFlow = uiItems[2] || DEFAULT_UI_ARCHIVE[2];
+  const diyaa = uiItems[3] || DEFAULT_UI_ARCHIVE[3];
+  const gokul = uiItems[4] || DEFAULT_UI_ARCHIVE[4];
+  const neeri = uiItems[5] || DEFAULT_UI_ARCHIVE[5];
+
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [activeCard, setActiveCard] = useState(null);
   const containerRef = useRef(null);
+
+  const selectedArtifact = activeCard
+    ? uiItems.find((item) => item.id === activeCard) ||
+      (activeCard === 'cloudpass'
+        ? cloudpass
+        : activeCard === 'dual-phone'
+        ? chatFlow
+        : activeCard === 'orb-phone'
+        ? gokul
+        : activeCard === 'aurora'
+        ? aurora
+        : activeCard === 'health-ios'
+        ? diyaa
+        : activeCard === '3d-tokens'
+        ? neeri
+        : null)
+    : null;
 
   // Screen width breakpoint for mobile vs tablet vs desktop scatter
   const [deviceTier, setDeviceTier] = useState('desktop');
@@ -151,7 +179,7 @@ const UIArchiveFolder = () => {
                   </svg>
                 </div>
                 <p className="text-[10px] sm:text-[11px] font-sans font-medium text-white leading-tight">
-                  Share this template with friends
+                  {cloudpass.description || 'Share this template with friends'}
                 </p>
               </div>
 
@@ -160,7 +188,7 @@ const UIArchiveFolder = () => {
                 type="button"
                 className="w-full py-1.5 sm:py-2 rounded-full bg-white text-[#2a68b5] font-sans font-semibold text-[10px] sm:text-[11px] shadow-sm hover:bg-white/90 transition-all text-center"
               >
-                Share now
+                {cloudpass.tag || 'Share now'}
               </button>
             </motion.div>
 
@@ -190,7 +218,7 @@ const UIArchiveFolder = () => {
                 </div>
                 <div className="p-2.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 space-y-1">
                   <p className="text-[9px] font-sans text-white/90 leading-snug">
-                    Hey, just making sure we&apos;re still on for tomorrow! Need to know if I should save you a spot in my very important schedule 😅
+                    {chatFlow.description || "Hey, just making sure we're still on for tomorrow! Need to know if I should save you a spot in my very important schedule 😅"}
                   </p>
                   <div className="flex justify-end">
                     <span className="text-[8px] opacity-40">🔊</span>
@@ -203,7 +231,7 @@ const UIArchiveFolder = () => {
 
               {/* Bottom Screen: Coordinate Matrix */}
               <div className="h-[110px] sm:h-[120px] rounded-2xl bg-[#0a0a0c] border border-white/10 p-2 flex flex-col justify-between relative">
-                <div className="text-[7px] font-mono text-center text-white/40 uppercase">Professional</div>
+                <div className="text-[7px] font-mono text-center text-white/40 uppercase">{chatFlow.tag || 'Professional'}</div>
                 <div className="absolute inset-0 bg-dot-grid-cream opacity-20 pointer-events-none" />
                 <div className="flex justify-between items-center text-[7px] font-mono text-white/40">
                   <span>Concise</span>
@@ -303,11 +331,11 @@ const UIArchiveFolder = () => {
                   Shriya, your invite is here
                 </div>
                 <div className="text-sm font-display font-bold tracking-tight text-white flex items-center gap-1">
-                  <span>aurora</span>
+                  <span>{aurora.title ? aurora.title.split(' ')[0].toLowerCase() : 'aurora'}</span>
                   <span className="text-[8px] text-emerald-400">&bull;</span>
                 </div>
                 <div className="text-[6px] font-mono tracking-widest uppercase text-white/50">
-                  NOT EVERYONE GETS TO WITNESS IT
+                  {aurora.description ? aurora.description.toUpperCase() : 'NOT EVERYONE GETS TO WITNESS IT'}
                 </div>
               </div>
 
@@ -328,7 +356,7 @@ const UIArchiveFolder = () => {
 
               {/* Card Footer Tag */}
               <div className="flex items-center justify-between text-[7px] font-mono text-white/40 border-t border-white/10 pt-2">
-                <span>VERIFIED VIP</span>
+                <span>{aurora.tag || 'VERIFIED VIP'}</span>
                 <span className="text-emerald-400">● LIVE</span>
               </div>
             </motion.div>
@@ -363,10 +391,10 @@ const UIArchiveFolder = () => {
                   <div className="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center text-[8px]">
                     👩
                   </div>
-                  <span className="text-[10px] font-bold">Hi, Ana</span>
+                  <span className="text-[10px] font-bold">{diyaa.title ? `Hi, ${diyaa.title.split(' ')[0]}` : 'Hi, Ana'}</span>
                 </div>
                 <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[6px] font-semibold">
-                  ⚡ 21 days
+                  {diyaa.metrics || '⚡ 21 days'}
                 </span>
               </div>
 
@@ -570,10 +598,73 @@ const UIArchiveFolder = () => {
             UI Archive
           </h3>
           <p className="font-sans text-xs sm:text-sm text-[#1e1e20]/60 font-medium">
-            {isOpen ? '6 works scattered • Click folder to close' : '6 items'}
+            {isOpen ? `${uiItems.length} works scattered • Click folder to close` : `${uiItems.length} items`}
           </p>
         </div>
       </motion.div>
+
+      {/* Inspection Modal for active artifact */}
+      <AnimatePresence>
+        {selectedArtifact && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4"
+            onClick={() => setActiveCard(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 12 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white border border-black/10 shadow-2xl text-[#1e1e20] space-y-4"
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-black/[0.08]">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ backgroundColor: selectedArtifact.accent || '#FC7A69' }}
+                  />
+                  <span className="text-xs font-mono uppercase tracking-wider text-black/50">
+                    {selectedArtifact.category} • {selectedArtifact.year || '2024'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveCard(null)}
+                  className="px-3 py-1 rounded-full bg-black/5 hover:bg-black/10 text-xs font-mono text-black/60 transition-colors cursor-pointer"
+                >
+                  ✕ Close [Esc]
+                </button>
+              </div>
+
+              <div>
+                <h3 className="font-display text-2xl font-bold tracking-tight text-[#1e1e20]">
+                  {selectedArtifact.title}
+                </h3>
+                {selectedArtifact.tag && (
+                  <span className="inline-block mt-1 text-[11px] font-mono uppercase tracking-wider text-[#FC7A69] font-semibold">
+                    {selectedArtifact.tag}
+                  </span>
+                )}
+                <p className="mt-2 text-sm text-[#1e1e20]/75 leading-relaxed font-sans">
+                  {selectedArtifact.description}
+                </p>
+              </div>
+
+              {selectedArtifact.metrics && (
+                <div className="pt-3 border-t border-black/[0.06] flex items-center justify-between text-xs font-mono">
+                  <span className="text-black/50">Performance Metric:</span>
+                  <span className="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                    {selectedArtifact.metrics}
+                  </span>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

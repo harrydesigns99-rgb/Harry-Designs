@@ -1,6 +1,12 @@
 import { memo } from 'react';
+import { useCMS } from '@/features/cms';
 
 const Footer = () => {
+  const cms = useCMS();
+  const brandName = cms.profile?.name || 'Hariharan S';
+  const role = cms.profile?.role || 'Brand & Packaging Designer';
+  const archiveLabel = `${cms.projects?.length || 12}-Project Archive`;
+
   return (
     <footer className="w-full bg-[#1e1e20] text-[#f5f4f0] py-12 px-4 sm:px-6 lg:px-8 border-t border-black/20 select-none">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left">
@@ -8,12 +14,12 @@ const Footer = () => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#FC7A69] animate-pulse" />
             <span className="font-display text-base sm:text-lg font-bold tracking-tight text-white">
-              Hariharan S
+              {brandName}
             </span>
           </div>
           <span className="hidden sm:inline text-white/40 text-xs">•</span>
           <span className="font-sans text-xs text-white/60">
-            Brand &amp; Packaging Designer
+            {role}
           </span>
         </div>
 
@@ -36,7 +42,7 @@ const Footer = () => {
             href="/work"
             className="hover:text-white transition-colors"
           >
-            12-Project Archive
+            {archiveLabel}
           </a>
         </div>
       </div>

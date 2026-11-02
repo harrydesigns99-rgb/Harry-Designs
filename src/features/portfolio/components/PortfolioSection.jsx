@@ -5,18 +5,32 @@ import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
 import WordReveal from '@/components/WordReveal';
 import UIArchiveFolder from '@/components/UIArchiveFolder';
-
-const CATEGORIES = [
-  { id: 'all', label: 'All Projects' },
-  { id: 'packaging', label: 'Packaging' },
-  { id: 'branding', label: 'Brand Identity' },
-];
+import BrandsCarousel from './BrandsCarousel';
 
 const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const cms = useCMS();
   const allProjects = cms.projects && cms.projects.length > 0 ? cms.projects : PORTFOLIO_ITEMS;
 
   const [activeCategory, setActiveCategory] = useState('all');
+
+  const categoryTabs = useMemo(() => {
+    const categoryMap = {
+      all: 'All Projects',
+      packaging: 'Packaging',
+      branding: 'Brand Identity',
+      uiux: 'UI/UX',
+      brochures: 'Brochures',
+      posters: 'Posters',
+    };
+    const availableCategories = new Set(allProjects.map((p) => p.category).filter(Boolean));
+    const tabs = [{ id: 'all', label: 'All Projects' }];
+    ['packaging', 'branding', 'uiux', 'brochures', 'posters'].forEach((cat) => {
+      if (availableCategories.has(cat)) {
+        tabs.push({ id: cat, label: categoryMap[cat] || cat });
+      }
+    });
+    return tabs;
+  }, [allProjects]);
 
   const filteredProjects = useMemo(() => {
     if (activeCategory === 'all') return allProjects;
@@ -42,7 +56,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
 
           {/* Filter Pills */}
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            {CATEGORIES.map((cat) => {
+            {categoryTabs.map((cat) => {
               const isActive = activeCategory === cat.id;
               const count =
                 cat.id === 'all'
@@ -151,6 +165,9 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
           </AnimatePresence>
         </div>
 
+        {/* Live Client Brands Marquee */}
+        <BrandsCarousel />
+
         {/* Tactile Frosted Glass UI Archive Folder matching shriyap.com */}
         <div className="mt-14 sm:mt-20">
           <UIArchiveFolder onSelectProject={onSelectProject} />
@@ -166,7 +183,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
             }}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] font-sans text-xs sm:text-base font-medium tracking-wide transition-all shadow-md hover:shadow-xl cursor-pointer group"
           >
-            <span>Explore Full 12-Project Archive</span>
+            <span>Explore Full {allProjects.length}-Project Archive</span>
             <span className="text-sm group-hover:translate-x-1 transition-transform">↗</span>
           </button>
         </div>

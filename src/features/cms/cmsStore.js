@@ -158,22 +158,11 @@ function getInitialProjects() {
 
   // Ensure stored items are valid project objects
   const isValid = stored.every(
-    (item) => item && typeof item === 'object' && typeof item.id === 'number' && typeof item.title === 'string'
+    (item) => item && typeof item === 'object' && item.id != null
   );
 
-  // Check if standard IDs have mismatched images or swapped titles from legacy test edits
-  const hasMismatchedImages = stored.some((item) => {
-    if (item.id === 1 && (item.title !== 'Packaging & Label Architecture' || item.client !== 'Gokul Oils')) return true;
-    if (item.id === 2 && (item.title !== 'Luxury Gold & Bullion Identity' || item.client !== 'Sendra Gold')) return true;
-    if (item.id === 3 && (item.title !== 'Organic Botanical Skincare' || item.client !== 'Diyaa Pure')) return true;
-    if (item.id === 4 && (item.title !== 'Bilingual Scientific Identity' || item.client !== 'CSIR India')) return true;
-    if (item.id === 5 && (item.title !== 'Handcrafted Bakery Packaging' || item.client !== 'Thomas Bakers')) return true;
-    if (item.id === 6 && (item.title !== 'Botanical Elixir Beverage' || item.client !== 'Mo Elixir')) return true;
-    return false;
-  });
-
-  if (!isValid || hasMismatchedImages) {
-    console.warn('[CMS] Corrupted or mismatched projects detected in storage. Resetting to verified PORTFOLIO_ITEMS.');
+  if (!isValid) {
+    console.warn('[CMS] Invalid projects detected in storage. Resetting to verified PORTFOLIO_ITEMS.');
     safeWrite(STORAGE_KEYS.PROJECTS, PORTFOLIO_ITEMS);
     return PORTFOLIO_ITEMS;
   }
@@ -253,6 +242,20 @@ if (typeof window !== 'undefined') {
         emitChange();
       } catch (err) {
         console.warn('[CMS] Storage sync error for brands:', err);
+      }
+    } else if (event.key === STORAGE_KEYS.UI_ARCHIVE && event.newValue) {
+      try {
+        currentData = { ...currentData, uiArchive: JSON.parse(event.newValue) };
+        emitChange();
+      } catch (err) {
+        console.warn('[CMS] Storage sync error for UI archive:', err);
+      }
+    } else if (event.key === STORAGE_KEYS.SETTINGS && event.newValue) {
+      try {
+        currentData = { ...currentData, settings: JSON.parse(event.newValue) };
+        emitChange();
+      } catch (err) {
+        console.warn('[CMS] Storage sync error for settings:', err);
       }
     }
   });
@@ -461,6 +464,7 @@ export const cmsStore = {
         brands: currentData.brands,
         settings: currentData.settings,
         profile: currentData.profile,
+        uiArchive: currentData.uiArchive,
       },
       null,
       2
@@ -470,26 +474,32 @@ export const cmsStore = {
   importBackupJSON(jsonStr) {
     try {
       const parsed = JSON.parse(jsonStr);
+      const nextData = { ...currentData };
       if (parsed.projects && Array.isArray(parsed.projects)) {
-        currentData.projects = parsed.projects;
+        nextData.projects = parsed.projects;
         safeWrite(STORAGE_KEYS.PROJECTS, parsed.projects);
       }
       if (parsed.galleryImages && Array.isArray(parsed.galleryImages)) {
-        currentData.galleryImages = parsed.galleryImages;
+        nextData.galleryImages = parsed.galleryImages;
         safeWrite(STORAGE_KEYS.GALLERY, parsed.galleryImages);
       }
       if (parsed.brands && Array.isArray(parsed.brands)) {
-        currentData.brands = parsed.brands;
+        nextData.brands = parsed.brands;
         safeWrite(STORAGE_KEYS.BRANDS, parsed.brands);
       }
       if (parsed.settings && typeof parsed.settings === 'object') {
-        currentData.settings = { ...DEFAULT_SETTINGS, ...parsed.settings };
-        safeWrite(STORAGE_KEYS.SETTINGS, currentData.settings);
+        nextData.settings = { ...DEFAULT_SETTINGS, ...parsed.settings };
+        safeWrite(STORAGE_KEYS.SETTINGS, nextData.settings);
       }
       if (parsed.profile && typeof parsed.profile === 'object') {
-        currentData.profile = { ...DEFAULT_PROFILE, ...parsed.profile };
-        safeWrite(STORAGE_KEYS.PROFILE, currentData.profile);
+        nextData.profile = { ...DEFAULT_PROFILE, ...parsed.profile };
+        safeWrite(STORAGE_KEYS.PROFILE, nextData.profile);
       }
+      if (parsed.uiArchive && Array.isArray(parsed.uiArchive)) {
+        nextData.uiArchive = parsed.uiArchive;
+        safeWrite(STORAGE_KEYS.UI_ARCHIVE, parsed.uiArchive);
+      }
+      currentData = nextData;
       emitChange();
       return { success: true };
     } catch (err) {

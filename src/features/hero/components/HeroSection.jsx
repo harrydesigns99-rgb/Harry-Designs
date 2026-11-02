@@ -1,37 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { sound } from '@/utils/audio';
 import StudioShuttle from '@/components/StudioShuttle';
-
-const HERO_PILLS = [
-  {
-    id: 'architect',
-    label: 'Hariharan S',
-    tag: 'FOUNDER & LEAD',
-    photo: '/image/hariharan.jpg',
-    badge: 'HARIHARAN S',
-    subtitle: 'Brand & Packaging Designer',
-    meta: 'Chennai, India • Global Remote',
-  },
-  {
-    id: 'designs',
-    label: '50+ Designs Completed',
-    tag: 'PRODUCTION RIGOR',
-    photo: '/image/Image Gallery/Artboard 2.webp',
-    badge: '50+ DESIGNS COMPLETED',
-    subtitle: 'Print-Ready Packaging Systems',
-    meta: '12+ Retail Lines • Press Supervised',
-  },
-  {
-    id: 'clients',
-    label: '12+ Client Brands',
-    tag: 'COMMERCIAL REACH',
-    photo: '/image/Image Gallery/Artboard 1.webp',
-    badge: '12+ CLIENT BRANDS',
-    subtitle: 'Gokul Oils • Sendra • CSIR',
-    meta: 'Commercial Velocity & Shelf Dominance',
-  },
-];
+import { useCMS } from '@/features/cms';
 
 const DISCIPLINE_TAGS = [
   'Brand Identity',
@@ -42,8 +13,49 @@ const DISCIPLINE_TAGS = [
 ];
 
 const HeroSection = () => {
+  const cms = useCMS();
+  const projectsCount = cms.projects?.length || 12;
+  const brandsCount = cms.brands?.length || 12;
+  const brandsNames =
+    cms.brands && cms.brands.length > 0
+      ? cms.brands.slice(0, 3).map((b) => b.name).join(' • ')
+      : 'Gokul Oils • Sendra • CSIR';
+
+  const heroPills = useMemo(() => {
+    const profile = cms.profile || {};
+    return [
+      {
+        id: 'architect',
+        label: profile.name || 'Hariharan S',
+        tag: 'FOUNDER & LEAD',
+        photo: profile.image || '/image/hariharan.jpg',
+        badge: (profile.name || 'Hariharan S').toUpperCase(),
+        subtitle: profile.role || 'Brand & Packaging Designer',
+        meta: profile.location || 'Chennai, India • Global Remote',
+      },
+      {
+        id: 'designs',
+        label: `${projectsCount >= 12 ? '50+' : projectsCount * 4 + '+'} Designs Completed`,
+        tag: 'PRODUCTION RIGOR',
+        photo: cms.galleryImages?.[1] || cms.projects?.[0]?.image || '/image/Image Gallery/Artboard 2.webp',
+        badge: `${projectsCount >= 12 ? '50+' : projectsCount * 4 + '+'} DESIGNS COMPLETED`,
+        subtitle: profile.specialization || 'Print-Ready Packaging Systems',
+        meta: `${projectsCount}+ Retail Lines • Press Supervised`,
+      },
+      {
+        id: 'clients',
+        label: `${brandsCount}+ Client Brands`,
+        tag: 'COMMERCIAL REACH',
+        photo: cms.galleryImages?.[0] || cms.projects?.[1]?.image || '/image/Image Gallery/Artboard 1.webp',
+        badge: `${brandsCount}+ CLIENT BRANDS`,
+        subtitle: brandsNames,
+        meta: 'Commercial Velocity & Shelf Dominance',
+      },
+    ];
+  }, [cms.profile, projectsCount, brandsCount, brandsNames, cms.galleryImages, cms.projects]);
+
   const [activeTab, setActiveTab] = useState(0);
-  const activeItem = HERO_PILLS[activeTab];
+  const activeItem = heroPills[activeTab] || heroPills[0];
 
   // 3D Card tilt state
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -141,7 +153,7 @@ const HeroSection = () => {
         transition={{ duration: 0.6, delay: 0.45 }}
         className="flex flex-wrap items-center justify-center gap-2 sm:gap-3.5 mb-8 sm:mb-14 z-20 px-2"
       >
-        {HERO_PILLS.map((pill, idx) => {
+        {heroPills.map((pill, idx) => {
           const isActive = activeTab === idx;
           return (
             <button

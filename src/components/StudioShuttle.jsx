@@ -1,39 +1,49 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sound } from '@/utils/audio';
-
-const STUDIO_METRICS = [
-  {
-    id: 'designs',
-    value: '50+',
-    label: 'Packaging Designs',
-    subtext: 'End-to-end commercial production',
-    icon: '📦',
-  },
-  {
-    id: 'clients',
-    value: '12+',
-    label: 'Client Brands',
-    subtext: 'FMCG, luxury, & retail leaders',
-    icon: '✦',
-  },
-  {
-    id: 'experience',
-    value: '6+',
-    label: 'Years Practice',
-    subtext: 'Pre-press & retail shelf rigor',
-    icon: '⏳',
-  },
-  {
-    id: 'velocity',
-    value: '+40%',
-    label: 'Sales Velocity',
-    subtext: 'Average retail shelf lift',
-    icon: '📈',
-  },
-];
+import { useCMS } from '@/features/cms';
 
 const StudioShuttle = ({ className = '' }) => {
+  const cms = useCMS();
+  const projectsCount = cms.projects?.length || 12;
+  const brandsCount = cms.brands?.length || 12;
+
+  const studioMetrics = useMemo(() => {
+    const profile = cms.profile || {};
+    return [
+      {
+        id: 'designs',
+        value: projectsCount >= 12 ? '50+' : `${projectsCount * 4}+`,
+        label: 'Packaging Designs',
+        subtext: 'End-to-end commercial production',
+        icon: '📦',
+      },
+      {
+        id: 'clients',
+        value: `${brandsCount}+`,
+        label: 'Client Brands',
+        subtext: 'FMCG, luxury, & retail leaders',
+        icon: '✦',
+      },
+      {
+        id: 'experience',
+        value: profile.experience ? profile.experience.split(' ')[0] : '6+',
+        label: 'Years Practice',
+        subtext: profile.specialization || 'Pre-press & retail shelf rigor',
+        icon: '⏳',
+      },
+      {
+        id: 'velocity',
+        value: '+40%',
+        label: 'Sales Velocity',
+        subtext: 'Average retail shelf lift',
+        icon: '📈',
+      },
+    ];
+  }, [projectsCount, brandsCount, cms.profile]);
+
+  const profile = cms.profile || {};
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [activeMetricIdx, setActiveMetricIdx] = useState(0);
@@ -98,7 +108,7 @@ const StudioShuttle = ({ className = '' }) => {
               </div>
 
               <div className="grid grid-cols-2 gap-2.5">
-                {STUDIO_METRICS.map((metric, idx) => (
+                {studioMetrics.map((metric, idx) => (
                   <div
                     key={metric.id}
                     onMouseEnter={() => setActiveMetricIdx(idx)}
@@ -129,7 +139,7 @@ const StudioShuttle = ({ className = '' }) => {
               </div>
 
               <div className="mt-3 pt-2.5 border-t border-black/[0.06] flex items-center justify-between text-[9px] font-mono text-black/45">
-                <span>📍 CHENNAI // GLOBAL</span>
+                <span>📍 {(profile.location || 'CHENNAI // GLOBAL').toUpperCase()}</span>
                 <span className="text-[#FC7A69]">DRAG TO MOVE</span>
               </div>
             </motion.div>
@@ -144,7 +154,9 @@ const StudioShuttle = ({ className = '' }) => {
             className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/95 hover:bg-white backdrop-blur-xl border border-black/10 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] text-xs font-sans font-medium text-[#1e1e20] cursor-pointer hover:scale-105 transition-all"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-display font-bold">50+</span>
+            <span className="font-display font-bold">
+              {projectsCount >= 12 ? '50+' : `${projectsCount * 4}+`}
+            </span>
             <span className="text-[10px] font-mono text-black/50">STUDIO</span>
           </button>
         ) : (
@@ -168,14 +180,18 @@ const StudioShuttle = ({ className = '' }) => {
             {/* Metric Badges */}
             <div className="flex items-center gap-2 text-xs sm:text-sm font-sans">
               <div className="flex items-center gap-1.5">
-                <span className="font-display font-bold text-[#1e1e20]">50+</span>
+                <span className="font-display font-bold text-[#1e1e20]">
+                  {projectsCount >= 12 ? '50+' : `${projectsCount * 4}+`}
+                </span>
                 <span className="text-[#1e1e20]/70 text-[11px] sm:text-xs font-medium">Designs</span>
               </div>
 
               <span className="text-black/25 text-xs">•</span>
 
               <div className="flex items-center gap-1.5">
-                <span className="font-display font-bold text-[#1e1e20]">12+</span>
+                <span className="font-display font-bold text-[#1e1e20]">
+                  {brandsCount}+
+                </span>
                 <span className="text-[#1e1e20]/70 text-[11px] sm:text-xs font-medium">Brands</span>
               </div>
             </div>
