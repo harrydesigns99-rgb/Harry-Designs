@@ -16,15 +16,15 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const categoryTabs = useMemo(() => {
     const categoryMap = {
       all: 'All Projects',
-      packaging: 'Packaging',
       branding: 'Brand Identity',
-      uiux: 'UI/UX',
+      uiux: 'Creative UI/UX',
+      packaging: 'Packaging',
       brochures: 'Brochures',
       posters: 'Posters',
     };
     const availableCategories = new Set(allProjects.map((p) => p.category).filter(Boolean));
     const tabs = [{ id: 'all', label: 'All Projects' }];
-    ['packaging', 'branding', 'uiux', 'brochures', 'posters'].forEach((cat) => {
+    ['branding', 'uiux', 'packaging', 'brochures', 'posters'].forEach((cat) => {
       if (availableCategories.has(cat)) {
         tabs.push({ id: cat, label: categoryMap[cat] || cat });
       }
@@ -33,8 +33,14 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   }, [allProjects]);
 
   const filteredProjects = useMemo(() => {
-    if (activeCategory === 'all') return allProjects;
-    return allProjects.filter((p) => p.category === activeCategory);
+    if (activeCategory !== 'all') {
+      return allProjects.filter((p) => p.category === activeCategory);
+    }
+    // High-impact dual discipline curation: balances Brand, UI/UX, and Packaging
+    const priorityIds = [1, 9, 2, 12];
+    const topProjects = priorityIds.map((id) => allProjects.find((p) => p.id === id)).filter(Boolean);
+    const restProjects = allProjects.filter((p) => !priorityIds.includes(p.id));
+    return [...topProjects, ...restProjects];
   }, [allProjects, activeCategory]);
 
   return (

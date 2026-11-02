@@ -15,6 +15,15 @@ class SoundEngine {
       } catch {
         this.isMuted = false;
       }
+
+      // Unlock Web Audio context on first user gesture to avoid iOS audio latency & click pops
+      const unlockAudio = () => {
+        this.init();
+        window.removeEventListener('pointerdown', unlockAudio);
+        window.removeEventListener('keydown', unlockAudio);
+      };
+      window.addEventListener('pointerdown', unlockAudio, { once: true, passive: true });
+      window.addEventListener('keydown', unlockAudio, { once: true, passive: true });
     }
   }
 
@@ -22,11 +31,17 @@ class SoundEngine {
     if (!this.ctx && typeof window !== 'undefined') {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
-        this.ctx = new AudioCtx();
+        try {
+          this.ctx = new AudioCtx();
+        } catch {
+          // ignore
+        }
       }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {
+        // Safe catch for browser autoplay restrictions
+      });
     }
   }
 

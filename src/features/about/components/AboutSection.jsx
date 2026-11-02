@@ -6,23 +6,23 @@ import { useCMS } from '@/features/cms';
 const CAPABILITIES = [
   {
     step: '01',
-    title: 'Brand Identity',
-    desc: 'Memorable logos, cohesive typography, and comprehensive design systems built for long-term recognition.',
+    title: 'Brand Identity Systems',
+    desc: 'Bespoke marks, tailored typography, and scalable brand architecture engineered for recognition across physical and digital worlds.',
   },
   {
     step: '02',
-    title: 'Packaging Design',
-    desc: 'Distinctive box, label, and pouch packaging designed for shelf appeal, structural integrity, and clean unboxing.',
+    title: 'Creative UI/UX & Product Design',
+    desc: 'Fluid mobile and web interfaces, intuitive user journeys, and tactile micro-interactions that make complex software feel effortless.',
   },
   {
     step: '03',
-    title: 'Materials & Finishes',
-    desc: 'Carefully selected papers, foils, embossing, and coatings that give your physical product a premium tactile feel.',
+    title: 'Packaging & Physical Craft',
+    desc: 'Distinctive box, label, and container dielines engineered for tactile unboxing rituals and high-contrast retail shelf standout.',
   },
   {
     step: '04',
-    title: 'Retail Impact',
-    desc: 'Focused, uncluttered visual hierarchy that commands attention and makes purchasing an easy decision.',
+    title: 'Design Systems & Conversion',
+    desc: 'Modular Figma component libraries, tokenized design systems, and uncluttered visual hierarchy driving measurable commercial velocity.',
   },
 ];
 
@@ -49,7 +49,7 @@ const AboutSection = () => {
             <span className="font-serif italic font-light text-white underline decoration-[#FC7A69] underline-offset-8">
               finds its place
             </span>{' '}
-            on the shelf.
+            on the shelf and on their screens.
           </p>
 
           {/* Toggle Button matching shriyap.com */}
@@ -101,7 +101,7 @@ const AboutSection = () => {
                     {profile.specialization ? `${profile.specialization}.` : 'Design engineered to convert.'}
                   </h3>
                   <p className="font-sans text-xs sm:text-base text-white/80 leading-relaxed font-normal">
-                    Based in {profile.location ? profile.location.split('•')[0].trim() : 'Chennai'} and partnering with founders globally, {profile.name ? `${profile.name} (Harry Designs)` : 'Harry Designs'} creates distinctive brand identities and standout retail packaging.
+                    Based in {profile.location ? profile.location.split('•')[0].trim() : 'Chennai'} and partnering with founders globally, {profile.name ? `${profile.name} (Harry Designs)` : 'Harry Designs'} creates distinctive brand identities, intuitive digital products, and standout packaging systems.
                   </p>
                   <p className="font-sans text-xs sm:text-base text-white/80 leading-relaxed font-normal">
                     {profile.philosophy || 'From early concept to print-ready delivery, every design is built to be simple, memorable, and commercially effective.'}

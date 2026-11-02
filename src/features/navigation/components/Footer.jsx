@@ -4,7 +4,7 @@ import { useCMS } from '@/features/cms';
 const Footer = () => {
   const cms = useCMS();
   const brandName = cms.profile?.name || 'Hariharan S';
-  const role = cms.profile?.role || 'Brand & Packaging Designer';
+  const role = cms.profile?.role || 'Brand Identity & Creative UI/UX Designer';
   const archiveLabel = `${cms.projects?.length || 12}-Project Archive`;
 
   return (

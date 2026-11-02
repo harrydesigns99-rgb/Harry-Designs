@@ -25,15 +25,15 @@ if (typeof window !== 'undefined') {
 
 export const DEFAULT_PROFILE = {
   name: 'Hariharan S',
-  role: 'Principal Brand & Packaging Architect',
+  role: 'Brand Identity Architect & Creative UI/UX Designer',
   image: '/image/hariharan.jpg',
   experience: '6+ Years Practice',
-  specialization: 'Packaging & Identity',
-  rigor: 'ISO 12647-2 Ready',
+  specialization: 'Brand Systems & Digital Products',
+  rigor: 'Figma & Production Rigor',
   location: 'Chennai • Global Remote',
   email: 'harrydesigns99@gmail.com',
   phone: '+91 86101 74188',
-  philosophy: 'Translating founder ambition into shelf standout, tactile substrate finishes, and durable commercial equity.',
+  philosophy: 'Translating founder ambition into unforgettable brand identities, intuitive digital products, and tactile commercial equity.',
   statusText: 'Available for Commissions',
 };
 

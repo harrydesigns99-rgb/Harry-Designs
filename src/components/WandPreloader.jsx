@@ -15,8 +15,20 @@ const WandPreloader = ({ onComplete }) => {
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
+    // Skip preloader on internal client route changes to prevent flicker
+    if (typeof window !== 'undefined') {
+      try {
+        if (sessionStorage.getItem('harry_preloader_seen') === 'true') {
+          onComplete?.();
+          return;
+        }
+      } catch {
+        // ignore
+      }
+    }
+
     const startTime = Date.now();
-    const duration = 1800; // 1.8 seconds - fast, snappy, minimal
+    const duration = 1600; // Snappy 1.6s
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -25,12 +37,17 @@ const WandPreloader = ({ onComplete }) => {
 
       if (current >= 100) {
         clearInterval(interval);
+        try {
+          sessionStorage.setItem('harry_preloader_seen', 'true');
+        } catch {
+          // ignore
+        }
         setTimeout(() => {
           setIsFinished(true);
           setTimeout(() => {
             onComplete?.();
-          }, 600);
-        }, 300);
+          }, 450);
+        }, 200);
       }
     }, 20);
 

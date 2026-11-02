@@ -19,7 +19,7 @@ const CustomCursor = () => {
     const handleMouseMove = (e) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      setIsVisible(true);
 
       // Check hovered elements for data-cursor attribute
       const target = e.target.closest('[data-cursor]');
@@ -37,14 +37,14 @@ const CustomCursor = () => {
       setIsVisible(false);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [cursorX, cursorY, isVisible]);
+  }, [cursorX, cursorY]);
 
   if (!isVisible) return null;
 
@@ -55,8 +55,11 @@ const CustomCursor = () => {
         y: cursorY,
         translateX: '-50%',
         translateY: '-50%',
+        willChange: 'transform',
+        WebkitBackfaceVisibility: 'hidden',
+        backfaceVisibility: 'hidden',
       }}
-      className={`fixed top-0 left-0 pointer-events-none z-[9999] transition-opacity duration-200 hidden md:block ${
+      className={`fixed top-0 left-0 pointer-events-none z-[9999] transition-opacity duration-150 hidden md:block ${
         isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
       }`}
     >

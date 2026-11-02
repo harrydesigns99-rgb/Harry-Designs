@@ -8,13 +8,15 @@ const StudioShuttle = ({ className = '' }) => {
   const projectsCount = cms.projects?.length || 12;
   const brandsCount = cms.brands?.length || 12;
 
+  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+
   const studioMetrics = useMemo(() => {
     const profile = cms.profile || {};
     return [
       {
         id: 'designs',
         value: projectsCount >= 12 ? '50+' : `${projectsCount * 4}+`,
-        label: 'Packaging Designs',
+        label: 'Brand & Digital Systems',
         subtext: 'End-to-end commercial production',
         icon: '📦',
       },
@@ -22,21 +24,21 @@ const StudioShuttle = ({ className = '' }) => {
         id: 'clients',
         value: `${brandsCount}+`,
         label: 'Client Brands',
-        subtext: 'FMCG, luxury, & retail leaders',
+        subtext: 'Tech, FMCG, & luxury leaders',
         icon: '✦',
       },
       {
         id: 'experience',
         value: profile.experience ? profile.experience.split(' ')[0] : '6+',
         label: 'Years Practice',
-        subtext: profile.specialization || 'Pre-press & retail shelf rigor',
+        subtext: profile.specialization || 'Figma & print production rigor',
         icon: '⏳',
       },
       {
         id: 'velocity',
         value: '+40%',
         label: 'Sales Velocity',
-        subtext: 'Average retail shelf lift',
+        subtext: 'Average conversion & shelf lift',
         icon: '📈',
       },
     ];
@@ -62,17 +64,16 @@ const StudioShuttle = ({ className = '' }) => {
 
   return (
     <motion.aside
-      drag
-      dragElastic={0.15}
+      drag={!isTouchDevice}
+      dragMomentum={false}
+      dragElastic={0.08}
       whileDrag={{ scale: 1.04, cursor: 'grabbing' }}
       aria-label="Studio telemetry"
       className={`fixed bottom-4 right-4 sm:bottom-7 sm:right-7 z-40 select-none ${className}`}
     >
       {/* Floating Levitation Wrapper */}
       <motion.div
-        animate={{
-          y: [-3, 3, -3],
-        }}
+        animate={!isTouchDevice ? { y: [-3, 3, -3] } : {}}
         transition={{
           duration: 4.5,
           repeat: Infinity,

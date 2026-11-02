@@ -80,3 +80,4 @@ const OverallImpactSection = ({ impact, project }) => {
 };
 
 export default memo(OverallImpactSection);
+

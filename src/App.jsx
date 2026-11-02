@@ -1,4 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Navbar, Footer } from '@/features/navigation';
 import { HeroSection } from '@/features/hero';
 import { AboutSection } from '@/features/about';
@@ -76,7 +77,9 @@ function App() {
       <div className="min-h-screen bg-[#f5f4f0] relative selection:bg-[#FC7A69] selection:text-white overflow-x-clip">
         <LivingBackground />
         <CustomCursor />
-        {isLoading && <WandPreloader onComplete={() => setIsLoading(false)} />}
+        <AnimatePresence>
+          {isLoading && <WandPreloader key="preloader" onComplete={() => setIsLoading(false)} />}
+        </AnimatePresence>
 
         <Suspense
           fallback={

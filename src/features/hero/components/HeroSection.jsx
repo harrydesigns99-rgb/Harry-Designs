@@ -5,11 +5,12 @@ import StudioShuttle from '@/components/StudioShuttle';
 import { useCMS } from '@/features/cms';
 
 const DISCIPLINE_TAGS = [
-  'Brand Identity',
-  'Packaging Systems',
-  'Print & Production',
+  'Brand Identity Systems',
+  'Creative UI/UX Design',
+  'Design Tokens & Systems',
+  'Packaging Architecture',
+  'Interactive Prototyping',
   'Art Direction',
-  '3D Visualization',
 ];
 
 const HeroSection = () => {
@@ -30,7 +31,7 @@ const HeroSection = () => {
         tag: 'FOUNDER & LEAD',
         photo: profile.image || '/image/hariharan.jpg',
         badge: (profile.name || 'Hariharan S').toUpperCase(),
-        subtitle: profile.role || 'Brand & Packaging Designer',
+        subtitle: profile.role || 'Brand Identity & Creative UI/UX Designer',
         meta: profile.location || 'Chennai, India • Global Remote',
       },
       {
@@ -39,8 +40,8 @@ const HeroSection = () => {
         tag: 'PRODUCTION RIGOR',
         photo: cms.galleryImages?.[1] || cms.projects?.[0]?.image || '/image/Image Gallery/Artboard 2.webp',
         badge: `${projectsCount >= 12 ? '50+' : projectsCount * 4 + '+'} DESIGNS COMPLETED`,
-        subtitle: profile.specialization || 'Print-Ready Packaging Systems',
-        meta: `${projectsCount}+ Retail Lines • Press Supervised`,
+        subtitle: profile.specialization || 'Brand Systems & Digital Products',
+        meta: `${projectsCount}+ Systems • Press & Figma Supervised`,
       },
       {
         id: 'clients',
@@ -49,7 +50,7 @@ const HeroSection = () => {
         photo: cms.galleryImages?.[0] || cms.projects?.[1]?.image || '/image/Image Gallery/Artboard 1.webp',
         badge: `${brandsCount}+ CLIENT BRANDS`,
         subtitle: brandsNames,
-        meta: 'Commercial Velocity & Shelf Dominance',
+        meta: 'Commercial Velocity & Product Experience',
       },
     ];
   }, [cms.profile, projectsCount, brandsCount, brandsNames, cms.galleryImages, cms.projects]);
@@ -57,24 +58,31 @@ const HeroSection = () => {
   const [activeTab, setActiveTab] = useState(0);
   const activeItem = heroPills[activeTab] || heroPills[0];
 
-  // 3D Card tilt state
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  // High-performance DOM-based 3D Card tilt (avoids 120Hz React state re-renders)
   const cardRef = useRef(null);
+  const rafRef = useRef(null);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    setTilt({
-      x: -(y / (rect.height / 2)) * 10,
-      y: (x / (rect.width / 2)) * 10,
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+    rafRef.current = requestAnimationFrame(() => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotX = -(y / (rect.height / 2)) * 8;
+      const rotY = (x / (rect.width / 2)) * 8;
+      cardRef.current.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
     });
   };
 
   const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (cardRef.current) {
+      cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    }
   };
 
   const handleScrollCue = () => {
@@ -115,7 +123,7 @@ const HeroSection = () => {
             </motion.span>
           </span>
 
-          {/* Line 2: A stubborn shelf. */}
+          {/* Line 2: A living digital canvas. */}
           <span className="block overflow-hidden py-0.5 sm:py-1">
             <motion.span
               initial={{ y: '110%', opacity: 0 }}
@@ -123,11 +131,11 @@ const HeroSection = () => {
               transition={{ duration: 0.75, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className="inline-block sm:whitespace-nowrap text-[#1e1e20]/85"
             >
-              A stubborn shelf.
+              A living digital canvas.
             </motion.span>
           </span>
 
-          {/* Line 3: A little room to disrupt the aisle. */}
+          {/* Line 3: A little room to disrupt screen & shelf. */}
           <span className="block overflow-hidden py-0.5 sm:py-1">
             <motion.span
               initial={{ y: '110%', opacity: 0 }}
@@ -139,7 +147,7 @@ const HeroSection = () => {
                 A little room to&nbsp;
               </span>
               <span className="whitespace-nowrap font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#8b151b] via-[#FC7A69] to-[#8b151b] hover:from-[#FC7A69] hover:to-[#8b151b] transition-all duration-300">
-                disrupt the aisle.
+                disrupt screen &amp; shelf.
               </span>
             </motion.span>
           </span>
@@ -191,9 +199,11 @@ const HeroSection = () => {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{
-            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-            transition: 'transform 0.15s ease-out',
             transformStyle: 'preserve-3d',
+            transition: 'transform 0.18s cubic-bezier(0.2, 0, 0, 1)',
+            willChange: 'transform',
+            WebkitBackfaceVisibility: 'hidden',
+            backfaceVisibility: 'hidden',
           }}
           className="relative w-[260px] sm:w-[320px] aspect-[280/408] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#2b2d33] border border-black/10 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.35)] cursor-pointer group select-none"
         >

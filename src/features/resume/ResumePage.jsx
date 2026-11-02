@@ -3,21 +3,21 @@ import { useCMS } from '@/features/cms';
 import { DEFAULT_PROFILE } from '@/features/cms/cmsStore';
 
 const skills = [
-  'Digital ad & social media creative',
-  'Brand identity & visual systems',
-  'Web & landing page design',
-  'Video editing & motion graphics',
-  'AI-assisted design production',
-  'Packaging & event/print collateral',
+  'Brand identity & master visual systems',
+  'Mobile & web UI/UX product design',
+  'Design systems & token architecture',
+  'Interactive prototyping & micro-interactions',
+  'Structural packaging & pre-press production',
+  'Design engineering (React, Tailwind, CSS)',
 ];
 
-const tools = ['Adobe Illustrator', 'Adobe Photoshop', 'Adobe Premiere Pro', 'Canva', 'WordPress', 'HTML', 'CSS', 'Adobe XD'];
+const tools = ['Figma', 'FigJam', 'Framer', 'Adobe Illustrator', 'Adobe Photoshop', 'Adobe Premiere Pro', 'Tailwind CSS', 'React / HTML'];
 
 const projects = [
-  ['Gokul Oils', 'Packaging and label redesign', 'Contributed to a 40% increase in sales'],
-  ['Sendra Gold', 'Full brand identity', 'Premium gold jewellery and finance brand launch in Trichy'],
-  ['Diyaa Pure', 'Brand identity system', 'Organic cosmetics brand identity and visual direction'],
-  ['harrydesigns.in', 'Studio website', 'Self-designed and self-built website with WordPress, HTML, and CSS'],
+  ['Gokul Oils', 'Packaging and label redesign', 'Contributed to a 40% verified sales increase'],
+  ['Do Well Living', 'Circadian wellness UI/UX', 'Mobile app design system and haptic tracking flow'],
+  ['Sendra Gold', 'Luxury bullion brand identity', 'Flagship identity system and gold bullion packaging in Trichy'],
+  ['Edwin BS', 'FinTech SaaS web platform', 'Enterprise accounting dashboard and tokenized design system'],
 ];
 
 const ResumePage = ({ onNavigateHome }) => {
