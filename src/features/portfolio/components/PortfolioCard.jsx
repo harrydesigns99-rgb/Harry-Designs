@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, memo } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useIsMobile } from '@/hooks';
 import { sound } from '@/utils/audio';
@@ -6,12 +6,12 @@ import { sound } from '@/utils/audio';
 const PortfolioCard = ({ item, index, onSelect }) => {
   const isMobile = useIsMobile();
   const Icon = item.icon;
+  const glareRef = useRef(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), { damping: 20, stiffness: 220 });
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), { damping: 20, stiffness: 220 });
-  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
   const handleMouseMove = (e) => {
     if (isMobile) return;
@@ -20,13 +20,18 @@ const PortfolioCard = ({ item, index, onSelect }) => {
     const relY = (e.clientY - rect.top) / rect.height;
     mouseX.set(relX - 0.5);
     mouseY.set(relY - 0.5);
-    setGlare({ x: relX * 100, y: relY * 100, opacity: 0.22 });
+    if (glareRef.current) {
+      glareRef.current.style.opacity = '0.22';
+      glareRef.current.style.background = `radial-gradient(circle at ${relX * 100}% ${relY * 100}%, rgba(255,255,255,0.25) 0%, transparent 60%)`;
+    }
   };
 
   const handleMouseLeave = () => {
     mouseX.set(0);
     mouseY.set(0);
-    setGlare((prev) => ({ ...prev, opacity: 0 }));
+    if (glareRef.current) {
+      glareRef.current.style.opacity = '0';
+    }
   };
 
   return (
@@ -66,11 +71,8 @@ const PortfolioCard = ({ item, index, onSelect }) => {
       {/* Specular Ambient Glare */}
       {!isMobile && (
         <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-20"
-          style={{
-            opacity: glare.opacity,
-            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.2) 0%, transparent 60%)`,
-          }}
+          ref={glareRef}
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-20 opacity-0"
         />
       )}
 
@@ -128,4 +130,4 @@ const PortfolioCard = ({ item, index, onSelect }) => {
   );
 };
 
-export default PortfolioCard;
+export default memo(PortfolioCard);

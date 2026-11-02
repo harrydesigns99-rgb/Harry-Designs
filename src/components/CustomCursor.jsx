@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useSpring } from 'framer-motion';
 
 const CustomCursor = () => {
@@ -10,6 +10,9 @@ const CustomCursor = () => {
   const cursorX = useSpring(0, springConfig);
   const cursorY = useSpring(0, springConfig);
 
+  const isVisibleRef = useRef(false);
+  const hoveredTargetRef = useRef(null);
+
   useEffect(() => {
     // Only enable on desktop with fine pointer
     if (typeof window === 'undefined') return;
@@ -19,22 +22,32 @@ const CustomCursor = () => {
     const handleMouseMove = (e) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-      setIsVisible(true);
+
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
+        setIsVisible(true);
+      }
 
       // Check hovered elements for data-cursor attribute
-      const target = e.target.closest('[data-cursor]');
-      if (target) {
-        const text = target.getAttribute('data-cursor');
-        setCursorText(text || 'View ↗');
-        setIsHovered(true);
-      } else {
-        setCursorText('');
-        setIsHovered(false);
+      const target = e.target.closest ? e.target.closest('[data-cursor]') : null;
+      if (target !== hoveredTargetRef.current) {
+        hoveredTargetRef.current = target;
+        if (target) {
+          const text = target.getAttribute('data-cursor') || 'View ↗';
+          setCursorText(text);
+          setIsHovered(true);
+        } else {
+          setCursorText('');
+          setIsHovered(false);
+        }
       }
     };
 
     const handleMouseLeave = () => {
+      isVisibleRef.current = false;
+      hoveredTargetRef.current = null;
       setIsVisible(false);
+      setIsHovered(false);
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });

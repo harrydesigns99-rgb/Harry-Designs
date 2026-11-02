@@ -5,7 +5,6 @@ import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
 import PortfolioGrid from './PortfolioGrid';
 import PortfolioListView from './PortfolioListView';
-import AnimatedBackdrop from '@/components/AnimatedBackdrop';
 
 const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
   const [filter, setFilter] = useState('all');
