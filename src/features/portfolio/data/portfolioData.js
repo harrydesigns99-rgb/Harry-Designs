@@ -972,9 +972,9 @@ export const PORTFOLIO_ITEMS = BASE_PORTFOLIO_ITEMS.map((item) => ({
 
 export const FILTER_BUTTONS = [
   { label: 'All Work', value: 'all' },
+  { label: 'Brand Identity', value: 'branding' },
+  { label: 'Creative UI/UX', value: 'uiux' },
   { label: 'Packaging', value: 'packaging' },
-  { label: 'Branding', value: 'branding' },
-  { label: 'UI/UX', value: 'uiux' },
   { label: 'Brochures', value: 'brochures' },
   { label: 'Posters', value: 'posters' },
 ];

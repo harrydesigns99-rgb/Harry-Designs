@@ -28,13 +28,18 @@ const Navbar = () => {
         }`}
       >
         {/* Left: Brand Wordmark in Clash Display */}
-        <a
-          href="#introduction"
-          onClick={() => sound.playClick()}
-          className="font-display text-lg sm:text-xl font-bold tracking-tight text-[#1e1e20] hover:opacity-80 transition-opacity"
-        >
-          {brandName}
-        </a>
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <a
+            href="#introduction"
+            onClick={() => sound.playClick()}
+            className="font-display text-lg sm:text-xl font-bold tracking-tight text-[#1e1e20] hover:opacity-80 transition-opacity"
+          >
+            {brandName}
+          </a>
+          <span className="hidden xl:inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-widest text-[#1e1e20]/65 bg-black/[0.04] border border-black/[0.06] font-medium">
+            Brand &amp; UI/UX
+          </span>
+        </div>
 
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-8">

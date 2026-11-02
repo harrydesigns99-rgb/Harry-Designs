@@ -101,7 +101,7 @@ const AboutSection = () => {
                     {profile.specialization ? `${profile.specialization}.` : 'Design engineered to convert.'}
                   </h3>
                   <p className="font-sans text-xs sm:text-base text-white/80 leading-relaxed font-normal">
-                    Based in {profile.location ? profile.location.split('•')[0].trim() : 'Chennai'} and partnering with founders globally, {profile.name ? `${profile.name} (Harry Designs)` : 'Harry Designs'} creates distinctive brand identities, intuitive digital products, and standout packaging systems.
+                    Based in {profile.location ? profile.location.split('•')[0].trim() : 'Chennai'} and partnering with founders globally, {profile.name ? `${profile.name} (Harry Designs)` : 'Harry Designs'} practices equally across brand strategy (50%) and creative UI/UX product design (50%) — building distinctive visual identities and living digital interfaces.
                   </p>
                   <p className="font-sans text-xs sm:text-base text-white/80 leading-relaxed font-normal">
                     {profile.philosophy || 'From early concept to print-ready delivery, every design is built to be simple, memorable, and commercially effective.'}

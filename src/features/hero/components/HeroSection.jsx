@@ -5,12 +5,12 @@ import StudioShuttle from '@/components/StudioShuttle';
 import { useCMS } from '@/features/cms';
 
 const DISCIPLINE_TAGS = [
-  'Brand Identity Systems',
+  'Brand Strategy & Marks',
   'Creative UI/UX Design',
-  'Design Tokens & Systems',
   'Packaging Architecture',
+  'Design Tokens & Systems',
+  'Editorial & Print Direction',
   'Interactive Prototyping',
-  'Art Direction',
 ];
 
 const HeroSection = () => {
@@ -28,7 +28,7 @@ const HeroSection = () => {
       {
         id: 'architect',
         label: profile.name || 'Hariharan S',
-        tag: 'FOUNDER & LEAD',
+        tag: 'DUAL-DISCIPLINE LEAD',
         photo: profile.image || '/image/hariharan.jpg',
         badge: (profile.name || 'Hariharan S').toUpperCase(),
         subtitle: profile.role || 'Brand Identity & Creative UI/UX Designer',
@@ -37,20 +37,20 @@ const HeroSection = () => {
       {
         id: 'designs',
         label: `${projectsCount >= 12 ? '50+' : projectsCount * 4 + '+'} Designs Completed`,
-        tag: 'PRODUCTION RIGOR',
+        tag: '50% BRAND • 50% UI/UX',
         photo: cms.galleryImages?.[1] || cms.projects?.[0]?.image || '/image/Image Gallery/Artboard 2.webp',
         badge: `${projectsCount >= 12 ? '50+' : projectsCount * 4 + '+'} DESIGNS COMPLETED`,
-        subtitle: profile.specialization || 'Brand Systems & Digital Products',
-        meta: `${projectsCount}+ Systems • Press & Figma Supervised`,
+        subtitle: '25+ Brand Identities • 25+ UI/UX Products',
+        meta: 'Figma Systems & Press-Calibrated Packaging',
       },
       {
         id: 'clients',
         label: `${brandsCount}+ Client Brands`,
-        tag: 'COMMERCIAL REACH',
+        tag: 'DUAL REACH',
         photo: cms.galleryImages?.[0] || cms.projects?.[1]?.image || '/image/Image Gallery/Artboard 1.webp',
         badge: `${brandsCount}+ CLIENT BRANDS`,
         subtitle: brandsNames,
-        meta: 'Commercial Velocity & Product Experience',
+        meta: 'FinTech, SaaS, FMCG & Luxury Retail',
       },
     ];
   }, [cms.profile, projectsCount, brandsCount, brandsNames, cms.galleryImages, cms.projects]);
@@ -105,7 +105,7 @@ const HeroSection = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="font-sans text-xs sm:text-sm uppercase tracking-[0.2em] text-[#FC7A69] font-semibold mb-4 sm:mb-6 text-center"
       >
-        MY FORMULA FOR GREAT WORK
+        BRAND STRATEGY &amp; CREATIVE UI/UX • 50/50 DUAL DISCIPLINE
       </motion.p>
 
       {/* Main 3-line Headline with High-End Kinetic Text Reveal */}
@@ -135,7 +135,7 @@ const HeroSection = () => {
             </motion.span>
           </span>
 
-          {/* Line 3: A little room to disrupt screen & shelf. */}
+          {/* Line 3: A little room to disrupt both screen & shelf. */}
           <span className="block overflow-hidden py-0.5 sm:py-1">
             <motion.span
               initial={{ y: '110%', opacity: 0 }}
@@ -146,8 +146,8 @@ const HeroSection = () => {
               <span className="text-[#1e1e20]/75">
                 A little room to&nbsp;
               </span>
-              <span className="whitespace-nowrap font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#8b151b] via-[#FC7A69] to-[#8b151b] hover:from-[#FC7A69] hover:to-[#8b151b] transition-all duration-300">
-                disrupt screen &amp; shelf.
+              <span className="inline-block sm:whitespace-nowrap font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#8b151b] via-[#FC7A69] to-[#8b151b] hover:from-[#FC7A69] hover:to-[#8b151b] transition-all duration-300">
+                disrupt both screen &amp; shelf.
               </span>
             </motion.span>
           </span>

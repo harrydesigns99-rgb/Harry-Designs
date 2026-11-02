@@ -16,29 +16,29 @@ const StudioShuttle = ({ className = '' }) => {
       {
         id: 'designs',
         value: projectsCount >= 12 ? '50+' : `${projectsCount * 4}+`,
-        label: 'Brand & Digital Systems',
-        subtext: 'End-to-end commercial production',
+        label: 'Brand & UI/UX Systems',
+        subtext: '50% Brand Systems • 50% UI/UX Products',
         icon: '📦',
       },
       {
         id: 'clients',
         value: `${brandsCount}+`,
         label: 'Client Brands',
-        subtext: 'Tech, FMCG, & luxury leaders',
+        subtext: 'FinTech, SaaS, FMCG & Retail',
         icon: '✦',
       },
       {
         id: 'experience',
         value: profile.experience ? profile.experience.split(' ')[0] : '6+',
         label: 'Years Practice',
-        subtext: profile.specialization || 'Figma & print production rigor',
+        subtext: 'Figma Tokens & Press Production',
         icon: '⏳',
       },
       {
         id: 'velocity',
         value: '+40%',
-        label: 'Sales Velocity',
-        subtext: 'Average conversion & shelf lift',
+        label: 'Commercial Lift',
+        subtext: 'Verified shelf standout & digital conversion',
         icon: '📈',
       },
     ];
@@ -184,7 +184,7 @@ const StudioShuttle = ({ className = '' }) => {
                 <span className="font-display font-bold text-[#1e1e20]">
                   {projectsCount >= 12 ? '50+' : `${projectsCount * 4}+`}
                 </span>
-                <span className="text-[#1e1e20]/70 text-[11px] sm:text-xs font-medium">Designs</span>
+                <span className="text-[#1e1e20]/70 text-[11px] sm:text-xs font-medium">Brand &amp; UI/UX</span>
               </div>
 
               <span className="text-black/25 text-xs">•</span>
