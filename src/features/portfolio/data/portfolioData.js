@@ -10,6 +10,7 @@ import {
   FaShoppingBag,
 } from 'react-icons/fa';
 import { SiFigma } from 'react-icons/si';
+import { PORTFOLIO_STORIES } from './portfolioStories';
 
 /**
  * Portfolio data - verified client brands, real showcase items,
@@ -30,7 +31,7 @@ export const BRANDS = [
   { name: 'Quill', logo: '/image/Logos/quill main logo.webp' },
 ];
 
-export const PORTFOLIO_ITEMS = [
+const BASE_PORTFOLIO_ITEMS = [
   {
     id: 1,
     category: 'packaging',
@@ -962,6 +963,11 @@ export const PORTFOLIO_ITEMS = [
     },
   },
 ];
+
+export const PORTFOLIO_ITEMS = BASE_PORTFOLIO_ITEMS.map((item) => ({
+  ...item,
+  story: PORTFOLIO_STORIES[item.id] || null,
+}));
 
 export const FILTER_BUTTONS = [
   { label: 'All Work', value: 'all' },

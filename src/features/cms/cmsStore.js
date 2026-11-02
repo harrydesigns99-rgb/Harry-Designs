@@ -177,6 +177,7 @@ function getInitialProjects() {
         ...(defaultItem.process || {}),
         ...(item.process || {}),
       },
+      story: item.story || defaultItem.story,
       anatomy: item.anatomy || defaultItem.anatomy,
       systemSpecs: item.systemSpecs || defaultItem.systemSpecs,
     };

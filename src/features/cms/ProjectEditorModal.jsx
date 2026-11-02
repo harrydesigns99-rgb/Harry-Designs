@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { getProcessBehindProcess } from '@/features/portfolio/data/portfolioData';
+import { getStoryForProject } from '@/features/portfolio/data/portfolioStories';
+import { HighlightedText } from '@/components/ProjectStorySection';
 
 const CATEGORIES = [
   { value: 'packaging', label: 'Packaging' },
@@ -47,13 +49,80 @@ const DEFAULT_STAGES = [
   { step: '05', phase: 'Production & Market Impact', title: 'Pre-Press Micro-Registration & Retail Launch', narrative: 'Supervising high-speed press runs, color density calibration, and commercial deployment.', decision: 'Live press tuning of ink densities under grocery lighting.', artifact: '100% Press-Ready Masters' },
 ];
 
+const DEFAULT_STORY_CHAPTERS = [
+  {
+    id: 'problem',
+    step: '01',
+    phase: 'Problem',
+    headline: 'Too many commands. Not enough clarity.',
+    narrative: [
+      'The existing packaging and visual presence suffered from cluttered brand hierarchy, dated typography, and low distance standout on retail shelves.',
+      'My scope was the architectural brand layer: visual hierarchy, bespoke dieline geometry, and pre-press micro-registration, not generic marketing decoration.',
+    ],
+    scope: 'Scope: Visual hierarchy, dieline engineering, print oversight.',
+    quotes: [
+      {
+        text: '“There are <mark>too many places to look for commands</mark>, that makes me feel <mark>overwhelmed and inadequate</mark> finding what I need.”',
+        author: 'Shopper Audit',
+      },
+      {
+        text: '“I have trouble finding things because the <mark>toolbar is cluttered</mark>...some elements are bigger than the rest.”',
+        author: 'Usability Audit',
+      },
+    ],
+  },
+  {
+    id: 'insight',
+    step: '02',
+    phase: 'Insight',
+    headline: 'Purity speaks softly. Calm creates standout.',
+    narrative: [
+      'Shoppers in modern retail aisles make purchasing decisions in 2.3 seconds. When every competitor screams with aggressive claim badges, deliberate restraint becomes the loudest signal of purity.',
+      'We structured a golden-ratio dieline isolating mandatory legal compliance into an intuitive micro-grid, leaving the front canvas clear for bespoke vector craft.',
+    ],
+    scope: 'Key finding: Consumers gravitate towards single-glance ingredient authenticity over dense marketing badges.',
+    quotes: [
+      {
+        text: '“When everything on the shelf is loud, <mark>deliberate restraint becomes the loudest signal</mark> of authenticity.”',
+        author: 'Design Strategy Synthesis',
+      },
+      {
+        text: '“Shoppers reached first for bottles with <mark>clear single-glance ingredient origin</mark> over brands with dense legalistic text blocks.”',
+        author: 'Shopper Eye-Tracking Benchmark',
+      },
+    ],
+  },
+  {
+    id: 'solution',
+    step: '03',
+    phase: 'Solution',
+    headline: 'Architectural dielines. Measurable commercial velocity.',
+    narrative: [
+      'Engineered an 8-color CI-Flexo label system on 60µ Metallized BoPP with selective high-gloss UV varnish. The golden ratio dieline isolates mandatory nutritional tables to a micro-grid on the back.',
+      'The repositioned identity achieved instant grocery distribution across 350+ stores and delivered a verified 40% sales increase in the first 90 days.',
+    ],
+    scope: 'Outcome: 350+ stores deployed, verified 40% retail sell-through lift within 90 days.',
+    quotes: [
+      {
+        text: '“The new identity <mark>commands the aisle from 10 feet away</mark>. Store managers moved it to eye-level endcaps within two weeks.”',
+        author: 'Head of Modern Trade Retail',
+      },
+      {
+        text: '“The tactile contrast between <mark>matte substrate and selective gloss linework</mark> elevated our perceived price point without changing unit costs.”',
+        author: 'Managing Director',
+      },
+    ],
+  },
+];
+
 const ProjectEditorModal = ({ project, onSave, onClose }) => {
   const isEditing = Boolean(project?.id);
   const fileInputRef = useRef(null);
   const conceptFileInputRef = useRef(null);
 
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'making-process' | 'studio-process' | 'specs'
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'story' | 'making-process' | 'studio-process' | 'specs'
   const [activeStageEditIndex, setActiveStageEditIndex] = useState(0);
+  const [activeStoryChapterIndex, setActiveStoryChapterIndex] = useState(0);
 
   // Initialize form state
   const initialStages =
@@ -63,6 +132,14 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
 
   const initialProcessBehindProcess =
     project?.processBehindProcess || getProcessBehindProcess(project);
+
+  const initialStory =
+    project?.story ||
+    (project?.id ? getStoryForProject(project.id) : null) || {
+      accentColor: '#f5a623',
+      highlightColor: '#fef08a',
+      chapters: DEFAULT_STORY_CHAPTERS,
+    };
 
   const [formData, setFormData] = useState({
     title: project?.title || '',
@@ -109,6 +186,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
       grid: '12-Column Baseline Modular Grid (4pt / 8pt Vertical Rhythm)',
       standard: 'Design System & Master Brand Architecture Standard',
     },
+    story: initialStory,
   });
 
   const [imageTab, setImageTab] = useState('upload');
@@ -181,6 +259,68 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
     });
   };
 
+  // Helper to update story root fields (accentColor, highlightColor)
+  const updateStoryField = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      story: {
+        ...(prev.story || initialStory),
+        [field]: value,
+      },
+    }));
+  };
+
+  // Helper to update a story chapter (headline, narrative, scope)
+  const updateStoryChapter = (chapterIndex, field, value) => {
+    setFormData((prev) => {
+      const currentStory = prev.story || initialStory;
+      const currentChapters = currentStory.chapters || DEFAULT_STORY_CHAPTERS;
+      const updatedChapters = [...currentChapters];
+      updatedChapters[chapterIndex] = {
+        ...updatedChapters[chapterIndex],
+        [field]: value,
+      };
+      return {
+        ...prev,
+        story: {
+          ...currentStory,
+          chapters: updatedChapters,
+        },
+      };
+    });
+  };
+
+  // Helper to update a quote in a story chapter
+  const updateStoryQuote = (chapterIndex, quoteIndex, field, value) => {
+    setFormData((prev) => {
+      const currentStory = prev.story || initialStory;
+      const currentChapters = currentStory.chapters || DEFAULT_STORY_CHAPTERS;
+      const updatedChapters = [...currentChapters];
+      const targetChapter = updatedChapters[chapterIndex];
+      const updatedQuotes = [...(targetChapter.quotes || [])];
+      const existingQuote = updatedQuotes[quoteIndex] || {};
+      const quoteObj = typeof existingQuote === 'string' ? { text: existingQuote } : existingQuote;
+
+      updatedQuotes[quoteIndex] = {
+        ...quoteObj,
+        [field]: value,
+      };
+
+      updatedChapters[chapterIndex] = {
+        ...targetChapter,
+        quotes: updatedQuotes,
+      };
+
+      return {
+        ...prev,
+        story: {
+          ...currentStory,
+          chapters: updatedChapters,
+        },
+      };
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.title || !formData.client) {
@@ -233,6 +373,27 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
             }`}
           >
             ✦ Overview &amp; Artwork
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('story')}
+            className={`px-4 sm:px-5 py-2 rounded-full uppercase tracking-wider transition-all cursor-pointer font-medium flex items-center gap-1.5 ${
+              activeTab === 'story'
+                ? 'bg-[#1e1e20] text-[#f5f4f0] shadow-md scale-102 font-semibold'
+                : 'bg-white/80 hover:bg-white border border-black/[0.08] text-[#1e1e20]/75 shadow-2xs'
+            }`}
+          >
+            <span>• The Story</span>
+            <span
+              className="text-[9px] px-1.5 py-0.5 rounded-full font-bold"
+              style={{
+                backgroundColor: formData.story?.accentColor || '#f5a623',
+                color: '#1e1e20',
+              }}
+            >
+              3 CHAPTERS
+            </span>
           </button>
 
           <button
@@ -520,8 +681,377 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           )}
 
           {/* ========================================================= */}
-          {/* TAB 2: DESIGN PROCESS */}
+          {/* TAB: THE STORY (EDITORIAL CHAPTERS & QUOTE HIGHLIGHTS) */}
           {/* ========================================================= */}
+          {activeTab === 'story' && (() => {
+            const currentStory = formData.story || initialStory;
+            const currentChapters = currentStory.chapters || DEFAULT_STORY_CHAPTERS;
+            const currentChapter = currentChapters[activeStoryChapterIndex] || currentChapters[0];
+            const quotes = currentChapter?.quotes || [];
+            const quote1 = quotes[0] || { text: '', author: '' };
+            const quote2 = quotes[1] || { text: '', author: '' };
+
+            const colorPresets = [
+              { label: 'Gokul Amber', hex: '#f5a623' },
+              { label: 'Sendra Gold', hex: '#eab308' },
+              { label: 'Diyaa Lavender', hex: '#c084fc' },
+              { label: 'CSIR Blue', hex: '#3b82f6' },
+              { label: 'Thomas Cinnamon', hex: '#f97316' },
+              { label: 'Mo Emerald', hex: '#10b981' },
+              { label: 'Anjarai Crimson', hex: '#ef4444' },
+              { label: 'Edwin Cyan', hex: '#06b6d4' },
+            ];
+
+            const highlightPresets = [
+              { label: 'Warm Yellow', hex: '#fef08a' },
+              { label: 'Soft Amber', hex: '#fed7aa' },
+              { label: 'Soft Lavender', hex: '#f3e8ff' },
+              { label: 'Soft Blue', hex: '#dbeafe' },
+              { label: 'Soft Mint', hex: '#d1fae5' },
+              { label: 'Soft Rose', hex: '#fee2e2' },
+            ];
+
+            return (
+              <div className="space-y-6">
+                {/* Header & Style Configuration Card */}
+                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#f5a623]" />
+                      <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-semibold text-[#1e1e20]">
+                        • THE STORY ARCHITECTURE
+                      </span>
+                    </div>
+                    <span className="text-xs font-mono text-[#1e1e20]/60">
+                      Matches Shriya P editorial case study layout
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-[#1e1e20]/75 leading-relaxed">
+                    Configure the narrative chapters (01 Problem, 02 Insight, 03 Solution).
+                    To add an authentic highlighter pen mark to quotes or narrative text, wrap keywords with{' '}
+                    <code className="bg-black/5 px-1 py-0.5 rounded text-black font-semibold">&lt;mark&gt;text&lt;/mark&gt;</code>{' '}
+                    or <code className="bg-black/5 px-1 py-0.5 rounded text-black font-semibold">==text==</code>.
+                  </p>
+
+                  {/* Accent & Highlight Colors */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Active Chapter Pill Accent Color
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="color"
+                          value={currentStory.accentColor || '#f5a623'}
+                          onChange={(e) => updateStoryField('accentColor', e.target.value)}
+                          className="w-9 h-9 rounded-xl border border-black/15 cursor-pointer bg-white p-0.5"
+                        />
+                        <input
+                          type="text"
+                          value={currentStory.accentColor || '#f5a623'}
+                          onChange={(e) => updateStoryField('accentColor', e.target.value)}
+                          className="w-28 px-3 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-mono"
+                        />
+                        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+                          {colorPresets.map((preset) => (
+                            <button
+                              key={preset.hex}
+                              type="button"
+                              title={preset.label}
+                              onClick={() => updateStoryField('accentColor', preset.hex)}
+                              className="w-6 h-6 rounded-full border border-black/10 transition-transform hover:scale-110 cursor-pointer flex-shrink-0"
+                              style={{ backgroundColor: preset.hex }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Text Highlighter Mark Color
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="color"
+                          value={currentStory.highlightColor || '#fef08a'}
+                          onChange={(e) => updateStoryField('highlightColor', e.target.value)}
+                          className="w-9 h-9 rounded-xl border border-black/15 cursor-pointer bg-white p-0.5"
+                        />
+                        <input
+                          type="text"
+                          value={currentStory.highlightColor || '#fef08a'}
+                          onChange={(e) => updateStoryField('highlightColor', e.target.value)}
+                          className="w-28 px-3 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-mono"
+                        />
+                        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+                          {highlightPresets.map((preset) => (
+                            <button
+                              key={preset.hex}
+                              type="button"
+                              title={preset.label}
+                              onClick={() => updateStoryField('highlightColor', preset.hex)}
+                              className="w-6 h-6 rounded-full border border-black/10 transition-transform hover:scale-110 cursor-pointer flex-shrink-0"
+                              style={{ backgroundColor: preset.hex }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chapter Selectors */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                  {currentChapters.map((chap, idx) => {
+                    const isSelected = activeStoryChapterIndex === idx;
+                    return (
+                      <button
+                        key={chap.id || idx}
+                        type="button"
+                        onClick={() => setActiveStoryChapterIndex(idx)}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl transition-all cursor-pointer font-sans text-xs whitespace-nowrap ${
+                          isSelected
+                            ? 'font-bold shadow-sm'
+                            : 'bg-white/80 hover:bg-white text-[#1e1e20]/70 border border-black/[0.08]'
+                        }`}
+                        style={
+                          isSelected
+                            ? {
+                                backgroundColor: currentStory.accentColor || '#f5a623',
+                                color: '#1e1e20',
+                              }
+                            : {}
+                        }
+                      >
+                        <span className="font-mono text-[11px] opacity-75">{chap.step || `0${idx + 1}`}</span>
+                        <span>{chap.phase || `Chapter ${idx + 1}`}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Chapter Details Editor */}
+                <div className="p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-5">
+                  <div className="flex items-center justify-between border-b border-black/[0.06] pb-3">
+                    <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/60">
+                      Editing Chapter {currentChapter?.step} / {currentChapter?.phase}
+                    </span>
+                    <span className="text-xs font-sans text-emerald-700 font-medium">
+                      ✓ Auto-saved in draft
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div className="sm:col-span-1">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Step Number
+                      </label>
+                      <input
+                        type="text"
+                        value={currentChapter?.step || ''}
+                        onChange={(e) => updateStoryChapter(activeStoryChapterIndex, 'step', e.target.value)}
+                        className="w-full px-4 py-2 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-xs font-mono focus:border-black outline-none"
+                      />
+                    </div>
+                    <div className="sm:col-span-3">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Phase Title
+                      </label>
+                      <input
+                        type="text"
+                        value={currentChapter?.phase || ''}
+                        onChange={(e) => updateStoryChapter(activeStoryChapterIndex, 'phase', e.target.value)}
+                        className="w-full px-4 py-2 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-xs font-sans font-semibold focus:border-black outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                      Grand Display Headline (Large bold display type)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Too many commands. Not enough clarity."
+                      value={currentChapter?.headline || ''}
+                      onChange={(e) => updateStoryChapter(activeStoryChapterIndex, 'headline', e.target.value)}
+                      className="w-full px-4 py-3 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-base font-display font-bold text-[#1e1e20] focus:border-black outline-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Lead Narrative (Paragraph 1)
+                      </label>
+                      <textarea
+                        rows="3"
+                        placeholder="Context or state of the category before intervention..."
+                        value={Array.isArray(currentChapter?.narrative) ? currentChapter.narrative[0] || '' : currentChapter?.narrative || ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const sec = Array.isArray(currentChapter?.narrative) ? currentChapter.narrative[1] || '' : '';
+                          updateStoryChapter(activeStoryChapterIndex, 'narrative', [val, sec]);
+                        }}
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-xs leading-relaxed font-sans focus:border-black outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                        Secondary Context (Paragraph 2)
+                      </label>
+                      <textarea
+                        rows="3"
+                        placeholder="Specific architectural scope and deliberate decisions..."
+                        value={Array.isArray(currentChapter?.narrative) ? currentChapter.narrative[1] || '' : ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const first = Array.isArray(currentChapter?.narrative) ? currentChapter.narrative[0] || '' : currentChapter?.narrative || '';
+                          updateStoryChapter(activeStoryChapterIndex, 'narrative', [first, val]);
+                        }}
+                        className="w-full px-4 py-2.5 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-xs leading-relaxed font-sans focus:border-black outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1.5 font-medium">
+                      Designer Scope / Key Takeaway Note
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Scope: Visual hierarchy, dieline engineering, print oversight."
+                      value={currentChapter?.scope || ''}
+                      onChange={(e) => updateStoryChapter(activeStoryChapterIndex, 'scope', e.target.value)}
+                      className="w-full px-4 py-2 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-xs font-sans italic text-[#1e1e20]/80 focus:border-black outline-none"
+                    />
+                  </div>
+
+                  {/* Research & Quotes Cards */}
+                  <div className="space-y-4 pt-2 border-t border-black/[0.06]">
+                    <span className="block font-mono text-xs uppercase tracking-wider text-[#1e1e20]/70 font-semibold">
+                      Evidence Cards &amp; User Research Quotes (With Highlighter Pen)
+                    </span>
+
+                    {/* Quote 1 */}
+                    <div className="p-4 bg-[#f5f4f0]/60 rounded-2xl border border-black/10 space-y-2.5">
+                      <div className="flex items-center justify-between text-xs font-mono text-[#1e1e20]/60">
+                        <span>Card #01</span>
+                        <span>Wrap phrases in &lt;mark&gt;highlight&lt;/mark&gt;</span>
+                      </div>
+                      <textarea
+                        rows="2"
+                        placeholder="e.g. “There are <mark>too many places</mark> to look for commands...”"
+                        value={quote1.text || ''}
+                        onChange={(e) => updateStoryQuote(activeStoryChapterIndex, 0, 'text', e.target.value)}
+                        className="w-full px-3.5 py-2 bg-white rounded-xl border border-black/15 text-xs leading-relaxed font-sans focus:border-black outline-none"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Attribution / Source (e.g. Shopper Audit, Chennai Hypermarket)"
+                        value={quote1.author || ''}
+                        onChange={(e) => updateStoryQuote(activeStoryChapterIndex, 0, 'author', e.target.value)}
+                        className="w-full px-3.5 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-mono focus:border-black outline-none"
+                      />
+                    </div>
+
+                    {/* Quote 2 */}
+                    <div className="p-4 bg-[#f5f4f0]/60 rounded-2xl border border-black/10 space-y-2.5">
+                      <div className="flex items-center justify-between text-xs font-mono text-[#1e1e20]/60">
+                        <span>Card #02</span>
+                        <span>Wrap phrases in &lt;mark&gt;highlight&lt;/mark&gt;</span>
+                      </div>
+                      <textarea
+                        rows="2"
+                        placeholder="e.g. “I have trouble finding things because the <mark>toolbar is cluttered</mark>...”"
+                        value={quote2.text || ''}
+                        onChange={(e) => updateStoryQuote(activeStoryChapterIndex, 1, 'text', e.target.value)}
+                        className="w-full px-3.5 py-2 bg-white rounded-xl border border-black/15 text-xs leading-relaxed font-sans focus:border-black outline-none"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Attribution / Source (e.g. Category Strategy Diagnostic)"
+                        value={quote2.author || ''}
+                        onChange={(e) => updateStoryQuote(activeStoryChapterIndex, 1, 'author', e.target.value)}
+                        className="w-full px-3.5 py-1.5 bg-white rounded-xl border border-black/15 text-xs font-mono focus:border-black outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Real-time Live Preview Card */}
+                <div className="p-6 bg-[#f5f4f0] rounded-3xl border border-black/[0.08] shadow-sm space-y-4">
+                  <div className="flex items-center gap-2 border-b border-black/[0.06] pb-2 font-mono text-xs uppercase tracking-wider text-[#1e1e20]/60">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span>Real-time Live Editorial Preview</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start pt-2">
+                    <div className="md:col-span-4 space-y-2">
+                      <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[#1e1e20]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#1e1e20]" />
+                        <span>THE STORY</span>
+                      </div>
+                      <div
+                        className="px-4 py-2.5 rounded-xl font-sans text-xs font-bold inline-flex items-center gap-2 shadow-xs"
+                        style={{
+                          backgroundColor: currentStory.accentColor || '#f5a623',
+                          color: '#1e1e20',
+                        }}
+                      >
+                        <span className="font-mono text-[11px] opacity-75">{currentChapter?.step}</span>
+                        <span>{currentChapter?.phase}</span>
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-8 space-y-4">
+                      <div className="font-mono text-xs uppercase tracking-widest text-[#1e1e20]/50">
+                        {currentChapter?.step} / {currentChapter?.phase?.toUpperCase()}
+                      </div>
+                      <h3 className="font-display text-xl sm:text-2xl font-bold text-[#1e1e20] leading-tight">
+                        {currentChapter?.headline || 'Headline will appear here'}
+                      </h3>
+                      <div className="text-xs sm:text-sm text-[#1e1e20]/80 leading-relaxed space-y-2 font-sans">
+                        {Array.isArray(currentChapter?.narrative) ? (
+                          currentChapter.narrative.map((p, idx) => (
+                            <p key={idx}>
+                              <HighlightedText text={p} highlightBg={currentStory.highlightColor || '#fef08a'} />
+                            </p>
+                          ))
+                        ) : (
+                          <p>
+                            <HighlightedText text={currentChapter?.narrative} highlightBg={currentStory.highlightColor || '#fef08a'} />
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Quotes Preview */}
+                      <div className="space-y-3 pt-2">
+                        {[quote1, quote2].filter((q) => q && q.text).map((q, idx) => (
+                          <div
+                            key={idx}
+                            className="bg-white rounded-2xl p-4 border border-black/[0.08] shadow-xs text-xs sm:text-sm leading-relaxed"
+                          >
+                            <p className="font-sans text-[#1e1e20]">
+                              <HighlightedText text={q.text} highlightBg={currentStory.highlightColor || '#fef08a'} />
+                            </p>
+                            {q.author && (
+                              <span className="block mt-2 font-mono text-[10px] text-[#1e1e20]/50 uppercase tracking-wider">
+                                — {q.author}
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
           {activeTab === 'making-process' && (
             <div className="space-y-6">
               {/* Process Behind Design Summary Paragraph */}

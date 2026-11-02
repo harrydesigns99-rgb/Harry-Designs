@@ -4,7 +4,7 @@ import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import PackagingAnatomy from '@/components/PackagingAnatomy';
 import SystemSpecs from '@/components/SystemSpecs';
-import DesignProcessNarrative from '@/components/DesignProcessNarrative';
+import ProjectStorySection from '@/components/ProjectStorySection';
 import WordReveal from '@/components/WordReveal';
 import { sound } from '@/utils/audio';
 
@@ -93,7 +93,7 @@ const CaseStudyScreen = ({
   useEffect(() => {
     const sectionIds = [
       'screen-hero',
-      'screen-process',
+      'screen-story',
       'screen-specs',
       'screen-impact',
     ];
@@ -171,7 +171,7 @@ const CaseStudyScreen = ({
             <div className="hidden lg:flex items-center gap-1 p-0.5 rounded-full bg-white/70 border border-black/[0.06] text-xs font-sans">
               {[
                 { id: 'screen-hero', label: 'Overview' },
-                { id: 'screen-process', label: 'Process' },
+                { id: 'screen-story', label: 'The Story' },
                 { id: 'screen-specs', label: currentProject.category === 'packaging' ? 'Print Specs' : 'System Specs' },
                 { id: 'screen-impact', label: 'Impact' },
               ].map((tab) => (
@@ -397,16 +397,11 @@ const CaseStudyScreen = ({
           </div>
         </section>
 
-        {/* -------------------- SECTION 02: THE 5-PHASE MAKING PROCESS -------------------- */}
-        <section id="screen-process" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
-          <DesignProcessNarrative
-            process={currentProject.process}
-            client={currentProject.client}
-            title={currentProject.title}
-            category={currentProject.category}
-            description={currentProject.description}
-            approach={currentProject.approach}
-            brief={currentProject.brief}
+        {/* -------------------- SECTION 02: THE STORY (CHAPTER NARRATIVE) -------------------- */}
+        <section id="screen-story" className="scroll-mt-24 pt-10 border-t border-black/[0.08]">
+          <ProjectStorySection
+            project={currentProject}
+            story={currentProject.story}
           />
         </section>
 
