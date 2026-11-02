@@ -25,7 +25,8 @@ export default {
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
-        serif: ['Instrument Serif', 'Georgia', 'serif'],
+        serif: ['Newsreader', 'Lora', 'Georgia', 'serif'],
+        editorial: ['Newsreader', 'Lora', 'Georgia', 'serif'],
         mono: ['Geist Mono', 'ui-monospace', 'monospace'],
       },
     },

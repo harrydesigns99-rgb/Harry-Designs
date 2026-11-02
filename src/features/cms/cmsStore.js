@@ -25,6 +25,11 @@ if (typeof window !== 'undefined') {
 
 export const DEFAULT_PROFILE = {
   name: 'Hariharan S',
+  heroGreeting: "Hello, I'm Hariharan",
+  heroHeadline: 'A product & brand designer who loves shaping complex challenges into intuitive solutions',
+  heroSubline: 'Designing customer & fulfillment experiences that power delivery in minutes for',
+  heroBadgeText: 'Amazon',
+  heroBadgeIcon: '🟧',
   role: 'Brand Identity Architect & Creative UI/UX Designer',
   image: '/image/hariharan.jpg',
   experience: '6+ Years Practice',

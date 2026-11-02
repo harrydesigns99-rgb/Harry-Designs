@@ -1422,6 +1422,132 @@ const AdminDashboard = ({ onNavigateHome }) => {
 
                 {/* Right Column: Founder Metadata Inputs */}
                 <div className="lg:col-span-7 space-y-4">
+                  {/* ==================== HERO SECTION EDITORIAL TYPOGRAPHY ==================== */}
+                  <div className="p-5 bg-[#f5f4f0]/70 rounded-2xl border border-black/10 space-y-4">
+                    <div className="flex items-center justify-between border-b border-black/[0.06] pb-2">
+                      <span className="text-xs font-mono uppercase tracking-wider text-[#8b151b] font-bold">
+                        ✦ Hero Editorial Section (Live Front Page)
+                      </span>
+                      <span className="text-[10px] font-mono text-[#1e1e20]/50">
+                        Matches Neel Design Minimalist Layout
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
+                          Hero Greeting (Above Headline)
+                        </label>
+                        <input
+                          type="text"
+                          value={profileForm.heroGreeting || ''}
+                          onChange={(e) => setProfileForm({ ...profileForm, heroGreeting: e.target.value })}
+                          placeholder="Hello, I'm Hariharan"
+                          className="w-full px-3.5 py-2 bg-white rounded-xl border border-black/15 text-xs font-serif outline-none focus:border-[#8b151b]"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
+                            Pill Icon
+                          </label>
+                          <input
+                            type="text"
+                            value={profileForm.heroBadgeIcon || '🟧'}
+                            onChange={(e) => setProfileForm({ ...profileForm, heroBadgeIcon: e.target.value })}
+                            placeholder="🟧"
+                            className="w-full px-3 py-2 bg-white rounded-xl border border-black/15 text-xs font-mono text-center outline-none focus:border-[#8b151b]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
+                            Pill Label
+                          </label>
+                          <input
+                            type="text"
+                            value={profileForm.heroBadgeText || 'Amazon'}
+                            onChange={(e) => setProfileForm({ ...profileForm, heroBadgeText: e.target.value })}
+                            placeholder="Amazon"
+                            className="w-full px-3 py-2 bg-white rounded-xl border border-black/15 text-xs font-sans outline-none focus:border-[#8b151b]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 font-medium">
+                          Hero Main Large Headline (Serif)
+                        </label>
+                        <span className="text-[10px] font-mono text-[#1e1e20]/50">3-line centered wrap</span>
+                      </div>
+                      <textarea
+                        rows={3}
+                        value={profileForm.heroHeadline || ''}
+                        onChange={(e) => setProfileForm({ ...profileForm, heroHeadline: e.target.value })}
+                        placeholder="A product & brand designer who loves shaping complex challenges into intuitive solutions"
+                        className="w-full px-3.5 py-2 bg-white rounded-xl border border-black/15 text-xs font-serif leading-relaxed outline-none focus:border-[#8b151b] resize-none"
+                      />
+                      {/* Presets */}
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
+                        <span className="text-[10px] font-mono text-[#1e1e20]/50">Quick Presets:</span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setProfileForm({
+                              ...profileForm,
+                              heroHeadline:
+                                'A product & brand designer who loves shaping complex challenges into intuitive solutions',
+                            })
+                          }
+                          className="px-2 py-0.5 rounded-full text-[10px] bg-white border border-black/10 hover:border-black/30 font-sans cursor-pointer"
+                        >
+                          50/50 Dual Discipline
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setProfileForm({
+                              ...profileForm,
+                              heroHeadline:
+                                'A product designer who loves shaping complex challenges into intuitive solutions',
+                            })
+                          }
+                          className="px-2 py-0.5 rounded-full text-[10px] bg-white border border-black/10 hover:border-black/30 font-sans cursor-pointer"
+                        >
+                          Screenshot Exact
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setProfileForm({
+                              ...profileForm,
+                              heroHeadline:
+                                'A sharp brand strategy. A living digital canvas. A little room to disrupt both screen & shelf.',
+                            })
+                          }
+                          className="px-2 py-0.5 rounded-full text-[10px] bg-white border border-black/10 hover:border-black/30 font-sans cursor-pointer"
+                        >
+                          Option A
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
+                        Hero Subline Narrative
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.heroSubline || ''}
+                        onChange={(e) => setProfileForm({ ...profileForm, heroSubline: e.target.value })}
+                        placeholder="Designing customer & fulfillment experiences that power delivery in minutes for"
+                        className="w-full px-3.5 py-2 bg-white rounded-xl border border-black/15 text-xs font-sans outline-none focus:border-[#8b151b]"
+                      />
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[11px] font-mono uppercase tracking-wider text-[#1e1e20]/70 mb-1 font-medium">
