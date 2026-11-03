@@ -13,9 +13,9 @@ const HeroSection = () => {
     'A product & brand designer who loves shaping complex challenges into intuitive solutions';
   const heroSubline =
     profile.heroSubline ||
-    'Designing customer & fulfillment experiences that power delivery in minutes for';
-  const heroBadgeIcon = profile.heroBadgeIcon || '🟧';
-  const heroBadgeText = profile.heroBadgeText || 'Amazon';
+    'Visual Designer at TCS • Crafting intuitive digital experiences & strategic brand identities';
+  const heroBadgeIcon = profile.heroBadgeIcon || '';
+  const heroBadgeText = profile.heroBadgeText || '';
 
   const handleScrollCue = () => {
     sound.playClick();
@@ -86,7 +86,7 @@ const HeroSection = () => {
           {heroHeadline}
         </motion.h1>
 
-        {/* 3. Subline with Brand Pill Badge: "Designing customer & fulfillment experiences that power delivery in minutes for 🟧 Amazon" */}
+        {/* 3. Subline with TCS Role */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,13 +95,16 @@ const HeroSection = () => {
         >
           <span>{heroSubline}</span>
 
-          {/* Inline Brand Badge */}
-          <span className="inline-flex items-center gap-1.5 align-middle px-2.5 py-0.5 rounded-lg bg-white/95 border border-black/10 shadow-2xs text-[#18181b] font-medium text-xs sm:text-sm">
-            <span className="w-4 h-4 rounded bg-[#ff9900] flex items-center justify-center text-white text-[10px] font-bold shadow-2xs">
-              {heroBadgeIcon}
+          {heroBadgeText ? (
+            <span className="inline-flex items-center gap-1.5 align-middle px-2.5 py-0.5 rounded-lg bg-white/95 border border-black/10 shadow-2xs text-[#18181b] font-medium text-xs sm:text-sm">
+              {heroBadgeIcon && (
+                <span className="w-4 h-4 rounded bg-[#1e1e20] flex items-center justify-center text-white text-[10px] font-bold shadow-2xs">
+                  {heroBadgeIcon}
+                </span>
+              )}
+              <span>{heroBadgeText}</span>
             </span>
-            <span>{heroBadgeText}</span>
-          </span>
+          ) : null}
         </motion.div>
       </div>
 

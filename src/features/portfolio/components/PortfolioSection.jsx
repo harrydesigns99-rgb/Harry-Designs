@@ -4,7 +4,6 @@ import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
 import WordReveal from '@/components/WordReveal';
-import UIArchiveFolder from '@/components/UIArchiveFolder';
 import BrandsCarousel from './BrandsCarousel';
 
 const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
@@ -176,11 +175,6 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
 
         {/* Live Client Brands Marquee */}
         <BrandsCarousel />
-
-        {/* Tactile Frosted Glass UI Archive Folder matching shriyap.com */}
-        <div className="mt-14 sm:mt-20">
-          <UIArchiveFolder onSelectProject={onSelectProject} />
-        </div>
 
         {/* Bottom Full Archive Button */}
         <div className="mt-8 sm:mt-12 flex justify-center px-4">
