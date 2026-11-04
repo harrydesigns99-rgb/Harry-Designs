@@ -7,6 +7,7 @@ import { PortfolioSection } from '@/features/portfolio';
 import { ContactSection } from '@/features/contact';
 import TestimonialsSection from '@/features/testimonials/TestimonialsSection';
 import KineticTicker from '@/components/KineticTicker';
+import DualCraftBento from '@/components/DualCraftBento';
 import CustomCursor from '@/components/CustomCursor';
 import WandPreloader from '@/components/WandPreloader';
 import LivingBackground from '@/components/LivingBackground';
@@ -119,6 +120,7 @@ function App() {
             <div className="relative z-10 bg-transparent">
               <Navbar />
               <HeroSection />
+              <DualCraftBento />
               <AboutSection />
               <PortfolioSection
                 onSelectProject={(project) => navigateToProject(project.id)}

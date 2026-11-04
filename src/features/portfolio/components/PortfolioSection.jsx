@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import { useCMS } from '@/features/cms';
@@ -15,18 +15,30 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
 
   const [activeCategory, setActiveCategory] = useState('all');
 
+  // Listen for category switch triggers (e.g. from DualCraftBento or Navbar)
+  useEffect(() => {
+    const handleSetCategory = (e) => {
+      if (e.detail?.category) {
+        setActiveCategory(e.detail.category);
+      }
+    };
+    window.addEventListener('harry_portfolio_set_category', handleSetCategory);
+    return () => window.removeEventListener('harry_portfolio_set_category', handleSetCategory);
+  }, []);
+
   const categoryTabs = useMemo(() => {
     const categoryMap = {
       all: 'All Projects',
+      uiux: '✦ Interface Atelier',
       branding: 'Brand Identity',
-      uiux: 'Creative UI/UX',
       packaging: 'Packaging',
       brochures: 'Brochures',
       posters: 'Posters',
     };
     const availableCategories = new Set(allProjects.map((p) => p.category).filter(Boolean));
     const tabs = [{ id: 'all', label: 'All Projects' }];
-    ['branding', 'uiux', 'packaging', 'brochures', 'posters'].forEach((cat) => {
+    // Prioritize Interface Atelier right next to All Projects for 50/50 balance
+    ['uiux', 'branding', 'packaging', 'brochures', 'posters'].forEach((cat) => {
       if (availableCategories.has(cat)) {
         tabs.push({ id: cat, label: categoryMap[cat] || cat });
       }
@@ -35,6 +47,11 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   }, [allProjects]);
 
   const filteredProjects = useMemo(() => {
+    if (activeCategory === 'uiux') {
+      return allProjects.filter(
+        (p) => p.category === 'uiux' || p.category === 'digital' || p.category === 'system'
+      );
+    }
     if (activeCategory !== 'all') {
       return allProjects.filter((p) => p.category === activeCategory);
     }
@@ -91,6 +108,30 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
             })}
           </div>
         </div>
+
+        {/* Editorial Focus Card when Interface Atelier (UI/UX) is active */}
+        {activeCategory === 'uiux' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 sm:mb-10 p-5 rounded-3xl bg-indigo-50/70 border border-indigo-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          >
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse flex-shrink-0" />
+              <div>
+                <span className="font-mono text-xs uppercase tracking-wider font-bold text-indigo-950 block">
+                  ✦ THE INTERFACE ATELIER — DIGITAL PRODUCTS &amp; SOFTWARE SYSTEMS
+                </span>
+                <p className="text-xs text-indigo-900/70 mt-0.5 font-sans">
+                  Human-centered mobile apps, multi-brand design tokens, complex workflows, and living digital experiences.
+                </p>
+              </div>
+            </div>
+            <span className="font-mono text-xs text-indigo-800 bg-white px-3.5 py-1.5 rounded-full border border-indigo-200 shadow-2xs font-medium w-fit flex-shrink-0">
+              {filteredProjects.length} Selected UI/UX Case Studies
+            </span>
+          </motion.div>
+        )}
 
         {/* Two-Column Project Grid matching shriyap.com */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-12">

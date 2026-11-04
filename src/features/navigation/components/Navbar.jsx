@@ -42,13 +42,34 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           <a
             href="#work"
             onClick={() => sound.playClick()}
             className="font-sans text-sm font-medium text-[#1e1e20]/80 hover:text-[#1e1e20] transition-colors"
           >
             Work
+          </a>
+          <a
+            href="#work"
+            onClick={() => {
+              sound.playClick();
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(
+                  new CustomEvent('harry_portfolio_set_category', { detail: { category: 'uiux' } })
+                );
+              }
+            }}
+            className="font-sans text-xs font-semibold px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 transition-all shadow-2xs"
+          >
+            ✦ Interface Atelier
+          </a>
+          <a
+            href="#dual-craft"
+            onClick={() => sound.playClick()}
+            className="font-sans text-sm font-medium text-[#1e1e20]/80 hover:text-[#1e1e20] transition-colors"
+          >
+            Two Sides
           </a>
           <a
             href="#about"
@@ -109,6 +130,31 @@ const Navbar = () => {
               className="block font-display text-xl font-bold text-[#1e1e20]"
             >
               Work
+            </a>
+            <a
+              href="#work"
+              onClick={() => {
+                sound.playClick();
+                setIsOpen(false);
+                if (typeof window !== 'undefined') {
+                  window.dispatchEvent(
+                    new CustomEvent('harry_portfolio_set_category', { detail: { category: 'uiux' } })
+                  );
+                }
+              }}
+              className="block font-display text-lg font-bold text-indigo-700"
+            >
+              ✦ Interface Atelier
+            </a>
+            <a
+              href="#dual-craft"
+              onClick={() => {
+                sound.playClick();
+                setIsOpen(false);
+              }}
+              className="block font-display text-xl font-bold text-[#1e1e20]"
+            >
+              Two Sides of My Craft
             </a>
             <a
               href="#about"
