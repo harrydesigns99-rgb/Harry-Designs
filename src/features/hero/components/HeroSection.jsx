@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { sound } from '@/utils/audio';
 import StudioShuttle from '@/components/StudioShuttle';
+import HeroToolConstellation from './HeroToolConstellation';
 import { useCMS } from '@/features/cms';
 
 const HeroSection = () => {
@@ -29,6 +30,9 @@ const HeroSection = () => {
     >
       {/* Floating Studio Telemetry Shuttle (Docked HUD Capsule) */}
       <StudioShuttle />
+
+      {/* Floating Minimal Frosted Glass Tool Constellation (Figma, Ps, Ai, Id, Pr, XD) */}
+      <HeroToolConstellation />
 
       {/* ========================================================================= */}
       {/* ARCHITECTURAL TECHNICAL GRID FRAME WITH SOFT ARCHED DOME (MATCHES REFERENCE) */}

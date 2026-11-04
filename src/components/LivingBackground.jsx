@@ -19,101 +19,6 @@ const PARTICLES = [
   { id: 14, left: '42%', top: '60%', size: 14, duration: 26, delay: 0.5, type: 'ring', color: 'rgba(139, 21, 27, 0.2)' },
 ];
 
-// Minimal 3D floating tool icons: Photoshop, Illustrator, InDesign, Figma, Premiere Pro, Adobe XD
-const FLOATING_TOOLS = [
-  {
-    id: 'figma',
-    name: 'Figma',
-    type: 'figma',
-    left: '4%',
-    top: '18%',
-    duration: 19,
-    delay: 0,
-    parallaxFactor: 0.7,
-    mobileHidden: false,
-  },
-  {
-    id: 'photoshop',
-    name: 'Photoshop',
-    type: 'adobe',
-    code: 'Ps',
-    left: '91%',
-    top: '15%',
-    duration: 22,
-    delay: 1.2,
-    parallaxFactor: 0.85,
-    bg: 'linear-gradient(135deg, #001e36 0%, #001122 100%)',
-    borderColor: 'rgba(49, 168, 255, 0.5)',
-    glowColor: 'rgba(49, 168, 255, 0.3)',
-    textColor: '#31a8ff',
-    mobileHidden: false,
-  },
-  {
-    id: 'illustrator',
-    name: 'Illustrator',
-    type: 'adobe',
-    code: 'Ai',
-    left: '5%',
-    top: '52%',
-    duration: 24,
-    delay: 2.8,
-    parallaxFactor: 0.65,
-    bg: 'linear-gradient(135deg, #331500 0%, #1a0a00 100%)',
-    borderColor: 'rgba(255, 154, 0, 0.5)',
-    glowColor: 'rgba(255, 154, 0, 0.3)',
-    textColor: '#ff9a00',
-    mobileHidden: false,
-  },
-  {
-    id: 'indesign',
-    name: 'InDesign',
-    type: 'adobe',
-    code: 'Id',
-    left: '90%',
-    top: '56%',
-    duration: 21,
-    delay: 1.8,
-    parallaxFactor: 0.75,
-    bg: 'linear-gradient(135deg, #2b0018 0%, #14000b 100%)',
-    borderColor: 'rgba(255, 51, 102, 0.5)',
-    glowColor: 'rgba(255, 51, 102, 0.3)',
-    textColor: '#ff3366',
-    mobileHidden: false,
-  },
-  {
-    id: 'premiere',
-    name: 'Premiere Pro',
-    type: 'adobe',
-    code: 'Pr',
-    left: '6%',
-    top: '84%',
-    duration: 25,
-    delay: 3.5,
-    parallaxFactor: 0.8,
-    bg: 'linear-gradient(135deg, #1a0033 0%, #0d001a 100%)',
-    borderColor: 'rgba(153, 153, 255, 0.5)',
-    glowColor: 'rgba(153, 153, 255, 0.3)',
-    textColor: '#9999ff',
-    mobileHidden: true,
-  },
-  {
-    id: 'xd',
-    name: 'Adobe XD',
-    type: 'adobe',
-    code: 'Xd',
-    left: '88%',
-    top: '82%',
-    duration: 23,
-    delay: 2.2,
-    parallaxFactor: 0.7,
-    bg: 'linear-gradient(135deg, #2b0022 0%, #140010 100%)',
-    borderColor: 'rgba(255, 97, 246, 0.5)',
-    glowColor: 'rgba(255, 97, 246, 0.3)',
-    textColor: '#ff61f6',
-    mobileHidden: true,
-  },
-];
-
 const LivingBackground = () => {
   const [isTouchDevice] = useState(() => {
     if (typeof window === 'undefined') return false;
@@ -285,114 +190,7 @@ const LivingBackground = () => {
       />
 
       {/* ========================================================================= */}
-      {/* 4. RANDOMLY FLOATING MINIMAL 3D DESIGN TOOL ICONS */}
-      {/* ========================================================================= */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-        {FLOATING_TOOLS.map((tool) => (
-          <motion.div
-            key={tool.id}
-            style={{
-              left: tool.left,
-              top: tool.top,
-              x: !isTouchDevice ? smoothX : 0,
-              y: !isTouchDevice ? smoothY : 0,
-              perspective: 1000,
-            }}
-            className={`absolute pointer-events-none will-change-transform ${
-              tool.mobileHidden ? 'hidden sm:block' : ''
-            }`}
-          >
-            <motion.div
-              animate={{
-                y: [-12, 16, -12],
-                x: [-8, 8, -8],
-                rotateZ: [-6, 6, -6],
-                rotateY: [-14, 14, -14],
-                rotateX: [-10, 10, -10],
-                opacity: [0.72, 0.88, 0.72],
-              }}
-              transition={{
-                duration: tool.duration,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: tool.delay,
-              }}
-              className="transform-gpu"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              {tool.type === 'figma' ? (
-                /* Minimal 3D Figma Tile */
-                <div
-                  className="relative w-11 h-11 sm:w-14 sm:h-14 rounded-[14px] sm:rounded-[18px] flex items-center justify-center border border-white/20 select-none bg-gradient-to-br from-[#24242c] to-[#101014]"
-                  style={{
-                    boxShadow:
-                      '0 18px 32px -8px rgba(0,0,0,0.28), 0 6px 14px -2px rgba(0,0,0,0.18), 0 0 16px rgba(162, 89, 255, 0.22), inset 0 1.5px 1.5px rgba(255,255,255,0.35), inset 0 -2px 3px rgba(0,0,0,0.4)',
-                    transformStyle: 'preserve-3d',
-                  }}
-                  title="Figma"
-                >
-                  {/* Glossy Specular Sheen */}
-                  <div className="absolute inset-0 rounded-[14px] sm:rounded-[18px] bg-gradient-to-br from-white/25 via-white/5 to-transparent pointer-events-none" />
-
-                  {/* Iconic Figma Vector Geometry */}
-                  <svg
-                    viewBox="0 0 38 57"
-                    className="w-5 h-7 sm:w-6 sm:h-8 drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]"
-                    fill="none"
-                  >
-                    <path
-                      d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z"
-                      fill="#1ABCFE"
-                    />
-                    <path
-                      d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z"
-                      fill="#0ACF83"
-                    />
-                    <path
-                      d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z"
-                      fill="#FF7262"
-                    />
-                    <path
-                      d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z"
-                      fill="#F24E1E"
-                    />
-                    <path
-                      d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z"
-                      fill="#A259FF"
-                    />
-                  </svg>
-                </div>
-              ) : (
-                /* Minimal 3D Adobe Tile (Photoshop, Illustrator, InDesign, Premiere Pro, Adobe XD) */
-                <div
-                  className="relative w-11 h-11 sm:w-14 sm:h-14 rounded-[14px] sm:rounded-[18px] flex items-center justify-center border select-none"
-                  style={{
-                    background: tool.bg,
-                    borderColor: tool.borderColor,
-                    boxShadow: `0 18px 32px -8px rgba(0,0,0,0.28), 0 6px 14px -2px rgba(0,0,0,0.18), 0 0 16px ${tool.glowColor}, inset 0 1.5px 1.5px rgba(255,255,255,0.4), inset 0 -2px 3px rgba(0,0,0,0.4)`,
-                    transformStyle: 'preserve-3d',
-                  }}
-                  title={tool.name}
-                >
-                  {/* Glossy Specular Sheen */}
-                  <div className="absolute inset-0 rounded-[14px] sm:rounded-[18px] bg-gradient-to-br from-white/25 via-white/5 to-transparent pointer-events-none" />
-
-                  {/* Adobe Typography Code */}
-                  <span
-                    className="font-sans font-black text-sm sm:text-base tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
-                    style={{ color: tool.textColor }}
-                  >
-                    {tool.code}
-                  </span>
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* ========================================================================= */}
-      {/* 5. FLOATING ATMOSPHERIC CRAFT PARTICLES (SUBTLE DANCING ELEMENTS) */}
+      {/* 4. FLOATING ATMOSPHERIC CRAFT PARTICLES (SUBTLE DANCING ELEMENTS) */}
       {/* ========================================================================= */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {PARTICLES.map((p) => (
@@ -454,7 +252,7 @@ const LivingBackground = () => {
         ))}
       </div>
 
-      {/* 6. Minimal Studio Alignment Crosshairs in the Four Corners */}
+      {/* 5. Minimal Studio Alignment Crosshairs in the Four Corners */}
       <div className="hidden lg:block absolute top-10 left-10 text-[#1e1e20]/20 font-mono text-xs select-none">
         +
       </div>
