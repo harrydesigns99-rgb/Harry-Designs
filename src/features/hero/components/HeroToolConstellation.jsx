@@ -33,6 +33,7 @@ const CONSTELLATION_TOOLS = [
     delay: 2.5,
     accentGlow: 'rgba(234, 88, 12, 0.25)',
     accentColor: '#ea580c',
+    mobileHidden: true,
   },
   {
     id: 'indesign',
@@ -44,6 +45,7 @@ const CONSTELLATION_TOOLS = [
     delay: 1.8,
     accentGlow: 'rgba(225, 29, 72, 0.25)',
     accentColor: '#e11d48',
+    mobileHidden: true,
   },
   {
     id: 'premiere',
@@ -82,7 +84,9 @@ const HeroToolConstellation = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: tool.delay * 0.3 }}
-            className={`absolute ${tool.position} pointer-events-auto cursor-pointer group`}
+            className={`absolute ${tool.position} ${
+              tool.mobileHidden ? 'hidden sm:block' : ''
+            } pointer-events-auto cursor-pointer group`}
             onClick={() => sound.playPop()}
           >
             <motion.div
@@ -171,3 +175,4 @@ const HeroToolConstellation = () => {
 };
 
 export default HeroToolConstellation;
+
