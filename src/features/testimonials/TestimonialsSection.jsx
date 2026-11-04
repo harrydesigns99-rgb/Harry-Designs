@@ -39,7 +39,7 @@ const TestimonialsSection = () => {
   return (
     <section
       id="testimonials"
-      className="relative w-full bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid py-16 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-black/[0.08] select-none"
+      className="relative w-full bg-transparent text-[#1e1e20] py-16 sm:py-28 px-4 sm:px-6 lg:px-8 border-t border-black/[0.08] select-none"
     >
       <div className="max-w-7xl mx-auto">
         <div className="mb-10 sm:mb-16">

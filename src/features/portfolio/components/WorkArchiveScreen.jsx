@@ -60,7 +60,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
   }, [projects, filter, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid relative selection:bg-[#FC7A69] selection:text-white pb-24">
+    <div className="min-h-screen bg-transparent text-[#1e1e20] relative selection:bg-[#FC7A69] selection:text-white pb-24">
       {/* ==================== STICKY SUB-NAV ==================== */}
       <header className="sticky top-0 z-50 w-full bg-[#f5f4f0]/90 backdrop-blur-md border-b border-black/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-4">

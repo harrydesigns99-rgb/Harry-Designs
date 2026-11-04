@@ -137,7 +137,7 @@ const CaseStudyScreen = ({
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid selection:bg-[#FC7A69] selection:text-white transition-colors duration-300"
+      className="min-h-screen bg-transparent text-[#1e1e20] selection:bg-[#FC7A69] selection:text-white transition-colors duration-300"
     >
       {/* ==================== SHRIYA STYLE STICKY SUB-BAR (cs-bar) ==================== */}
       <header className="sticky top-0 z-50 bg-[#f5f4f0]/90 backdrop-blur-md border-b border-black/[0.08] transition-all">

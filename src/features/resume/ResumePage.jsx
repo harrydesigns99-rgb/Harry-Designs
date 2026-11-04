@@ -24,7 +24,7 @@ const ResumePage = ({ onNavigateHome }) => {
   const profile = { ...DEFAULT_PROFILE, ...(cms?.profile || {}) };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f5f4f0] text-[#1e1e20] bg-dot-grid">
+    <main className="relative min-h-screen overflow-hidden bg-transparent text-[#1e1e20]">
       <header className="relative z-10 max-w-6xl mx-auto px-4 sm:px-10 py-6 sm:py-8 flex flex-wrap items-center justify-between gap-4 border-b border-eerie/15">
         <button
           type="button"
