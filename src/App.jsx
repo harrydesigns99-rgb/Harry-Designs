@@ -9,7 +9,7 @@ import TestimonialsSection from '@/features/testimonials/TestimonialsSection';
 import KineticTicker from '@/components/KineticTicker';
 import DualCraftBento from '@/components/DualCraftBento';
 import CustomCursor from '@/components/CustomCursor';
-import WandPreloader from '@/components/WandPreloader';
+import HumanCraftPreloader from '@/components/HumanCraftPreloader';
 import LivingBackground from '@/components/LivingBackground';
 import { ThemeProvider } from '@/context/ThemeContext';
 
@@ -79,7 +79,7 @@ function App() {
         <LivingBackground />
         <CustomCursor />
         <AnimatePresence>
-          {isLoading && <WandPreloader key="preloader" onComplete={() => setIsLoading(false)} />}
+          {isLoading && <HumanCraftPreloader key="preloader" onComplete={() => setIsLoading(false)} />}
         </AnimatePresence>
 
         <Suspense
