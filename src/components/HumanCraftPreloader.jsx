@@ -22,8 +22,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
+      staggerChildren: 0.11,
+      delayChildren: 0.18,
     },
   },
 };
@@ -31,15 +31,15 @@ const containerVariants = {
 const wordVariants = {
   hidden: {
     opacity: 0,
-    y: 18,
-    filter: 'blur(8px)',
+    y: 16,
+    filter: 'blur(10px)',
   },
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.6,
+      duration: 0.55,
       ease: [0.16, 1, 0.3, 1],
     },
   },
@@ -49,44 +49,24 @@ const HumanCraftPreloader = ({ onComplete }) => {
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    // Skip if already seen in current session
-    if (typeof window !== 'undefined') {
-      try {
-        if (sessionStorage.getItem('harry_human_manifesto_seen_v3') === 'true') {
-          onComplete?.();
-          return;
-        }
-      } catch {
-        // ignore
-      }
-    }
-
-    // Total display time: word stagger (~1.8s) + hold (~1.0s) = 2.8s
+    // Total display time: word stagger (~1.6s) + hold (~0.9s) = 2.5s
+    // Always runs on every website launch and page refresh
     const timer = setTimeout(() => {
-      try {
-        sessionStorage.setItem('harry_human_manifesto_seen_v3', 'true');
-      } catch {
-        // ignore
-      }
       setIsFinished(true);
       setTimeout(() => {
         onComplete?.();
-      }, 700);
-    }, 2800);
+      }, 650);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
 
   const handleDismiss = () => {
-    try {
-      sessionStorage.setItem('harry_human_manifesto_seen_v3', 'true');
-    } catch {
-      // ignore
-    }
+    if (isFinished) return;
     setIsFinished(true);
     setTimeout(() => {
       onComplete?.();
-    }, 500);
+    }, 450);
   };
 
   return (
@@ -96,9 +76,9 @@ const HumanCraftPreloader = ({ onComplete }) => {
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            filter: 'blur(12px)',
+            filter: 'blur(14px)',
             scale: 1.02,
-            transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+            transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
           }}
           onClick={handleDismiss}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#0d0d0f] text-[#f5f4f0] select-none px-6 sm:px-12 md:px-16 cursor-default overflow-hidden"

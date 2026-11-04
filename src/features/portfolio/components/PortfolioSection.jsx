@@ -29,7 +29,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const categoryTabs = useMemo(() => {
     const categoryMap = {
       all: 'All Projects',
-      uiux: '✦ Interface Atelier',
+      uiux: 'Interface Atelier',
       branding: 'Brand Identity',
       packaging: 'Packaging',
       brochures: 'Brochures',
@@ -120,7 +120,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
               <span className="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse flex-shrink-0" />
               <div>
                 <span className="font-mono text-xs uppercase tracking-wider font-bold text-indigo-950 block">
-                  ✦ THE INTERFACE ATELIER — DIGITAL PRODUCTS &amp; SOFTWARE SYSTEMS
+                  THE INTERFACE ATELIER — DIGITAL PRODUCTS &amp; SOFTWARE SYSTEMS
                 </span>
                 <p className="text-xs text-indigo-900/70 mt-0.5 font-sans">
                   Human-centered mobile apps, multi-brand design tokens, complex workflows, and living digital experiences.
