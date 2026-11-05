@@ -4,6 +4,7 @@ import { getProcessBehindProcess } from '@/features/portfolio/data/portfolioData
 import { getStoryForProject, getImpactForProject } from '@/features/portfolio/data/portfolioStories';
 import { HighlightedText } from '@/components/ProjectStorySection';
 import { optimizeImageFile } from '@/utils/imageOptimizer';
+import ShowcaseMediaCarousel from '@/features/portfolio/components/ShowcaseMediaCarousel';
 
 const CATEGORIES = [
   { value: 'packaging', label: 'Packaging' },
@@ -122,6 +123,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
   const beforeFileInputRef = useRef(null);
   const afterFileInputRef = useRef(null);
   const conceptFileInputRef = useRef(null);
+  const multiFileInputRef = useRef(null);
 
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'story' | 'impact' | 'making-process' | 'studio-process' | 'specs'
   const [activeStageEditIndex, setActiveStageEditIndex] = useState(0);
@@ -182,6 +184,10 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
     approach: project?.approach || '',
     deliverables: project?.deliverables || '',
     image: project?.image || '/image/Image Gallery/Artboard 1.webp',
+    images: (project?.images && project.images.length > 0)
+      ? project.images
+      : (project?.image ? [project.image] : ['/image/Image Gallery/Artboard 1.webp']),
+    autoScrollInterval: project?.autoScrollInterval || 3800,
     published: project?.published !== false,
     showStory: project?.showStory !== false,
     showImpact: project?.showImpact !== false,
@@ -272,6 +278,96 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
       reader.readAsDataURL(file);
     } finally {
       setCompressing(false);
+    }
+  };
+
+  // Helper functions for Outer Showcase Multi-Image Carousel
+  const addShowcaseImage = (url) => {
+    if (!url) return;
+    setFormData((prev) => {
+      const current = prev.images || (prev.image ? [prev.image] : []);
+      if (current.includes(url)) return prev;
+      return {
+        ...prev,
+        images: [...current, url],
+      };
+    });
+  };
+
+  const removeShowcaseImage = (index) => {
+    setFormData((prev) => {
+      const current = prev.images || (prev.image ? [prev.image] : []);
+      if (current.length <= 1) {
+        alert('At least one showcase image is required.');
+        return prev;
+      }
+      const updated = current.filter((_, i) => i !== index);
+      return {
+        ...prev,
+        images: updated,
+        image: index === 0 ? updated[0] : prev.image,
+      };
+    });
+  };
+
+  const moveShowcaseImage = (index, dir) => {
+    setFormData((prev) => {
+      const current = [...(prev.images || (prev.image ? [prev.image] : []))];
+      const target = index + dir;
+      if (target < 0 || target >= current.length) return prev;
+      const [moved] = current.splice(index, 1);
+      current.splice(target, 0, moved);
+      return {
+        ...prev,
+        images: current,
+        image: current[0],
+      };
+    });
+  };
+
+  const setPrimaryShowcaseImage = (index) => {
+    setFormData((prev) => {
+      const current = [...(prev.images || (prev.image ? [prev.image] : []))];
+      if (index < 0 || index >= current.length) return prev;
+      const [selected] = current.splice(index, 1);
+      current.unshift(selected);
+      return {
+        ...prev,
+        images: current,
+        image: selected,
+      };
+    });
+  };
+
+  const handleMultiImageUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setCompressing(true);
+    try {
+      const optimizedUrls = [];
+      for (const file of files) {
+        try {
+          const opt = await optimizeImageFile(file, 1200, 1200, 0.85);
+          optimizedUrls.push(opt);
+        } catch {
+          const fallbackData = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (evt) => resolve(evt.target.result);
+            reader.readAsDataURL(file);
+          });
+          optimizedUrls.push(fallbackData);
+        }
+      }
+      setFormData((prev) => {
+        const current = prev.images || (prev.image ? [prev.image] : []);
+        return {
+          ...prev,
+          images: [...current, ...optimizedUrls],
+        };
+      });
+    } finally {
+      setCompressing(false);
+      if (multiFileInputRef.current) multiFileInputRef.current.value = '';
     }
   };
 
@@ -870,6 +966,214 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                     className="w-full px-4 py-2.5 bg-white rounded-2xl border border-black/15 text-xs font-mono outline-none focus:border-[#8b151b]"
                   />
                 )}
+              </div>
+            </div>
+
+            {/* ========================================================= */}
+            {/* OUTER SHOWCASE MULTI-IMAGE CAROUSEL & AUTO-SCROLL REEL */}
+            {/* ========================================================= */}
+            <div className="p-5 sm:p-6 bg-white rounded-3xl border border-black/[0.08] shadow-xs space-y-5">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FC7A69] animate-pulse" />
+                    <span className="text-xs font-mono uppercase tracking-[0.2em] font-bold text-[#1e1e20]">
+                      Outer Showcase Multi-Image Carousel (Auto-Scrolling)
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#1e1e20]/60 font-sans mt-0.5">
+                    Add multiple design artboards, mockups, or packaging angles. These images auto-advance at an interval on your homepage card and pause when hovered.
+                  </p>
+                </div>
+
+                {/* Interval & Auto-Play Controls */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 bg-[#f5f4f0] px-3 py-1.5 rounded-2xl border border-black/10">
+                    <span className="text-[11px] font-mono text-[#1e1e20]/70 font-medium">Interval:</span>
+                    <select
+                      value={formData.autoScrollInterval || 3800}
+                      onChange={(e) => setFormData({ ...formData, autoScrollInterval: Number(e.target.value) })}
+                      className="bg-transparent text-xs font-mono font-bold text-[#1e1e20] outline-none cursor-pointer"
+                    >
+                      <option value={2500}>2.5 seconds (Fast)</option>
+                      <option value={3200}>3.2 seconds</option>
+                      <option value={3800}>3.8 seconds (Recommended)</option>
+                      <option value={4500}>4.5 seconds</option>
+                      <option value={6000}>6.0 seconds (Relaxed)</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => multiFileInputRef.current?.click()}
+                    className="px-3.5 py-1.5 rounded-full bg-[#1e1e20] hover:bg-black text-[#f5f4f0] text-xs font-sans font-medium transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
+                  >
+                    <span>+ Add Images</span>
+                  </button>
+                  <input
+                    ref={multiFileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleMultiImageUpload}
+                    className="hidden"
+                  />
+                </div>
+              </div>
+
+              {/* Current Showcase Images Carousel Reel */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                {/* Left: Images List & Sorting */}
+                <div className="md:col-span-7 space-y-3">
+                  <div className="flex items-center justify-between text-xs font-mono text-[#1e1e20]/60">
+                    <span>Active Slides ({formData.images?.length || 1})</span>
+                    <span>Reorder or set primary</span>
+                  </div>
+
+                  <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+                    {(formData.images || [formData.image]).map((imgUrl, index) => {
+                      const isPrimary = index === 0;
+                      return (
+                        <div
+                          key={`${imgUrl}-${index}`}
+                          className={`flex items-center justify-between p-3 rounded-2xl border transition-all ${
+                            isPrimary
+                              ? 'bg-amber-50/70 border-amber-300 shadow-2xs'
+                              : 'bg-[#f5f4f0]/60 border-black/[0.08] hover:border-black/20'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-14 h-10 rounded-xl overflow-hidden bg-neutral-900 border border-black/10 flex-shrink-0">
+                              <img src={imgUrl} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-xs font-mono font-bold text-[#1e1e20]">
+                                  Slide {index + 1}
+                                </span>
+                                {isPrimary && (
+                                  <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-500 text-white font-bold">
+                                    PRIMARY COVER
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-[10px] font-mono text-[#1e1e20]/50 truncate block max-w-[200px]">
+                                {imgUrl.split('/').pop()}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex items-center gap-1.5">
+                            {!isPrimary && (
+                              <button
+                                type="button"
+                                onClick={() => setPrimaryShowcaseImage(index)}
+                                title="Make this the primary cover artwork"
+                                className="px-2 py-1 rounded-lg text-[10px] font-sans font-medium bg-white hover:bg-neutral-100 border border-black/10 text-[#1e1e20] cursor-pointer"
+                              >
+                                Make Primary
+                              </button>
+                            )}
+
+                            <button
+                              type="button"
+                              disabled={index === 0}
+                              onClick={() => moveShowcaseImage(index, -1)}
+                              title="Move slide earlier in rotation"
+                              className={`p-1.5 rounded-lg border text-xs cursor-pointer ${
+                                index === 0
+                                  ? 'border-transparent text-black/20 cursor-not-allowed'
+                                  : 'border-black/10 bg-white hover:bg-neutral-100 text-[#1e1e20]'
+                              }`}
+                            >
+                              ↑
+                            </button>
+
+                            <button
+                              type="button"
+                              disabled={index === (formData.images?.length || 1) - 1}
+                              onClick={() => moveShowcaseImage(index, 1)}
+                              title="Move slide later in rotation"
+                              className={`p-1.5 rounded-lg border text-xs cursor-pointer ${
+                                index === (formData.images?.length || 1) - 1
+                                  ? 'border-transparent text-black/20 cursor-not-allowed'
+                                  : 'border-black/10 bg-white hover:bg-neutral-100 text-[#1e1e20]'
+                              }`}
+                            >
+                              ↓
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => removeShowcaseImage(index)}
+                              title="Remove this slide"
+                              className="p-1.5 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-red-600 text-xs cursor-pointer"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Preset Quick Add Bar */}
+                  <div className="pt-2 border-t border-black/[0.06]">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-[11px] font-mono uppercase text-[#1e1e20]/70 font-semibold">
+                        + Quick Add From Studio Presets
+                      </span>
+                      <span className="text-[10px] font-mono text-[#1e1e20]/50">Click to append to reel</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                      {PRESET_IMAGES.map((preset) => {
+                        const alreadyIn = (formData.images || []).includes(preset.url);
+                        return (
+                          <button
+                            key={preset.url}
+                            type="button"
+                            disabled={alreadyIn}
+                            onClick={() => addShowcaseImage(preset.url)}
+                            className={`flex-shrink-0 px-2.5 py-1 rounded-xl text-[10px] font-mono border transition-all cursor-pointer ${
+                              alreadyIn
+                                ? 'border-emerald-300 bg-emerald-50 text-emerald-700 opacity-60 cursor-default'
+                                : 'border-black/10 bg-white hover:bg-neutral-50 text-[#1e1e20]/80 hover:border-black/25'
+                            }`}
+                          >
+                            {alreadyIn ? '✓ ' : '+ '}
+                            {preset.label.split(' ')[0]} {preset.label.split(' ')[1]}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Real-time Live Mini Preview */}
+                <div className="md:col-span-5 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono text-[#1e1e20]/60">
+                    <span>Live Card Preview</span>
+                    <span className="text-[10px] text-[#FC7A69] font-bold">● Auto-cycling</span>
+                  </div>
+
+                  <div className="rounded-2xl overflow-hidden border border-black/10 shadow-sm bg-neutral-900">
+                    <ShowcaseMediaCarousel
+                      images={formData.images || (formData.image ? [formData.image] : [])}
+                      fallbackImage={formData.image || '/image/Image Gallery/Artboard 1.webp'}
+                      alt={formData.title || 'Preview'}
+                      interval={formData.autoScrollInterval || 3800}
+                      cardIndex={0}
+                      aspectRatio="aspect-[16/10]"
+                      showControls={true}
+                      showIndicators={true}
+                      showCounter={true}
+                    />
+                  </div>
+                  <p className="text-[10px] font-mono text-center text-[#1e1e20]/50 pt-1">
+                    Hover preview to pause • Click chevrons/dots to test
+                  </p>
+                </div>
               </div>
             </div>
 

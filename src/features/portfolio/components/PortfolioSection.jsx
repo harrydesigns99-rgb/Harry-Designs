@@ -5,6 +5,7 @@ import { useCMS } from '@/features/cms';
 import { sound } from '@/utils/audio';
 import WordReveal from '@/components/WordReveal';
 import BrandsCarousel from './BrandsCarousel';
+import ShowcaseMediaCarousel from './ShowcaseMediaCarousel';
 
 const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
   const cms = useCMS();
@@ -136,7 +137,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
         {/* Two-Column Project Grid matching shriyap.com */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-12">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => (
               <motion.article
                 layout
                 key={project.id}
@@ -151,20 +152,15 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                 data-cursor="VIEW CASE ↗"
                 className="group flex flex-col bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-black/[0.08] shadow-[0_12px_32px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.16)] transition-all duration-500 hover:-translate-y-1.5 cursor-pointer"
               >
-                {/* Media Container */}
-                <div className="relative w-full aspect-[16/10] bg-[#1e1e20] overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/image/Image Gallery/Artboard 1.webp';
-                    }}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 pointer-events-none" />
-                </div>
+                {/* Media Container with Multi-Image Auto-Scroll Carousel */}
+                <ShowcaseMediaCarousel
+                  images={project.images || (project.image ? [project.image] : [])}
+                  fallbackImage={project.image || '/image/Image Gallery/Artboard 1.webp'}
+                  alt={project.title}
+                  interval={project.autoScrollInterval || 3800}
+                  cardIndex={index}
+                  aspectRatio="aspect-[16/10]"
+                />
 
                 {/* Card Content Footer */}
                 <div className="p-5 sm:p-8 flex flex-col justify-between flex-1">

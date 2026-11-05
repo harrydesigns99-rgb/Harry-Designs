@@ -188,6 +188,8 @@ function getInitialProjects() {
       showStory: item.showStory !== undefined ? item.showStory : true,
       showImpact: item.showImpact !== undefined ? item.showImpact : true,
       hasBeforeAfter: item.hasBeforeAfter !== undefined ? item.hasBeforeAfter : (defaultItem.hasBeforeAfter || false),
+      images: (item.images && item.images.length > 0) ? item.images : (defaultItem.images || (defaultItem.image ? [defaultItem.image] : [])),
+      autoScrollInterval: item.autoScrollInterval || defaultItem.autoScrollInterval || 3800,
       process: {
         ...(defaultItem.process || {}),
         ...(item.process || {}),

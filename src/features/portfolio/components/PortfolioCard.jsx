@@ -2,6 +2,7 @@ import { useRef, memo } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useIsMobile } from '@/hooks';
 import { sound } from '@/utils/audio';
+import ShowcaseMediaCarousel from './ShowcaseMediaCarousel';
 
 const PortfolioCard = ({ item, index, onSelect }) => {
   const isMobile = useIsMobile();
@@ -78,11 +79,17 @@ const PortfolioCard = ({ item, index, onSelect }) => {
 
       {/* Background Image / Artwork */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {item.image ? (
-          <img
-            src={item.image}
+        {item.image || (item.images && item.images.length > 0) ? (
+          <ShowcaseMediaCarousel
+            images={item.images || (item.image ? [item.image] : [])}
+            fallbackImage={item.image || '/image/Image Gallery/Artboard 1.webp'}
             alt={item.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            interval={item.autoScrollInterval || 3800}
+            cardIndex={index}
+            aspectRatio="w-full h-full"
+            showCounter={false}
+            showIndicators={false}
+            showControls={false}
           />
         ) : (
           <div className={`w-full h-full bg-gradient-to-br ${item.color} flex items-center justify-center`}>

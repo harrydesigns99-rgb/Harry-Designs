@@ -47,6 +47,12 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 2.webp',
+    images: [
+      '/image/Image Gallery/Artboard 2.webp',
+      '/image/samples/2.webp',
+      '/image/Image Gallery/Artboard 4.webp',
+    ],
+    autoScrollInterval: 3800,
     hasBeforeAfter: true,
     beforeImage: '/image/samples/2.webp',
     afterImage: '/image/Image Gallery/Artboard 2.webp',
@@ -130,6 +136,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 1.webp',
+    images: [
+      '/image/Image Gallery/Artboard 1.webp',
+      '/image/samples/1.webp',
+    ],
+    autoScrollInterval: 4000,
     systemSpecs: {
       palette: [
         { code: 'PANTONE 872 C', name: 'Champagne Warm Gold', hex: '#85714d', cmyk: '20 / 30 / 70 / 25' },
@@ -206,6 +217,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2023',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 4.webp',
+    images: [
+      '/image/Image Gallery/Artboard 4.webp',
+      '/image/samples/4.webp',
+    ],
+    autoScrollInterval: 3800,
     anatomy: {
       substrate: '300 GSM Tintoretto Gesso Uncoated Cotton Board (FSC Certified)',
       finish: 'Multi-Level Blind Deboss Monogram + Matte Water-Based Barrier Varnish',
@@ -284,6 +300,12 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2023',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 3.webp',
+    images: [
+      '/image/Image Gallery/Artboard 3.webp',
+      '/image/samples/3.webp',
+      '/image/Image Gallery/Artboard 10.webp',
+    ],
+    autoScrollInterval: 4200,
     systemSpecs: {
       palette: [
         { code: 'National Cobalt', name: 'CSIR Scientific Navy', hex: '#003366', cmyk: '100 / 75 / 15 / 30' },
@@ -360,6 +382,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 6.webp',
+    images: [
+      '/image/Image Gallery/Artboard 6.webp',
+      '/image/samples/6.webp',
+    ],
+    autoScrollInterval: 3600,
     hasBeforeAfter: true,
     beforeImage: '/image/samples/6.webp',
     afterImage: '/image/Image Gallery/Artboard 6.webp',
@@ -443,6 +470,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 5.webp',
+    images: [
+      '/image/Image Gallery/Artboard 5.webp',
+      '/image/samples/5.webp',
+    ],
+    autoScrollInterval: 4000,
     anatomy: {
       substrate: '0.22mm 100% Infinitely Recyclable Aluminum (Sleek 330ml Can Form)',
       finish: 'Tactile Satin Matte Curing with High-Gloss Spot Lacquer on Typographic Wordmark',
@@ -521,6 +553,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2023',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 7.webp',
+    images: [
+      '/image/Image Gallery/Artboard 7.webp',
+      '/image/samples/7.webp',
+    ],
+    autoScrollInterval: 3800,
     anatomy: {
       substrate: 'Multi-layer Foil Laminate (PET/ALU/PE) with High Aroma Barrier',
       finish: 'Soft-Matte Velvet Finish + High-Clarity Transparent Spice Freshness Window',
@@ -599,6 +636,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2023',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 8.webp',
+    images: [
+      '/image/Image Gallery/Artboard 8.webp',
+      '/image/samples/8.webp',
+    ],
+    autoScrollInterval: 4200,
     systemSpecs: {
       palette: [
         { code: 'Forest Canopy', name: 'Deep Evergreen Moss', hex: '#1b3b22', cmyk: '80 / 40 / 75 / 45' },
@@ -675,6 +717,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 9.webp',
+    images: [
+      '/image/Image Gallery/Artboard 9.webp',
+      '/image/samples/9.webp',
+    ],
+    autoScrollInterval: 3800,
     systemSpecs: {
       palette: [
         { code: 'Basalt Charcoal', name: 'Architectural Black', hex: '#1a1a1a', cmyk: '75 / 65 / 60 / 80' },
@@ -751,6 +798,12 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2023',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 10.webp',
+    images: [
+      '/image/Image Gallery/Artboard 10.webp',
+      '/image/samples/10.webp',
+      '/image/Image Gallery/Artboard 3.webp',
+    ],
+    autoScrollInterval: 4000,
     systemSpecs: {
       palette: [
         { code: 'Ecological Teal', name: 'NEERI Watershed Navy', hex: '#05445e', cmyk: '95 / 55 / 35 / 25' },
@@ -827,6 +880,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 11.webp',
+    images: [
+      '/image/Image Gallery/Artboard 11.webp',
+      '/image/samples/11.webp',
+    ],
+    autoScrollInterval: 3800,
     systemSpecs: {
       palette: [
         { code: 'Silkscreen Noir', name: 'Dense Carbon Black', hex: '#121314', cmyk: '85 / 75 / 65 / 85' },
@@ -903,6 +961,11 @@ const BASE_PORTFOLIO_ITEMS = [
     year: '2024',
     size: 'tall',
     image: '/image/Image Gallery/Artboard 12.webp',
+    images: [
+      '/image/Image Gallery/Artboard 12.webp',
+      '/image/samples/8.webp',
+    ],
+    autoScrollInterval: 4000,
     systemSpecs: {
       palette: [
         { code: 'Logistics Navy', name: 'Enterprise Terminal Deep Navy', hex: '#0a192f', cmyk: '90 / 75 / 45 / 55' },
