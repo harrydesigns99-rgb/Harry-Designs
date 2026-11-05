@@ -371,7 +371,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 text-crimson text-xs font-mono font-semibold">
             <span>●</span> INITIATE A PROJECT
           </div>
-          <h3 className="font-display text-3xl sm:text-5xl font-medium text-[#1d1d1f] tracking-tight max-w-2xl mx-auto leading-tight">
+          <h3 className="font-serif text-3xl sm:text-5xl font-normal text-[#18181b] tracking-tight max-w-2xl mx-auto leading-tight">
             Ready to build work with commercial momentum?
           </h3>
           <p className="max-w-xl mx-auto text-xs sm:text-sm text-[#86868b] leading-relaxed">

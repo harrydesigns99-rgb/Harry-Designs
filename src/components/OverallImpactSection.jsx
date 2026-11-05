@@ -60,7 +60,7 @@ const OverallImpactSection = ({ impact, project }) => {
             >
               {/* Left Column: Giant Stat Number */}
               <div className="md:col-span-5 lg:col-span-6">
-                <span className="font-display font-bold text-5xl sm:text-7xl md:text-8xl tracking-tight text-white leading-none block">
+                <span className="font-serif font-normal text-5xl sm:text-7xl md:text-8xl tracking-tight text-white leading-none block">
                   {item.value}
                 </span>
               </div>

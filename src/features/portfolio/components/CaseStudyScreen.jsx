@@ -413,7 +413,7 @@ const CaseStudyScreen = ({
               <span className="text-xs font-mono uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
                 NEXT CASE STUDY ↗
               </span>
-              <h3 className="font-display text-2xl sm:text-4xl font-bold tracking-tight">
+              <h3 className="font-serif text-2xl sm:text-4xl font-normal tracking-tight">
                 {nextProject.client}
               </h3>
               <p className="font-sans text-sm text-[#1e1e20]/70 group-hover:text-white/70 mt-1">

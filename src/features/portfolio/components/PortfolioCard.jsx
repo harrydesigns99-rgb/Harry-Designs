@@ -121,7 +121,7 @@ const PortfolioCard = ({ item, index, onSelect }) => {
         <div className="text-xs uppercase tracking-wider text-white/60 font-medium font-mono">
           {item.client}
         </div>
-        <h4 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-white leading-snug">
+        <h4 className="font-serif text-2xl sm:text-3xl font-normal tracking-tight text-white leading-snug">
           {item.title}
         </h4>
         <p className="text-xs sm:text-sm text-white/75 line-clamp-2 leading-relaxed">

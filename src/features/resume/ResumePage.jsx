@@ -115,7 +115,7 @@ const ResumePage = ({ onNavigateHome }) => {
           <h2 className="section-kicker self-start">EXPERIENCE</h2>
           <div className="space-y-12">
             <article>
-              <div className="flex flex-wrap justify-between gap-3"><h3 className="font-display text-3xl">Freelance Graphic &amp; Digital Designer</h3><span className="text-sm text-eerie/50">Jan 2020 – Present</span></div>
+              <div className="flex flex-wrap justify-between gap-3"><h3 className="font-serif font-normal text-2xl sm:text-3xl text-[#18181b]">Freelance Graphic &amp; Digital Designer</h3><span className="text-sm text-eerie/50">Jan 2020 – Present</span></div>
               <p className="mt-2 text-crimson font-medium">Harry Designs</p>
               <ul className="mt-5 space-y-3 text-eerie/70 leading-relaxed list-disc pl-5">
                 <li>Produced high-volume creative across digital ads, social content, packaging, and print/event collateral for 60+ clients.</li>
@@ -127,7 +127,7 @@ const ResumePage = ({ onNavigateHome }) => {
               </ul>
             </article>
             <article>
-              <div className="flex flex-wrap justify-between gap-3"><h3 className="font-display text-3xl">System Engineer</h3><span className="text-sm text-eerie/50">Jan 2024 – Present</span></div>
+              <div className="flex flex-wrap justify-between gap-3"><h3 className="font-serif font-normal text-2xl sm:text-3xl text-[#18181b]">System Engineer</h3><span className="text-sm text-eerie/50">Jan 2024 – Present</span></div>
               <p className="mt-2 text-crimson font-medium">Tata Consultancy Services (TCS)</p>
               <ul className="mt-5 space-y-3 text-eerie/70 leading-relaxed list-disc pl-5">
                 <li>Collaborate daily with a US-based retail client team across overlapping time zones.</li>
@@ -141,13 +141,13 @@ const ResumePage = ({ onNavigateHome }) => {
         <section className="grid lg:grid-cols-[0.35fr_0.65fr] gap-10 py-16 border-b border-eerie/20">
           <h2 className="section-kicker self-start">Selected projects</h2>
           <div className="divide-y divide-eerie/15 border-y border-eerie/15">
-            {projects.map(([name, type, result]) => <div key={name} className="py-5 grid md:grid-cols-[1fr_1fr] gap-2"><h3 className="font-display text-2xl">{name}</h3><p className="text-eerie/65">{type}<br /><span className="text-sm">{result}</span></p></div>)}
+            {projects.map(([name, type, result]) => <div key={name} className="py-5 grid md:grid-cols-[1fr_1fr] gap-2"><h3 className="font-serif font-normal text-2xl text-[#18181b]">{name}</h3><p className="text-eerie/65">{type}<br /><span className="text-sm">{result}</span></p></div>)}
           </div>
         </section>
 
         <section className="grid md:grid-cols-2 gap-12 py-16">
           <div><h2 className="section-kicker mb-6">Tools &amp; software</h2><p className="text-lg leading-relaxed text-eerie/70">{tools.join(' • ')}</p></div>
-          <div><h2 className="section-kicker mb-6">Education</h2><h3 className="font-display text-2xl">Bachelor of Engineering</h3><p className="mt-2 text-eerie/65">Electronics &amp; Communication Engineering</p><p className="mt-1 text-sm text-eerie/50">Ramco Institute of Technology, Rajapalayam / 2019 – 2023</p></div>
+          <div><h2 className="section-kicker mb-6">Education</h2><h3 className="font-serif font-normal text-2xl text-[#18181b]">Bachelor of Engineering</h3><p className="mt-2 text-eerie/65">Electronics &amp; Communication Engineering</p><p className="mt-1 text-sm text-eerie/50">Ramco Institute of Technology, Rajapalayam / 2019 – 2023</p></div>
         </section>
       </div>
     </main>

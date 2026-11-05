@@ -495,11 +495,11 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
           <div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#8b151b] animate-pulse" />
-              <span className="text-[10px] tracking-[0.2em] uppercase text-[#8b151b] font-mono font-bold">
+              <span className="text-[11px] tracking-[0.22em] uppercase text-[#8b151b] font-mono font-bold">
                 {isEditing ? 'Editing Project Case Study' : 'New Project Case Study'}
               </span>
             </div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-1 text-[#1e1e20] tracking-tight">
+            <h2 className="font-serif text-2xl md:text-3xl font-normal mt-1 text-[#18181b] tracking-tight">
               {formData.client ? `${formData.client} — ${formData.title || 'Untitled'}` : 'Case Study Details'}
             </h2>
           </div>
@@ -977,11 +977,14 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#FC7A69] animate-pulse" />
-                    <span className="text-xs font-mono uppercase tracking-[0.2em] font-bold text-[#1e1e20]">
-                      Outer Showcase Multi-Image Carousel (Auto-Scrolling)
+                    <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-[#FC7A69] font-bold">
+                      Outer Showcase Reel
                     </span>
                   </div>
-                  <p className="text-[11px] text-[#1e1e20]/60 font-sans mt-0.5">
+                  <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#18181b] tracking-tight mt-1">
+                    Multi-Image Carousel &amp; Timed Auto-Scroll
+                  </h3>
+                  <p className="text-xs text-[#1e1e20]/70 font-sans mt-1 leading-relaxed">
                     Add multiple design artboards, mockups, or packaging angles. These images auto-advance at an interval on your homepage card and pause when hovered.
                   </p>
                 </div>
@@ -1025,9 +1028,13 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                 {/* Left: Images List & Sorting */}
                 <div className="md:col-span-7 space-y-3">
-                  <div className="flex items-center justify-between text-xs font-mono text-[#1e1e20]/60">
-                    <span>Active Slides ({formData.images?.length || 1})</span>
-                    <span>Reorder or set primary</span>
+                  <div className="flex items-center justify-between text-xs pb-1 border-b border-black/[0.06]">
+                    <span className="font-serif text-base font-normal text-[#18181b] tracking-tight">
+                      Active Slides ({formData.images?.length || 1})
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-[#1e1e20]/50">
+                      Reorder or set primary
+                    </span>
                   </div>
 
                   <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
@@ -1152,9 +1159,13 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
 
                 {/* Right: Real-time Live Mini Preview */}
                 <div className="md:col-span-5 space-y-2">
-                  <div className="flex items-center justify-between text-xs font-mono text-[#1e1e20]/60">
-                    <span>Live Card Preview</span>
-                    <span className="text-[10px] text-[#FC7A69] font-bold">● Auto-cycling</span>
+                  <div className="flex items-center justify-between text-xs pb-1 border-b border-black/[0.06]">
+                    <span className="font-serif text-base font-normal text-[#18181b] tracking-tight">
+                      Live Card Preview
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#FC7A69] font-bold">
+                      ● Auto-cycling
+                    </span>
                   </div>
 
                   <div className="rounded-2xl overflow-hidden border border-black/10 shadow-sm bg-neutral-900">
@@ -1540,7 +1551,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       placeholder="e.g. Too many commands. Not enough clarity."
                       value={currentChapter?.headline || ''}
                       onChange={(e) => updateStoryChapter(activeStoryChapterIndex, 'headline', e.target.value)}
-                      className="w-full px-4 py-3 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-base font-display font-bold text-[#1e1e20] focus:border-black outline-none"
+                      className="w-full px-4 py-3 bg-[#f5f4f0]/50 rounded-2xl border border-black/15 text-lg font-serif font-normal text-[#18181b] focus:border-black outline-none"
                     />
                   </div>
 
@@ -1674,7 +1685,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                       <div className="font-mono text-xs uppercase tracking-widest text-[#1e1e20]/50">
                         {currentChapter?.step} / {currentChapter?.phase?.toUpperCase()}
                       </div>
-                      <h3 className="font-display text-xl sm:text-2xl font-bold text-[#1e1e20] leading-tight">
+                      <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#18181b] leading-tight">
                         {currentChapter?.headline || 'Headline will appear here'}
                       </h3>
                       <div className="text-xs sm:text-sm text-[#1e1e20]/80 leading-relaxed space-y-2 font-sans">
@@ -1772,7 +1783,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           placeholder="e.g. 14% or 10K or $2.4M"
                           value={stat.value || ''}
                           onChange={(e) => updateImpactItem(sIdx, 'value', e.target.value)}
-                          className="w-full px-4 py-2 bg-white rounded-xl border border-black/15 text-lg font-display font-bold text-[#1e1e20] focus:border-black outline-none font-mono"
+                          className="w-full px-4 py-2 bg-white rounded-xl border border-black/15 text-lg font-serif font-normal text-[#18181b] focus:border-black outline-none"
                         />
                       </div>
                       <div className="sm:col-span-8">
@@ -1816,7 +1827,7 @@ const ProjectEditorModal = ({ project, onSave, onClose }) => {
                           } grid grid-cols-1 md:grid-cols-12 gap-3 items-center`}
                         >
                           <div className="md:col-span-5">
-                            <span className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight block">
+                            <span className="font-serif font-normal text-3xl sm:text-5xl text-white tracking-tight block">
                               {item.value || '0'}
                             </span>
                           </div>

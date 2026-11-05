@@ -425,7 +425,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       {/* Text */}
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <span className="font-display font-bold text-base sm:text-lg text-[#1e1e20]">
+                          <span className="font-serif font-normal text-base sm:text-lg text-[#18181b]">
                             {project.client}
                           </span>
                           <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-[#f5f4f0] border border-black/10 text-[#1e1e20]/70 font-medium">
@@ -547,7 +547,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold block mb-1">
                 Visual Curation
               </span>
-              <h3 className="font-display font-bold text-2xl text-[#1e1e20] mb-2">
+              <h3 className="font-serif font-normal text-2xl sm:text-3xl text-[#18181b] tracking-tight mb-2">
                 Parallax Gallery &amp; Carousel Artwork
               </h3>
               <p className="text-xs sm:text-sm text-[#1e1e20]/70 mb-6 leading-relaxed max-w-2xl font-sans">
@@ -729,7 +729,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold block mb-1">
                   Commercial Credibility
                 </span>
-                <h3 className="font-display font-bold text-2xl text-[#1e1e20]">
+                <h3 className="font-serif font-normal text-2xl sm:text-3xl text-[#18181b] tracking-tight">
                   Client Brands &amp; Marquee Logos
                 </h3>
                 <p className="text-xs sm:text-sm text-[#1e1e20]/70 mt-1 font-sans">
@@ -918,7 +918,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold">
                         Client Marquee Editor
                       </span>
-                      <h3 className="font-display font-bold text-xl text-[#1e1e20] mt-0.5">
+                      <h3 className="font-serif font-normal text-xl sm:text-2xl text-[#18181b] tracking-tight mt-0.5">
                         Edit Client Brand #{editingBrandIndex + 1}
                       </h3>
                     </div>
@@ -1059,7 +1059,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
                   <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold">
                     Founder Atelier Identity
                   </span>
-                  <h3 className="font-display font-bold text-2xl text-[#1e1e20] mt-1">
+                  <h3 className="font-serif font-normal text-2xl sm:text-3xl text-[#18181b] tracking-tight mt-1">
                     Founder Profile &amp; Photo
                   </h3>
                   <p className="text-xs sm:text-sm text-[#1e1e20]/65 mt-1 font-sans">
@@ -1450,7 +1450,7 @@ const AdminDashboard = ({ onNavigateHome }) => {
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#8b151b] font-bold block mb-1">
                 Persistence &amp; Git Sync
               </span>
-              <h3 className="font-display font-bold text-2xl text-[#1e1e20] mb-2">
+              <h3 className="font-serif font-normal text-2xl sm:text-3xl text-[#18181b] tracking-tight mb-2">
                 Export Changes to Codebase
               </h3>
               <p className="text-xs sm:text-sm text-[#1e1e20]/70 leading-relaxed max-w-3xl mb-6 font-sans">

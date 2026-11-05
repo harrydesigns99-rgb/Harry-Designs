@@ -40,7 +40,7 @@ const AdminAuthGate = ({ onLogin, onCancel }) => {
         </div>
 
         <div className="mb-6">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-[#1e1e20]">
+          <h2 className="font-serif font-normal text-2xl sm:text-3xl tracking-tight text-[#18181b]">
             Harry Designs CMS
           </h2>
           <p className="text-xs sm:text-sm text-[#1e1e20]/70 mt-1 leading-relaxed">

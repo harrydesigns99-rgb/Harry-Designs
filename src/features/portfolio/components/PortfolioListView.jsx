@@ -140,7 +140,7 @@ const PortfolioListView = ({ items, onSelect }) => {
               </span>
 
               <div className="hidden md:block col-span-4">
-                <h4 className="font-display text-xl sm:text-2xl font-medium tracking-tight text-[#1d1d1f] group-hover:text-crimson transition-colors">
+                <h4 className="font-serif text-xl sm:text-2xl font-normal tracking-tight text-[#18181b] group-hover:text-black transition-colors">
                   {item.client}
                 </h4>
                 <p className="text-xs text-[#86868b] mt-0.5">{item.title}</p>
