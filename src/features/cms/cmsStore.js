@@ -36,7 +36,7 @@ export const DEFAULT_PROFILE = {
   specialization: 'Brand Systems & Digital Products',
   rigor: 'Figma & Production Rigor',
   location: 'Chennai • Global Remote',
-  email: 'harrydesigns99@gmail.com',
+  email: 'sivakumarhariharan007@gmail.com',
   phone: '+91 86101 74188',
   philosophy: 'Translating founder ambition into unforgettable brand identities, intuitive digital products, and tactile commercial equity.',
   statusText: 'Available for Commissions',
