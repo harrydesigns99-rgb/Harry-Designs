@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { sound } from '@/utils/audio';
 import StudioShuttle from '@/components/StudioShuttle';
-import HeroToolConstellation from './HeroToolConstellation';
+import HeroToolConstellation, { HeroToolMobileDock } from './HeroToolConstellation';
 import { useCMS } from '@/features/cms';
 
 const HeroSection = () => {
@@ -85,19 +85,25 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-serif text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] text-[#18181b] font-normal tracking-tight leading-[1.18] sm:leading-[1.12] max-w-4xl lg:max-w-5xl mx-auto"
+          className="font-serif text-[1.95rem] xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] text-[#18181b] font-normal tracking-tight leading-[1.18] sm:leading-[1.12] max-w-4xl lg:max-w-5xl mx-auto"
         >
           {heroHeadline}
         </motion.h1>
 
-        {/* 3. Subline with TCS Role */}
+        {/* 3. Subline with TCS Role (Clean, concise on mobile) */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 sm:mt-8 md:mt-10 flex flex-wrap items-center justify-center gap-2 text-center text-xs sm:text-sm md:text-base text-[#52525b] font-sans font-normal max-w-3xl leading-relaxed"
+          className="mt-5 sm:mt-8 md:mt-10 flex flex-wrap items-center justify-center gap-2 text-center text-xs sm:text-sm md:text-base text-[#52525b] font-sans font-normal max-w-3xl leading-relaxed"
         >
-          <span>{heroSubline}</span>
+          {/* Mobile optimized concise kicker vs desktop full detail */}
+          <span className="sm:hidden font-medium text-[#3f3f46]">
+            Visual Designer at TCS • Brand &amp; Digital Products
+          </span>
+          <span className="hidden sm:inline">
+            {heroSubline}
+          </span>
 
           {heroBadgeText ? (
             <span className="inline-flex items-center gap-1.5 align-middle px-2.5 py-0.5 rounded-lg bg-white/95 border border-black/10 shadow-2xs text-[#18181b] font-medium text-xs sm:text-sm">
@@ -109,6 +115,16 @@ const HeroSection = () => {
               <span>{heroBadgeText}</span>
             </span>
           ) : null}
+        </motion.div>
+
+        {/* 4. Mobile Tool Dock: all 6 tools floating together on mobile view */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="sm:hidden mt-5 w-full flex justify-center"
+        >
+          <HeroToolMobileDock />
         </motion.div>
       </div>
 

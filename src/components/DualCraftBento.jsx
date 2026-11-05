@@ -43,8 +43,13 @@ const DualCraftBento = ({ onSelectCategory }) => {
             <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#18181b] leading-[1.12]">
               Two Sides of One Craft.
             </h2>
-            <p className="mt-4 font-sans text-xs sm:text-base text-[#1e1e20]/75 leading-relaxed font-normal">
-              Most design practices isolate the physical brand from the digital product. I operate at the exact convergence point: engineering shelf-dominant brand codes that translate into fluid, human-centered software interfaces.
+            <p className="mt-3 sm:mt-4 font-sans text-xs sm:text-base text-[#1e1e20]/75 leading-relaxed font-normal">
+              <span className="sm:hidden">
+                Bridging physical packaging and brand codes into fluid, human-centered software interfaces.
+              </span>
+              <span className="hidden sm:inline">
+                Most design practices isolate the physical brand from the digital product. I operate at the exact convergence point: engineering shelf-dominant brand codes that translate into fluid, human-centered software interfaces.
+              </span>
             </p>
           </div>
 
@@ -92,68 +97,68 @@ const DualCraftBento = ({ onSelectCategory }) => {
                 <h3 className="font-serif text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#18181b] leading-[1.2]">
                   Brand Identity, Packaging &amp; Visual Communication
                 </h3>
-                <p className="mt-3 font-sans text-xs sm:text-sm text-[#1e1e20]/75 leading-relaxed">
+                <p className="mt-3 font-sans text-xs sm:text-sm text-[#1e1e20]/75 leading-relaxed hidden sm:block">
                   Building distinctive brand experiences through strategic visual identities, thoughtful packaging, impactful print designs, and cohesive brand communication.
                 </p>
               </div>
 
               {/* 4 Brand Pillars (2x2 Grid with icons) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5 pt-1 sm:pt-2">
                 {/* 01 / BRAND IDENTITY SYSTEMS */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuPenTool className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#b91c1c] block">
                       01 / BRAND IDENTITY SYSTEMS
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Distinctive logos, visual languages, typography, colour systems, and cohesive brand guidelines.
                     </p>
                   </div>
                 </div>
 
                 {/* 02 / PACKAGING DESIGN */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuPackage className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#b91c1c] block">
                       02 / PACKAGING DESIGN
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Creative packaging concepts, label design, product visualisation, and production-ready artwork.
                     </p>
                   </div>
                 </div>
 
                 {/* 03 / PRINT & COLLATERAL DESIGN */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuBookOpen className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#b91c1c] block">
                       03 / PRINT &amp; COLLATERAL DESIGN
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Brochures, company profiles, catalogues, stationery, and marketing materials.
                     </p>
                   </div>
                 </div>
 
                 {/* 04 / BRAND COMMUNICATION */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#b91c1c] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuLayers className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#b91c1c] block">
                       04 / BRAND COMMUNICATION
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Consistent visual storytelling across campaigns, promotional materials, and brand touchpoints.
                     </p>
                   </div>
@@ -163,7 +168,7 @@ const DualCraftBento = ({ onSelectCategory }) => {
 
             {/* Bottom Action Footer */}
             <div className="pt-4 border-t border-black/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-              <span className="text-[11px] font-mono text-[#1e1e20]/50 tracking-tight">
+              <span className="text-[11px] font-mono text-[#1e1e20]/50 tracking-tight hidden sm:inline">
                 Medium: Identity &bull; Packaging &bull; Print &bull; Digital
               </span>
               <button
@@ -212,68 +217,68 @@ const DualCraftBento = ({ onSelectCategory }) => {
                 <h3 className="font-serif text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#18181b] leading-[1.2]">
                   User-Centred Design, Interfaces &amp; Digital Experiences
                 </h3>
-                <p className="mt-3 font-sans text-xs sm:text-sm text-[#1e1e20]/75 leading-relaxed">
+                <p className="mt-3 font-sans text-xs sm:text-sm text-[#1e1e20]/75 leading-relaxed hidden sm:block">
                   Creating intuitive digital experiences through user-focused layouts, clean visual systems, meaningful iconography, and seamless interactions.
                 </p>
               </div>
 
               {/* 4 UI/UX Pillars (2x2 Grid with icons) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5 pt-1 sm:pt-2">
                 {/* 01 / USER-CENTRED DESIGN */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuUsers className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#4338ca] block">
                       01 / USER-CENTRED DESIGN
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Understanding user needs and translating them into intuitive, accessible, and purposeful experiences.
                     </p>
                   </div>
                 </div>
 
                 {/* 02 / UI DESIGN & LAYOUTS */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuCreditCard className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#4338ca] block">
                       02 / UI DESIGN &amp; LAYOUTS
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Clean interfaces, structured layouts, visual hierarchy, typography, and consistent design patterns.
                     </p>
                   </div>
                 </div>
 
                 {/* 03 / ICONOGRAPHY & DESIGN SYSTEMS */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuBox className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#4338ca] block">
                       03 / ICONOGRAPHY &amp; DESIGN SYSTEMS
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Custom icon sets, reusable components, scalable design systems, and consistent visual languages.
                     </p>
                   </div>
                 </div>
 
                 {/* 04 / INTERACTION & PROTOTYPING */}
-                <div className="p-4 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-start gap-3.5 hover:bg-[#f5f4ee] transition-colors">
-                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 mt-0.5">
+                <div className="p-3 sm:p-4.5 rounded-2xl bg-[#faf9f5] border border-black/[0.05] flex items-center sm:items-start gap-3 sm:gap-3.5 hover:bg-[#f5f4ee] transition-colors">
+                  <div className="text-[#4338ca] w-6 h-6 flex-shrink-0 flex items-center justify-center">
                     <LuMousePointerClick className="w-5 h-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5 sm:space-y-1">
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase font-bold tracking-wider text-[#4338ca] block">
                       04 / INTERACTION &amp; PROTOTYPING
                     </span>
-                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed">
+                    <p className="text-xs sm:text-[13px] font-sans text-[#1e1e20]/80 leading-relaxed hidden sm:block">
                       Interactive prototypes, intuitive navigation, responsive experiences, and seamless user journeys.
                     </p>
                   </div>
@@ -283,7 +288,7 @@ const DualCraftBento = ({ onSelectCategory }) => {
 
             {/* Bottom Action Footer */}
             <div className="pt-4 border-t border-black/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-              <span className="text-[11px] font-mono text-[#1e1e20]/50 tracking-tight">
+              <span className="text-[11px] font-mono text-[#1e1e20]/50 tracking-tight hidden sm:inline">
                 Medium: Figma &bull; Web &bull; Mobile &bull; Digital Products
               </span>
               <button

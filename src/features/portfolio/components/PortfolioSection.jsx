@@ -123,7 +123,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                 <span className="font-mono text-xs uppercase tracking-wider font-bold text-indigo-950 block">
                   THE INTERFACE ATELIER — DIGITAL PRODUCTS &amp; SOFTWARE SYSTEMS
                 </span>
-                <p className="text-xs text-indigo-900/70 mt-0.5 font-sans">
+                <p className="text-xs text-indigo-900/70 mt-0.5 font-sans hidden sm:block">
                   Human-centered mobile apps, multi-brand design tokens, complex workflows, and living digital experiences.
                 </p>
               </div>
@@ -163,17 +163,17 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                 />
 
                 {/* Card Content Footer */}
-                <div className="p-5 sm:p-8 flex flex-col justify-between flex-1">
+                <div className="p-4 sm:p-7 flex flex-col justify-between flex-1">
                   <div>
                     {/* Eyebrow */}
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#FC7A69] font-semibold">
+                    <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
+                      <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.2em] text-[#FC7A69] font-semibold">
                         {project.category}
                       </span>
                       {project.client && (
                         <>
                           <span className="text-black/30">•</span>
-                          <span className="text-[11px] font-mono uppercase tracking-wider text-black/60 font-medium">
+                          <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-black/60 font-medium">
                             {project.client}
                           </span>
                         </>
@@ -181,25 +181,25 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                     </div>
 
                     {/* Card Title */}
-                    <h3 className="font-serif text-xl sm:text-2xl font-normal tracking-tight text-[#18181b] group-hover:text-black transition-colors">
+                    <h3 className="font-serif text-lg sm:text-2xl font-normal tracking-tight text-[#18181b] group-hover:text-black transition-colors">
                       {project.title}
                     </h3>
 
-                    {/* Summary */}
-                    <p className="font-sans text-sm sm:text-base text-[#1e1e20]/70 mt-2.5 line-clamp-2 leading-relaxed">
+                    {/* Summary - single line on mobile for clean breathing room */}
+                    <p className="font-sans text-xs sm:text-base text-[#1e1e20]/70 mt-1.5 sm:mt-2.5 line-clamp-1 sm:line-clamp-2 leading-relaxed">
                       {project.description || project.brief || project.approach}
                     </p>
                   </div>
 
                   {/* CTA Bar */}
-                  <div className="mt-6 pt-4 border-t border-black/[0.06] flex items-center justify-between">
-                    <span className="text-xs font-mono uppercase tracking-wider text-[#1e1e20]/50 group-hover:text-[#1e1e20] transition-colors">
+                  <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-black/[0.06] flex items-center justify-between">
+                    <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-[#1e1e20]/50 group-hover:text-[#1e1e20] transition-colors">
                       {project.metric || 'Case Study Available'}
                     </span>
 
                     {/* Icon CTA Button */}
-                    <div className="w-10 h-10 rounded-full bg-[#1e1e20] group-hover:bg-[#FC7A69] text-white flex items-center justify-center transition-all duration-300 shadow-sm group-hover:scale-110">
-                      <span className="text-sm font-bold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#1e1e20] group-hover:bg-[#FC7A69] text-white flex items-center justify-center transition-all duration-300 shadow-sm group-hover:scale-110">
+                      <span className="text-xs sm:text-sm font-bold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
                         ↗
                       </span>
                     </div>

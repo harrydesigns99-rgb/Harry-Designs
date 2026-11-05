@@ -43,7 +43,9 @@ const ShowcaseMediaCarousel = ({
 
   // Safe index within bounds
   const safeIndex = currentIndex < total ? currentIndex : 0;
-  const currentImg = validImages[safeIndex] || fallbackImage;
+  const rawCurrentImg = validImages[safeIndex] || fallbackImage;
+  const currentImg = typeof rawCurrentImg === 'string' ? encodeURI(rawCurrentImg) : rawCurrentImg;
+  const safeFallback = typeof fallbackImage === 'string' ? encodeURI(fallbackImage) : fallbackImage;
 
   const handleNext = useCallback((e) => {
     if (e) e.stopPropagation();
@@ -109,14 +111,13 @@ const ShowcaseMediaCarousel = ({
   // If only 1 image, render clean static image with zero overhead
   if (!isMulti) {
     return (
-      <div className={`relative w-full ${aspectRatio} bg-[#18181b] overflow-hidden ${className}`}>
+      <div className={`relative w-full ${aspectRatio} min-h-[220px] xs:min-h-[260px] sm:min-h-0 bg-[#18181b] overflow-hidden ${className}`}>
         <img
           src={currentImg}
           alt={alt}
-          loading="lazy"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = fallbackImage;
+            e.currentTarget.src = safeFallback;
           }}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
@@ -127,14 +128,14 @@ const ShowcaseMediaCarousel = ({
 
   return (
     <div
-      className={`relative w-full ${aspectRatio} bg-[#18181b] overflow-hidden select-none ${className}`}
+      className={`relative w-full ${aspectRatio} min-h-[220px] xs:min-h-[260px] sm:min-h-0 bg-[#18181b] overflow-hidden select-none ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {/* Animated Crossfade + Micro-Drift Image Layer */}
-      <AnimatePresence initial={false} mode="popLayout">
+      <AnimatePresence initial={false}>
         <motion.div
           key={currentImg}
           initial={{ opacity: 0, scale: 1.03 }}
@@ -146,10 +147,9 @@ const ShowcaseMediaCarousel = ({
           <img
             src={currentImg}
             alt={`${alt} - Artboard ${safeIndex + 1}`}
-            loading="lazy"
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = fallbackImage;
+              e.currentTarget.src = safeFallback;
             }}
             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />

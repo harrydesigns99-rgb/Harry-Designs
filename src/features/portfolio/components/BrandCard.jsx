@@ -23,9 +23,8 @@ const BrandCard = ({ brand, index, hoveredItem, setHoveredItem, duplicate = fals
         transition={TRANSITIONS.fast}
       >
         <img
-          src={brand.logo}
+          src={typeof brand.logo === 'string' ? encodeURI(brand.logo) : brand.logo}
           alt={brand.name}
-          loading="lazy"
           className="max-w-[85%] max-h-full object-contain mix-blend-multiply transition-opacity duration-200"
         />
       </motion.div>

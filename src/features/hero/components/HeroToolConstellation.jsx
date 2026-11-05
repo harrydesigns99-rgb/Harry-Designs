@@ -33,7 +33,6 @@ const CONSTELLATION_TOOLS = [
     delay: 2.5,
     accentGlow: 'rgba(234, 88, 12, 0.25)',
     accentColor: '#ea580c',
-    mobileHidden: true,
   },
   {
     id: 'indesign',
@@ -45,7 +44,6 @@ const CONSTELLATION_TOOLS = [
     delay: 1.8,
     accentGlow: 'rgba(225, 29, 72, 0.25)',
     accentColor: '#e11d48',
-    mobileHidden: true,
   },
   {
     id: 'premiere',
@@ -74,7 +72,7 @@ const CONSTELLATION_TOOLS = [
 const HeroToolConstellation = () => {
   return (
     <div
-      className="absolute inset-0 pointer-events-none select-none z-10 overflow-hidden"
+      className="hidden sm:block absolute inset-0 pointer-events-none select-none z-10 overflow-hidden"
       style={{ perspective: 1000 }}
     >
       <div className="relative w-full max-w-6xl h-full mx-auto">
@@ -84,9 +82,7 @@ const HeroToolConstellation = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: tool.delay * 0.3 }}
-            className={`absolute ${tool.position} ${
-              tool.mobileHidden ? 'hidden sm:block' : ''
-            } pointer-events-auto cursor-pointer group`}
+            className={`absolute ${tool.position} pointer-events-auto cursor-pointer group`}
             onClick={() => sound.playPop()}
           >
             <motion.div
@@ -170,6 +166,55 @@ const HeroToolConstellation = () => {
           </motion.div>
         ))}
       </div>
+    </div>
+  );
+};
+
+/**
+ * HeroToolMobileDock
+ * Dedicated tactile tool row for mobile view so Figma, Ps, Ai, Id, Pr, Xd are 100% visible and interactive.
+ */
+export const HeroToolMobileDock = () => {
+  return (
+    <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-white/85 backdrop-blur-md border border-black/[0.08] shadow-[0_8px_20px_-6px_rgba(0,0,0,0.06)]">
+      {CONSTELLATION_TOOLS.map((tool) => (
+        <motion.div
+          key={`mob-dock-${tool.id}`}
+          animate={{
+            y: [-1.5, 2, -1.5],
+          }}
+          transition={{
+            duration: tool.duration * 0.35,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: tool.delay * 0.25,
+          }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => sound.playPop()}
+          className="relative w-8 h-8 rounded-xl flex items-center justify-center bg-white border border-black/[0.08] shadow-2xs cursor-pointer"
+          style={{
+            boxShadow: `0 2px 10px ${tool.accentGlow}`,
+          }}
+          title={tool.name}
+        >
+          {tool.type === 'figma' ? (
+            <svg viewBox="0 0 38 57" className="w-3.5 h-5" fill="none">
+              <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE" />
+              <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83" />
+              <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262" />
+              <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E" />
+              <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF" />
+            </svg>
+          ) : (
+            <span
+              className="font-sans font-black text-xs tracking-tight"
+              style={{ color: tool.accentColor }}
+            >
+              {tool.code}
+            </span>
+          )}
+        </motion.div>
+      ))}
     </div>
   );
 };

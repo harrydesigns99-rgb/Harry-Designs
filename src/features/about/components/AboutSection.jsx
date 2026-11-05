@@ -44,7 +44,7 @@ const AboutSection = () => {
       <div className="max-w-6xl mx-auto">
         {/* Editorial Manifesto Statement */}
         <div className="max-w-5xl">
-          <p className="font-serif text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.4rem] font-normal tracking-tight leading-[1.15] sm:leading-[1.1] text-[#f5f4f0]">
+          <p className="font-serif text-xl xs:text-2xl sm:text-5xl md:text-6xl lg:text-[4.4rem] font-normal tracking-tight leading-[1.25] sm:leading-[1.1] text-[#f5f4f0]">
             Good design doesn&apos;t ask people to adapt to the brand. It understands how they already live, then{' '}
             <span className="italic font-light text-white underline decoration-[#FC7A69] underline-offset-8">
               finds its place
