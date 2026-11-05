@@ -43,10 +43,10 @@ const TestimonialsSection = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="mb-10 sm:mb-16">
-          <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
-            ENDORSEMENTS &amp; IMPACT
+          <span className="font-mono text-xs uppercase tracking-[0.22em] text-[#8b151b] font-bold block mb-2">
+            ✦ ENDORSEMENTS &amp; IMPACT
           </span>
-          <h2 className="font-display text-2xl xs:text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#1e1e20]">
+          <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#18181b] leading-[1.12]">
             What partners say
           </h2>
         </div>
@@ -68,7 +68,7 @@ const TestimonialsSection = () => {
 
               <div className="pt-6 mt-6 border-t border-black/[0.06] flex items-center justify-between">
                 <div>
-                  <h4 className="font-display text-base font-bold text-[#1e1e20]">
+                  <h4 className="font-sans text-base font-semibold text-[#18181b]">
                     {item.name}
                   </h4>
                   <p className="font-sans text-xs text-[#1e1e20]/60">

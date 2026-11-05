@@ -237,9 +237,9 @@ const CaseStudyScreen = ({
       {/* ==================== MAIN CASE STUDY CONTENT ==================== */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-20 space-y-14 sm:space-y-18">
         {/* -------------------- SECTION 01: THE HOOK (cs-hook) -------------------- */}
-        <section id="screen-hero" className="scroll-mt-24 space-y-8 text-center sm:text-left">
+        <section id="screen-hero" className="scroll-mt-24 space-y-6 sm:space-y-8 text-left">
           {/* Eyebrow */}
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+          <div className="flex flex-wrap items-center justify-start gap-2.5">
             <span className="px-3.5 py-1 rounded-full bg-[#1e1e20] text-[#f5f4f0] text-xs font-mono font-medium uppercase tracking-wider">
               CASE STUDY #{currentProject.id.toString().padStart(2, '0')}
             </span>
@@ -254,7 +254,7 @@ const CaseStudyScreen = ({
           </div>
 
           {/* Grand Headline matching shriyap.com */}
-          <h1 className="font-display text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-bold tracking-tight text-[#1e1e20] leading-[1.12] sm:leading-[1.06]">
+          <h1 className="font-serif text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-normal tracking-tight text-[#18181b] leading-[1.14] sm:leading-[1.08]">
             <WordReveal
               text={`${currentProject.title} for ${currentProject.client}`}
               highlightWords={[currentProject.client]}
@@ -272,7 +272,7 @@ const CaseStudyScreen = ({
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
                 MY ROLE
               </span>
-              <p className="font-display text-sm sm:text-base font-bold text-[#1e1e20]">
+              <p className="font-sans text-sm sm:text-base font-semibold text-[#18181b]">
                 {currentProject.role ||
                   (currentProject.category === 'uiux' || currentProject.category === 'digital'
                     ? 'Creative UI/UX & Digital Architect'
@@ -283,7 +283,7 @@ const CaseStudyScreen = ({
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
                 CLIENT / SECTOR
               </span>
-              <p className="font-display text-sm sm:text-base font-bold text-[#1e1e20]">
+              <p className="font-sans text-sm sm:text-base font-semibold text-[#18181b]">
                 {currentProject.client}
               </p>
             </div>
@@ -291,7 +291,7 @@ const CaseStudyScreen = ({
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
                 YEAR / DURATION
               </span>
-              <p className="font-display text-sm sm:text-base font-bold text-[#1e1e20]">
+              <p className="font-sans text-sm sm:text-base font-semibold text-[#18181b]">
                 {currentProject.year || '2024'} • Complete System
               </p>
             </div>
@@ -299,7 +299,7 @@ const CaseStudyScreen = ({
               <span className="font-mono text-xs uppercase tracking-wider text-[#1e1e20]/50 block mb-1">
                 PRODUCTION RIGOR
               </span>
-              <p className="font-display text-sm sm:text-base font-bold text-emerald-700">
+              <p className="font-sans text-sm sm:text-base font-semibold text-emerald-700">
                 {currentProject.productionRigor ||
                   (currentProject.category === 'uiux'
                     ? 'Design System & React Tokens'

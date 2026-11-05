@@ -46,10 +46,10 @@ const ContactSection = () => {
     >
       <div className="max-w-5xl mx-auto">
         <div className="mb-12 sm:mb-16">
-          <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#f5f4f0]/75 font-semibold block mb-2">
-            GET IN TOUCH
+          <span className="font-mono text-xs uppercase tracking-[0.22em] text-[#FC7A69] font-bold block mb-2">
+            ✦ GET IN TOUCH
           </span>
-          <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#f5f4f0]">
+          <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight text-[#f5f4f0] leading-[1.12]">
             <WordReveal text="Let's build something durable." />
           </h2>
         </div>
@@ -62,8 +62,8 @@ const ContactSection = () => {
             data-cursor="COPY EMAIL 📋"
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
-            <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
-              Drop me a direct <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">email</strong>
+            <span className="font-serif text-2xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
+              Drop me a direct <strong className="font-normal italic underline decoration-[#FC7A69] underline-offset-8">email</strong>
             </span>
             <span className="flex items-center gap-2 text-sm sm:text-base font-mono uppercase tracking-wider text-[#f5f4f0]/75 group-hover:text-white">
               <span className="hidden sm:inline">Copy &amp; write</span>
@@ -90,8 +90,8 @@ const ContactSection = () => {
             data-cursor="CHAT ON WHATSAPP ↗"
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
-            <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
-              Direct <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">WhatsApp / call</strong>
+            <span className="font-serif text-2xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
+              Direct <strong className="font-normal italic underline decoration-[#FC7A69] underline-offset-8">WhatsApp / call</strong>
             </span>
             <span className="flex items-center gap-2 text-sm sm:text-base font-mono uppercase tracking-wider text-[#f5f4f0]/75 group-hover:text-white">
               <span className="hidden sm:inline">{phone}</span>
@@ -118,8 +118,8 @@ const ContactSection = () => {
             data-cursor="OPEN LINKEDIN ↗"
             className="group py-8 sm:py-10 flex items-center justify-between cursor-pointer transition-all duration-300 hover:px-4"
           >
-            <span className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
-              Connect on <strong className="font-bold underline decoration-[#FC7A69] underline-offset-8">LinkedIn</strong>
+            <span className="font-serif text-2xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[#f5f4f0] group-hover:text-white transition-colors">
+              Connect on <strong className="font-normal italic underline decoration-[#FC7A69] underline-offset-8">LinkedIn</strong>
             </span>
             <span className="flex items-center gap-2 text-sm sm:text-base font-mono uppercase tracking-wider text-[#f5f4f0]/75 group-hover:text-white">
               <span className="hidden sm:inline">Professional profile</span>

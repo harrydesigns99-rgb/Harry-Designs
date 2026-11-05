@@ -68,7 +68,7 @@ const ResumePage = ({ onNavigateHome }) => {
             />
             <div>
               <span className="section-kicker mb-2">RESUME // PROFILE</span>
-              <h1 className="font-display text-3xl xs:text-4xl sm:text-7xl md:text-8xl font-medium tracking-[-0.06em] leading-[0.95] sm:leading-[0.9]">
+              <h1 className="font-serif text-3xl xs:text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight text-[#18181b] leading-[1.05]">
                 {profile.name}
               </h1>
               <p className="mt-2 sm:mt-3 text-base sm:text-xl text-[#1d1d1f]/65">

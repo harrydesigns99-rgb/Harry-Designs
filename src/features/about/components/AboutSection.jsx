@@ -44,9 +44,9 @@ const AboutSection = () => {
       <div className="max-w-6xl mx-auto">
         {/* Editorial Manifesto Statement */}
         <div className="max-w-5xl">
-          <p className="font-display text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.6rem] font-medium tracking-tight leading-[1.12] sm:leading-[1.08] text-[#f5f4f0]">
+          <p className="font-serif text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.4rem] font-normal tracking-tight leading-[1.15] sm:leading-[1.1] text-[#f5f4f0]">
             Good design doesn&apos;t ask people to adapt to the brand. It understands how they already live, then{' '}
-            <span className="font-serif italic font-light text-white underline decoration-[#FC7A69] underline-offset-8">
+            <span className="italic font-light text-white underline decoration-[#FC7A69] underline-offset-8">
               finds its place
             </span>{' '}
             on the shelf and on their screens.
@@ -94,10 +94,10 @@ const AboutSection = () => {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
                 {/* Left: Bio & Practice */}
                 <div className="lg:col-span-5 space-y-4 sm:space-y-5">
-                  <span className="text-xs font-mono uppercase tracking-[0.2em] text-[#FC7A69] font-semibold">
-                    STUDIO PHILOSOPHY
+                  <span className="text-xs font-mono uppercase tracking-[0.22em] text-[#FC7A69] font-bold">
+                    ✦ STUDIO PHILOSOPHY
                   </span>
-                  <h3 className="font-display text-xl sm:text-3xl font-bold tracking-tight text-white">
+                  <h3 className="font-serif text-xl sm:text-3xl font-normal tracking-tight text-white leading-tight">
                     {profile.specialization ? `${profile.specialization}.` : 'Design engineered to convert.'}
                   </h3>
                   <p className="font-sans text-xs sm:text-base text-white/80 leading-relaxed font-normal">
@@ -118,7 +118,7 @@ const AboutSection = () => {
                       <span className="font-mono text-xs text-[#FC7A69] font-bold">
                         {cap.step}
                       </span>
-                      <h4 className="font-display text-base sm:text-lg font-bold text-white">
+                      <h4 className="font-sans text-base sm:text-lg font-semibold text-white">
                         {cap.title}
                       </h4>
                       <p className="font-sans text-xs sm:text-sm text-white/75 leading-relaxed font-normal">

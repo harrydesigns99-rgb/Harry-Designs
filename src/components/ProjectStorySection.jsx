@@ -240,8 +240,8 @@ const ProjectStorySection = ({ project, story: storyProp }) => {
                 {currentChapter.step} / {currentChapter.phase?.toUpperCase()}
               </div>
 
-              {/* Bold Headline */}
-              <h2 className="font-display text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#1e1e20] leading-[1.12]">
+              {/* Editorial Headline */}
+              <h2 className="font-serif text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-normal tracking-tight text-[#18181b] leading-[1.18]">
                 {currentChapter.headline}
               </h2>
 

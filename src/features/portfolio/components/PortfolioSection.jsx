@@ -71,10 +71,10 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
         {/* Section Header matching shriyap.com */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16 pb-6 border-b border-black/[0.08]">
           <div>
-            <span className="font-sans text-xs uppercase tracking-[0.2em] text-[#FC7A69] font-semibold block mb-2">
-              SELECTED PORTFOLIO
+            <span className="font-mono text-xs uppercase tracking-[0.22em] text-[#8b151b] font-bold block mb-2">
+              ✦ SELECTED PORTFOLIO
             </span>
-            <h2 className="font-display text-3xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#1e1e20]">
+            <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#18181b] leading-[1.12]">
               <WordReveal text="Work I'm proud of" />
             </h2>
           </div>
@@ -185,7 +185,7 @@ const PortfolioSection = ({ onSelectProject, onNavigateWork }) => {
                     </div>
 
                     {/* Card Title */}
-                    <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[#1e1e20] group-hover:text-black transition-colors">
+                    <h3 className="font-serif text-xl sm:text-2xl font-normal tracking-tight text-[#18181b] group-hover:text-black transition-colors">
                       {project.title}
                     </h3>
 

@@ -122,7 +122,7 @@ const WorkArchiveScreen = ({ onNavigateHome, onSelectProject }) => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="font-display text-3xl xs:text-4xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-[#1e1e20] leading-[1.02] sm:leading-[0.95]"
+              className="font-serif text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-normal tracking-tight text-[#18181b] leading-[1.08] sm:leading-[1.02]"
             >
               Full Archive<span className="text-[#FC7A69]">.</span>
             </motion.h1>
